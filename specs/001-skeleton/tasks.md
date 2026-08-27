@@ -38,7 +38,7 @@ Each check must be run and its output shown before the box is checked
   build` still succeeds (nothing reads them yet, so this only confirms
   nothing else broke).
 
-- [ ] **T05 — Wire up the module and lesson routes**
+- [x] **T05 — Wire up the module and lesson routes**
   `app/moduly/page.tsx`, `app/moduly/[module]/page.tsx`,
   `app/moduly/[module]/[lesson]/page.tsx`, reading through `lib/content.ts`.
   Both dynamic routes implement `generateStaticParams`.
