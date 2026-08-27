@@ -28,7 +28,7 @@ Each check must be run and its output shown before the box is checked
   **Check:** `npm run build` succeeds; `npm run lint` succeeds; TypeScript
   reports no errors.
 
-- [ ] **T04 — Placeholder content**
+- [x] **T04 — Placeholder content**
   Two module folders under `content/moduly/`, each with an `index.mdx`
   (`title` only) and one lesson `.mdx` (`title`, `order`, `summary`;
   `week` absent). Polish, unmistakably placeholder — no real topic, date,
