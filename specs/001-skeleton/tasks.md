@@ -46,7 +46,7 @@ Each check must be run and its output shown before the box is checked
   and both lesson routes as prerendered (static) routes; `npm run dev` and
   a manual click-through from `/` reaches every placeholder lesson.
 
-- [ ] **T06 — Verify the invalid-frontmatter path**
+- [x] **T06 — Verify the invalid-frontmatter path**
   Code review only (spec's acceptance criterion 8 — no committed broken
   fixture): confirm `lib/content.ts` calls `.parse()`, never
   `.safeParse()`, on both schemas, and that a missing required field would
