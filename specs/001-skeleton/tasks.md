@@ -55,7 +55,7 @@ Each check must be run and its output shown before the box is checked
   **Check:** the two `.parse()` call sites are pointed to directly (file:line)
   in the commit message or PR description.
 
-- [ ] **T07 — Close the slice**
+- [x] **T07 — Close the slice**
   Fresh-context review of the full diff against `spec.md`'s 13 acceptance
   criteria (AGENTS.md §3), run from a clean subagent context that has not
   seen this implementation session. Fix anything it flags as affecting
