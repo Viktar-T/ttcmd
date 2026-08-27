@@ -4,14 +4,14 @@ Ordered, commit-sized, one task per commit. Message format `001/TNN: ...`.
 Each check must be run and its output shown before the box is checked
 (AGENTS.md §3) — a box is checked when the task is done *and verified*.
 
-- [ ] **T01 — Record planning artifacts**
+- [x] **T01 — Record planning artifacts**
   Commit `tasks.md` (this file) and the status flips on `spec.md`,
   `plan.md`, and ADR-0002 (all now `accepted`, per Viktar's approval in
   session). No application code yet.
   **Check:** `git log` shows the commit; the three files read `Status:
   accepted`.
 
-- [ ] **T02 — Scaffold the Next.js app**
+- [x] **T02 — Scaffold the Next.js app**
   `package.json`, `tsconfig.json` (`strict: true`), ESLint config,
   `app/layout.tsx` (`<html lang="pl">`), `app/globals.css` (system font
   stack, readable measure, nothing else), `app/page.tsx` (minimal Polish
