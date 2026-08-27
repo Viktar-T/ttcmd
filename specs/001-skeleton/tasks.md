@@ -20,7 +20,7 @@ Each check must be run and its output shown before the box is checked
   **Check:** `npm install` succeeds; `npm run build` succeeds; `npm run
   lint` succeeds.
 
-- [ ] **T03 — Content schema and content-reading library**
+- [x] **T03 — Content schema and content-reading library**
   `lib/content-schema.ts` (`moduleFrontmatterSchema`,
   `lessonFrontmatterSchema`) and `lib/content.ts` (`listModules`,
   `getModule`, `listLessons`, `getLesson`), per `plan.md`. Both schemas use
