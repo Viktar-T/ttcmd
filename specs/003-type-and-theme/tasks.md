@@ -83,7 +83,7 @@ The default check is `npm run build`.
   **Check:** `npm run build` succeeds; `/styleguide` renders; the swatch set
   changes with the theme. *(Acceptance criteria 5, 6.)*
 
-- [ ] **T08 — Verification pass, recorded**
+- [x] **T08 — Verification pass, recorded**
 
   Compute and record every text-on-background contrast pair in both themes.
   Judge the light-theme link colour on rendered Polish prose. Check a
@@ -93,15 +93,12 @@ The default check is `npm run build`.
   **Check:** the file exists and every ratio in it is computed, not estimated.
   *(Acceptance criteria 4, 10, 11, 12, 13.)*
 
-  **Handoff.** Done: `verification.md` written; criteria 4, 10, 12 and 13 met
-  with evidence, and the contrast figures independently reproduce ADR-0007's.
-  Next: **criterion 11 only** — the light theme's link colour judged by eye on
-  rendered Polish prose. The browser pane in that session would not composite
-  frames, so no screenshot was possible, and measuring it again would answer a
-  different question than the criterion asks. Open `/styleguide` in the light
-  theme and read the paragraph under "The split", which carries a link
-  mid-sentence for exactly this. Also noted there: criterion 9's throttled
-  reload still wants one manual pass.
+  **Closed 2026-08-28.** The automated pass covered criteria 4, 10, 12 and 13,
+  with the contrast figures independently reproducing ADR-0007's. The two checks
+  that needed eyes were then made by Viktar and recorded in `verification.md`:
+  criterion 11, the light theme's link on rendered Polish prose — passes; and
+  criterion 9's throttled reload — no flash. The box was held open until those
+  existed rather than closed on the measurements alone.
 
 - [ ] **T09 — Close the slice**
 

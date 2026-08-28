@@ -121,27 +121,28 @@ purpose, the build shown failing with the reason named, and reverted.
 
 ---
 
-## Open — needs Viktar's eyes
+## The two checks that needed eyes
 
-**Criterion 11 is not met and its box is not checked.** It asks that the light
-theme's link colour be judged on a rendered page of real Polish prose, "not only
-on its ratio, and the judgement recorded". `#5B4FBF` computes to 5.86:1, which
-passes, and passing arithmetic is exactly what that criterion says is not
-enough.
+Both were made by Viktar on 2026-08-28, after the automated pass above. They are
+recorded here because they are the evidence, and neither can be produced by
+measurement.
 
-The browser pane in this session would not composite frames, so no screenshot
-could be taken and no visual judgement made. Verifying it by measurement instead
-would be answering a different question than the one the criterion asks.
+**Criterion 11 — the light theme's link colour, judged on rendered Polish
+prose.** `#5B4FBF` computes to 5.86:1, and the criterion exists precisely
+because passing arithmetic is not the same as reading well. Judged on the
+paragraph under "The split" at `/styleguide`, with a link mid-sentence:
+**reads fine, passes.** ADR-0007's two-value accent is confirmed by use, not
+only by ratio — the light theme keeps the pale value as a surface and the darker
+one for lines, and the darker one holds up as link text.
 
-To close it: open `/styleguide` in the light theme and read the paragraph in the
-"The split" section, which carries a link mid-sentence for this purpose.
+**Criterion 9 — no flash, on a throttled connection.** With `light` stored and
+the network throttled, a reload paints light on the first frame: **no flash of
+dark, passes.** This is the empirical half of the structural argument above, and
+it closes the plan's main risk — React 19 leaving the inline script where it was
+written, early enough to matter.
 
-Two smaller things, same cause:
-
-- The toggle was exercised by a click dispatched through the DOM, which runs
-  React's real handler through the real event system. An OS-level mouse click
-  could not be routed to a pane that is not displayed.
-- Criterion 9 asks for the no-flash check **on a throttled connection**. The
-  structural argument above is strong and the observed behaviour after reload is
-  correct, but network throttling was not available here. Worth one manual
-  reload with the network panel throttled before the slice is called finished.
+One limitation stands, and it changes nothing: the toggle was exercised in the
+automated pass by a click dispatched through the DOM, which runs React's real
+handler through the real event system. An OS-level mouse click could not be
+routed to a browser pane that was not displaying. The control's behaviour under
+a real pointer is covered by Viktar's own two passes above.
