@@ -1,0 +1,51 @@
+/* PROVISIONAL — see app/theme-toggle.tsx. The navigation slice moves this. */
+
+.toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+
+  color: var(--text-muted);
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.toggle:hover {
+  color: var(--text);
+  border-color: var(--accent-line);
+}
+
+.toggle:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}
+
+/*
+ * The icon follows the theme through CSS, not through React state, so the
+ * button's appearance never depends on hydration having happened.
+ */
+.sun {
+  display: block;
+}
+
+.moon {
+  display: none;
+}
+
+:root[data-theme="light"] .sun {
+  display: none;
+}
+
+:root[data-theme="light"] .moon {
+  display: block;
+}

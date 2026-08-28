@@ -59,7 +59,7 @@ The default check is `npm run build`.
   `app/globals.css`, show the build failing with file, line and the offending
   text, revert, show it passing. *(Acceptance criterion 3.)*
 
-- [ ] **T06 — The theme applies before first paint, and can be toggled**
+- [x] **T06 — The theme applies before first paint, and can be toggled**
 
   The inline pre-paint script in an explicit `<head>` in `app/layout.tsx`,
   reading `ttcmd-theme` from `localStorage` inside `try/catch` and flipping to
