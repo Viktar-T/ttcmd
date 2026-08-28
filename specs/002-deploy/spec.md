@@ -48,9 +48,11 @@ open.
 - Any change to styling, content, navigation, or the content schema. If this
   slice edits `content/`, `lib/content.ts` or the schema, it has gone out of
   bounds.
-- Search-engine indexing, in either direction. Decided and closed by
-  [ADR-0003](../../docs/adr/0003-temporary-no-index.md): the site is indexed
-  from the first deployment, like any other public site.
+- Search-engine indexing, in either direction. Closed by **rejecting**
+  [ADR-0006](../../docs/adr/0006-temporary-no-index.md) — read its *Outcome*
+  section, not its *Decision* section, which records the proposal that was
+  turned down. The site is indexed from the first deployment, like any other
+  public site.
 - CI checks on push. There is no CI, and adding it here would be scope creep.
 
 ## Acceptance criteria
@@ -66,6 +68,7 @@ open.
    and both placeholder lessons, and each renders its Polish title and body.
 5. The hosted build completes from a clean checkout — no local artefact,
    uncommitted file, or machine-specific setting is required for it to succeed.
+6. ~~No-index instruction on every response.~~ **Struck** — see Amendment.
 7. A commit or a push to `main` results in a new deployment without any manual
    step beyond the push.
 8. `npm run build` and `npm run lint` still pass locally with no errors.
@@ -75,18 +78,25 @@ open.
     configured in the host, never in the repository (Article IV).
 11. Nothing in this slice adds a backend, an API route, authentication, a
     database, or static-export mode (Article VIII).
+12. ~~The no-index removal recorded as a gate.~~ **Struck** — see Amendment.
 
 ## Amendment — 2026-08-28
 
 Criteria **6** (no-index instruction on every response) and **12** (the removal
 written down as a gate) are **struck**, together with the no-index paragraphs in
 *What* and *Why*. Viktar's decision, recorded in
-[ADR-0003](../../docs/adr/0003-temporary-no-index.md): the site may be indexed
+[ADR-0006](../../docs/adr/0006-temporary-no-index.md): the site may be indexed
 from the first deployment.
 
-The numbers **6** and **12** are left as gaps rather than closed up, so that
-every surviving criterion keeps the number `plan.md` refers to it by. Ten
-criteria remain, numbered 1–5 and 7–11.
+The numbers **6** and **12** are not closed up, so that every surviving
+criterion keeps the number `plan.md` refers to it by. Ten criteria are live;
+6 and 12 remain in the list as struck placeholders.
+
+They are placeholders rather than gaps for a rendering reason worth knowing:
+CommonMark ignores every number in an ordered list after the first and
+renumbers sequentially, so a literal gap looks fine in the source and silently
+renumbers everything below it on GitHub — which would have defeated the whole
+point of not closing them up.
 
 `constitution.md` is unchanged — Article IV's "the Vercel site is public and
 indexed" is simply true, which is why no amendment to it was needed.

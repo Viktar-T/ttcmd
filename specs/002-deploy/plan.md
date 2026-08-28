@@ -11,13 +11,13 @@ states, as fact, that "the Vercel site is public **and indexed**". A spec may
 not contradict the constitution, so this slice cannot be executed as written
 until that is resolved — and an agent may not amend Article IV (Article X).
 
-Resolution proposed: **ADR-0003**, which records the temporary no-index
+Resolution proposed: **ADR-0006**, which records the temporary no-index
 decision, its expiry gate, and proposes the one-line Article IV refinement that
 makes "indexed" the end state rather than a present-tense property. Viktar
 accepts or rejects it. If rejected, the no-index criteria (6, 12) come out of
 the spec and the slice is re-specced — not silently executed either way.
 
-Everything below assumes ADR-0003 is accepted.
+Everything below assumes ADR-0006 is accepted.
 
 ## What is already true
 
@@ -53,12 +53,12 @@ something the repository contains.
 `Disallow: /` forbids the *fetch*, so the crawler never reads the `noindex` it
 was forbidden from fetching, and the URL can still be listed from external
 links. Allow the fetch, deny the index. The reasoning and the rejected
-alternatives belong in ADR-0003, not here.
+alternatives belong in ADR-0006, not here.
 
 ## File map
 
 ```
-docs/adr/0003-temporary-no-index.md   the decision, its expiry, Article IV
+docs/adr/0006-temporary-no-index.md   the decision, its expiry, Article IV
 next.config.ts                        + async headers() → X-Robots-Tag
 app/robots.ts                         robots.txt, crawling allowed
 app/layout.tsx                        + metadata.robots
@@ -96,11 +96,12 @@ first public deployment exists.** Deploying first and adding `noindex` after is
 the exact window the spec exists to close.
 
 1. Record the planning artifacts; flip `spec.md` to accepted.
-2. ADR-0003 — and **stop** for Viktar's decision.
+2. ADR-0006 — and **stop** for Viktar's decision.
 3. Implement the three no-index layers. Verify locally against a production
    build, over HTTP, not by reading the source.
 4. Make the tree clean and prove a clean checkout builds: commit the lockfile
-   and `docs/roadmap.md` (carrying the no-index removal gate, criterion 12),
+   and `docs/roadmap.md` (~~carrying the no-index removal gate, criterion 12~~
+   — struck, see Amendment; the roadmap is committed as written),
    then clone the repo to a scratch directory and run `npm ci && npm run build`
    there. This is criterion 5 tested before the host tests it.
 5. Push `main`.
@@ -111,8 +112,8 @@ the exact window the spec exists to close.
    also the evidence for criterion 7** — one push, no dashboard step, a new
    deployment. Do not spend a throwaway commit proving auto-deploy when a real
    one is due anyway.
-9. Close the slice: fresh-context review against all 12 criteria, then the
-   journal.
+9. Close the slice: fresh-context review against ~~all 12~~ the ten live
+   criteria, then the journal.
 
 ## Verification notes
 
@@ -144,7 +145,7 @@ is an agent quietly picking a URL that becomes student-facing.
 ## Amendment — 2026-08-28
 
 The blocking decision at the top of this plan was resolved by **rejecting**
-ADR-0003: the site is indexed from the first deployment. Everything in this plan
+ADR-0006: the site is indexed from the first deployment. Everything in this plan
 that exists to deliver a no-index posture is therefore **not built** —
 
 - "Mechanism: how 'do not index' is actually delivered", all three layers;
@@ -162,3 +163,7 @@ commit the lockfile and `docs/roadmap.md`, prove a clean checkout builds, push
 **No application file is touched by this slice at all.** A diff here that
 changes `app/`, `lib/`, `content/`, `next.config.ts` or the schema has gone out
 of bounds.
+
+Two references above outlived the text they pointed at — step 4's "criterion
+12" and step 9's "all 12 criteria" — and are struck in place rather than
+deleted, so the plan still reads as the thing that was actually planned.

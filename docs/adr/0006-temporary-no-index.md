@@ -1,7 +1,11 @@
-# ADR-0003 — Deploy with a temporary no-index posture
+# ADR-0006 — Deploy with a temporary no-index posture
 
 - **Date:** 2026-08-28
 - **Status:** rejected (2026-08-28, Viktar)
+- **Renumbered:** filed as ADR-0003, moved to 0006 on 2026-08-28 — see the
+  note at the end. The commit messages of slice 002 still say "ADR-0003" and
+  are left alone; git history is permanent (Article IV) and a mistake that
+  happened stays visible (Article II).
 - **Decision by:** Viktar
 
 ## Context
@@ -97,3 +101,19 @@ site, not the placeholder content — the options table is already written.
   permanent whatever robots do.
 - If the amendment is accepted, this ADR is the record of why; Article IV
   itself carries only the one-line result.
+
+## Note — this ADR was renumbered
+
+It was filed as **ADR-0003** during slice 002, when `docs/adr/` held only 0001
+and 0002. In parallel, and outside this slice, Viktar wrote three more ADRs and
+amended the constitution to cite them: **0003** (content numbering, Article VI),
+**0004** (three lanes, Article IX) and **0005** (typefaces, Article III).
+
+That left two files claiming 0003, one of them load-bearing in the
+constitution. This one moved, because the other is cited by Article VI and this
+one was rejected anyway.
+
+The cause is worth naming, since ADR numbers are append-only and this will
+happen again: the number was chosen by looking at what was on disk, in a
+session that had no way to see work happening in another one. `ls docs/adr/`
+answers "what exists here, now" — it does not answer "what number is free".

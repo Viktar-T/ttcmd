@@ -8,9 +8,10 @@ first task of a session.
 
 ## State of the repo
 
-Pre-scaffold. There is no application yet: no `package.json`, no `app/`, no
-`content/`. Slice `001` creates it. Do not assume any command below works until
-that slice is done.
+Deployed at **<https://ttcmd.vercel.app>**, rebuilt from `main` on every push.
+The module → lesson pipeline works: MDX under `content/`, Zod-validated at
+build time, routes rendering. The content is still placeholder — two example
+modules, two example lessons. The commands below work.
 
 ## Commands
 

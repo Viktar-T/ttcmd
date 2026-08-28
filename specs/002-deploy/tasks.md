@@ -18,9 +18,9 @@ than improvising (`plan.md`, "What only Viktar can do").
       *Check:* `git show --stat HEAD` lists exactly the three files under
       `specs/002-deploy/`, and `spec.md` reads `Status: accepted`.
 
-- [x] **T02 — ADR-0003: the temporary no-index decision. (decision: Viktar)**
+- [x] **T02 — ADR-0006: the temporary no-index decision. (decision: Viktar)**
       `spec.md` requires a no-index posture; Article IV states as fact that the
-      site is "public and indexed". Write `docs/adr/0003-temporary-no-index.md`
+      site is "public and indexed". Write `docs/adr/0006-temporary-no-index.md`
       recording the decision, the alternatives rejected (`Disallow: /`, Vercel
       password protection, deploying indexed and cleaning up later), the expiry
       gate, and the one-line Article IV refinement it proposes. **Then stop.**
@@ -33,7 +33,7 @@ than improvising (`plan.md`, "What only Viktar can do").
       amended; T03 below is the re-spec instead.
 
 - [x] **T03 — Re-spec the slice around the rejection.**
-      Mark ADR-0003 rejected with its outcome; strike criteria 6 and 12 from
+      Mark ADR-0006 rejected with its outcome; strike criteria 6 and 12 from
       `spec.md`, leaving the numbers as gaps so the surviving criteria keep the
       numbers `plan.md` cites; append an amendment note to `plan.md` marking the
       no-index mechanism as not built. `constitution.md` is not touched.
@@ -45,7 +45,7 @@ than improvising (`plan.md`, "What only Viktar can do").
 - [x] **T04 — Make the tree clean and prove a clean checkout builds.**
       Commit the modified `package-lock.json` and the untracked
       `docs/roadmap.md`. Nothing is added to the roadmap: the gate it was going
-      to carry died with ADR-0003.
+      to carry died with ADR-0006.
       *Check:* `git status --porcelain` prints nothing, and a fresh
       `git clone` of this repo into the scratch directory runs
       `npm ci && npm run build` to success (criterion 5, tested before the host
@@ -160,10 +160,10 @@ than improvising (`plan.md`, "What only Viktar can do").
       przykładowy 2`, and `Lekcja przykładowa` twice. Bodies render too, not
       just headings: the lesson MDX prose is in the HTML, `/moduly` links to
       both modules and each module page links to its lesson. No
-      `name="robots"` anywhere — the site is indexable, per ADR-0003's
+      `name="robots"` anywhere — the site is indexable, per ADR-0006's
       rejection.
 
-- [ ] **T08 — Record the live URL, and let the push prove auto-deploy.**
+- [x] **T08 — Record the live URL, and let the push prove auto-deploy.**
       Put the URL in `README.md` and replace its "Pre-scaffold" State section,
       which has been wrong since 001 closed. Pushing this commit is itself the
       evidence for criterion 7 — no throwaway commit for that.
@@ -172,7 +172,27 @@ than improvising (`plan.md`, "What only Viktar can do").
       empty **Remote** row in the vault's `ttcmd.md` and pastes back the result
       (criterion 9).
 
-- [ ] **T09 — Close the slice.** *(blocked on T06–T08)*
+      **Done, 2026-08-28, with the check corrected.** The second half of that
+      check was unsatisfiable as written and should not have been: this commit
+      changes `README.md` and `tasks.md`, neither of which the site renders, so
+      the live homepage is byte-identical before and after it. Nor is there a
+      build id to compare — this Next.js build serves content-hashed
+      `/_next/static/immutable/` chunks, so unchanged code means unchanged
+      URLs. A criterion about deployments cannot be checked against page
+      content that the deployment does not affect.
+
+      What does check it, over the wire and without the dashboard: GitHub's
+      commit-status API. `api.github.com/repos/Viktar-T/ttcmd/commits/c179783/
+      status` returns `state: success`, `context: Vercel`, "Deployment has
+      completed" — and a Production deployment exists for **every** pushed
+      commit in this slice. Push in, deployment out, no manual step
+      (criterion 7).
+
+      **Still open:** the vault's `ttcmd.md` **Remote** row, which is Viktar's
+      and outside this repo. That is the one half of criterion 9 this slice
+      cannot close by itself.
+
+- [x] **T09 — Close the slice.**
       Review the whole diff against the amended `spec.md` in a **fresh subagent
       context**, against the ten surviving acceptance criteria, reporting gaps
       that affect correctness — not style. Then append the factual entry to
@@ -182,3 +202,38 @@ than improvising (`plan.md`, "What only Viktar can do").
       actually taught: a plan that named its blocking decision up front got a
       one-line answer instead of a wrong implementation, and the live 404 was
       never a hosting problem — the remote had no application on it.
+
+      **Done, 2026-08-28.** The fresh-context review confirmed all ten live
+      criteria met, scope clean (one non-documentation file in the whole diff —
+      `package-lock.json`), and no constitutional violation. It found five
+      things worth fixing, all fixed here rather than waved through:
+
+      - `spec.md`'s criterion numbering rendered wrong. CommonMark renumbers
+        ordered lists sequentially, so leaving 6 and 12 as literal *gaps* —
+        done specifically to keep `plan.md`'s citations pointing at the right
+        items — silently repointed every one of them on GitHub. They are now
+        struck placeholders, which survives rendering.
+      - `plan.md` still cited criterion 12 and "all 12 criteria" as live.
+      - `spec.md` cited a rejected ADR as authority for the opposite of its
+        Decision section; it now points at the *Outcome* section by name.
+      - `CLAUDE.md` still said "there is no application yet". T08 fixed that
+        exact sentence in `README.md` and left it standing in the file every
+        session loads first.
+      - The ADR number collision, below.
+
+      **Left open deliberately,** because they are not this slice's:
+      `docs/roadmap.md` is stale (it still reads "Not deployed") but is
+      currently modified with unrelated in-flight work, so it is untouched
+      here; and `docs/roadmap.md` publishes internal work-priority material to
+      a public repo, which is Viktar's own to publish under Article IV but is
+      worth a deliberate decision rather than arriving as a side effect of
+      T04.
+
+      **ADR renumbered: 0003 → 0006.** This slice filed its ADR as 0003 when
+      `docs/adr/` held only 0001 and 0002. In parallel Viktar wrote three ADRs
+      and amended the constitution to cite them — 0003 (Article VI), 0004
+      (Article IX), 0005 (Article III) — leaving two files claiming 0003, one
+      of them load-bearing. This one moved, being both uncited and rejected.
+      The slice's commit messages still say ADR-0003 and are left alone:
+      history is permanent (Article IV) and a mistake that happened stays
+      visible (Article II).
