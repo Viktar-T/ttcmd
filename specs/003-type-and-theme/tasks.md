@@ -17,7 +17,7 @@ The default check is `npm run build`.
   **Check:** the three files exist under `specs/003-type-and-theme/` and are
   committed.
 
-- [ ] **T02 — Load the two faces and apply the split**
+- [x] **T02 — Load the two faces and apply the split**
 
   `app/fonts.ts` with both `next/font/google` calls, `subsets: ['latin',
   'latin-ext']`, exposed as CSS variables. Wire the variables onto `<html>` in

@@ -4,19 +4,47 @@
   box-sizing: border-box;
 }
 
+/*
+ * The split, per docs/design-reference.md: monospace carries structure,
+ * the proportional sans carries prose. It is set here on plain elements
+ * rather than on classes, so Markdown rendered by a later slice inherits
+ * it with nothing to annotate.
+ */
+
 body {
   margin: 0;
-  font-family:
-    system-ui,
-    -apple-system,
-    "Segoe UI",
-    Roboto,
-    Helvetica,
-    Arial,
-    sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   line-height: 1.5;
   color: #1a1a1a;
   background: #fff;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  line-height: 1.25;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+/* Inline code: the face and a slightly smaller size, and no background box.
+   The pill treatment turns a paragraph of identifiers into a ransom note. */
+:not(pre) > code {
+  font-size: 0.9375em;
+}
+
+/* Nothing renders a <nav> yet. The rule is the contract with the nav slice. */
+nav {
+  font-family: var(--font-mono), ui-monospace, monospace;
 }
 
 main {
@@ -27,10 +55,4 @@ main {
 
 a {
   color: #1a56db;
-}
-
-h1,
-h2,
-h3 {
-  line-height: 1.25;
 }
