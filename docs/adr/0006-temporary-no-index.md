@@ -79,6 +79,21 @@ is re-specced as a plain deploy. It is not executed either way by default.
 Viktar, 2026-08-28: **the site may be indexed from the first deployment. It is
 not important.**
 
+**Confirmed and upgraded, same day**, once the question was re-framed. The
+placeholder problem this ADR was written about is trivial; the real question is
+permanent, and the answer is that ttcmd is **open and searchable for good** —
+not merely un-blocked by default. That turns a shrug into a posture with work
+attached: a sitemap, a permissive `robots.txt` and per-page metadata, so the
+site is actually found rather than only permitted to be. That work is located in
+`docs/roadmap.md`, Phase 1, "Discoverability", and is deliberately scheduled
+**after** there is real content to point crawlers at.
+
+The reason the call was easy, and the reason it is safe: Article IV keeps all
+personal data off this site and Article VI keeps student work off it, so nothing
+reachable by a crawler belongs to a minor. The decision concerns Viktar's own
+material only. The separate question of whether the **school** is named on the
+site remains open, and is not a crawler question.
+
 So none of the three layers is built, `constitution.md` is not amended —
 Article IV keeps "the Vercel site is public and indexed", which is now simply
 true — and `spec.md` criteria 6 and 12 are struck. Slice 002 is a plain deploy.

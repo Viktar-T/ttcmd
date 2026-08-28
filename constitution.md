@@ -10,6 +10,7 @@
 | Owner | Viktar |
 | Ratified | 2026-08-27 |
 | Amended by | ADR only (Article X) |
+| Amendments | ADR-0003 (Art. VI) · ADR-0004 (Art. IX) · ADR-0005 (Art. III), all 2026-08-28 |
 
 ---
 
@@ -54,6 +55,11 @@ they meet SDD, not here.
 - **Student-facing text is Polish.** Lesson bodies, task sheets, UI labels, page titles.
 - **Repo-facing text is English.** This file, `AGENTS.md`, specs, plans, ADRs, code comments, commit messages.
 - **Identifiers are ASCII English, no diacritics.** File names, slugs, frontmatter keys, component names. `moduly/01-trendy`, never `moduły/01-trendy`.
+- **Every typeface must render Polish.** No face is adopted until it has been
+  verified to carry the full alphabet — **ą ć ę ł ń ó ś ź ż Ą Ć Ę Ł Ń Ó Ś Ź Ż** —
+  *and* the subset containing those glyphs is explicitly requested at load time.
+  `ó` and `ł` live in different Unicode blocks; loading only the `latin` subset
+  renders one and silently breaks the other, with no build error. See ADR-0005.
 
 ## Article IV — This repo and this site are public
 
@@ -90,6 +96,17 @@ than a blank.
   *(Consequence accepted knowingly: if a published task later counts toward a grade
   and its wording changes, the only evidence is the commit log.)*
 
+**Identity and numbering** — these are spoken aloud in class and typed into
+browsers. They are identity, not presentation, and no slice changes them without
+a superseding ADR (ADR-0003):
+
+- A **module's number** comes from its folder prefix: `01-…` → *Moduł 1*.
+- A **lesson's letter** is derived from its `order` within the module
+  (1 → a, 2 → b). Never stored by hand.
+- **Exercises are numbered `<module>.<n>`, continuously across the whole
+  module.** A lesson does not restart at 1 — which means an exercise cannot know
+  its own number from inside its own file.
+
 ## Article VII — Teaching stack
 
 **C# / .NET is the presumed stack** for the desktop and mobile apps students
@@ -112,7 +129,21 @@ content edits — never a schema migration.
 
 ## Article IX — The SDD loop
 
-Nothing is implemented without a spec slice.
+**Nothing is implemented in the application without a spec slice.**
+
+Three lanes of change, with different gates (ADR-0004):
+
+| Lane | What | Process | Commit prefix |
+| --- | --- | --- | --- |
+| **App** | `app/`, `lib/`, config, dependencies | full slice | `NNN/TNN:` |
+| **Content** | `content/`, `public/img/` | none — write it | `content:` |
+| **Chore** | tooling, ignore files, housekeeping | none | `chore:` |
+
+**A content commit may not touch `app/` or `lib/`.** When writing a lesson
+requires an application change, that is the signal to stop and open a slice. The
+boundary is a detector, not only a rule: it is how the app comes to be built in
+response to content that is genuinely blocked, rather than in anticipation of
+content nobody has written yet.
 
 ```
 specs/NNN-slug/

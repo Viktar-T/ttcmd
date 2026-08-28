@@ -30,7 +30,9 @@ Slices so far: `001-skeleton` (the pipeline), `002-deploy` (the URL).
 | [`AGENTS.md`](AGENTS.md) | how to work in this repo (agents and humans) |
 | [`CLAUDE.md`](CLAUDE.md) | Claude Code entry point; imports `AGENTS.md` |
 | `specs/NNN-slug/` | one slice: `spec.md` → `plan.md` → `tasks.md` |
+| [`docs/how-to-run-a-slice.md`](docs/how-to-run-a-slice.md) | the operating manual — the session-by-session loop, with the prompts |
 | [`docs/roadmap.md`](docs/roadmap.md) | what gets built next, and what forces it |
+| [`docs/design-reference.md`](docs/design-reference.md) | the visual model, and what is deliberately not copied |
 | [`docs/adr/`](docs/adr/) | decisions, each with the alternatives rejected |
 | [`docs/sources.md`](docs/sources.md) | what was read while designing the method, and what it changed |
 | [`docs/sdd-journal.md`](docs/sdd-journal.md) | how the method actually behaved |
