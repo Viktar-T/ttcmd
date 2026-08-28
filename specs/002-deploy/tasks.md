@@ -110,6 +110,39 @@ than improvising (`plan.md`, "What only Viktar can do").
       the option that satisfies criterion 2 by construction — detection can
       only happen at import.
 
+      **Cause confirmed, 2026-08-28,** from the build log Viktar pasted. Causes
+      2 and 3 are eliminated: the push *did* trigger a deployment, and
+      `next build` completed inside it — the log prerenders all 8 routes,
+      identical to the local and scratch-clone builds. The build then failed
+      on its last line:
+
+      > `Error: No Output Directory named "public" found after the Build
+      > completed.`
+
+      Looking for a directory called `public` **after** running the build is
+      what Vercel does when the Framework Preset is **"Other"**: it ran
+      `next build`, discarded `.next/`, and went looking for a static site
+      that was never going to be there. Cause 1, as predicted — the preset was
+      fixed when the project was imported against a repo whose only content
+      was `C0`.
+
+      Two ways out, and they are not equivalent for this slice:
+
+      - **Re-import the project** (delete, then import `Viktar-T/ttcmd`
+        again). Detection runs against a repo that now has a `package.json`,
+        so the preset lands on Next.js *by detection*. Nothing is lost —
+        there are no environment variables, no custom domain, no protection
+        settings to recreate. **This is the one that meets criterion 2**,
+        which asks for the framework detected, not corrected.
+      - **Set Framework Preset to Next.js by hand** in Settings → General.
+        The site comes up, but by the manual override criterion 2 was written
+        to exclude. If this route is taken, it is a deviation and is recorded
+        as one in `docs/sdd-journal.md` — not quietly checked off.
+
+      Note what is *not* the answer: a `vercel.json` with `outputDirectory`.
+      It would paper over the wrong preset with a file in the repository, and
+      it is a manual override with extra steps.
+
 - [ ] **T07 — Verify the live site, logged out.** *(blocked on T06)*
       *Check:* `curl` returns 200 for all six routes — `/`, `/moduly`, both
       module pages, both lessons — and each body contains its Polish title
