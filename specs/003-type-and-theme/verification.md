@@ -146,3 +146,58 @@ automated pass by a click dispatched through the DOM, which runs React's real
 handler through the real event system. An OS-level mouse click could not be
 routed to a browser pane that was not displaying. The control's behaviour under
 a real pointer is covered by Viktar's own two passes above.
+
+---
+
+## Closing review (T09)
+
+Carried out in a fresh context on 2026-08-28, per AGENTS.md §3 and Article IX.
+The reviewer did not write this code, re-ran the checks rather than trusting
+this file, and modified nothing.
+
+**Verdict: the slice closes.** All 14 acceptance criteria met. No `003/T`
+commit touched anything outside `app/`, `scripts/`, `package.json` and
+`specs/003-type-and-theme/`; `spec.md` and `plan.md` were never edited after
+T01. Each item of the spec's "Out of scope" list was checked individually and
+found absent.
+
+Independently reproduced rather than taken on trust: all 16 token values against
+ADR-0007 by hand, every contrast ratio from scratch, the glyph-advance
+measurements, the grep for colour literals, and the pre-paint script's position —
+that last one in the **production** HTML rather than the dev server's.
+
+### What it found
+
+**One real defect, since fixed.** Check B had three ways past it: 4-digit hex
+`#1234`, uppercase `RGB(` (CSS function names are case-insensitive), and
+`lab()` / `lch()` / `color()`. The realistic paste case was always caught, so
+criteria 3 and 12 stood — but spec §2 promises the rule is enforced by the build
+rather than by memory, and slice 004 is who that promise is for. Widened and
+verified in commit `8a64c6b`.
+
+Three findings left as recorded, not fixed:
+
+- **Check A's failure message does not say *which* font call failed.** With two
+  calls in one file it is a short hunt, and criterion 2 only asks that the
+  failure name the reason, which it does.
+- **`--leading-tight` and `--leading-normal` carry no labelled swatch.** A
+  swatch of a line height is not a meaningful object and both are exercised by
+  the specimens. Recorded as checked, not as a defect.
+- **`spec.md` has no `## Decisions taken` section.** AGENTS.md §4 introduced
+  that requirement in commit `60fd2a5`, **22 minutes after** the spec was
+  recorded in `da136e7`. The rule postdates the spec, so this is not a gap in
+  003, and retro-fitting it would mean editing an approved spec — forbidden by
+  AGENTS.md §8, and Article II prefers the visible seam. Slice 004's spec is the
+  first that should carry the section.
+
+### Deliberately confirmed as sound
+
+`suppressHydrationWarning` sits on `<html>`, the element the script actually
+mutates, and no second mismatch path exists. The stateless toggle is sound —
+the CSS icon swap survives module compilation and was observed working. The
+`--link` alias resolves correctly in both themes despite its block sitting after
+the light overrides, because `var()` resolves against the element's computed
+value. `prefers-color-scheme` appears nowhere in the source or the built CSS.
+`--text` on `--bg-code` is 1.06:1 in the light theme, but nothing in this slice
+renders text on that surface — it is slice 005's question, correctly unanswered
+here.

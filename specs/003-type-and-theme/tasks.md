@@ -100,7 +100,7 @@ The default check is `npm run build`.
   criterion 9's throttled reload — no flash. The box was held open until those
   existed rather than closed on the measurements alone.
 
-- [ ] **T09 — Close the slice**
+- [x] **T09 — Close the slice**
 
   Fresh-context review of the whole diff against `spec.md`: every acceptance
   criterion met, nothing outside scope touched — no lesson content, no
