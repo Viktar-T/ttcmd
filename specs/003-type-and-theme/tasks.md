@@ -93,6 +93,16 @@ The default check is `npm run build`.
   **Check:** the file exists and every ratio in it is computed, not estimated.
   *(Acceptance criteria 4, 10, 11, 12, 13.)*
 
+  **Handoff.** Done: `verification.md` written; criteria 4, 10, 12 and 13 met
+  with evidence, and the contrast figures independently reproduce ADR-0007's.
+  Next: **criterion 11 only** — the light theme's link colour judged by eye on
+  rendered Polish prose. The browser pane in that session would not composite
+  frames, so no screenshot was possible, and measuring it again would answer a
+  different question than the criterion asks. Open `/styleguide` in the light
+  theme and read the paragraph under "The split", which carries a link
+  mid-sentence for exactly this. Also noted there: criterion 9's throttled
+  reload still wants one manual pass.
+
 - [ ] **T09 — Close the slice**
 
   Fresh-context review of the whole diff against `spec.md`: every acceptance

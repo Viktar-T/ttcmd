@@ -1,0 +1,147 @@
+# verification.md — 003-type-and-theme
+
+Evidence for the acceptance criteria in `spec.md`. Ratios are **computed**, not
+estimated. Checked 2026-08-28 against the dev server on `localhost:3000`,
+Next 16.3.3, Chromium.
+
+---
+
+## Contrast
+
+Computed with the WCAG 2.x relative-luminance formula over the values in
+`app/tokens.css`.
+
+### Dark (the default)
+
+| Pair | Foreground | Background | Ratio | Needs | |
+| --- | --- | --- | ---: | ---: | --- |
+| body text, and headings | `--text` | `--bg` | **12.21** | 4.5 | pass |
+| muted text | `--text-muted` | `--bg` | **5.86** | 4.5 | pass |
+| links | `--accent-line` | `--bg` | **8.67** | 4.5 | pass |
+| text on the stripe | `--accent-ink` | `--accent-surface` | **10.27** | 4.5 | pass |
+| inline code | `--text-muted` | `--bg` | **5.86** | 4.5 | pass |
+
+### Light
+
+| Pair | Foreground | Background | Ratio | Needs | |
+| --- | --- | --- | ---: | ---: | --- |
+| body text, and headings | `--text` | `--bg` | **14.71** | 4.5 | pass |
+| muted text | `--text-muted` | `--bg` | **6.34** | 4.5 | pass |
+| links | `--accent-line` | `--bg` | **5.86** | 4.5 | pass |
+| text on the stripe | `--accent-ink` | `--accent-surface` | **10.27** | 4.5 | pass |
+| inline code | `--text-muted` | `--bg` | **6.34** | 4.5 | pass |
+
+Large headings need only 3:1 and clear it by the same values as body text.
+
+**These reproduce ADR-0007's own figures** — 8.68 / 10.27 / 5.86 there against
+8.67 / 10.27 / 5.86 here, the first differing only in rounding. Two independent
+computations agreeing is worth more than either alone.
+
+### `--rule`, and why it is not a failure
+
+`--rule` against `--bg` is **1.47:1** on dark and **1.36:1** on light — well
+under the 3:1 that WCAG 1.4.11 asks of non-text contrast.
+
+It is recorded rather than fixed, because 1.4.11 governs UI components and
+graphics *needed to understand the content*, and exempts purely decorative
+separators. Every current use of `--rule` is a hairline between sections. The
+one place it touches an interactive control is the theme toggle's border, and
+that control is identified by its icon at `--text-muted` — 5.86:1 — not by its
+border.
+
+**This becomes a real question for the navigation slice**, where
+`design-reference.md` puts a vertical rule beside the contents panel and an
+active-item boundary. If a rule ever carries meaning rather than decoration, it
+needs its own value at 3:1 and an ADR amending 0007. Flagged, not deferred
+silently.
+
+## Typefaces and Polish
+
+`document.fonts.status` was `loaded`, and `document.fonts.check` returned true
+for the full pangram in both families.
+
+Tofu cannot be reasoned about, so it was **measured**:
+
+- **JetBrains Mono.** All 18 Polish diacritics — ą ć ę ł ń ó ś ź ż Ą Ć Ę Ł Ń Ó Ś
+  Ź Ż — measure exactly the monospace advance of `19.2px` at 32px, the same as
+  `x`. A glyph served by a fallback family would not share that advance.
+  Outliers: **none**.
+- **Inter.** Each of the 18 was measured against the same character rendered in
+  a deliberately non-existent family, which forces the generic fallback. All 18
+  differ, so the real face is drawing them. Characters measuring as fallback:
+  **none**.
+
+The build's generated CSS carries **two** `@font-face` blocks whose
+`unicode-range` begins `U+100-2BA` — the Latin Extended-A range holding
+U+0104–U+017C — one per family.
+
+## Themes
+
+| Check | Result |
+| --- | --- |
+| First visit, nothing stored, OS set to **light** | `data-theme="dark"`, background `rgb(42,41,38)` — the OS is not consulted |
+| First visit, nothing stored, OS set to dark | dark |
+| Toggle | flips `data-theme` and writes `ttcmd-theme` |
+| Survives a reload | yes — light restored with `--accent-line` `#5b4fbf` |
+| Survives a navigation to another lesson | yes |
+| Swatch set changes with the theme | 8 of 11 tokens change; the 3 that do not (`--bg-code`, `--accent-surface`, `--accent-ink`) are exactly the three ADR-0007 defines as identical in both themes |
+
+**Pre-paint.** In the HTML the browser is actually served, the theme script is a
+synchronous inline `<script>` at byte 1748, inside `<head>`, before `<body>` at
+byte 1990, with only `async` scripts ahead of it. A synchronous inline script in
+`<head>` blocks parsing, and a browser cannot paint before it has parsed
+`<body>` — so it runs before the first paint by construction. React 19 did not
+relocate it, which was the risk the plan flagged.
+
+## The split, on the real lessons
+
+All six written lessons render with `data-theme="dark"`, Polish diacritics
+present in the body text, and between 7 and 14 headings each.
+
+Measured on `co-model-naprawde-potrafi`, in **both** themes: `h1` and `h2` in
+JetBrains Mono, `p` and `li` in Inter. No lesson file was touched — the split
+arrives by inheritance, which was the point of setting it on plain elements.
+
+## Phone width
+
+At 375×812, on a lesson in both themes and on the reference page:
+`scrollWidth === clientWidth === 375`, and **no element** extends past the
+viewport. The 36px monospace pangram wraps rather than widening the page.
+
+## No hard-coded colour
+
+`grep` over `app/` and `lib/` for hex and the colour functions returns **16
+lines, all of them in `app/tokens.css`** — the eight dark tokens and the eight
+light ones. Fourteen source files were scanned. **No exemption comment was
+needed anywhere**, so the exemption mechanism is currently unused, which is the
+state to prefer.
+
+The guard itself is demonstrated in the T03 and T05 commits: each was broken on
+purpose, the build shown failing with the reason named, and reverted.
+
+---
+
+## Open — needs Viktar's eyes
+
+**Criterion 11 is not met and its box is not checked.** It asks that the light
+theme's link colour be judged on a rendered page of real Polish prose, "not only
+on its ratio, and the judgement recorded". `#5B4FBF` computes to 5.86:1, which
+passes, and passing arithmetic is exactly what that criterion says is not
+enough.
+
+The browser pane in this session would not composite frames, so no screenshot
+could be taken and no visual judgement made. Verifying it by measurement instead
+would be answering a different question than the one the criterion asks.
+
+To close it: open `/styleguide` in the light theme and read the paragraph in the
+"The split" section, which carries a link mid-sentence for this purpose.
+
+Two smaller things, same cause:
+
+- The toggle was exercised by a click dispatched through the DOM, which runs
+  React's real handler through the real event system. An OS-level mouse click
+  could not be routed to a pane that is not displayed.
+- Criterion 9 asks for the no-flash check **on a throttled connection**. The
+  structural argument above is strong and the observed behaviour after reload is
+  correct, but network throttling was not available here. Worth one manual
+  reload with the network panel throttled before the slice is called finished.
