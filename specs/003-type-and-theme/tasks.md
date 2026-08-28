@@ -73,7 +73,7 @@ The default check is `npm run build`.
   stored, a throttled reload paints light on the first frame with no flash.
   *(Acceptance criteria 7, 8, 9.)*
 
-- [ ] **T07 — The reference page**
+- [x] **T07 — The reference page**
 
   `app/styleguide/page.tsx` and its CSS module: both faces at heading and body
   size, the ADR-0005 pangram in each face at each size, a paragraph of real

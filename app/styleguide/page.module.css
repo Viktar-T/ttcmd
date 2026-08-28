@@ -1,0 +1,159 @@
+/*
+ * The reference page's own layout. Kept out of globals.css: it is not a
+ * site-wide concern, it is this page's furniture.
+ */
+
+.page {
+  padding-bottom: 4rem;
+}
+
+.lede {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 1.5rem;
+}
+
+.section {
+  margin-top: 3rem;
+}
+
+.section > h2 {
+  font-size: var(--text-xl);
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.5rem;
+}
+
+.specimen {
+  margin: 1.5rem 0;
+}
+
+.specimenLabel {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+/* One of the two legitimate overrides named in spec §1: this line is quoting
+   prose type, so it takes the sans face inside a mono context. */
+.sans {
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+.size3xl {
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+}
+.size2xl {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
+}
+.sizeXl {
+  font-size: var(--text-xl);
+  line-height: var(--leading-tight);
+}
+.sizeLg {
+  font-size: var(--text-lg);
+}
+.sizeBase {
+  font-size: var(--text-base);
+}
+.sizeSm {
+  font-size: var(--text-sm);
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.swatch {
+  border: 1px solid var(--rule);
+}
+
+.chip {
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--text-sm);
+}
+
+.swatchName {
+  display: block;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--text-sm);
+  padding: 0.4rem 0.5rem;
+  border-top: 1px solid var(--rule);
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
+
+.chipBg {
+  background: var(--bg);
+}
+.chipBgCode {
+  background: var(--bg-code);
+}
+.chipText {
+  background: var(--text);
+}
+.chipTextMuted {
+  background: var(--text-muted);
+}
+.chipRule {
+  background: var(--rule);
+}
+.chipAccentSurface {
+  background: var(--accent-surface);
+  color: var(--accent-ink);
+}
+.chipAccentLine {
+  background: var(--accent-line);
+}
+.chipAccentInk {
+  background: var(--accent-ink);
+}
+.chipLink {
+  background: var(--link);
+}
+.chipRuleQuote {
+  background: var(--rule-quote);
+}
+.chipRuleTable {
+  background: var(--rule-table);
+}
+
+.stripe {
+  background: var(--accent-surface);
+  color: var(--accent-ink);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  padding: 0.75rem 1rem;
+  margin-top: 1.5rem;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+.ruleDemo {
+  border-left: 3px solid var(--rule-quote);
+  padding-left: 1rem;
+  margin-top: 1.5rem;
+  color: var(--text-muted);
+}
+
+/* No code-block specimen here on purpose: --bg-code appears as a swatch, and
+   text on a code surface is slice 005's decision, not this slice's. */
