@@ -69,7 +69,7 @@ than improvising (`plan.md`, "What only Viktar can do").
       10 re-checked on the pushed tree — only `.env.example` is tracked, and it
       holds two comment lines and no variables.
 
-- [ ] **T06 — Confirm the hosting project and read the build log. (Viktar)**
+- [x] **T06 — Confirm the hosting project and read the build log. (Viktar)**
       The project already exists at `ttcmd.vercel.app`, so the URL is not at
       risk. Confirm it is connected to `Viktar-T/ttcmd`, production branch
       `main`, framework **detected** and not overridden, no environment
@@ -143,13 +143,27 @@ than improvising (`plan.md`, "What only Viktar can do").
       It would paper over the wrong preset with a file in the repository, and
       it is a manual override with extra steps.
 
-- [ ] **T07 — Verify the live site, logged out.** *(blocked on T06)*
+      **Done, 2026-08-28.** Viktar re-imported the project — the route that
+      satisfies criterion 2 by detection rather than by override, so there is
+      no deviation to record. `X-Nextjs-Prerender: 1` on the live response is
+      the proof the preset is now Next.js: Vercel only emits it when it is
+      serving a Next.js build, which is exactly what the "Other" preset was
+      throwing away.
+
+- [x] **T07 — Verify the live site, logged out.**
       *Check:* `curl` returns 200 for all six routes — `/`, `/moduly`, both
       module pages, both lessons — and each body contains its Polish title
       (criteria 3, 4). Logged out means logged out: `curl` has no Vercel
       session, which is exactly why it is the check and a browser is not.
+      **Done, 2026-08-28.** All six return 200 over HTTPS with their Polish
+      `<h1>` rendered — `ttcmd`, `Moduły`, `Moduł przykładowy 1`, `Moduł
+      przykładowy 2`, and `Lekcja przykładowa` twice. Bodies render too, not
+      just headings: the lesson MDX prose is in the HTML, `/moduly` links to
+      both modules and each module page links to its lesson. No
+      `name="robots"` anywhere — the site is indexable, per ADR-0003's
+      rejection.
 
-- [ ] **T08 — Record the live URL, and let the push prove auto-deploy.** *(blocked on T07 — `README.md` is deliberately not yet pointed at a URL that 404s)*
+- [ ] **T08 — Record the live URL, and let the push prove auto-deploy.**
       Put the URL in `README.md` and replace its "Pre-scaffold" State section,
       which has been wrong since 001 closed. Pushing this commit is itself the
       evidence for criterion 7 — no throwaway commit for that.

@@ -8,10 +8,19 @@ Built with Spec-Driven Development, deliberately: the site is the first
 deliverable, learning the method is the second. See
 [`docs/adr/0001`](docs/adr/0001-sdd-by-hand-spec-kit-vocabulary.md).
 
+## Live
+
+**<https://ttcmd.vercel.app>** — rebuilt from `main` on every push.
+
 ## State
 
-**Pre-scaffold.** There is no application yet — no `package.json`, no `app/`,
-no `content/`. Slice `001-skeleton` creates it.
+**Deployed, placeholder content.** The module → lesson pipeline works end to
+end: MDX under `content/`, frontmatter validated by Zod at build time, routes
+rendering. What it carries is two example modules and two example lessons that
+say so in their own text. Real course content is the next thing that matters —
+see [`docs/roadmap.md`](docs/roadmap.md).
+
+Slices so far: `001-skeleton` (the pipeline), `002-deploy` (the URL).
 
 ## Read this first
 
@@ -21,13 +30,12 @@ no `content/`. Slice `001-skeleton` creates it.
 | [`AGENTS.md`](AGENTS.md) | how to work in this repo (agents and humans) |
 | [`CLAUDE.md`](CLAUDE.md) | Claude Code entry point; imports `AGENTS.md` |
 | `specs/NNN-slug/` | one slice: `spec.md` → `plan.md` → `tasks.md` |
+| [`docs/roadmap.md`](docs/roadmap.md) | what gets built next, and what forces it |
 | [`docs/adr/`](docs/adr/) | decisions, each with the alternatives rejected |
 | [`docs/sources.md`](docs/sources.md) | what was read while designing the method, and what it changed |
 | [`docs/sdd-journal.md`](docs/sdd-journal.md) | how the method actually behaved |
 
 ## Commands
-
-Nothing to run yet. After slice `001`:
 
 ```bash
 npm install
