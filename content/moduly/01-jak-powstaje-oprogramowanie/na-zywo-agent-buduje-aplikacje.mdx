@@ -1,0 +1,119 @@
+---
+title: "Na żywo: agent buduje aplikację"
+order: 4
+summary: "Pokaz pełnej pętli agenta na prawdziwym projekcie — i lista rzeczy, na które trzeba patrzeć, żeby zobaczyć coś więcej niż magię."
+---
+
+Ta lekcja odbywa się na ekranie, nie w tekście. Zobaczysz, jak agent dostaje
+zadanie i doprowadza je do działającego kodu: czyta projekt, pisze pliki,
+uruchamia komendy, czyta błąd, poprawia.
+
+Tekst poniżej jest **instrukcją oglądania**. Bez niej pokaz wygląda jak magia, a
+magia niczego nie uczy.
+
+## Pętla, którą będziesz oglądać
+
+Każdy agent — niezależnie od producenta i nazwy — chodzi w tym samym kółku:
+
+<svg viewBox="0 0 720 260" role="img" aria-label="Pętla agenta: zrozum zadanie, podziel na kroki, wybierz narzędzie, oceń wynik, zdecyduj co dalej" style={{ width: "100%", height: "auto" }}>
+  <defs>
+    <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor" />
+    </marker>
+  </defs>
+  <g stroke="currentColor" fill="none" stroke-width="1.5">
+    <rect x="8" y="86" width="120" height="54" rx="3" />
+    <rect x="156" y="86" width="120" height="54" rx="3" />
+    <rect x="304" y="86" width="120" height="54" rx="3" />
+    <rect x="452" y="86" width="120" height="54" rx="3" />
+    <rect x="600" y="86" width="112" height="54" rx="3" />
+  </g>
+  <g stroke="currentColor" stroke-width="1.5" marker-end="url(#a2)" fill="none">
+    <line x1="130" y1="113" x2="152" y2="113" />
+    <line x1="278" y1="113" x2="300" y2="113" />
+    <line x1="426" y1="113" x2="448" y2="113" />
+    <line x1="574" y1="113" x2="596" y2="113" />
+    <path d="M656 142 L656 190 L68 190 L68 144" />
+  </g>
+  <g fill="currentColor" font-size="12" font-weight="600">
+    <text x="18" y="108">Zrozum</text>
+    <text x="18" y="124">zadanie</text>
+    <text x="166" y="108">Podziel</text>
+    <text x="166" y="124">na kroki</text>
+    <text x="314" y="108">Wybierz</text>
+    <text x="314" y="124">narzędzie</text>
+    <text x="462" y="108">Oceń</text>
+    <text x="462" y="124">wynik</text>
+    <text x="610" y="108">Co dalej?</text>
+  </g>
+  <text x="300" y="208" fill="currentColor" font-size="11.5" opacity="0.75">pętla — aż zadanie jest zrobione albo agent się podda</text>
+  <g stroke="var(--accent-line, currentColor)" fill="none" stroke-width="2" stroke-dasharray="4 3">
+    <rect x="240" y="18" width="250" height="42" rx="3" />
+  </g>
+  <text x="252" y="36" fill="var(--accent-line, currentColor)" font-size="12" font-weight="700">CZŁOWIEK</text>
+  <text x="252" y="52" fill="var(--accent-line, currentColor)" font-size="11">zatwierdza komendy, czyta diff, przerywa</text>
+  <line x1="365" y1="60" x2="365" y2="82" stroke="var(--accent-line, currentColor)" stroke-width="2" marker-end="url(#a2)" />
+</svg>
+
+Ramka na górze jest najważniejszą częścią tego rysunku. **Agent nie jest
+autonomiczny — jest szybki.** Człowiek zostaje w pętli, tylko w innym miejscu
+niż wcześniej: nie pisze, lecz zatwierdza i ocenia.
+
+## Na co patrzeć
+
+Nie patrz na to, jak szybko powstaje kod. To najmniej interesująca rzecz na
+ekranie. Patrz na te pięć:
+
+1. **Moment, w którym agent prosi o zgodę.** Zanim uruchomi komendę w terminalu,
+   pyta. Zwróć uwagę, jak łatwo byłoby klikać „tak" bez czytania.
+2. **Pierwszy błąd.** Zobaczysz, jak agent czyta komunikat i sam się poprawia.
+   To jest cała różnica między czatem a agentem.
+3. **Moment, w którym idzie w złą stronę.** Zdarzy się. Zapamiętaj, po czym to
+   było widać i ile czasu minęło, zanim ktokolwiek to zauważył.
+4. **Wielkość diffu.** Ile linii kodu powstało w minutę i ile z tego zdążyłeś
+   przeczytać.
+5. **Co agent przyjął za oczywiste.** Wybrał bibliotekę? Nazwę? Strukturę
+   katalogów? Nikt mu tego nie kazał — po prostu założył.
+
+## Czego pokaz nie udowadnia
+
+Uczciwie, zanim zrobi na tobie zbyt duże wrażenie:
+
+- **Zadanie jest dobrane.** Nowy, mały projekt, popularny język — czyli
+  najlepsza komórka macierzy z [poprzedniej lekcji](/moduly/01-jak-powstaje-oprogramowanie/co-model-naprawde-potrafi).
+- **Pokaz się nie powtórzy identycznie.** Model jest niedeterministyczny; drugie
+  uruchomienie da inny kod.
+- **Nie widać kosztu.** Ani czasu na przygotowanie kontekstu, ani pieniędzy.
+- **Nie widać, co będzie za miesiąc.** Czy ten kod da się utrzymać, wie się
+  dopiero wtedy, gdy trzeba go zmienić.
+
+Pokaz dowodzi jednej rzeczy: **że pętla działa i jak wygląda**. Tyle wystarczy.
+
+## Po pokazie
+
+Rozmowa w klasie, na trzy pytania:
+
+1. W którym momencie **ty** byś przerwał i sprawdził?
+2. Co poszłoby nie tak, gdyby nikt nie patrzył na ekran?
+3. Które z 70% Osmaniego widzieliśmy, a których 30% nie?
+
+## Ćwiczenia
+
+{/* Numery zadań celowo nieprzypisane — ADR-0003, numeracja ciągła przez moduł. */}
+
+1. W trakcie pokazu notuj **czas i zdarzenie** przy każdym z pięciu punktów z
+   sekcji „Na co patrzeć". Notatka ma być z pokazu, nie z pamięci.
+2. Opisz w pięciu zdaniach pętlę agenta, nie zaglądając do rysunku.
+3. Wypisz trzy decyzje, które agent podjął, choć nikt mu ich nie zlecił. Przy
+   każdej dopisz, co ty byś wybrał.
+4. Jedno zdanie: co takiego musiałby zrobić człowiek, żeby ten sam wynik był
+   pewny, a nie prawdopodobny? (To jest pytanie o moduł o specyfikacjach — na
+   razie wystarczy zgadywać.)
+
+## Źródła
+
+Stan na **2026-08-28**.
+
+- [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices) — Anthropic
+- [Agentic Coding Recommendations](https://lucumr.pocoo.org/2025/6/12/agentic-coding/) — Armin Ronacher, praktyczne uwagi z pierwszej ręki
+- [AI Blindspots](https://ezyang.github.io/ai-blindspots/) — krótkie obserwacje o tym, czego agenty nie widzą

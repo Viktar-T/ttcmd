@@ -1,0 +1,185 @@
+---
+title: "Git i GitHub — minimum, które wystarczy"
+order: 3
+summary: "Git w zakresie, w jakim będziesz go używać na tym kursie: zapis pracy, historia zmian i wysłanie kodu na GitHub."
+---
+
+Git jest systemem kontroli wersji. W praktyce oznacza to trzy rzeczy: **nie
+tracisz pracy**, **widzisz, co się zmieniło i kiedy**, a jeśli coś zepsujesz —
+**wracasz do wersji, która działała**.
+
+Ta lekcja nie jest kursem Gita. Jest zestawem komend, które będziesz wykonywać
+na każdych zajęciach, i jednym pojęciem, które będzie ci potrzebne później:
+gałęzią.
+
+{/* TO CONFIRM (Article V; open decision #4 in content-research/course-structure-v1.md):
+    whether students may create third-party accounts for classwork, whether
+    guardian consent is required for anyone under 18, and whether the school
+    e-mail address may be used. The "Konto na GitHubie" section assumes yes. */}
+
+## Po co nam Git na tym kursie
+
+Bo pracujemy inaczej niż w zeszycie. Kod powstaje małymi krokami, część z nich
+okazuje się ślepą uliczką, a wracanie do stanu sprzed godziny musi być tanie i
+nudne — nie dramatyczne.
+
+Jest jeszcze drugi powód, który zrozumiesz w pełni dopiero w module o
+specyfikacjach. Kiedy część kodu pisze agent, historia zmian przestaje być
+kroniką, a staje się **narzędziem kontroli**: to w niej widać, co dokładnie
+zostało dopisane, zanim zdecydujesz, czy to zostawiasz.
+
+## Konto na GitHubie
+
+GitHub to serwis, w którym trzymamy repozytoria — czyli projekty prowadzone w
+Gicie. Konto osobiste jest bezpłatne i obejmuje nielimitowaną liczbę
+repozytoriów publicznych i prywatnych.
+
+Przy zakładaniu konta zwróć uwagę na jedną rzecz, bo później trudno ją cofnąć:
+**adres e-mail zapisany w commicie zostaje w historii na zawsze.** Jeśli
+repozytorium jest publiczne, twój adres jest publiczny razem z nim.
+
+GitHub rozwiązuje to za ciebie. W ustawieniach konta włącz opcję **Keep my
+email addresses private**, a Git będzie podpisywał twoje commity adresem
+technicznym GitHuba zamiast twoim prawdziwym. Zrób to, zanim wykonasz pierwszy
+commit.
+
+## Jednorazowa konfiguracja
+
+Raz na komputerze, nie na każdych zajęciach:
+
+```bash
+git config --global user.name "Imie Nazwisko"
+git config --global user.email "twoj-adres@example.com"
+git config --global init.defaultBranch main
+```
+
+Sprawdź, czy się zapisało:
+
+```bash
+git config --global --list
+```
+
+Jeśli włączyłeś ochronę adresu e-mail, w drugiej komendzie wpisz adres
+techniczny, który GitHub pokazuje w ustawieniach konta — nie swój prywatny.
+
+## Cztery komendy, których używasz codziennie
+
+### `git status` — gdzie jestem
+
+Pierwsza komenda, jaką wpisujesz, i ta, którą wpisujesz, kiedy nie wiesz, co
+się dzieje. Pokazuje, na jakiej gałęzi jesteś i które pliki się zmieniły.
+
+```bash
+git status
+```
+
+Wpisuj ją częściej, niż wydaje ci się to potrzebne. Większość pomyłek w Gicie
+bierze się z wykonania komendy w przekonaniu, że stan repozytorium jest inny,
+niż jest naprawdę.
+
+### `git add` — wybieram, co zapisać
+
+```bash
+git add nazwa-pliku.cs
+git add .
+```
+
+Pierwsza wersja dodaje jeden plik. Druga — wszystko, co się zmieniło. Druga
+jest wygodna i właśnie dlatego niebezpieczna: to nią najłatwiej wrzucić do
+repozytorium coś, czego nie chciałeś (patrz niżej).
+
+### `git commit` — zapisuję punkt w historii
+
+```bash
+git commit -m "dodaj obsluge przycisku zapisu"
+```
+
+Commit to zapisany stan projektu wraz z opisem. Opis pisz w trybie
+rozkazującym i po tym, **co robi zmiana**, a nie jakim plikiem ruszyłeś.
+`popraw` i `zmiany` to nie są opisy — za miesiąc nic z nich nie wyczytasz.
+
+Jeden commit powinien zawierać jedną skończoną rzecz. Jeśli w opisie musisz
+użyć słowa „oraz”, prawdopodobnie powinny to być dwa commity.
+
+### `git push` — wysyłam na GitHuba
+
+```bash
+git push
+```
+
+Dopóki nie zrobisz `push`, twoja praca istnieje tylko na tym jednym komputerze.
+W pracowni to znaczy: nie istnieje.
+
+## Zaczynanie pracy z istniejącym repozytorium
+
+```bash
+git clone adres-repozytorium
+```
+
+`clone` robisz **raz** dla danego projektu. Później, żeby pobrać zmiany, których
+jeszcze nie masz:
+
+```bash
+git pull
+```
+
+## Gałąź i pull request
+
+Gałąź (*branch*) to równoległa wersja projektu. Pracujesz na niej, nie ruszając
+tego, co działa.
+
+```bash
+git switch -c nazwa-galezi
+```
+
+Kiedy skończysz i wyślesz gałąź na GitHuba, możesz otworzyć **pull request** —
+prośbę o włączenie twoich zmian do gałęzi głównej. Pull request jest miejscem,
+w którym ktoś (albo coś) czyta twój kod, zanim trafi on do projektu.
+
+Na razie wystarczy, że wiesz, czym to jest. Wrócimy do tego w module o testach
+i przeglądzie kodu — tam pull request przestanie być formalnością i zacznie być
+bramką.
+
+## Czego nigdy nie wrzucamy do repozytorium
+
+Ta lista jest krótka, a każda pozycja to błąd, którego nie da się cofnąć przez
+skasowanie pliku. **Historia Gita jest trwała: co raz trafiło do commita,
+zostaje w repozytorium, nawet jeśli plik później usuniesz.**
+
+- **Hasła, klucze API, tokeny.** Klucz, który trafił do publicznego
+  repozytorium, jest kluczem spalonym — trzeba go unieważnić, a nie ukryć.
+- **Pliki `.env`** i cokolwiek innego z konfiguracją lokalną.
+- **Katalogi budowania** — `bin/`, `obj/`, `node_modules/`. Są duże, generowane
+  automatycznie i nikomu niepotrzebne.
+- **Cudze dane osobowe.** Czyjeś imię, nazwisko czy adres w publicznym
+  repozytorium to nie jest twoja decyzja do podjęcia.
+
+Do wykluczania plików służy `.gitignore`. Do bezpieczeństwa wrócimy osobno —
+tutaj chodzi tylko o to, żebyś do tego czasu nie zrobił czegoś nieodwracalnego.
+
+## Ćwiczenia
+
+{/* Exercise numbers deliberately omitted. Per ADR-0003 exercises are numbered
+    module.n continuously across the whole module, so these numbers depend on how
+    many exercises end up in lessons 0a and 0b, which do not exist yet. Numbers get
+    assigned once the module is complete. */}
+
+1. Załóż konto na GitHubie i włącz ochronę adresu e-mail. Wykonaj jednorazową
+   konfigurację Gita na swoim stanowisku.
+2. Utwórz repozytorium, sklonuj je, dodaj plik `README.md` z jednym zdaniem o
+   sobie jako programiście, i wykonaj `add`, `commit`, `push`. Sprawdź, że plik
+   widać na stronie repozytorium.
+3. Zmień coś w `README.md`, wykonaj commit z sensownym opisem, a potem
+   `git log --oneline` i przeczytaj własną historię. Czy po opisach widać, co
+   się działo?
+4. Utwórz gałąź, wprowadź na niej zmianę, wyślij ją na GitHuba i otwórz pull
+   request. Nie scalaj go — zostaw otwarty.
+
+## Źródła
+
+Stan na **2026-08-28**. Ceny i zasady serwisów zmieniają się — jeśli czytasz to
+później, sprawdź w źródle.
+
+- [Ustawianie adresu e-mail commitów — dokumentacja GitHuba](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address) — opcja *Keep my email addresses private*
+- [Plany i ceny GitHuba](https://github.com/pricing) — plan Free: nielimitowane repozytoria publiczne i prywatne
+- [Dokumentacja Gita](https://git-scm.com/docs) — pełny opis każdej komendy z tej lekcji

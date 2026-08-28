@@ -1,0 +1,177 @@
+---
+title: "Vibe coding kontra inżynieria"
+order: 3
+summary: "Gdzie przebiega granica między korzystaniem z AI a udawaniem, że się programuje — i dlaczego obie strony tej granicy są potrzebne."
+---
+
+W lutym 2025 roku Andrej Karpathy — współzałożyciel OpenAI i były szef AI w
+Tesli — wrzucił na Twittera notatkę, która nazwała coś, co wszyscy już robili:
+
+> Jest nowy rodzaj kodowania, który nazywam „vibe codingiem": całkowicie
+> poddajesz się wibracjom, wchodzisz w wykładniczość i zapominasz, że kod w
+> ogóle istnieje. […] Zawsze klikam „Accept All", nie czytam już diffów. Kiedy
+> dostaję komunikat błędu, po prostu wklejam go bez komentarza i to zwykle
+> naprawia sprawę. Kod rośnie ponad moje zwykłe rozumienie.
+>
+> — Andrej Karpathy, [2 lutego 2025](https://x.com/karpathy/status/1886192184808149383)
+
+Warto przeczytać też ostatnie zdanie tamtego wpisu, bo prawie nikt go nie
+cytuje:
+
+> Nie jest to złe do weekendowych projektów na wyrzucenie, ale nadal całkiem
+> zabawne.
+
+**Karpathy od początku mówił, do czego to służy.** To nie było ogłoszenie nowego
+sposobu budowania oprogramowania. To był opis zabawy.
+
+## Co się stało z tym pojęciem
+
+W ciągu kilku miesięcy „vibe coding" zaczęło oznaczać w prasie i w ogłoszeniach
+o pracę po prostu „programowanie z AI". Simon Willison — twórca frameworka
+Django i jeden z najuważniejszych komentatorów tej dziedziny — postawił sprawę
+jasno:
+
+> Vibe coding nie oznacza „używania narzędzi AI do pomocy w pisaniu kodu".
+> Oznacza „generowanie kodu przy pomocy AI bez dbania o to, jaki kod powstaje".
+>
+> — Simon Willison, [1 maja 2025](https://simonwillison.net/2025/May/1/not-vibe-coding/)
+
+Ta różnica nie jest pedanterią. Jest **całą treścią tej lekcji**.
+
+## Oś, na której się poruszasz
+
+<svg viewBox="0 0 700 240" role="img" aria-label="Oś od vibe codingu do inżynierii wspieranej przez AI" style={{ width: "100%", height: "auto" }}>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor" />
+    </marker>
+  </defs>
+  <line x1="40" y1="90" x2="660" y2="90" stroke="currentColor" stroke-width="2" marker-end="url(#ar)" />
+  <g stroke="currentColor" stroke-width="2">
+    <line x1="60" y1="80" x2="60" y2="100" />
+    <line x1="350" y1="80" x2="350" y2="100" />
+    <line x1="620" y1="80" x2="620" y2="100" stroke="var(--accent-line, currentColor)" />
+  </g>
+  <g fill="currentColor" font-size="14" font-weight="700">
+    <text x="40" y="68">vibe coding</text>
+    <text x="286" y="68">AI-assisted</text>
+    <text x="520" y="68" fill="var(--accent-line, currentColor)">vibe engineering</text>
+  </g>
+  <g fill="currentColor" font-size="11.5" opacity="0.85">
+    <text x="40" y="122">nie czytasz kodu</text>
+    <text x="40" y="138">„Accept All"</text>
+    <text x="40" y="154">nie rozumiesz całości</text>
+    <text x="286" y="122">czytasz kod</text>
+    <text x="286" y="138">testujesz</text>
+    <text x="286" y="154">rozumiesz</text>
+    <text x="520" y="122" fill="var(--accent-line, currentColor)">odpowiadasz za kod</text>
+    <text x="520" y="138">testy, plan, review</text>
+    <text x="520" y="154">CI, dokumentacja</text>
+  </g>
+  <line x1="40" y1="180" x2="660" y2="180" stroke="currentColor" stroke-width="1" opacity="0.35" />
+  <g fill="currentColor" font-size="11.5" opacity="0.75">
+    <text x="40" y="200">prototyp na weekend</text>
+    <text x="40" y="216">skrypt jednorazowy</text>
+    <text x="286" y="200">zadania na tym kursie</text>
+    <text x="520" y="200">projekt, którego</text>
+    <text x="520" y="216">ktoś naprawdę używa</text>
+  </g>
+</svg>
+
+Nie ma tu strony dobrej i złej. Jest **dobór trybu do zadania**. Vibe coding
+przy skrypcie, który uruchomisz raz i wyrzucisz, jest rozsądny. Vibe coding przy
+aplikacji, którą ktoś będzie miał na telefonie, nie jest.
+
+## Drugi koniec osi
+
+W październiku 2025 Willison zaproponował nazwę dla przeciwnego bieguna —
+**vibe engineering**:
+
+> doświadczeni profesjonaliści przyspieszają swoją pracę przy pomocy LLM-ów,
+> pozostając dumnie i pewnie odpowiedzialni za oprogramowanie, które tworzą.
+
+I wypisał, co konkretnie sprawia, że praca z agentami zaczyna się opłacać.
+Przeczytaj tę listę uważnie, bo **to jest spis treści reszty tego kursu**:
+
+- automatyczne testy — solidny, kompletny i stabilny zestaw
+- planowanie z wyprzedzeniem, zanim agent zacznie pisać
+- dobra dokumentacja
+- porządne nawyki w kontroli wersji, żeby dało się cofnąć
+- automatyzacja: CI, formatowanie, lintowanie, wdrożenie
+- kultura przeglądu kodu
+- umiejętność jasnego zlecania zadań i dawania konkretnej informacji zwrotnej
+- ręczne testowanie przypadków, których testy automatyczne nie łapią
+- research: umiejętność ocenienia kilku możliwych rozwiązań
+- środowiska podglądowe, żeby bezpiecznie sprawdzić zmianę
+- wyczucie, co oddać AI, a co zrobić samemu
+- zaktualizowane szacowanie czasu
+
+Zauważ, czego **nie ma** na tej liście: ani jednej sztuczki promptowej. Same
+klasyczne umiejętności inżynierskie. Właśnie dlatego, że agent pracuje szybko,
+wszystko, co go otacza, musi być solidne.
+
+## Co się przesunęło w wartości
+
+Kent Beck — twórca programowania ekstremalnego i autor książek o TDD, człowiek
+w zawodzie od dekad — napisał w kwietniu 2023 zdanie, które do dziś jest
+najlepszym jednozdaniowym podsumowaniem tej zmiany:
+
+> Wartość 90% moich umiejętności właśnie spadła do 0 dolarów. Dźwignia
+> pozostałych 10% wzrosła 1000-krotnie. Muszę się przekalibrować.
+>
+> — Kent Beck, [18 kwietnia 2023](https://x.com/KentBeck/status/1648413998025707520)
+
+W eseju, który napisał później, uczciwie przyznaje, że **nie wie, które
+umiejętności należą do których 10%** — i że jedyny sposób, żeby się dowiedzieć,
+to próbować po trochu wielu rzeczy.
+
+To jest dobra wiadomość dla ciebie: nikt nie ma tu przewagi dziesięciu lat
+doświadczenia w czymś, co istnieje od trzech.
+
+## Uczciwy głos praktyka
+
+Armin Ronacher, twórca Flaska, podsumowując rok 2025 pracy z agentami, napisał,
+że tam, gdzie kiedyś spędzał czas w Cursorze, teraz pracuje niemal całkowicie
+„bez rąk". Ale zwrócił też uwagę na problem, który dotknie i was: **pull request
+nie niesie ze sobą wystarczającego kontekstu, żeby ocenić kod wygenerowany przez
+AI** — chciałby widzieć prompty, które doprowadziły do zmian.
+
+I jedno zdanie, które warto potraktować jako zasadę zachowania: wysyłanie do
+cudzego projektu **nieprzejrzanego kodu** jest dla utrzymującego go człowieka
+obraźliwe.
+
+## Zasada na ten kurs
+
+> **Wolno ci vibe-code'ować.** Wolno ci nie czytać kodu prototypu, który
+> wyrzucisz tego samego dnia.
+>
+> **Nie wolno ci oddać jako swojej pracy kodu, którego nie rozumiesz.** Nie
+> dlatego, że to oszustwo. Dlatego, że nie umiesz go naprawić, kiedy przestanie
+> działać — a przestanie.
+
+## Ćwiczenia
+
+{/* Numery zadań celowo nieprzypisane — ADR-0003, numeracja ciągła przez moduł. */}
+
+1. Zdefiniuj vibe coding w jednym zdaniu, własnymi słowami, tak żeby definicja
+   wykluczała „programowanie z pomocą AI". Porównaj ze zdaniem Willisona.
+2. Wypisz z listy vibe engineeringu trzy punkty, których dziś jeszcze nie umiesz.
+   Zachowaj tę listę — wrócimy do niej pod koniec roku.
+3. Zrób celowo jedną rzecz w trybie vibe coding: poproś model o mały skrypt,
+   nie czytaj kodu, uruchom. Potem przeczytaj go i wypisz wszystko, czego nie
+   rozumiesz. Ta lista jest właściwym wynikiem ćwiczenia.
+4. Zadanie na myślenie: Kent Beck mówi, że nie wie, które 10% umiejętności
+   zyskało na wartości. Napisz trzy zdania o tym, które umiejętności **twoim
+   zdaniem** są w tych 10% i dlaczego.
+
+## Źródła
+
+Stan na **2026-08-28**. Wpisy na X mogą wymagać zalogowania — treść oryginalnego
+wpisu Karpathy'ego jest cytowana także w tekście Willisona.
+
+- [Andrej Karpathy, wpis definiujący vibe coding](https://x.com/karpathy/status/1886192184808149383) — 2.02.2025
+- [Two publishers and three authors fail to understand what "vibe coding" means](https://simonwillison.net/2025/May/1/not-vibe-coding/) — Simon Willison, 1.05.2025
+- [Vibe engineering](https://simonwillison.net/2025/Oct/7/vibe-engineering/) — Simon Willison, 7.10.2025; lista dwunastu praktyk
+- [Kent Beck, wpis o 90% i 10%](https://x.com/KentBeck/status/1648413998025707520) — 18.04.2023 — oraz esej [90% of My Skills Are Now Worth $0](https://newsletter.kentbeck.com/p/90-of-my-skills-are-now-worth-0)
+- [A Year Of Vibes](https://lucumr.pocoo.org/2025/12/22/a-year-of-vibes/) — Armin Ronacher, 22.12.2025
+- [AI Blindspots](https://ezyang.github.io/ai-blindspots/) — zbiór krótkich, praktycznych obserwacji o pracy z LLM-ami

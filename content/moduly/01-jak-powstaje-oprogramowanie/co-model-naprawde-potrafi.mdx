@@ -1,0 +1,202 @@
+---
+title: "Co model naprawdę potrafi"
+order: 2
+summary: "Liczby zamiast wrażeń: gdzie AI pomaga bardzo, gdzie prawie wcale, i dlaczego własna ocena własnej wydajności jest zawodna."
+---
+
+Na pytanie „czy AI przyspiesza programowanie" istnieje uczciwa odpowiedź i jest
+nią: **zależy, i wiadomo od czego.** Ta lekcja jest o tych zależnościach, bo
+bez nich każda dyskusja o narzędziach jest wymianą wrażeń.
+
+Zaczniemy od liczby, która powinna zaboleć.
+
+## Badanie, które wyszło odwrotnie, niż wszyscy zakładali
+
+Organizacja METR przeprowadziła w 2025 roku **randomizowane badanie z grupą
+kontrolną** — czyli najmocniejszy rodzaj dowodu, jaki w ogóle da się tu zebrać.
+Szesnastu doświadczonych programistów open source wykonywało prawdziwe zadania
+we własnych, dobrze znanych sobie projektach. Część zadań mogli robić z
+narzędziami AI, część bez.
+
+Wynik: z AI byli **o 19% wolniejsi**.
+
+Po wszystkim zapytano ich, jak im poszło. Odpowiedzieli, że AI przyspieszyło ich
+**o 20%**.
+
+Trzydzieści dziewięć punktów procentowych różnicy między tym, co się stało, a
+tym, co ludzie czuli, że się stało. **To jest najważniejsza liczba w tej
+lekcji** — nie te 19%. Bo mówi ona coś, czego nie da się obejść lepszym
+narzędziem: **własne poczucie, że praca idzie szybciej, nie jest dowodem, że
+idzie szybciej.**
+
+Zanim jednak uznasz, że AI nie działa — przeczytaj następny akapit, bo to
+badanie nie mówi tego, co ludzie z niego cytują.
+
+## Dlaczego to badanie nie dotyczy ciebie (jeszcze)
+
+Warunki były bardzo konkretne: **doświadczeni** programiści, w **dużych,
+dojrzałych** projektach, które znali na pamięć, przy użyciu narzędzi z
+**początku 2025 roku**, bez dużego wcześniejszego doświadczenia z agentami.
+
+To jest dokładnie przeciwny róg tabeli niż ten, w którym siedzisz ty. I ta
+tabela naprawdę istnieje.
+
+## Gdzie AI pomaga, a gdzie nie
+
+Analiza Uniwersytetu Stanforda na dużej próbce projektów pokazuje, że zysk z AI
+zależy od dwóch rzeczy jednocześnie: czy projekt jest **nowy czy stary**, i czy
+zadanie jest **proste czy złożone**.
+
+<svg viewBox="0 0 660 320" role="img" aria-label="Macierz: zysk z AI zależnie od wieku projektu i złożoności zadania" style={{ width: "100%", height: "auto" }}>
+  <g stroke="currentColor" fill="none" stroke-width="1.5">
+    <rect x="150" y="50" width="230" height="100" rx="3" stroke="var(--accent-line, currentColor)" stroke-width="2.5" />
+    <rect x="380" y="50" width="230" height="100" rx="3" />
+    <rect x="150" y="150" width="230" height="100" rx="3" />
+    <rect x="380" y="150" width="230" height="100" rx="3" />
+  </g>
+  <g fill="currentColor" font-size="24" font-weight="700">
+    <text x="170" y="100" fill="var(--accent-line, currentColor)">+30–40%</text>
+    <text x="400" y="100">+10–15%</text>
+    <text x="170" y="200">+15–20%</text>
+    <text x="400" y="200">0–10%</text>
+  </g>
+  <g fill="currentColor" font-size="11" opacity="0.8">
+    <text x="170" y="122">nowy projekt,</text>
+    <text x="170" y="136">proste zadanie</text>
+    <text x="400" y="122">nowy projekt,</text>
+    <text x="400" y="136">zadanie złożone</text>
+    <text x="170" y="222">stary projekt,</text>
+    <text x="170" y="236">proste zadanie</text>
+    <text x="400" y="222">stary projekt,</text>
+    <text x="400" y="236">zadanie złożone</text>
+  </g>
+  <g fill="currentColor" font-size="12" font-weight="600">
+    <text x="150" y="40">zadanie proste</text>
+    <text x="380" y="40">zadanie złożone</text>
+    <text x="10" y="105">projekt</text>
+    <text x="10" y="120">nowy</text>
+    <text x="10" y="205">projekt</text>
+    <text x="10" y="220">duży i stary</text>
+  </g>
+  <text x="170" y="278" fill="var(--accent-line, currentColor)" font-size="13" font-weight="700">↑ tu jesteś na tym kursie</text>
+  <text x="400" y="278" fill="currentColor" font-size="12" opacity="0.85">↑ tu będziesz w pracy</text>
+  <text x="150" y="302" fill="currentColor" font-size="11" opacity="0.7">Dane: analiza Stanford (Denisov-Blanch, 2025)</text>
+</svg>
+
+Zwróć uwagę na to, co ta macierz robi z twoją sytuacją. **Wszystko, co zbudujesz
+na tym kursie, jest nowe i małe.** Siedzisz w najbardziej sprzyjającej komórce
+tabeli. Za trzy lata, przy pierwszym prawdziwym projekcie, będziesz w komórce
+przeciwnej — i jeśli nikt ci tego wcześniej nie powie, uznasz, że narzędzia
+przestały działać.
+
+Cytat z tej analizy warto zapamiętać dosłownie:
+
+> Duże, zabałaganione systemy to dokładnie te miejsca, w których narzędzia AI
+> wyglądają najbardziej atrakcyjnie — i te same, w których ryzyko jest
+> największe.
+
+## Junior i senior dostają co innego
+
+Badanie Microsoftu (Demirer i in., 2026) porównało wzrost wydajności mierzony
+liczbą pull requestów:
+
+- **junior: około +40%**
+- **senior: około +7%**
+
+To nie znaczy „AI jest dla początkujących". Znaczy, że **każdy dostaje co
+innego**. Junior zyskuje na podpowiedziach, wyjaśnieniach i boilerplate — czyli
+na warstwach 1–3. Senior zyskuje na warstwach 4–5, bo tam liczy się ocena,
+kierowanie i decyzje architektoniczne — czyli dokładnie to, czego junior jeszcze
+nie ma.
+
+**Dlatego ten kurs nie uczy szybszego pisania. Uczy oceniania.**
+
+## Problem 70%
+
+Addy Osmani, inżynier w Google, opisał to w sposób, który stał się w branży
+skrótem myślowym:
+
+> AI dowozi cię w 70% drogi, i to szybko. Pozostałe 30% to miejsce, w którym
+> doświadczeni inżynierowie zarabiają na swoje utrzymanie.
+
+Te pierwsze 70% to, jego słowami, „struktura, boilerplate, ścieżka szczęśliwa,
+standardowe wzorce, CRUD, podstawowe komponenty UI".
+
+Pozostałe 30% to „obsługa błędów, przypadki brzegowe, wydajność, bezpieczeństwo,
+dostępność, testy integracyjne, wdrożenie".
+
+I zdanie, które jest właściwie tezą całego kursu:
+
+> Trudną częścią inżynierii oprogramowania nigdy nie było wpisywanie kodu.
+
+## Ile z pracy da się oddać
+
+Raport Anthropic z 2026 roku podaje dwie liczby, które trzeba czytać razem:
+
+- programiści używają AI przy około **60%** swojej pracy,
+- ale **w pełni** oddać potrafią tylko **0–20%** zadań.
+
+Wszędzie obecne, prawie nigdzie samodzielne. To jest realny stan na dziś.
+
+Ciekawostka z tego samego raportu: około **27% pracy wykonanej z AI to praca,
+która inaczej w ogóle by nie powstała** — testy, których nikt by nie napisał,
+skrypty, którym nikt by nie poświęcił godziny. Zysk pojawia się więc częściowo
+jako **więcej zrobionych rzeczy**, a nie tylko szybciej zrobione te same.
+
+## Ile trzeba, żeby to zaczęło działać
+
+Około **30–100 godzin** praktyki, zanim efekt stanie się wyraźnie dodatni.
+
+Przy ośmiu godzinach tygodniowo to **od miesiąca do trzech miesięcy tego
+kursu**. Jeśli w listopadzie będziesz miał wrażenie, że to wszystko ci
+przeszkadza — to nie jest dowód, że narzędzia są złe. To jest dokładnie ten
+przedział.
+
+## Głos z drugiej strony
+
+Warto usłyszeć kogoś, kto nie sprzedaje żadnego narzędzia. **Linus Torvalds**,
+twórca Linuksa, powiedział na Open Source Summit w Wiedniu w październiku 2024
+roku, że branża AI to „w 90% marketing i w 10% rzeczywistość". W tej samej
+rozmowie dodał jednak:
+
+> Uważam, że AI jest naprawdę interesujące i że zmieni świat. A jednocześnie tak
+> bardzo nie znoszę tego cyklu szumu, że naprawdę nie chcę się w to angażować.
+
+To nie jest głos przeciwko technologii. To jest głos przeciwko **sposobowi, w
+jaki się o niej mówi** — i dokładnie dlatego cała ta lekcja jest zbudowana z
+liczb i źródeł, a nie z obietnic.
+
+## Co z tego wynika dla ciebie
+
+1. AI pomaga najbardziej tam, gdzie jesteś teraz: nowy, mały projekt,
+   popularny język, proste zadanie.
+2. Pomaga najmniej tam, gdzie będziesz za kilka lat.
+3. Umiejętność, która przenosi się między tymi dwoma miejscami, to nie
+   promptowanie. To **ocenianie, czy to, co przed chwilą powstało, jest dobre**.
+4. Twoje własne wrażenie, że idzie ci szybciej, nie jest dowodem.
+
+## Ćwiczenia
+
+{/* Numery zadań celowo nieprzypisane — ADR-0003, numeracja ciągła przez moduł. */}
+
+1. Odtwórz macierz z pamięci: cztery komórki i cztery przedziały procentowe.
+   Zaznacz, gdzie jesteś dziś, a gdzie będziesz w pierwszej pracy.
+2. Wyjaśnij koledze lub koleżance w dwóch zdaniach, dlaczego badanie METR **nie**
+   dowodzi, że AI nie działa. Jeśli nie potrafisz — przeczytaj sekcję jeszcze raz.
+3. Wejdź na stronę badania METR i znajdź, ilu programistów brało w nim udział.
+   Zastanów się w trzech zdaniach, co ta liczba mówi o ostrożności, z jaką
+   należy cytować wynik.
+4. Przez tydzień zapisuj po każdych zajęciach jedno zdanie: *czy AI mi dziś
+   pomogło, czy przeszkodziło, i skąd to wiem*. Ostatnie trzy słowa są
+   najważniejsze.
+
+## Źródła
+
+Stan na **2026-08-28**. Wszystkie liczby w tej lekcji pochodzą z poniższych
+źródeł — jeśli czytasz to później, sprawdź, czy nie pojawiły się nowsze.
+
+- [Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/) — METR, 10.07.2025; badanie o 19% i 20%
+- [State of AI Coding Efficiency (2026)](https://ingoeichhorst.medium.com/state-of-ai-coding-efficiency-2026-1abfa0ab7434) — zestawienie danych Stanford (Denisov-Blanch, 2025) i Microsoftu (Demirer i in., 2026)
+- [The 70% Problem](https://addyosmani.com/agentic-engineering/the-70-percent-problem/) — Addy Osmani (Google)
+- [2026 Agentic Coding Trends Report](https://resources.anthropic.com/2026-agentic-coding-trends-report) — Anthropic; liczby 60%, 0–20% i 27%
+- [Linus Torvalds reckons AI is '90% marketing and 10% reality'](https://www.tomshardware.com/tech-industry/artificial-intelligence/linus-torvalds-reckons-ai-is-90-percent-marketing-and-10-percent-reality) — Tom's Hardware, relacja z Open Source Summit, Wiedeń, październik 2024

@@ -1,0 +1,148 @@
+---
+title: "Od podpowiedzi do agenta"
+order: 1
+summary: "Pięć warstw, przez które przeszło programowanie z AI w cztery lata — i dlaczego zmieniła się nie jakość kodu, tylko jednostka pracy."
+---
+
+Programowanie z AI nie pojawiło się nagle. Narastało warstwami, a każda kolejna
+**nie zastąpiła poprzedniej, tylko ją wchłonęła**. Podpowiedzi kodu z 2022 roku
+nadal działają i nadal ich używasz — tyle że dziś siedzą wewnątrz czegoś
+większego.
+
+Ta lekcja jest mapą. Nie musisz jeszcze umieć żadnej z tych rzeczy. Musisz
+wiedzieć, że istnieją i czym się od siebie różnią, bo przez resztę kursu będziemy
+się po tej mapie poruszać.
+
+## Pięć warstw
+
+<svg viewBox="0 0 720 300" role="img" aria-label="Pięć warstw programowania z AI: podpowiedzi kodu, czat w IDE, next edit, agent, orkiestracja agentów" style={{ width: "100%", height: "auto" }}>
+  <g stroke="currentColor" fill="none" stroke-width="1.5">
+    <rect x="8" y="212" width="128" height="40" rx="3" />
+    <rect x="146" y="176" width="128" height="76" rx="3" />
+    <rect x="284" y="140" width="128" height="112" rx="3" />
+    <rect x="422" y="104" width="128" height="148" rx="3" />
+    <rect x="560" y="68" width="150" height="184" rx="3" stroke="var(--accent-line, currentColor)" stroke-width="2.5" />
+  </g>
+  <g fill="currentColor" font-size="13" font-weight="600">
+    <text x="20" y="232">Podpowiedzi</text>
+    <text x="158" y="196">Czat w IDE</text>
+    <text x="296" y="160">Next edit</text>
+    <text x="434" y="124">Agent</text>
+    <text x="572" y="88" fill="var(--accent-line, currentColor)">Orkiestracja</text>
+  </g>
+  <g fill="currentColor" font-size="11" opacity="0.75">
+    <text x="20" y="248">2022</text>
+    <text x="158" y="212">2023</text>
+    <text x="296" y="176">2024</text>
+    <text x="434" y="140">2025</text>
+    <text x="572" y="104" fill="var(--accent-line, currentColor)" opacity="1">2026 — dziś</text>
+    <text x="158" y="230">pytasz,</text>
+    <text x="158" y="244">wklejasz</text>
+    <text x="296" y="194">Tab prowadzi</text>
+    <text x="296" y="208">przez zmiany</text>
+    <text x="434" y="158">pisze pliki,</text>
+    <text x="434" y="172">uruchamia</text>
+    <text x="434" y="186">terminal</text>
+    <text x="572" y="122">prowadzisz</text>
+    <text x="572" y="136">kilka zadań</text>
+    <text x="572" y="150">naraz</text>
+  </g>
+  <line x1="8" y1="266" x2="710" y2="266" stroke="currentColor" stroke-width="1" opacity="0.4" />
+  <text x="8" y="286" fill="currentColor" font-size="11" opacity="0.75">piszesz kod</text>
+  <text x="600" y="286" fill="currentColor" font-size="11" opacity="0.75">sprawdzasz kod</text>
+</svg>
+
+### 1. Podpowiedzi kodu (2022)
+
+Zwykłe autouzupełnianie zna metody obiektu, bo analizuje kod statycznie. Model
+generatywny idzie dalej: **przewiduje, co najprawdopodobniej napiszesz za
+chwilę** — od nazwy zmiennej po całą funkcję. Akceptujesz klawiszem Tab.
+
+Sposób pracy dorobił się nawet nazwy: *tab programming*.
+
+Praktyczna sztuczka, która działa do dziś: napisz nad pustym miejscem
+**komentarz po angielsku**, opisujący dokładnie, co ma powstać. Przy nowej
+funkcji albo pustym pliku to często jedyny sposób, żeby dostać sensowną
+podpowiedź.
+
+### 2. Czat w IDE (2023)
+
+To samo, co czat w przeglądarce, ale **w projekcie**. Różnica nie jest wygodą —
+jest kontekstem. Czat w IDE widzi twój plik, a często cały projekt, więc jego
+odpowiedzi dotyczą twojego kodu, a nie kodu w ogóle.
+
+Typowe zastosowania: wyjaśnij ten błąd, wyjaśnij ten fragment, wygeneruj testy,
+przerób to, zaproponuj architekturę.
+
+### 3. Next Edit Suggestions (2024)
+
+Podpowiedź przestaje być reaktywna, a staje się **proaktywna**. Zmieniasz nazwę
+klasy `User` na `Customer` — narzędzie samo proponuje poprawki w interfejsach,
+testach i innych plikach, w odpowiedniej kolejności. Ty tylko naciskasz Tab i
+przechodzisz po łańcuchu zmian.
+
+Różnica wobec refaktoryzacji z IDE: refaktoryzacja jest **komendą**, którą
+wydajesz. To jest **propozycją**, którą dostajesz.
+
+### 4. Agent (2025)
+
+Tu następuje przeskok, i to on jest treścią całego kursu. Agent nie odpowiada na
+pytanie — **wykonuje zadanie**. Tworzy pliki, edytuje istniejące, uruchamia
+komendy w terminalu, czyta błąd, poprawia i próbuje ponownie, aż się zbuduje.
+
+Pętla agenta wygląda tak samo w każdym narzędziu:
+
+> Zrozum zadanie → podziel na części → wybierz narzędzie → oceń wynik →
+> zdecyduj, co dalej.
+
+Wrócimy do niej dokładniej w lekcji [Na żywo: agent buduje aplikację](/moduly/01-jak-powstaje-oprogramowanie/na-zywo-agent-buduje-aplikacje).
+
+### 5. Orkiestracja (2026)
+
+Warstwa, na której jesteśmy teraz. Agentów jest kilku, pracują równolegle,
+część z nich w tle i na zdalnej maszynie — dostajesz gotowy pull request, a nie
+kod na ekranie. Raport Anthropic z 2026 roku opisuje inżynierów, którzy
+„prowadzą kilka funkcjonalności przez proces jednocześnie", kierując agentami
+zamiast pisać kod.
+
+## Co się naprawdę zmieniło
+
+Nie to, że model lepiej pisze funkcje. To, że **zmieniła się jednostka pracy**.
+
+| | Jednostka pracy | Twoja rola |
+| --- | --- | --- |
+| Warstwy 1–3 | linijka, fragment | piszesz |
+| Warstwy 4–5 | zadanie | zlecasz i sprawdzasz |
+
+Konsekwencja jest niewygodna i warto ją usłyszeć na początku, a nie w kwietniu:
+**kiedy agent potrafi pracować sam przez pół godziny, najdroższym błędem
+przestaje być zła linijka, a staje się zły kierunek, w którym poszedł przez tę
+pół godziny.** Cały moduł o specyfikacjach jest odpowiedzią na to jedno zdanie.
+
+## Czego ta mapa nie mówi
+
+Że każda warstwa jest lepsza od poprzedniej dla każdego zadania. Do zmiany
+nazwy zmiennej agent jest absurdalnie drogim narzędziem — Tab wystarczy.
+Dobór warstwy do zadania jest umiejętnością, a nie ustawieniem.
+
+## Ćwiczenia
+
+{/* Numery zadań celowo nieprzypisane — ADR-0003, numeracja ciągła przez moduł. */}
+
+1. Wypisz z pamięci pięć warstw i po jednym zdaniu, co robi człowiek na każdej z
+   nich. Dopiero potem sprawdź z tekstem.
+2. Znajdź w dokumentacji dowolnego znanego ci edytora, którą z pięciu warstw
+   obsługuje. Zapisz nazwę funkcji, jaką nadał jej producent — prawie nikt nie
+   używa nazw z tej lekcji.
+3. Do każdego z zadań dobierz warstwę i uzasadnij w jednym zdaniu: (a) zmiana
+   nazwy pola w klasie, (b) napisanie testów do gotowej klasy, (c) wyjaśnienie
+   cudzego błędu w konsoli, (d) dodanie nowego ekranu do aplikacji.
+
+## Źródła
+
+Stan na **2026-08-28**.
+
+- [2026 Agentic Coding Trends Report](https://resources.anthropic.com/2026-agentic-coding-trends-report) — Anthropic; opis pracy przez orkiestrację agentów
+- [Cursor: Next Action Prediction](https://cursor.com/tab) i [VS Code: Next Edit Suggestions](https://code.visualstudio.com/docs/editing/ai-powered-suggestions) — dokumentacja warstwy 3
+- [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices) — jak wygląda praca z agentem w praktyce
+- *Основы программирования с ИИ* — [learn.evocoders.ai](https://learn.evocoders.ai/), rozdziały o podpowiedziach, next edit, czacie w IDE i agentach
