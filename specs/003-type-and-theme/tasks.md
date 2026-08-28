@@ -27,7 +27,7 @@ The default check is `npm run build`.
   **Check:** `npm run build` succeeds, and a lesson page's rendered HTML shows
   the two font variables on `<html>`. Colours are untouched in this task.
 
-- [ ] **T03 — The build fails without the Polish subset**
+- [x] **T03 — The build fails without the Polish subset**
 
   `scripts/check-design-invariants.mjs`, Check A only: every `subsets:` array in
   `app/fonts.ts` must contain `latin` and `latin-ext`, and at least two font
