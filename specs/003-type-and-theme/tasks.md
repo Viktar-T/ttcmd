@@ -48,7 +48,7 @@ The default check is `npm run build`.
   **Check:** `npm run build` succeeds; the site renders dark; `app/globals.css`
   contains no colour literal.
 
-- [ ] **T05 — The build fails on a stray colour literal**
+- [x] **T05 — The build fails on a stray colour literal**
 
   Check B in the same script: walk `app/`, `lib/`, `components/` for
   `.css`/`.ts`/`.tsx`, skip `app/tokens.css`, fail on hex and on the colour
