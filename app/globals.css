@@ -9,14 +9,20 @@
  * the proportional sans carries prose. It is set here on plain elements
  * rather than on classes, so Markdown rendered by a later slice inherits
  * it with nothing to annotate.
+ *
+ * No colour literal may appear in this file. Use a token from tokens.css.
+ * An override of the split is legitimate only when quoting structural text
+ * or when a control's face is dictated by the platform; write it as
+ * font-family: var(--font-sans) at the point of use.
  */
 
 body {
   margin: 0;
   font-family: var(--font-sans), system-ui, sans-serif;
-  line-height: 1.5;
-  color: #1a1a1a;
-  background: #fff;
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--text);
+  background: var(--bg);
 }
 
 h1,
@@ -26,7 +32,7 @@ h4,
 h5,
 h6 {
   font-family: var(--font-mono), ui-monospace, monospace;
-  line-height: 1.25;
+  line-height: var(--leading-tight);
 }
 
 code,
@@ -40,6 +46,7 @@ pre {
    The pill treatment turns a paragraph of identifiers into a ransom note. */
 :not(pre) > code {
   font-size: 0.9375em;
+  color: var(--text-muted);
 }
 
 /* Nothing renders a <nav> yet. The rule is the contract with the nav slice. */
@@ -48,11 +55,12 @@ nav {
 }
 
 main {
+  /* Measure is slice 004's decision; this is the pre-existing value, untouched. */
   max-width: 40rem;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
 
 a {
-  color: #1a56db;
+  color: var(--link);
 }

@@ -1,0 +1,70 @@
+/*
+ * The design tokens. Values transcribed from ADR-0007, unchanged.
+ *
+ * THIS IS THE ONLY FILE IN THE REPOSITORY ALLOWED TO CONTAIN A COLOUR LITERAL.
+ * Everywhere else refers to a token; scripts/check-design-invariants.mjs fails
+ * the build otherwise, and this path is its single exemption.
+ *
+ * Dark sits on bare :root rather than on [data-theme='dark'] so that dark is
+ * what renders even if the attribute never arrives — the default expressed as
+ * a CSS fact rather than as a promise about JavaScript.
+ *
+ * There is deliberately no prefers-color-scheme media query anywhere in this
+ * slice. ADR-0007, as amended on 2026-08-28, does not consult the operating
+ * system: a visitor gets dark until they use the toggle. `color-scheme` below
+ * tells the browser what we are so that scrollbars and form controls follow —
+ * it does not ask what the visitor prefers.
+ */
+
+:root {
+  color-scheme: dark;
+
+  --bg: #2a2926;
+  --bg-code: #1e1d1b;
+  --text: #edebe6;
+  --text-muted: #a8a49c;
+  --rule: #45433e;
+  --accent-surface: #c9c2f5;
+  --accent-line: #c9c2f5;
+  --accent-ink: #1c1b18;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #f7f6f2;
+  --bg-code: #1e1d1b; /* code stays dark in both themes */
+  --text: #23221f;
+  --text-muted: #5e5a53;
+  --rule: #d8d5cd;
+  --accent-surface: #c9c2f5; /* unchanged: still works as a surface */
+  --accent-line: #5b4fbf; /* darker: the pale value fails as link text here */
+  --accent-ink: #1c1b18;
+}
+
+/*
+ * Role aliases. Slice 004 needs a name for each of these; they are bound to
+ * values that already exist, so no new hue enters the palette here.
+ */
+:root {
+  --link: var(--accent-line);
+  --rule-quote: var(--rule);
+  --rule-table: var(--rule);
+}
+
+/*
+ * The type scale. Sizes in rem, line heights unitless.
+ * The reading column's max-width is NOT here: measure is a layout decision
+ * about a lesson page, and it belongs to slice 004.
+ */
+:root {
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+
+  --leading-tight: 1.25;
+  --leading-normal: 1.6;
+}

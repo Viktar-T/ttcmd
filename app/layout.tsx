@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { mono, sans } from "./fonts";
+import "./tokens.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="pl" className={`${sans.variable} ${mono.variable}`}>
+    <html lang="pl" data-theme="dark" className={`${sans.variable} ${mono.variable}`}>
       <body>
         <main>{children}</main>
       </body>

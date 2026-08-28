@@ -37,7 +37,7 @@ The default check is `npm run build`.
   one call, show `npm run build` failing with a message naming the reason,
   revert, show it passing again. *(Acceptance criterion 2.)*
 
-- [ ] **T04 — Every colour becomes a token**
+- [x] **T04 — Every colour becomes a token**
 
   `app/tokens.css` with ADR-0007's values: dark on bare `:root`, light on
   `:root[data-theme='light']`, `color-scheme` per theme, the role aliases
