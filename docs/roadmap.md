@@ -233,6 +233,13 @@ module grid on the landing page.
 Out of scope: the in-lesson contents panel (slice 007), search, MDX components, content
 changes.
 
+Constraint carried from slice 003: `--rule` computes to 1.47:1 against the dark
+background and 1.36:1 against the light one, which WCAG 1.4.11 exempts only while
+a rule is a decorative separator. This slice makes rules structural — a chevron
+boundary or an active-item edge carries meaning and needs 3:1. Clearing that
+takes a new value and an ADR amending 0007, not reusing `--rule` and hoping;
+the measurements are in specs/003-type-and-theme/verification.md.
+
 There are no illustrations and none will be commissioned. The module grid must
 work with typography and the accent colour alone.
 
