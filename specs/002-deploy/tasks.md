@@ -12,13 +12,13 @@ than improvising (`plan.md`, "What only Viktar can do").
 
 ---
 
-- [ ] **T01 — Record the slice's planning artifacts.**
+- [x] **T01 — Record the slice's planning artifacts.**
       Commit `spec.md`, `plan.md` and this file, and flip `spec.md` Status from
       `proposed` to `accepted`.
       *Check:* `git show --stat HEAD` lists exactly the three files under
       `specs/002-deploy/`, and `spec.md` reads `Status: accepted`.
 
-- [ ] **T02 — ADR-0003: the temporary no-index decision. (decision: Viktar)**
+- [x] **T02 — ADR-0003: the temporary no-index decision. (decision: Viktar)**
       `spec.md` requires a no-index posture; Article IV states as fact that the
       site is "public and indexed". Write `docs/adr/0003-temporary-no-index.md`
       recording the decision, the alternatives rejected (`Disallow: /`, Vercel
@@ -28,21 +28,24 @@ than improvising (`plan.md`, "What only Viktar can do").
       *Check:* the ADR exists and its Status line records Viktar's accept or
       reject. If rejected, criteria 6 and 12 leave the spec and the slice is
       re-specced — T03 does not run either way on its own.
+      **Done, 2026-08-28: rejected.** "It can be indexed right now. It is not
+      important." No no-index layers are built and `constitution.md` is not
+      amended; T03 below is the re-spec instead.
 
-- [ ] **T03 — The three no-index layers, verified over the wire.**
-      `X-Robots-Tag: noindex, nofollow` on `/:path*` via `headers()` in
-      `next.config.ts`; `metadata.robots` in `app/layout.tsx`; `app/robots.ts`
-      that **allows** crawling (a forbidden fetch is a `noindex` never read).
-      *Check:* `npm run build && npm run lint` clean, then against
-      `npm start` — `curl -sSI http://localhost:3000/moduly` shows the header,
-      `curl -sS http://localhost:3000/robots.txt` shows `Allow: /`, and the
-      page HTML contains `<meta name="robots" content="noindex, nofollow">`.
-      Reading the source is not the check.
+- [x] **T03 — Re-spec the slice around the rejection.**
+      Mark ADR-0003 rejected with its outcome; strike criteria 6 and 12 from
+      `spec.md`, leaving the numbers as gaps so the surviving criteria keep the
+      numbers `plan.md` cites; append an amendment note to `plan.md` marking the
+      no-index mechanism as not built. `constitution.md` is not touched.
+      *Check:* `spec.md` lists ten criteria, numbered 1–5 and 7–11, and every
+      surviving mention of "no-index" in it is in the Amendment recording the
+      removal, not in a requirement; `grep -rn "noindex\|robots" next.config.ts
+      app/` finds nothing, because no application file is in this slice at all.
 
 - [ ] **T04 — Make the tree clean and prove a clean checkout builds.**
       Commit the modified `package-lock.json` and the untracked
-      `docs/roadmap.md`, the latter carrying the no-index removal as a gate on
-      the first real-content slice (criterion 12).
+      `docs/roadmap.md`. Nothing is added to the roadmap: the gate it was going
+      to carry died with ADR-0003.
       *Check:* `git status --porcelain` prints nothing, and a fresh
       `git clone` of this repo into the scratch directory runs
       `npm ci && npm run build` to success (criterion 5, tested before the host
@@ -67,10 +70,9 @@ than improvising (`plan.md`, "What only Viktar can do").
 
 - [ ] **T07 — Verify the live site, logged out.**
       *Check:* `curl` returns 200 for all six routes — `/`, `/moduly`, both
-      module pages, both lessons — and each body contains its Polish title;
-      `curl -sSI https://ttcmd.vercel.app/` shows `X-Robots-Tag: noindex,
-      nofollow`; `/robots.txt` allows crawling (criteria 3, 4, 6). A screenshot
-      is not evidence for the header.
+      module pages, both lessons — and each body contains its Polish title
+      (criteria 3, 4). Logged out means logged out: `curl` has no Vercel
+      session, which is exactly why it is the check and a browser is not.
 
 - [ ] **T08 — Record the live URL, and let the push prove auto-deploy.**
       Put the URL in `README.md` and replace its "Pre-scaffold" State section,
@@ -82,9 +84,12 @@ than improvising (`plan.md`, "What only Viktar can do").
       (criterion 9).
 
 - [ ] **T09 — Close the slice.**
-      Review the whole diff against `spec.md` in a **fresh subagent context**,
-      against all 12 acceptance criteria, reporting gaps that affect
-      correctness — not style. Then append the factual entry to
+      Review the whole diff against the amended `spec.md` in a **fresh subagent
+      context**, against the ten surviving acceptance criteria, reporting gaps
+      that affect correctness — not style. Then append the factual entry to
       `docs/sdd-journal.md` under "Agent notes".
       *Check:* the review reports no gap, every box above is checked, and the
-      journal entry is committed.
+      journal entry is committed. The journal records the two things this slice
+      actually taught: a plan that named its blocking decision up front got a
+      one-line answer instead of a wrong implementation, and the live 404 was
+      never a hosting problem — the remote had no application on it.

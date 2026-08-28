@@ -1,7 +1,7 @@
 # Plan 002 — Deploy
 
 - **Date:** 2026-08-28
-- **Status:** proposed
+- **Status:** accepted; **amended 2026-08-28** — see "Amendment" below
 - **Spec:** [`spec.md`](spec.md)
 
 ## Blocking decision before any code
@@ -140,3 +140,25 @@ That is the one assumption here that a plan cannot verify and that no amount of
 local work makes safer. It is checked at the first moment it can be — step 6 —
 and if it fails, the slice stops there for a decision, because the alternative
 is an agent quietly picking a URL that becomes student-facing.
+
+## Amendment — 2026-08-28
+
+The blocking decision at the top of this plan was resolved by **rejecting**
+ADR-0003: the site is indexed from the first deployment. Everything in this plan
+that exists to deliver a no-index posture is therefore **not built** —
+
+- "Mechanism: how 'do not index' is actually delivered", all three layers;
+- in the file map: `next.config.ts`, `app/robots.ts`, `app/layout.tsx`, and the
+  no-index gate in `docs/roadmap.md`;
+- order-of-work step 3, and the non-negotiable ordering constraint that went
+  with it;
+- the header verification in "Verification notes".
+
+Struck through by this note rather than deleted, because the plan is the record
+of what was considered. What survives is the plan this slice actually runs on:
+commit the lockfile and `docs/roadmap.md`, prove a clean checkout builds, push
+`main`, confirm the host, verify the six routes live, record the URL.
+
+**No application file is touched by this slice at all.** A diff here that
+changes `app/`, `lib/`, `content/`, `next.config.ts` or the schema has gone out
+of bounds.

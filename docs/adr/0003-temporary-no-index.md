@@ -1,7 +1,7 @@
 # ADR-0003 — Deploy with a temporary no-index posture
 
 - **Date:** 2026-08-28
-- **Status:** proposed
+- **Status:** rejected (2026-08-28, Viktar)
 - **Decision by:** Viktar
 
 ## Context
@@ -69,6 +69,21 @@ is fake.
 
 If Viktar rejects this, criteria 6 and 12 come out of `spec.md`, and slice 002
 is re-specced as a plain deploy. It is not executed either way by default.
+
+## Outcome — rejected
+
+Viktar, 2026-08-28: **the site may be indexed from the first deployment. It is
+not important.**
+
+So none of the three layers is built, `constitution.md` is not amended —
+Article IV keeps "the Vercel site is public and indexed", which is now simply
+true — and `spec.md` criteria 6 and 12 are struck. Slice 002 is a plain deploy.
+
+The ADR stays in the tree rather than being deleted. It is the record of a
+decision that was actually taken, and of the one thing in it that outlives the
+rejection: **`Disallow: /` is not how you keep a page out of an index.** If the
+question is ever reopened — the likely trigger is the school being named on the
+site, not the placeholder content — the options table is already written.
 
 ## Consequences
 

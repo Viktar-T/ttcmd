@@ -1,13 +1,12 @@
 # Spec 002 — Deploy
 
 - **Date:** 2026-08-27
-- **Status:** accepted
+- **Status:** accepted; **amended 2026-08-28** — see "Amendment" below
 
 ## What
 
 The site reachable by anyone at a stable public URL, rebuilt automatically from
-`main`, and deliberately kept out of search results while its content is still
-placeholder.
+`main`.
 
 Concretely:
 
@@ -18,17 +17,12 @@ Concretely:
 - Every page the site currently has is reachable from that URL by a visitor
   with no account: the homepage, the module listing, both module pages, and
   both placeholder lessons.
-- The deployed site instructs search engines not to index it. This is a
-  **temporary posture, not a permanent property**: the content is placeholder
-  and must not surface in a search for Viktar's name or the school's. The
-  removal is not left to memory — it becomes a required task in the first slice
-  that publishes real content.
 - The live URL is recorded where someone who has never seen this repo could
   find it.
 
 ## Why
 
-Three things change the moment this is done, and none of them can be had from
+Two things change the moment this is done, and neither can be had from
 `localhost`.
 
 **Students can reach it.** The site's purpose is to be the course's source of
@@ -41,10 +35,6 @@ succeeding locally is not the same claim as "the site works". From here on,
 acceptance criteria can be checked against something a student could actually
 open.
 
-**The indexing decision expires.** Once a public site is crawled, the
-placeholders are in an index that is not ours to clear, and removal takes weeks.
-This is the last slice in which the decision is free, which is why it belongs
-here rather than in a tidier one later.
 
 ## Out of scope
 
@@ -58,8 +48,9 @@ here rather than in a tidier one later.
 - Any change to styling, content, navigation, or the content schema. If this
   slice edits `content/`, `lib/content.ts` or the schema, it has gone out of
   bounds.
-- Removing the no-index posture. That belongs to the first real-content slice,
-  by design.
+- Search-engine indexing, in either direction. Decided and closed by
+  [ADR-0003](../../docs/adr/0003-temporary-no-index.md): the site is indexed
+  from the first deployment, like any other public site.
 - CI checks on push. There is no CI, and adding it here would be scope creep.
 
 ## Acceptance criteria
@@ -75,9 +66,6 @@ here rather than in a tidier one later.
    and both placeholder lessons, and each renders its Polish title and body.
 5. The hosted build completes from a clean checkout — no local artefact,
    uncommitted file, or machine-specific setting is required for it to succeed.
-6. Every page served carries an instruction to search engines not to index it,
-   and this is verifiable in the response a crawler would receive, not only in
-   the source code.
 7. A commit or a push to `main` results in a new deployment without any manual
    step beyond the push.
 8. `npm run build` and `npm run lint` still pass locally with no errors.
@@ -87,7 +75,18 @@ here rather than in a tidier one later.
     configured in the host, never in the repository (Article IV).
 11. Nothing in this slice adds a backend, an API route, authentication, a
     database, or static-export mode (Article VIII).
-12. The no-index removal is written as a required task in the first
-    real-content slice's `tasks.md`, or — if that slice does not exist yet —
-    recorded in `docs/roadmap.md` as a gate on it. It is not left as an
-    intention in someone's head.
+
+## Amendment — 2026-08-28
+
+Criteria **6** (no-index instruction on every response) and **12** (the removal
+written down as a gate) are **struck**, together with the no-index paragraphs in
+*What* and *Why*. Viktar's decision, recorded in
+[ADR-0003](../../docs/adr/0003-temporary-no-index.md): the site may be indexed
+from the first deployment.
+
+The numbers **6** and **12** are left as gaps rather than closed up, so that
+every surviving criterion keeps the number `plan.md` refers to it by. Ten
+criteria remain, numbered 1–5 and 7–11.
+
+`constitution.md` is unchanged — Article IV's "the Vercel site is public and
+indexed" is simply true, which is why no amendment to it was needed.
