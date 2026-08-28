@@ -12,15 +12,18 @@
  *
  * Check B — no colour literal outside app/tokens.css.
  *   A component that hard-codes a colour is invisible to the theme and has to
- *   be found by hand later. Two limits, stated rather than left to be
- *   rediscovered:
- *     1. It catches the realistic failure — somebody pastes #2A2926 into a
- *        component — not every conceivable one. A CSS named colour such as
- *        `white` slips through. Widening it to a named-colour list produces
- *        false positives on English prose in .tsx for very little gain.
+ *   be found by hand later. It covers hex in 3, 4, 6 and 8 digits and the
+ *   functional notations, case-insensitively. Two limits remain, stated rather
+ *   than left to be rediscovered:
+ *     1. A CSS named colour such as `white` slips through. Widening it to a
+ *        named-colour list produces false positives on English prose in .tsx
+ *        for very little gain.
  *     2. An id selector of hex-like shape (#abc) would trip it. The repo uses
  *        none. If one ever appears it takes the exemption comment below, not a
  *        weakened pattern.
+ *   The 4-digit hex, uppercase function names and lab()/lch()/color() were all
+ *   missed by the first version of this pattern and were found by the slice's
+ *   closing review, not by the build. Widen it rather than trusting the list.
  *   Exemption: a line carrying, or preceded by, a comment of the form
  *     design-token-exempt: <reason>
  *   is skipped, and the reason stays in the diff for good.
@@ -93,8 +96,10 @@ const SCAN_EXTENSIONS = [".css", ".ts", ".tsx"];
 const TOKEN_FILE = path.join("app", "tokens.css");
 const EXEMPT_MARKER = "design-token-exempt:";
 
+// Case-insensitive: CSS function names are, so RGB( is as valid as rgb().
+// The hex branches run longest-first so #123456 is not clipped to #1234.
 const COLOUR_PATTERN =
-  /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3}\b|\brgba?\(|\bhsla?\(|\boklch\(|\boklab\(|\bcolor-mix\(/;
+  /#[0-9a-f]{8}\b|#[0-9a-f]{6}\b|#[0-9a-f]{4}\b|#[0-9a-f]{3}\b|\brgba?\(|\bhsla?\(|\boklch\(|\boklab\(|\blch\(|\blab\(|\bcolor\(|\bcolor-mix\(/i;
 
 function* walk(dir) {
   let entries;
