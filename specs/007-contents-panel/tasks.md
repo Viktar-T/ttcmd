@@ -35,7 +35,7 @@ Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
       the build naming the lesson and the heading, then is reverted and
       `git status` confirms `content/` untouched (criteria 3, 20).
 
-- [ ] **T06 — The panel, server-rendered, beside an article that has not
+- [x] **T06 — The panel, server-rendered, beside an article that has not
       moved.** `components/contents.tsx` (list + panel + skip control),
       `app/contents.css` (the replicated-track wrapper, panel geometry, the
       `--rule-strong` divider, row states, skip reveal, `scroll-margin-top`),

@@ -117,3 +117,48 @@ the reverted tree passes.
 specimen-lesson literals gained `sections: []` — the type now requires the
 field, and the build is the gate that noticed. The real §9 specimens still
 arrive in T10.)*
+
+## T06 — The panel beside an unmoved article (criteria 4, 5, 6, 15 in part, 7, 17)
+
+`npm run build` passes. All of the following read from the rendered pages at
+1280×800, dark theme.
+
+### Criteria 4, 5, 6 — the panel's markup, longest lesson
+
+`nav[aria-label="Spis treści"]`, visible at 1280 px, distinct from the
+breadcrumb landmark (`aria-label="Ścieżka nawigacji"`). Seven lesson rows in
+`order` (the working-tree content's count), each carrying identity string and
+title; the current row is a `<span aria-current="page">` — **not a link** —
+and every other row is a link; nine section entries beneath the current row,
+`href`s equal to the article's `h2` ids **in the same order**
+(`orderMatchesArticle: true`).
+
+### Criterion 15 (markup half) — the skip control
+
+The panel's first focusable element is `a.contentsSkip[href="#tresc"]`; the
+article carries `id="tresc"` and `tabindex="-1"`.
+
+### Criterion 7 — the article has not moved
+
+Same instrument, same viewport, same lesson as the T04 baseline:
+
+| box | baseline | with the panel |
+| --- | --- | --- |
+| `.prose` | 264.5 / 736 | **264.5 / 736** |
+| text track | 320.5 / 624 | **320.5 / 624** |
+
+Equal to the pixel. `scrollWidth <= clientWidth` still holds. The panel box
+reads left 32.5 / right 240.5 / width 208 (13rem); the gap from its rule to
+the content track is 24 px (1.5rem); its end border computes to
+`rgb(131, 128, 122)` = `#83807a` = `--rule-strong`.
+
+### Criterion 17 — module 0
+
+`/moduly/00-start/git-i-github`: exactly **one** lesson row, a `<span
+aria-current="page">` reading `0c …` (derived from `order: 3`), expanded to
+that lesson's **nine** sections.
+
+*(Console note: the dev overlay lists React's dev-only warnings about
+kebab-case SVG attributes — `stroke-width`, `font-size` — inside the lessons'
+own inline diagrams. Content-authored, present before this slice, invisible
+in production; out of this slice's scope and left alone.)*

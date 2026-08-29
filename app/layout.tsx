@@ -5,6 +5,7 @@ import "./tokens.css";
 import "./globals.css";
 import "./prose.css";
 import "./nav.css";
+import "./contents.css";
 
 export const metadata: Metadata = {
   title: "ttcmd",

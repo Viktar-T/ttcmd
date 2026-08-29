@@ -3,7 +3,9 @@ import { getCourse, getLesson, getLessonNeighbours } from "@/lib/content";
 import type { LessonPosition } from "@/lib/content";
 import { Band } from "@/components/band";
 import { Breadcrumb } from "@/components/breadcrumb";
+import { ContentsPanel } from "@/components/contents";
 import { Pager, type PagerItem } from "@/components/pager";
+import { SKIP_TARGET_ID } from "@/lib/section-anchors";
 import { LessonHeader } from "./lesson-header";
 
 export async function generateStaticParams() {
@@ -51,7 +53,16 @@ export default async function LessonPage({
         order={lesson.order}
         summary={lesson.summary}
       />
-      <div className="prose">{lesson.body}</div>
+      {/* The panel hangs in the frame's left gutter beside an article whose
+          geometry the wrapper replicates rather than adjusts — contents.css
+          carries the argument. The article is the skip target: tabIndex -1
+          so the panel's skip control can move real focus to it. */}
+      <div className="lessonLayout" data-full-bleed>
+        <ContentsPanel moduleItem={moduleItem} current={entry} />
+        <div className="prose" id={SKIP_TARGET_ID} tabIndex={-1}>
+          {lesson.body}
+        </div>
+      </div>
       <Pager
         ariaLabel="Lekcje"
         previousLabel="Poprzednia lekcja"
