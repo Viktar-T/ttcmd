@@ -227,3 +227,95 @@
   margin-top: var(--gap-block);
 }
 
+/* ------------------------------------------------------------------ *
+ * Lists
+ *
+ * Used two ways in the lessons: short bulleted runs with a bold lead-in, and
+ * numbered exercises whose items run to three or four wrapped lines.
+ *
+ * The hanging indent is the browser's own list-style-position: outside, left
+ * alone deliberately. Continuation lines already align to the item's text
+ * rather than to its marker; the way to break that is to add something.
+ *
+ * Markers are set in the reading face alongside the prose they belong to —
+ * they inherit it, since ul/ol are not in globals.css's monospace list. At
+ * body size, mono digits beside sans text read as a defect, not as a system.
+ * ------------------------------------------------------------------ */
+
+.prose :is(ul, ol) {
+  padding-inline-start: 1.6em;
+}
+
+.prose li::marker {
+  color: var(--text-muted);
+}
+
+/* ------------------------------------------------------------------ *
+ * Tables
+ *
+ * The one table on the site has an empty first header cell, so nothing here
+ * may assume the header is a filled band.
+ *
+ * display: block is what confines the scroll to the table's own bounds: a code
+ * line or a wide table must never widen the page. It costs the table its
+ * full-width layout — the rows shrink to their content inside an anonymous
+ * table box — which for three columns of short Polish phrases is the better
+ * rendering anyway.
+ *
+ * Two rule strengths, deliberately. The header underline carries meaning: on a
+ * table whose first header cell is empty it is the only thing separating
+ * header from body, so it takes --text-muted and clears WCAG 1.4.11's 3:1
+ * without argument. The row separators are decorative and take --rule-table.
+ * Slice 003 measured --rule at 1.47:1 and recorded that the moment a rule
+ * carries meaning it needs its own value; this is that moment, answered with a
+ * token that already exists rather than with a new one.
+ * ------------------------------------------------------------------ */
+
+.prose table {
+  display: block;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: var(--text-base);
+}
+
+.prose :is(th, td) {
+  padding: 0.5rem 0.9rem;
+  text-align: start;
+  vertical-align: top;
+}
+
+.prose th {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-weight: 600;
+}
+
+.prose thead th {
+  border-bottom: 1px solid var(--text-muted);
+}
+
+.prose tbody tr + tr td {
+  border-top: 1px solid var(--rule-table);
+}
+
+/* ------------------------------------------------------------------ *
+ * Horizontal rules, and code containment
+ *
+ * No lesson contains an <hr> today. It is one line to stop the first one that
+ * does from arriving at a browser default.
+ *
+ * A code block gets its place in the rhythm — set above — and containment, and
+ * nothing else. Background, syntax highlighting, the copy control, the
+ * filename header and line highlighting are slice 005. overflow-x is not an
+ * exception to that: without it one long bash line widens the whole page, and
+ * containment is not styling.
+ * ------------------------------------------------------------------ */
+
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.prose pre {
+  overflow-x: auto;
+}
+
