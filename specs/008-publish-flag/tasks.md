@@ -48,7 +48,7 @@ Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
       href as the baseline (nothing is unpublished, so nothing may move).
       Output recorded.
 
-- [ ] **T08 — The verification pass.** The staged flips of `plan.md`'s
+- [x] **T08 — The verification pass.** The staged flips of `plan.md`'s
       table, each applied to the tree as it stands, checked against the
       running production build, reverted: Stage A (mid-sequence lesson —
       criteria 3, 4, 5, 6), Stage B (lowest-`order` lesson of the

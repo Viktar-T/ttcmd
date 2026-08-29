@@ -123,3 +123,122 @@ published. `npm run build` **passes**, 15/15. The emitted landing page:
 — the same entry href as the baseline, as it must be while nothing is
 unpublished. The behaviour under an all-drafts first module is criterion 8's
 to stage, in T08.
+
+## T08 — the verification pass (criteria 3–10)
+
+All rendered-page evidence read from the production build actually serving
+(`npm run build`, `npm run start`, `curl` against `localhost:3000`). Every
+staged edit is a frontmatter flip on the tree as it stood, reverted
+immediately after its check. At staging time module 01 held lessons at
+orders 1–7 (`1a`–`1g`); module 00 held one lesson at order 3 (`0c`).
+
+### Stage A — `1d` (order 4, `na-zywo-agent-buduje-aplikacje`) unpublished
+
+**Criterion 4 — gone from the build output.** Build emits 14/14 pages
+(baseline 15). `diff` of the emitted-page list against baseline:
+
+```
+< .next/server/app/moduly/01-jak-powstaje-oprogramowanie/na-zywo-agent-buduje-aplikacje.html
+```
+
+— exactly one line, the hidden lesson's.
+
+**Criterion 3 — gone from every listing.** The module page's list carries
+six rows, `na-zywo` absent (hrefs listed in the run log); the whole rendered
+page of sibling `1c` contains the hidden slug **0 times** (covers its
+contents panel and its pager at once); card counts on `/` and `/moduly`
+read `1 lekcja` / `6 lekcji` — down from `7 lekcji`, correct Polish.
+
+**Criterion 5 — the direct request refused.**
+
+```
+GET /moduly/01-jak-powstaje-oprogramowanie/na-zywo-agent-buduje-aplikacje
+HTTP/1.1 404 Not Found
+GET /moduly/01-jak-powstaje-oprogramowanie/lekcja-ktorej-nie-ma
+HTTP/1.1 404 Not Found
+```
+
+Same status, same `<title>ttcmd</title>`, same rendered not-found page. The
+two bodies differ only in the framework's flight payload echoing the
+requested path segments — which any 404 does for its own URL, and which the
+requester already knows; a `grep` for the draft's title over the response
+found **0 occurrences**. Recorded as holding in substance: nothing about the
+lesson's existence or content is disclosed.
+
+**Criterion 6 — the pagers skip it.**
+
+```
+1c page: pagerPrevious → …/od-podpowiedzi-do-agenta   (1b)
+         pagerNext     → …/nowy-warsztat-programisty  (1e)
+1e page: pagerPrevious → …/co-model-naprawde-potrafi  (1c)
+         pagerNext     → …/vibe-coding-kontra-inzynieria (1f)
+```
+
+`1c` and `1e` link to each other across the gap; the hidden href appears on
+neither page. Reverted.
+
+### Stage B — `1a` (order 1, `czterdziesci-lat-zmian`) unpublished
+
+**Criterion 7 — letters do not shift.** Build 14/14. Read from the server:
+
+- module 01's list opens with `lessonRowId">1b` — Od podpowiedzi do agenta,
+  not re-lettered `1a`;
+- that lesson's own breadcrumb: `aria-current="page">1b`;
+- `0c`'s next-pager: `pagerId">1b` Od podpowiedzi do agenta, crossing named
+  (`Moduł 1`);
+- a sibling's contents panel: `contentsId">1b<` through `contentsId">1g<`,
+  six entries, no `1a`;
+- the hidden slug appears **0 times** on the module page.
+
+The gap is visible, the identity is not recomputed. Reverted.
+
+### Stage C — module 00's only lesson (`git-i-github`, `0c`) unpublished
+
+**Criterion 8 — a dark module stays a module; the course starts where
+publishing starts.** Build 14/14, and `moduly/00-start.html` is still
+emitted with no lesson pages beneath it. From the server:
+
+```
+/moduly grid:  moduleCardNumber">0<  moduleCardCount">0 lekcji<
+               moduleCardNumber">1<  moduleCardCount">7 lekcji<
+/moduly/00-start:  <h1>Start</h1> present, lessonRow count 0
+landing:  <a class="button" href="/moduly/01-jak-powstaje-oprogramowanie/czterdziesci-lat-zmian"
+1a page:  pagerPrevious count 0; pagerNext → …/od-podpowiedzi-do-agenta
+/moduly/00-start pager:  pagerNext → /moduly/01-jak-powstaje-oprogramowanie
+```
+
+`0 lekcji` is correct Polish; the front door opens on the next module's
+first published lesson, whose previous control is absent; the module route
+and its module-level pager are untouched. Reverted.
+
+### Criterion 9 — unpublished is still behind the gate
+
+Staged both `publish: false` and `week: "not-a-number"` on `git-i-github`:
+
+```
+Error: content/moduly/00-start/git-i-github.mdx: [
+    "expected": "number",
+      "week"
+```
+
+The build fails, naming the file, exactly as it would for a published
+lesson. Reverted.
+
+### Criterion 10 — the content tree is untouched
+
+After all reverts, `npm run build` passes 15/15 and the emitted-page list
+byte-compares equal to baseline (`ROUTES AT BASELINE`). The content tree
+against the pre-slice snapshot:
+
+- `git status --porcelain content/` — identical, line for line;
+- `git diff content/ | git hash-object --stdin` →
+  `6b28db80c62ebc98bf39d32671fb2f051a81859f` — identical;
+- untracked drafts' `sha1sum` → `81cfdb37…`, `ff172cdc…` — identical.
+
+Byte-for-byte, nothing under `content/` moved.
+
+### Human-eye remainder
+
+None of criteria 1–10 needs a human eye: every check above is a command
+over build output, served markup, or git state. There is no visual change
+anywhere on the site to judge.
