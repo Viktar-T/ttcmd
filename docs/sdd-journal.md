@@ -167,3 +167,45 @@ in the reflection sections.
   transitive dev/optional drift only), and no constitutional violation.
   Criterion 9's second half — the vault's `ttcmd.md` **Remote** row — is
   outside this repo and remains open.
+
+---
+
+## Slice 004 — lesson typography
+
+**Agent notes** *(factual, appended by agents)*
+
+- **The approved `plan.md` said no dependency would be added and that
+  `lib/content.ts` would not be touched. Both were wrong, and neither was
+  discovered by looking for it.** While measuring T04's vertical rhythm, the
+  prose column turned out to contain no `<table>` at all: MDX implements
+  CommonMark, Markdown tables are a GFM extension, and the one table in the
+  lessons had been rendering as a paragraph of pipe characters on the live site
+  since the day it was written. `remark-gfm` was added and wired into both
+  `compileMDX` calls (T06a, ADR-0009). The plan was **not** edited to match
+  (AGENTS.md §8), and the task was suffixed `T06a` rather than renumbered so the
+  insertion stays visible in the sequence. The lesson generalises: the spec, the
+  plan and the tasks all said "the one table in the lessons", and none of the
+  three had checked that it rendered.
+- **The by-eye criteria could not be checked in the session that wrote them.**
+  The Browser pane never composited frames, so every screenshot call timed out.
+  `verification.md` was written listing seven criteria as **outstanding** with
+  their measurements beside them rather than claiming them. Viktar supplied four
+  screenshots from his own Chrome afterwards, which settled five and exposed
+  three defects no measurement had caught: a 68px void under the lesson header,
+  a header with three different left edges, and `/moduly` and `/` sitting at a
+  different left margin from every other page because neither had been given the
+  prose class — the plan named only `[module]/page.tsx`. Fixed in T12a.
+- **A `git add -A` in T06a swept two untracked directories of Viktar's own
+  research drafts into the commit.** Caught before any push; the commit was
+  reset, the paths unstaged, and the same message re-committed with only the
+  five intended files. Every later commit was scoped to a path.
+- **The closing fresh-context review found exactly one surviving defect, and it
+  was this file.** Four independent reviewers over the diff, every finding then
+  put to an adversarial verifier told to refute it; one survived. ADR-0009 ended
+  by saying the deviation was recorded "in `docs/sdd-journal.md`" — and it was
+  not. The ADR was left alone and the entry written instead: Article II wants
+  the record, not the retraction. The other findings were refuted against the
+  documents, the most substantial being a claim that `overflow-x: auto` on code
+  blocks breached the slice's own out-of-scope list; it did not, because
+  `plan.md` had named that single exception, with its reasoning, eleven commits
+  before the CSS was written.

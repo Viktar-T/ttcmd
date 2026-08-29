@@ -537,7 +537,41 @@ none stays fixed. So the block is exercising tokens, not values.
 
 ## 22 — The fresh-context review
 
-Recorded in T13, below, once the review has run.
+Four reviewers with fresh context over the complete diff — one walking the 22
+criteria in order, one auditing the "Out of scope" contract and AGENTS.md §8,
+one reasoning about cascade and specificity in the CSS, one checking the content
+pipeline and re-deriving this file's counts from the source files. Every finding
+either raised was then handed to a separate verifier instructed to **refute**
+it, defaulting to refuted where uncertain. 27 agents, 403 tool calls.
+
+**One finding survived refutation, and it was against this slice's own
+paperwork.**
+
+> **ADR-0009 claims a `docs/sdd-journal.md` record that does not exist.** Its
+> last bullet reads "the deviation is recorded here, in `tasks.md` as task
+> T06a, and in `docs/sdd-journal.md`". The first two clauses are true. The third
+> was not: `git log -1 -- docs/sdd-journal.md` returned
+> `0ae21a0 2026-08-28 002/T09`, and `git diff --stat 8f95729..HEAD -- docs/`
+> listed only the ADR itself.
+
+Verified independently before acting on it, and correct. **The ADR was left
+unedited and the journal entry written instead** — constitution Article II wants
+the record, not the retraction, and editing a committed assertion to match
+reality is the failure mode that article exists to prevent. `docs/sdd-journal.md`
+now carries a `## Slice 004` section under **Agent notes** only; the reflection
+sections are Viktar's (AGENTS.md §7).
+
+Nothing else survived. The most substantial refuted finding argued that
+`overflow-x: auto` on `pre` breached the spec's own out-of-scope list. It was
+refuted on the record rather than on judgement: `plan.md` named that single
+exception with its reasoning, and its "What this plan does not do" section reads
+"no code-block styling beyond `overflow-x` and the vertical rhythm" — both
+committed in `004/T01`, eleven commits before the CSS existed. The full set of
+rules reaching `pre` is the margin reset, two rhythm gaps and `overflow-x`; no
+background, padding, radius, border, colour, highlighting, copy control or
+filename header. Slice 005 inherits a bare `<pre>`.
+
+**Pass.**
 
 ---
 
@@ -606,6 +640,29 @@ The landing page is a heading and two paragraphs today, which is prose. The
 design reference gives it a composition of its own — headline, bordered button,
 module grid three across — and the slice that builds it replaces this wrapper
 along with everything inside it.
+
+### An unplanned test of criterion 3, worth more than the planned one
+
+While this slice was being executed, Viktar wrote two new lesson sections in the
+content lane — a DHH quotation in `vibe-coding-kontra-inzynieria.mdx` and
+another in `jak-nie-wypasc-z-obiegu.mdx`, each a multi-paragraph blockquote
+ending in an em-dash attribution with a linked timestamp, plus new entries in
+both source lists.
+
+**The CSS had never seen that text.** It was still uncommitted in his working
+tree and is not part of this slice's diff. Rendered:
+
+```
+quotations: 1        lastQuoteParagraphs: 2      lastQuoteInnerGap: 26
+lastQuoteColour: rgb(237,235,230) === bodyColour
+lastQuoteBackground: rgba(0,0,0,0)   fontStyle: normal
+linkInAttribution: true    overlaps: 0    noPageScroll: true
+```
+
+It picked up the whole treatment with nothing annotated and nothing adjusted,
+which is the claim criterion 3 actually makes — the treatment attaches to plain
+elements, so a lesson nobody had written yet gets it for free. Six lessons
+developed against are weak evidence for that; one written afterwards is not.
 
 ### Re-verified after the three fixes
 

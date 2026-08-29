@@ -186,7 +186,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   and each fix re-measured. `npm run build` succeeds and the full 44-run sweep
   is clean afterwards.
 
-- [ ] **T13 — Close the slice**
+- [x] **T13 — Close the slice**
 
   Review the complete diff against `spec.md` in a **fresh context**, per
   AGENTS.md §3 and Article IX. Report gaps that affect correctness or an
