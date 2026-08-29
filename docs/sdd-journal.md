@@ -209,3 +209,50 @@ in the reflection sections.
   blocks breached the slice's own out-of-scope list; it did not, because
   `plan.md` had named that single exception, with its reasoning, eleven commits
   before the CSS was written.
+
+## Slice 006 — navigation
+
+**Agent notes** *(factual, appended by agents)*
+
+- **Four defects in this slice were found by measuring left edges and widths;
+  three of them looked entirely correct in a screenshot.** The page frame put
+  the 1rem gutters back on the children as padding, which made the lesson header
+  32px narrower than the prose below it and shifted its left edge by 16px —
+  precisely the misalignment slice 004 closed in T12a, rebuilt from scratch
+  eleven weeks later by someone who had read that fix. `margin-inline: auto` on
+  a **grid item** suppresses `justify-self: stretch`, so the previous/next pair
+  sized itself to its content and came out 186px wide on a phone beside 343px
+  lesson rows. `.moduleGrid` reset `margin: 0` to kill a list's block margins
+  and took the lane's auto inline margins with it, putting the module grid 56px
+  left of the headline above it. And the current breadcrumb step rendered
+  outlined with invisible text, because `[data-band] .chev` is (0,2,0) and a
+  bare `.chevCurrent` is (0,1,0). The generalisable part: **a screenshot proves
+  a layout is plausible, not that it is aligned.** The check that caught all
+  four was printing the left edge of every page-level block and comparing the
+  numbers.
+- **The most valuable thing this slice built may be Check E**, which recomputes
+  every contrast floor from `app/tokens.css` on every build. Three verification
+  documents had those ratios worked out by hand — all true on the day they were
+  written, none of which would have noticed a token being edited afterwards. It
+  found nothing on the day it was written, which is the point.
+- **The spec's own constraint turned out to forbid a fix the ADR it produced
+  asks for.** ADR-0012 lists "a button's border" under `--rule-strong`; the
+  theme control's border is still `--rule` at 1.47:1, and spec §7 says nothing
+  slices 003 and 004 placed is restyled. Both are right, and they disagree. It
+  is recorded in `verification.md` rather than fixed, because editing an
+  approved spec to permit a fix is the thing AGENTS.md §8 forbids. A later slice
+  resolves it in one line.
+- **The content lane moved while the app lane was being verified, and that
+  turned into the best evidence in the file.** Two lessons were written and
+  module 1 was reordered — `vibe-coding-kontra-inzynieria` from `order: 3` to
+  `order: 6` — with no application file touched. The whole navigation
+  re-derived: `1a` to `1g`, the moved lesson now `1f`, the landing card *7
+  lekcji* in the right plural form. ADR-0003's rule is not provable by a test
+  that the same person writes; it is provable by somebody reordering content
+  without telling you.
+- **A review finding worth carrying forward:** nothing enforces that two lessons
+  in one module have distinct `order`. Two lessons at `order: 1` both render
+  `1a` — two pages with one spoken name, and no error anywhere. That is exactly
+  the failure ADR-0003 exists to prevent, and slice 006 is the first to make the
+  string visible on every page. The schema belongs to slice 001; the fix belongs
+  to a slice that asks for it.
