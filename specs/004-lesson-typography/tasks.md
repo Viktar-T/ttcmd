@@ -11,14 +11,14 @@ rendered page and recorded in `verification.md`, not asserted here.
 
 ---
 
-- [ ] **T01 — Record the slice**
+- [x] **T01 — Record the slice**
 
   `plan.md` and this file into the repository. `spec.md` is already written.
 
   **Check:** the three files exist under `specs/004-lesson-typography/` and are
   committed.
 
-- [ ] **T02 — Two widths, and the prose column exists**
+- [x] **T02 — Two widths, and the prose column exists**
 
   `--measure`, `--content-width` and the rhythm scale into `app/tokens.css`.
   `main` takes `--content-width` in `app/globals.css`. New `app/prose.css` with
@@ -33,7 +33,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   If it is wrapped, the breakout selector changes per plan §"Order of work" 2
   and the check is re-run before the box is checked.
 
-- [ ] **T03 — The measure holds 60–75 Polish characters**
+- [x] **T03 — The measure holds 60–75 Polish characters**
 
   Adjust `--measure` until it does. Counted on rendered lessons with
   `Range.getClientRects()`, at least three paragraphs across two lessons.
@@ -41,7 +41,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   **Check:** the per-line character counts, printed, all between 60 and 75.
   *(Acceptance criterion 4.)*
 
-- [ ] **T04 — The rhythm**
+- [x] **T04 — The rhythm**
 
   The six gap rules in `app/prose.css`, in the plan's order: block gap, tight
   gaps, set-apart gaps, set-apart-after, subsection heading, section heading.
@@ -54,7 +54,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   non-zero gap between each pair, and no gap larger than the heading gap.
   *(Acceptance criteria 5 and 6.)*
 
-- [ ] **T05 — Headings, and inline code that keeps its context**
+- [x] **T05 — Headings, and inline code that keeps its context**
 
   All six heading levels sized, weighted and wrapped per the plan's table.
   `:not(pre) > code` colour becomes `inherit` in `app/globals.css`.
@@ -65,7 +65,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   `<code>` inside that heading equal the heading's own, printed side by side.
   *(Acceptance criterion 8; 7 and 16 are judged in T12.)*
 
-- [ ] **T06 — Quotations**
+- [x] **T06 — Quotations**
 
   `--rule-quote` rebound to `--text-muted` in `app/tokens.css`. Blockquote
   treatment in `app/prose.css`: rule and space, no fill, no icon, no label,
@@ -78,7 +78,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   quotation and the prose around it, printed.
   *(Acceptance criteria 10 and 11; 9 is judged in T12.)*
 
-- [ ] **T06a — Markdown tables have to render before they can be styled**
+- [x] **T06a — Markdown tables have to render before they can be styled**
 
   *Added during execution, not present when this file was written, and
   deliberately suffixed rather than renumbered so that is visible. Found while
@@ -96,7 +96,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   changes shape — counted, since GFM also brings strikethrough, footnotes, task
   lists and literal autolinks, and the content uses none of them.
 
-- [ ] **T07 — Lists, tables, rules and code containment**
+- [x] **T07 — Lists, tables, rules and code containment**
 
   Lists: hanging indent kept, marker colour, tight item gap. Table: scrolls in
   its own bounds, header underline that carries meaning, decorative row
@@ -111,7 +111,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   that of its marker, printed.
   *(Acceptance criteria 12 and 13.)*
 
-- [ ] **T08 — Links**
+- [x] **T08 — Links**
 
   Underline, thickness, offset clear of the ogonek, `skip-ink`, `--link`
   colour. In `app/prose.css` only.
@@ -122,7 +122,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   *(Acceptance criteria 14 and 15 are judged in T12; this is the mechanical
   half.)*
 
-- [ ] **T09 — The letter is derived from `order`, never from position**
+- [x] **T09 — The letter is derived from `order`, never from position**
 
   `lib/numbering.ts` exporting `lessonLetter(order)`. `order` bounded to a
   positive integer ≤ 26 in `lib/content-schema.ts`.
@@ -132,7 +132,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   show the build failing with the schema's message, revert, show it passing.
   *(Half of acceptance criterion 17.)*
 
-- [ ] **T10 — The lesson header**
+- [x] **T10 — The lesson header**
 
   `lesson-header.tsx` and its module CSS in the lesson route folder: circled
   letter at `--accent-line`, title in large monospace, standfirst from
@@ -146,7 +146,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   *(Acceptance criteria 17, 18, 19 — 19's "visibly distinct" is confirmed in
   T12.)*
 
-- [ ] **T11 — The reference page carries a specimen of every construct**
+- [x] **T11 — The reference page carries a specimen of every construct**
 
   A new prose section on `/styleguide` with everything spec §9 lists: each
   heading level, both list kinds with wrapped items, a single-paragraph and a
@@ -159,7 +159,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   the build's own Check B is the proof.
   *(Acceptance criterion 21.)*
 
-- [ ] **T12 — The verification pass**
+- [x] **T12 — The verification pass**
 
   `specs/004-lesson-typography/verification.md`, in 003's shape: contrast
   computed and recorded; the measure counted; the six adjacency sequences
