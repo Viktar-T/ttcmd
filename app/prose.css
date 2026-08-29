@@ -319,3 +319,37 @@
   overflow-x: auto;
 }
 
+/* ------------------------------------------------------------------ *
+ * Links
+ *
+ * Underlined, not coloured-only. Colour alone excludes readers who cannot see
+ * it and readers looking at a washed-out projector, and this classroom is both.
+ *
+ * The Polish-specific trap is the underline itself. ą and ę carry an ogonek
+ * below the baseline and they appear in nearly every sentence, including
+ * inside link text. A default underline is drawn straight through it.
+ *
+ * The clearance is not a tuned offset, it is a guarantee. Measured in Inter by
+ * reading the rendered pixels rather than a font table: the ogonek on ą reaches
+ * 0.205em below the baseline and on ę 0.210em — as deep as the descender of g
+ * (0.215em), which is why a default underline runs straight through it.
+ * text-underline-position: under aligns the line with the under edge of the
+ * content box, which for Inter is a font descent of 0.240em, so the line is
+ * below the ogonek by construction rather than by a value someone chose. The
+ * small extra offset turns 0.03em of clearance into 0.09em.
+ *
+ * skip-ink stays on as a backstop. With the line already below every
+ * descender it has nothing to skip, so the underline is continuous — which is
+ * the point: on its own, skip-ink would fragment the line around every ą and ę,
+ * and in Polish that is most of the words.
+ * ------------------------------------------------------------------ */
+
+.prose a {
+  color: var(--link);
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.06em;
+  text-underline-position: under;
+  text-underline-offset: 0.06em;
+  text-decoration-skip-ink: auto;
+}
+
