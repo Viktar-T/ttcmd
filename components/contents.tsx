@@ -92,3 +92,23 @@ export function ContentsPanel(props: ContentsProps) {
     </nav>
   );
 }
+
+/**
+ * The small-screen housing: the same list folded into a native disclosure
+ * between the lesson header and the article. Collapsed by default — open, it
+ * would push a two-hundred-line lesson a screenful down — and opening it is
+ * the browser's own behaviour, which is what keeps criterion 13's
+ * no-JavaScript classroom case free. Exactly one housing is displayed at any
+ * width; contents.css holds the one boundary.
+ */
+export function ContentsDisclosure(props: ContentsProps) {
+  if (!hasAnyLink(props)) return null;
+  return (
+    <nav className="contentsDisclosure lane" aria-label="Spis treści">
+      <details className="contentsDetails">
+        <summary className="contentsSummary">Spis treści</summary>
+        <ContentsList {...props} />
+      </details>
+    </nav>
+  );
+}

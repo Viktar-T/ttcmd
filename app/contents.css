@@ -216,3 +216,44 @@ a.contentsLesson:focus-visible .contentsId {
   padding: 0.15rem 0.4rem;
   color: var(--text);
 }
+
+/* ------------------------------------------------------------------ *
+ * The disclosure — the panel folded for one column
+ *
+ * A native <details> holding the same list, in the measure lane between the
+ * lesson header and the article. Its border identifies it as a control — the
+ * ADR-0012 distinction — so it is --rule-strong; the line under the opened
+ * summary only separates the label from the list inside an already-identified
+ * box, so it is --rule. The summary keeps the browser's own marker and is
+ * padded to a comfortable touch target. Hidden at 80rem, where the panel
+ * takes over — the same boundary, the other way round.
+ * ------------------------------------------------------------------ */
+
+.contentsDisclosure {
+  font-size: var(--text-sm);
+  line-height: var(--leading-tight);
+}
+
+@media (min-width: 80rem) {
+  .contentsDisclosure {
+    display: none;
+  }
+}
+
+.contentsDetails {
+  border: 1px solid var(--rule-strong);
+}
+
+.contentsSummary {
+  padding: 0.85rem 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.contentsDetails[open] > .contentsSummary {
+  border-block-end: 1px solid var(--rule);
+}
+
+.contentsDetails > .contentsLessons {
+  padding: 0.7rem 0.9rem 0.85rem;
+}

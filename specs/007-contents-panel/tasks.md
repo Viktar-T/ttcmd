@@ -47,7 +47,7 @@ Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
       baseline (criterion 7); module 0's lesson shows one non-link `0c` row
       expanded to nine sections (criterion 17).
 
-- [ ] **T07 — The disclosure, and the fold at 80rem.** `ContentsDisclosure`
+- [x] **T07 — The disclosure, and the fold at 80rem.** `ContentsDisclosure`
       between the lesson header and the article, held to the lane; the one
       media boundary hiding panel or disclosure. *Check:* at 1024, 768 and
       375 px the side panel is absent, the collapsed "Spis treści" disclosure

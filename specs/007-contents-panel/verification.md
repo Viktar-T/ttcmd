@@ -162,3 +162,29 @@ that lesson's **nine** sections.
 kebab-case SVG attributes — `stroke-width`, `font-size` — inside the lessons'
 own inline diagrams. Content-authored, present before this slice, invisible
 in production; out of this slice's scope and left alone.)*
+
+## T07 — The disclosure and the fold (criterion 12's static half, 13 in part)
+
+`npm run build` passes. On the longest lesson, read from the DOM at each
+width:
+
+| viewport | panel | disclosure | collapsed by default | no h-scrollbar |
+| --- | --- | --- | --- | --- |
+| 1024×800 | `display: none` | visible | yes | yes |
+| 768×800 | `display: none` | visible | yes | yes |
+| 375×812 | `display: none` | visible | yes | yes |
+
+At 1024 px the full interaction was exercised: the summary click opens the
+details, a second click closes it, and the disclosure's box sits **between
+the lesson header's bottom edge and the article's top edge**
+(`betweenHeaderAndArticle: true`). The summary reads "Spis treści", keeps the
+browser's own marker (`display: list-item`), and measures **44.7 px** tall —
+a touch target.
+
+**The no-JavaScript half, by construction and by probe:** the disclosure is a
+native `<details>`; a same-origin iframe sandboxed **without**
+`allow-scripts` was loaded with the same lesson, and toggling its summary —
+a user-agent default action, no page script runs in that frame — set
+`details.open` to true, with all 9 section links present in the frame's
+markup. (The full no-JS walk, including the absence of highlight and
+back-to-top, is T11's, after those exist.)
