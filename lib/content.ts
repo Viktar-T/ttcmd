@@ -5,6 +5,7 @@ import { compileMDX } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { CodeBlock } from "@/components/code-block";
 import { rehypeCodeHighlight } from "./code-highlight";
+import { rehypeSectionAnchors, type SectionEntry } from "./section-anchors";
 import { lessonId, lessonLetter, moduleLabel, moduleNumber } from "./numbering";
 import {
   lessonFrontmatterSchema,
@@ -30,14 +31,30 @@ const moduleIndexFile = "index.mdx";
  * a fenced block in a module index is a fenced block, and a second place to
  * configure it is a second place for the two to drift apart. It runs here, at
  * build, inside a Server Component — nothing about it is shipped to a browser.
+ *
+ * Slice 007 turns the object into a function of one argument: the section
+ * collector is per-compile state — a module-level array would interleave the
+ * sections of every lesson compiled in the same pass — so the options are
+ * built per call around a fresh array. Everything else is unchanged, and
+ * still configured exactly once.
  */
-const mdxOptions = {
-  parseFrontmatter: true,
-  mdxOptions: {
-    remarkPlugins: [remarkGfm],
-    rehypePlugins: [rehypeCodeHighlight],
-  },
-};
+function buildMdxOptions(collect: SectionEntry[]) {
+  /* Typed as the tuple it is — the same shape code-highlight.ts exports —
+     because inference widens a two-element array literal into a union array,
+     which Pluggable rejects. */
+  const sectionAnchors: [
+    typeof rehypeSectionAnchors,
+    { collect: SectionEntry[] },
+  ] = [rehypeSectionAnchors, { collect }];
+
+  return {
+    parseFrontmatter: true,
+    mdxOptions: {
+      remarkPlugins: [remarkGfm],
+      rehypePlugins: [sectionAnchors, rehypeCodeHighlight],
+    },
+  };
+}
 
 /*
  * The one element a lesson does not get as plain HTML. A code block needs a
@@ -58,12 +75,14 @@ const mdxComponents = { pre: CodeBlock };
  * eight files it is in is a build somebody has to bisect.
  */
 async function compile(source: string, relativePath: string) {
+  const sections: SectionEntry[] = [];
   try {
-    return await compileMDX({
+    const { frontmatter, content } = await compileMDX({
       source,
-      options: mdxOptions,
+      options: buildMdxOptions(sections),
       components: mdxComponents,
     });
+    return { frontmatter, content, sections };
   } catch (error) {
     const detail = error instanceof Error ? error.message : String(error);
     throw new Error(`${relativePath}: ${detail}`, { cause: error });
@@ -94,6 +113,10 @@ export interface ModuleSummary extends ModuleFrontmatter {
 
 export interface LessonSummary extends LessonFrontmatter {
   slug: string;
+  /** The lesson's top-level sections, in document order — the id in the
+      article's DOM and the id the contents panel links to, one derivation
+      (lib/section-anchors.ts). */
+  sections: SectionEntry[];
 }
 
 export interface Lesson extends LessonSummary {
@@ -170,19 +193,26 @@ async function readLessonFrontmatterAndBody(
     path.join(contentRoot, moduleSlug, `${lessonSlug}.mdx`),
     "utf8"
   );
-  const { frontmatter, content } = await compile(source, relativePath);
-  return { frontmatter: lessonFrontmatterSchema.parse(frontmatter), content };
+  const { frontmatter, content, sections } = await compile(
+    source,
+    relativePath
+  );
+  return {
+    frontmatter: lessonFrontmatterSchema.parse(frontmatter),
+    content,
+    sections,
+  };
 }
 
 async function listLessons(moduleSlug: string): Promise<LessonSummary[]> {
   const slugs = await readLessonSlugs(moduleSlug);
   const lessons = await Promise.all(
     slugs.map(async (slug) => {
-      const { frontmatter } = await readLessonFrontmatterAndBody(
+      const { frontmatter, sections } = await readLessonFrontmatterAndBody(
         moduleSlug,
         slug
       );
-      return { slug, ...frontmatter };
+      return { slug, ...frontmatter, sections };
     })
   );
   return lessons.sort((a, b) => a.order - b.order);
@@ -285,9 +315,9 @@ export async function getLesson(
 ): Promise<Lesson | null> {
   const slugs = await readLessonSlugs(moduleSlug);
   if (!slugs.includes(lessonSlug)) return null;
-  const { frontmatter, content } = await readLessonFrontmatterAndBody(
+  const { frontmatter, content, sections } = await readLessonFrontmatterAndBody(
     moduleSlug,
     lessonSlug
   );
-  return { slug: lessonSlug, ...frontmatter, body: content };
+  return { slug: lessonSlug, ...frontmatter, sections, body: content };
 }

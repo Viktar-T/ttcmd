@@ -151,6 +151,7 @@ const SPECIMEN_LESSONS: CourseLesson[] = [
     href: "#",
     title: "Krótki tytuł",
     summary: "Specimen.",
+    sections: [],
   },
   {
     moduleSlug: "07-przyklad",
@@ -161,6 +162,7 @@ const SPECIMEN_LESSONS: CourseLesson[] = [
     href: "#",
     title: "Tytuł na tyle długi, że zawija się w wierszu i sprawdza kształt",
     summary: "Specimen.",
+    sections: [],
   },
 ];
 

@@ -62,3 +62,58 @@ reading `h2.id` on each: empty. There is nothing to link to yet.
 `_to_delete/` leftovers at the repo root were deleted — they had begun failing
 `next build`'s type-check on the unmodified tree. Untracked, so no commit
 records the deletion; noted here instead.)*
+
+## T05 — Section anchors (criteria 2, 3, and 20 in part)
+
+**A working-tree note that matters to every later check:** the content under
+`content/moduly/01-…` carries Viktar's uncommitted edits (present since before
+this slice started — the session's opening `git status` shows them). The
+working tree is what builds, so evidence below reads the working-tree
+content; the longest lesson currently has **9** sections and
+`co-model-naprawde-potrafi` **14**, matching the spec's counts.
+
+### Criterion 2 — every id lowercase ASCII, derived, unique
+
+`npm run build` passes. Ids read from the rendered pages
+(`.prose > h2[id]`, in document order):
+
+`czterdziesci-lat-zmian` (9 of 9 h2s carry ids; all match
+`^[a-z0-9]+(-[a-z0-9]+)*$`; all unique):
+
+```
+dwie-osie-czasu                            Dwie osie czasu
+pulpit-od-asemblera-do-xaml-a              Pulpit: od asemblera do XAML-a
+telefon-gdy-producent-wybiera-za-ciebie    Telefon: gdy producent wybiera za ciebie
+dlaczego-nastepowala-zmiana                Dlaczego następowała zmiana
+co-sie-nie-zmienilo-od-1984                Co się nie zmieniło od 1984
+obietnica-wraca-po-raz-kolejny             Obietnica wraca po raz kolejny
+jak-czytac-nastepna-zmiane                 Jak czytać następną zmianę
+cwiczenia                                  Ćwiczenia
+zrodla                                     Źródła
+```
+
+`co-model-naprawde-potrafi` (14 of 14; same checks pass) — the derivation
+handles the awkward ones as specified: *"Problem 70%"* → `problem-70`,
+*"…ciebie (jeszcze)"* → `…-ciebie-jeszcze`, *"Źródła"* → `zrodla`.
+
+### Criterion 3 — an unrepresentable heading fails the build, named
+
+A temporary lesson `content/moduly/00-start/_temp-criterion-3.mdx` containing
+`## ???` was created; `npm run build` exited non-zero with:
+
+```
+Error: content/moduly/00-start/_temp-criterion-3.mdx: [next-mdx-remote] error compiling MDX:
+heading "???" cannot derive a section id — nothing of it survives the ASCII
+derivation. Reword the heading, or extend the transliteration in
+lib/section-anchors.ts on purpose.
+```
+
+— the lesson and the heading, both named. The file was deleted;
+`git status --porcelain -- content/` afterwards shows exactly the pre-existing
+set of Viktar's content edits and nothing of this slice's; `npm run build` on
+the reverted tree passes.
+
+*(One edit outside the plan's T05 file list: the reference page's two
+specimen-lesson literals gained `sections: []` — the type now requires the
+field, and the build is the gate that noticed. The real §9 specimens still
+arrive in T10.)*

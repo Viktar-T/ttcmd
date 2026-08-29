@@ -17,7 +17,7 @@ Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
 
 ---
 
-- [ ] **T04 — Record the baseline the panel must not move.** Build and serve
+- [x] **T04 — Record the baseline the panel must not move.** Build and serve
       the unmodified site; on the longest lesson at 1280 px read the prose
       column's left edge and width; re-read slice 004's measure and six
       adjacency gaps and the presence of 006's band, breadcrumb, pager and
@@ -25,7 +25,7 @@ Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
       *Check:* `verification.md` holds the criterion-7 baseline;
       `git status` shows no change outside `specs/007-contents-panel/`.
 
-- [ ] **T05 — Section anchors, derived once and enforced by the build.**
+- [x] **T05 — Section anchors, derived once and enforced by the build.**
       `lib/section-anchors.ts` (transliteration, validation that throws,
       per-page dedupe seeded with the reserved skip-target id, the collector);
       `lib/content.ts` wires the plugin per call and exposes `sections` on
