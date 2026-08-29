@@ -26,7 +26,7 @@ Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
       one lesson fails the build **naming the file**, then is reverted and
       the build passes again. Output recorded.
 
-- [ ] **T05 — The schema learns `publish`.** A strict optional boolean on the
+- [x] **T05 — The schema learns `publish`.** A strict optional boolean on the
       lesson frontmatter schema, absent meaning published, with a doc comment
       in the file's style. *Check:* `npm run build` passes with no content
       change; a temporary quoted `publish: "false"` fails the build naming

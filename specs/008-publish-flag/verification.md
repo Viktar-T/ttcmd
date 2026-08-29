@@ -75,3 +75,25 @@ Error: Failed to collect page data for /moduly/[module]/[lesson]
 Reverted (`order: 3` restored). `npm run build`: **passes**, same 15 pages,
 route table identical to baseline. `git status --porcelain content/` matches
 the baseline block above exactly.
+
+## T05 — the schema learns `publish` (criterion 2)
+
+With no content change: `npm run build` **passes**, 15/15 pages.
+
+Staged: `publish: "false"` (quoted string) on
+`content/moduly/00-start/git-i-github.mdx`. `npm run build`:
+
+```
+Error: content/moduly/00-start/git-i-github.mdx: [
+    "expected": "boolean",
+      "publish"
+    "message": "Invalid input: expected boolean, received string"
+```
+
+**Criterion 2 holds**: a non-boolean fails the build, naming the file.
+
+Staged: `publish: false` (bare boolean), same file. `npm run build`:
+**passes**, 15/15 pages — at this task the filter does not exist yet, so a
+valid flag changes nothing; the check is only that a real boolean parses.
+
+Reverted. The staging line removed; the file back to its baseline bytes.

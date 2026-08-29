@@ -17,6 +17,15 @@ export const lessonFrontmatterSchema = z.object({
   order: z.number().int().min(1).max(26),
   summary: z.string().min(1),
   week: z.number().optional(),
+  /**
+   * Whether the lesson is part of the published course. Absent means true —
+   * every lesson written before this field existed stays published, and only
+   * a deliberate `publish: false` hides one. Strictly a boolean, no coercion:
+   * the likeliest mistake is a quoted `"false"`, which would coerce to the
+   * one wrong answer this field exists to prevent, so it fails the build
+   * instead (slice 008).
+   */
+  publish: z.boolean().optional(),
 });
 
 export type ModuleFrontmatter = z.infer<typeof moduleFrontmatterSchema>;
