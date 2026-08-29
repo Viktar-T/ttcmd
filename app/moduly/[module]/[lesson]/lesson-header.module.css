@@ -16,9 +16,13 @@
 
   max-width: var(--measure);
   margin-inline: auto;
-  margin-block-end: var(--gap-section);
+  /* 26px above the rule, 40px below. The first version put --gap-section (68px)
+     below it, which on a rendered page read as a void rather than as a
+     separation: the rule already does the separating, and the space only has to
+     stop the lesson's first sentence from touching it. */
   padding-block-end: var(--gap-block);
   border-block-end: 1px solid var(--rule);
+  margin-block-end: var(--gap-apart);
 
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
@@ -67,9 +71,16 @@
  * Larger than body, quieter than body, and separated from it by the rule
  * below — three signals at once that it is not the lesson's first sentence,
  * because in every written lesson the real first paragraph says something else.
+ *
+ * It spans both columns rather than sitting beside the circle. Indented, the
+ * header showed three different left edges — the rule's, the title's and the
+ * standfirst's — and the step down to the lesson's first paragraph read as a
+ * mistake. Flush, there are two: everything is aligned with the prose below,
+ * and the only thing that is not is the title, which hangs off the circle and
+ * therefore explains itself.
  */
 .standfirst {
-  grid-column: 2;
+  grid-column: 1 / -1;
   margin: 0;
   font-size: var(--text-xl);
   line-height: var(--leading-normal);

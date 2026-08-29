@@ -172,6 +172,20 @@ rendered page and recorded in `verification.md`, not asserted here.
   reports no change under `content/`.
   *(Acceptance criteria 1, 2, 3, 7, 9, 14, 15, 16, 19, 20.)*
 
+- [x] **T12a — The by-eye pass, on screenshots from Viktar's own browser**
+
+  *Added during execution. T12 could not make the judgements that need eyes —
+  the Browser pane in that session never composited frames — so it listed seven
+  criteria as outstanding rather than claiming them. Viktar supplied four
+  screenshots; this task is what they settled.*
+
+  Judge criteria 7, 15, 16, 19 and 20 on the rendered pages, and fix what the
+  screenshots expose.
+
+  **Check:** each judgement written into `verification.md` with what was seen,
+  and each fix re-measured. `npm run build` succeeds and the full 44-run sweep
+  is clean afterwards.
+
 - [ ] **T13 — Close the slice**
 
   Review the complete diff against `spec.md` in a **fresh context**, per

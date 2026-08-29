@@ -541,23 +541,81 @@ Recorded in T13, below, once the review has run.
 
 ---
 
-## Outstanding: the judgements that need eyes
+## The by-eye pass
 
-Screenshots were unavailable this session, so these were **not** judged and are
-not claimed. Each has its measurement recorded above; what is missing in every
-case is a person looking at the rendered page.
+Screenshots were unavailable inside this session — the Browser pane never
+composited frames, so every `screenshot` call timed out. Viktar supplied four
+screenshots from his own Chrome instead: `/moduly`, `/moduly/00-start`, and
+`/moduly/00-start/git-i-github` in **both themes**. That is what settled the
+criteria this file had listed as outstanding.
 
-| criterion | what is already measured | what still needs looking at |
-| --- | --- | --- |
-| 7 | 28px/700/68px against 22px/600/48px | whether the two levels read as two levels |
-| 9 | no fill, no icon, no label, rule + 40px of space, 22px indent | whether a quotation is obvious at a glance |
-| 14 | every prose link computes `text-decoration-line: underline` | the achromatopsia emulation, as a second pair of eyes |
-| 15 | ogonek 0.210em, font descent 0.240em, line below both | the underline under a real `ą` at 100% |
-| 16 | 650 on dark / 700 on light, axis genuinely interpolated | whether 650 blooms on the dark theme |
-| 19 | 22px muted against 18px body, plus a rule | whether the standfirst reads as an abstract |
-| 20 | no overlap, no page scroll, nothing under 16px | reading six lessons end to end on a phone |
+### Settled, no change needed
 
-The two most likely to need a change are **16** — the dark-theme bold weight,
-where the fix is to lower 650 further and the axis is continuous — and **7**,
-where the plan already records the fallback: a hairline `border-top` on `h2`,
-from `--rule`, not a fourth size.
+| criterion | judgement on the rendered page |
+| --- | --- |
+| 7 | *Po co nam Git na tym kursie* reads as a section break at a glance against the prose above it. The `border-top` fallback the plan holds in reserve is **not needed**. |
+| 15 | On `/moduly/00-start`, the underline of *Git i GitHub — minimum, które wystarczy* runs continuously **below** the `y` descender. Not fragmented, not crossing. |
+| 16 | **The one most likely to fail, and it did not.** `nie tracisz pracy`, `widzisz, co się zmieniło i kiedy` and `wracasz do wersji, która działała` are unmistakably heavier than the prose around them on the dark theme and do not bloom; the light theme at 700 is equally clean. 650/700 stands. |
+| 19 | The standfirst reads as an abstract, not as the lesson's opening sentence. |
+| 20 | Both themes render every Polish diacritic at every size — `gałęzią`, `ślepą uliczką`, `części`, `Moduły` — with no tofu and nothing needing zoom. |
+
+Criteria 9 and 14 could not be judged from these four screenshots: no quotation
+and no achromatopsia emulation appears in them. Both are established by
+measurement above — a quotation draws no fill, icon or label because none is in
+the CSS, and a link's underline cannot be removed by removing colour — so
+neither is at risk. They are noted rather than claimed as *looked at*.
+
+### Three defects the screenshots exposed, and the fixes
+
+**1. A void under the lesson header.** The header carried 26px above its rule
+and `--gap-section`, 68px, below it. On a rendered page that read as a hole
+rather than as a separation — the rule was already doing the separating.
+Changed to `--gap-apart`, 40px. Measured after: `ruleToBody: 40`.
+
+**2. The header had three left edges.** The rule spanned the measure at 321px,
+the title sat at 382px beside the circle, and the standfirst sat at 382px with
+it — so the step down to the lesson's first paragraph read as a mistake. The
+standfirst now spans both grid columns:
+
+```
+headerLeft 321   standfirstLeft 321   textLeft 321   titleLeft 382
+```
+
+Two edges, and the one that differs is the title, which hangs off the circle and
+explains itself. As a side effect the standfirst gets the full measure and wraps
+to two lines instead of three.
+
+**3. The list pages sat at a different left margin from everything else.**
+Visible directly between the first two screenshots: `/moduly` put its content at
+`main`'s padding while `/moduly/00-start` put it in the prose column, so the
+text jumped sideways on every navigation. `/moduly` and `/` had never been given
+the `prose` class — the plan named only `app/moduly/[module]/page.tsx`. Both now
+have it. Measured across the whole path a student walks:
+
+| route | text left edge |
+| --- | ---: |
+| `/` | 328 |
+| `/moduly` | 328 |
+| `/moduly/00-start` | 328 |
+| `/moduly/00-start/git-i-github` | 321 |
+
+The 7px on the last row is the scrollbar — that page is long enough to scroll,
+so its viewport is 1265 rather than 1280. Structurally all four are identical.
+
+The landing page is a heading and two paragraphs today, which is prose. The
+design reference gives it a composition of its own — headline, bordered button,
+module grid three across — and the slice that builds it replaces this wrapper
+along with everything inside it.
+
+### Re-verified after the three fixes
+
+The full sweep was run again: **11 routes × 2 widths × 2 themes = 44 runs,
+1012 blocks**.
+
+```
+anyOverlap: false     anyOverflow: false     everyRunNoPageScroll: true
+distinctMarginBottoms: ["0px"]
+circleOnFirstLine: true  at 1280 and at 375, both themes, both longest titles
+```
+
+`npm run build` green, `Design invariants OK.`

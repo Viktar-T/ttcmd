@@ -5,7 +5,7 @@ export default async function ModulesPage() {
   const modules = await listModules();
 
   return (
-    <>
+    <div className="prose">
       <h1>Moduły</h1>
       <ul>
         {modules.map((moduleItem) => (
@@ -16,6 +16,6 @@ export default async function ModulesPage() {
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 }
