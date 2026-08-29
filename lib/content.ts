@@ -69,6 +69,24 @@ async function compile(source: string, relativePath: string) {
   }
 }
 
+/**
+ * Compiles a Markdown string through the pipeline a lesson gets — the same
+ * remark plugins, the same highlighter, the same components map.
+ *
+ * It exists for the reference page. Slice 005's spec says in as many words that
+ * nine one-line `bash` blocks do not cover this slice: none declares a
+ * filename, none marks a line, none is long enough to scroll, and none is C# —
+ * which Article VII makes the language that must work. The specimens have to go
+ * through the real path or they prove nothing, and this is that path.
+ */
+export async function compileProse(
+  source: string,
+  label: string
+): Promise<ReactElement> {
+  const { content } = await compile(source, label);
+  return content;
+}
+
 export interface ModuleSummary extends ModuleFrontmatter {
   slug: string;
 }

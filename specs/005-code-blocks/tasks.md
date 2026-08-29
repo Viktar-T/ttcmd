@@ -115,7 +115,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   a block fails the build with a message naming the file — shown and reverted.
   *(Acceptance criteria 15 and 16.)*
 
-- [ ] **T08 — The reference page carries a specimen of every construct**
+- [x] **T08 — The reference page carries a specimen of every construct**
 
   The compile helper exported from `lib/content.ts`; a new section on
   `/styleguide` built from a tilde-fenced Markdown string compiled through the

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { compileProse } from "@/lib/content";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -19,6 +20,82 @@ export const metadata: Metadata = {
  * scripts/check-design-invariants.mjs — the reference page failing its own
  * rule. The values live in app/tokens.css and in ADR-0007.
  */
+
+/**
+ * The code-block specimens — slice 005 §8.
+ *
+ * Written as Markdown and compiled through the real pipeline, so the meta
+ * parser, the highlighter and the components map all run: what is on this page
+ * is what a lesson would get. The nine fenced blocks in the Git lesson are all
+ * `bash`, none declares a filename, none marks a line and none is long enough
+ * to scroll — and no lesson contains C#, which Article VII makes the language
+ * that must work. This is where all of that is checked.
+ *
+ * TILDE FENCES, deliberately. They are CommonMark and behave identically to
+ * backticks, info string included, and they can sit inside a TypeScript
+ * template literal without escaping every fence character into unreadability.
+ *
+ * Labels are English like the rest of this page; the code and its comments are
+ * Polish, because Polish inside a code block is one of the things under test.
+ */
+const CODE_SPECIMENS = `
+#### bash, as the Git lesson writes it
+
+~~~bash
+# Zażółć gęślą jaźń — ĄĆĘŁŃÓŚŹŻ ążćęłńóśź
+git config --global user.name "Imię Nazwisko"
+git switch -c nazwa-galezi && git push -u origin HEAD
+~~~
+
+#### C#, with a filename header and three marked lines
+
+~~~csharp title="Koszyk.cs" {7,17-18}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Sklep;
+
+// Zażółć gęślą jaźń — ĄĆĘŁŃÓŚŹŻ ążćęłńóśź
+public record Pozycja(string Nazwa, decimal Cena, int Ilosc);
+
+public class Koszyk
+{
+    private readonly List<Pozycja> pozycje = new();
+    public const decimal Vat = 0.23m;
+
+    public void Dodaj(Pozycja pozycja)
+    {
+        if (pozycja.Ilosc <= 0)
+            throw new ArgumentException("Ilość musi być dodatnia", nameof(pozycja));
+
+        pozycje.Add(pozycja);
+    }
+
+    public decimal Razem() => pozycje.Sum(p => p.Cena * p.Ilosc) * (1 + Vat);
+}
+~~~
+
+#### A fence with no language — output, not code
+
+~~~
+  Przywracanie pakietów...
+  Sklep -> bin/Release/Sklep.dll
+  Kompilacja zakończona powodzeniem.
+~~~
+
+#### One line, which is what most blocks in a lesson are
+
+~~~bash
+git status
+~~~
+
+#### A line long enough to scroll inside the block at any width
+
+~~~bash
+dotnet publish -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -o ./wydanie
+~~~
+`;
 
 /** ADR-0005's verification string: every Polish diacritic, upper and lower. */
 const PANGRAM = "Zażółć gęślą jaźń — ĄĆĘŁŃÓŚŹŻ ążćęłńóśź";
@@ -46,7 +123,12 @@ const SIZES: { token: string; className: string }[] = [
   { token: "--text-sm", className: styles.sizeSm },
 ];
 
-export default function StyleguidePage() {
+export default async function StyleguidePage() {
+  const codeSpecimens = await compileProse(
+    CODE_SPECIMENS,
+    "app/styleguide/page.tsx (code specimens)"
+  );
+
   return (
     <div className={styles.page}>
       <h1>Type and colour reference</h1>
@@ -286,6 +368,21 @@ export default function StyleguidePage() {
             samego powodu co nagłówki czwartego stopnia.
           </p>
         </div>
+      </section>
+
+      <section className={styles.section}>
+        <h2>Code blocks</h2>
+        <p className={styles.muted}>
+          Slice 005. Compiled through the same pipeline a lesson goes through,
+          so the info-line parser, the highlighter and the block component all
+          run here exactly as they do there. The nine fenced blocks in the Git
+          lesson are all bash, none declares a filename, none marks a line and
+          none is long enough to scroll — and no lesson contains C#, which
+          Article VII makes the language that has to work. The code surface does
+          not change with the theme, so every colour below is the same in both.
+        </p>
+
+        <div className="prose">{codeSpecimens}</div>
       </section>
     </div>
   );
