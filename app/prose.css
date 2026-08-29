@@ -79,8 +79,7 @@
   margin-top: var(--gap-block);
 }
 
-.prose li + li,
-.prose blockquote > p + p {
+.prose li + li {
   margin-top: var(--gap-tight);
 }
 
@@ -181,3 +180,50 @@
 .prose :is(h1, h2, h3, h4, h5, h6) strong {
   font-weight: inherit;
 }
+
+/* ------------------------------------------------------------------ *
+ * Quotations
+ *
+ * These are quotations and cited claims, never callouts. The lessons argue
+ * from other people's words — Karpathy, Willison, Beck, Osmani, Torvalds —
+ * and the treatment has to say "somebody else said this", not "warning".
+ *
+ * Everything below is subtraction. No fill, no tint, no icon, no label, no
+ * quote glyph, no border on the other three sides: each of those is the
+ * callout treatment, whose colours ADR-0007 still leaves indicative, so
+ * building one here would mean inventing a value this slice may not invent.
+ *
+ * Upright and at body size, because these passages run to five lines and
+ * longer, and long Polish set in italic reads worse than the prose quoting it.
+ *
+ * The colour is --text and not --text-muted. That is the point of the
+ * quotation criteria: a quotation is read, not glanced at, so it is held to
+ * the body contrast floor rather than being the muted variant of anything.
+ * Being the same token, it is the same ratio by construction: 12.21:1 on dark
+ * and 14.71:1 on light.
+ * ------------------------------------------------------------------ */
+
+.prose blockquote {
+  border-inline-start: 2px solid var(--rule-quote);
+  padding-inline-start: 1.25rem;
+  color: var(--text);
+  font-style: normal;
+}
+
+/*
+ * Paragraphs inside a quotation keep the ordinary prose gap rather than a
+ * tightened one. What holds a multi-paragraph quotation together is the rule
+ * running down its whole height and the indent, both continuous; inside it the
+ * reader is reading prose and wants prose spacing. The criterion — inner gap
+ * smaller than the gap to the prose around it — still holds by the scale
+ * itself: 25.6px against 40px.
+ *
+ * The attribution line is deliberately not styled. It is an ordinary paragraph
+ * that begins with an em dash, and the lessons contain both quotations that
+ * end with one and quotations that end in quoted text, so any :last-child rule
+ * would misfire on half of them.
+ */
+.prose blockquote > * + * {
+  margin-top: var(--gap-block);
+}
+

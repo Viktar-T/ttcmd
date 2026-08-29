@@ -48,8 +48,15 @@
  */
 :root {
   --link: var(--accent-line);
-  --rule-quote: var(--rule);
   --rule-table: var(--rule);
+
+  /* Slice 004 moved this off --rule. Slice 003 measured --rule at 1.47:1 on
+     dark and 1.36:1 on light and recorded that it is legitimate only while it
+     is decorative. A quotation's rule is not decorative — it is the only thing
+     telling a reader that these are somebody else's words — and at 1.47:1 a
+     2px line is invisible on a projector. --text-muted is 5.86:1 and 6.34:1
+     and is a token that already exists, so no new hue enters here either. */
+  --rule-quote: var(--text-muted);
 }
 
 /*
