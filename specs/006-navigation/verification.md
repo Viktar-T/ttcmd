@@ -499,3 +499,86 @@ Both pre-date this slice and both belong to another lane.
   diagrams inside the lesson `.mdx` files use kebab-case attributes, which MDX
   compiles as JSX. Content lane, and this slice's out-of-scope list forbids
   touching `content/`.
+
+---
+
+## Closing review (T11)
+
+Carried out in a fresh context on 2026-08-29, per AGENTS.md §3 and Article IX.
+The reviewer did not write this code, re-ran the checks rather than trusting this
+file, and modified nothing.
+
+**Verdict: the slice closes.** All 21 checkable acceptance criteria met;
+criterion 22 is the review itself. No scope violation: every item on the spec's
+"Out of scope" list and the plan's "What this plan does not do" list was checked
+individually against `git log --name-only` over the slice's ten commits.
+
+Independently reproduced rather than taken on trust: `npm run build` and its
+Check E output; all fourteen contrast ratios recomputed from `app/tokens.css`
+with the reviewer's own script, matching to two decimals; both build failures of
+criterion 3 reproduced verbatim on an out-of-repo mirror of the script;
+`moduleNumber` exercised directly on `start`, `00-start` and `10-x`; the
+`--rule` / `--rule-strong` split read line by line; and the geometry re-measured
+in a real browser against `next start` at 1280×900 and 375×812 in both themes.
+
+One number the reviewer computed that this file had not, and it is the one that
+justifies §10: **`--accent-line` on `--accent-surface` is 1.00:1 on the dark
+theme.** Not "low contrast" — the same colour. That is precisely what the band's
+focus-ring override prevents.
+
+### What it found, and what was done
+
+Two findings were this slice's own leftovers and are fixed:
+
+- **`listModules` was left dead.** Its last caller moved to `getCourse` and
+  nothing imported it. Removed; `listLessons` became private for the same reason.
+- **`--rule-strong` had no swatch on the reference page**, which is where every
+  other token in the palette has one. Added, beside `--rule`, so the pair ADR-0012
+  draws can be seen side by side.
+
+Five findings are recorded here rather than acted on:
+
+- **The theme control's border is still `--rule` at 1.47:1**, while ADR-0012
+  lists "a button's border" under `--rule-strong`. Left deliberately: spec §7
+  says nothing slices 003 and 004 placed is restyled, and the control is
+  identified by its icon at 5.86:1 rather than by its border — so there is no
+  1.4.11 failure. It is a real inconsistency between this slice's ADR and an
+  earlier slice's CSS, and it is written down rather than fixed under a spec that
+  forbids the fix.
+- **Nothing enforces that two lessons in one module have distinct `order`.** Two
+  lessons at `order: 1` would both render `1a` — two pages with one spoken name,
+  silently. The same class of failure ADR-0003 exists to prevent, and this slice
+  is the first to make the string visible everywhere. The schema is slice 001's
+  and adding a build failure is scope nobody specified; it belongs in a later
+  slice.
+- **A focused chevron row's ring is the same colour as its focused fill on the
+  dark theme**, separated by the 2px `outline-offset` of page background. It
+  measures 8.67:1 against the surface it actually sits on, so the criterion is
+  met; it is the one place the two accent roles touch.
+- **Plan deviations, all documented in the code and none contradicting the
+  spec:** the frame puts the gutters in the grid tracks rather than on the
+  children, `.lane` clamps to `--measure` rather than to the content column, and
+  the grid's `minmax` is 11rem rather than 13rem — a consequence of the lane
+  narrowing. `plan.md` was correctly left unamended (AGENTS.md §8), and the four
+  measurement-found defects behind three of these are recorded above.
+- **`_to_delete/` and `_check.mjs` sit untracked and un-ignored at the repo
+  root.** Present before this slice. The roadmap already lists the first under
+  housekeeping; both are one `git add -A` away from being committed.
+
+### An unplanned check, from the content lane
+
+While this slice was being verified, two lessons were written and module 1's
+lessons were reordered — `vibe-coding-kontra-inzynieria` moved from `order: 3` to
+`order: 6`. Nothing in the application was touched, and the whole navigation
+re-derived itself:
+
+```
+1a Czterdzieści lat zmian          1e Nowy warsztat programisty
+1b Od podpowiedzi do agenta        1f Vibe coding kontra inżynieria
+1c Co model naprawdę potrafi       1g Jak nie wypaść z obiegu
+1d Na żywo: agent buduje aplikację
+```
+
+and the landing card went from *5 lekcji* to *7 lekcji*, in the right plural
+form. That is ADR-0003's rule working in the only way that proves it: a lesson's
+letter followed its `order`, and no file outside `content/` changed.

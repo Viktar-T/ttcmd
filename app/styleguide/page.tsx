@@ -112,6 +112,7 @@ const TOKENS: { name: string; chip: string }[] = [
   { name: "--text", chip: styles.chipText },
   { name: "--text-muted", chip: styles.chipTextMuted },
   { name: "--rule", chip: styles.chipRule },
+  { name: "--rule-strong", chip: styles.chipRuleStrong },
   { name: "--accent-surface", chip: styles.chipAccentSurface },
   { name: "--accent-line", chip: styles.chipAccentLine },
   { name: "--accent-ink", chip: styles.chipAccentInk },

@@ -147,16 +147,6 @@ async function readModule(
   return { frontmatter: moduleFrontmatterSchema.parse(frontmatter), content };
 }
 
-export async function listModules(): Promise<ModuleSummary[]> {
-  const slugs = await readModuleSlugs();
-  return Promise.all(
-    slugs.map(async (slug) => ({
-      slug,
-      ...(await readModule(slug)).frontmatter,
-    }))
-  );
-}
-
 async function readLessonSlugs(moduleSlug: string): Promise<string[]> {
   const entries = await readdir(path.join(contentRoot, moduleSlug), {
     withFileTypes: true,
@@ -184,9 +174,7 @@ async function readLessonFrontmatterAndBody(
   return { frontmatter: lessonFrontmatterSchema.parse(frontmatter), content };
 }
 
-export async function listLessons(
-  moduleSlug: string
-): Promise<LessonSummary[]> {
+async function listLessons(moduleSlug: string): Promise<LessonSummary[]> {
   const slugs = await readLessonSlugs(moduleSlug);
   const lessons = await Promise.all(
     slugs.map(async (slug) => {

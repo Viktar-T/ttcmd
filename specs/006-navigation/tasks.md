@@ -155,7 +155,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   reports no change under `content/`.
   *(Acceptance criteria 1, 6, 14, 15, 18, 21.)*
 
-- [ ] **T11 — Close the slice**
+- [x] **T11 — Close the slice**
 
   Review the complete diff against `spec.md` in a **fresh context**, per
   AGENTS.md §3 and Article IX. Report gaps that affect correctness or an

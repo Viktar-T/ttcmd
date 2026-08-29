@@ -116,6 +116,12 @@
 .chipRule {
   background: var(--rule);
 }
+/* ADR-0012. The pair is the point: --rule separates, --rule-strong identifies,
+   and only the second clears WCAG 1.4.11's 3:1. They sit next to each other
+   here so the difference is one glance rather than one argument. */
+.chipRuleStrong {
+  background: var(--rule-strong);
+}
 .chipAccentSurface {
   background: var(--accent-surface);
   color: var(--accent-ink);
