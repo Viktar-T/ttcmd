@@ -242,3 +242,49 @@ Byte-for-byte, nothing under `content/` moved.
 None of criteria 1–10 needs a human eye: every check above is a command
 over build output, served markup, or git state. There is no visual change
 anywhere on the site to judge.
+
+## T09 — the closing review (criterion 11)
+
+Fresh-context review of the whole diff (`f72d780..HEAD`) against the spec's
+criteria, run as three independent reviewers (criteria, scope and code,
+process) with every finding then handed to an adversarial verifier told to
+refute it. **No finding affects correctness or a criterion.** The confirmed
+notes, recorded without fixing:
+
+1. **`readModule`'s frontmatter parse still surfaces a bare ZodError with no
+   file path.** Pre-existing, deliberate, recorded in the plan's own "Not in
+   this plan" — no criterion of this slice reaches module index files. A
+   future chore.
+2. **A lesson URL under a module directory that does not exist renders the
+   framework error page, not the 404** — `getLesson` hits `readdir`'s ENOENT
+   before any guard. Pre-existing (verified identical at `f72d780`), outside
+   criterion 5, which concerns an unpublished lesson inside an existing
+   module. A candidate future slice or chore.
+3. **A stray `publish` key on a module's `index.mdx` is silently stripped** —
+   the module schema is non-strict, as it always was for unknown keys.
+   Consistent with decision 7 (modules have no flag); recorded because the
+   field now exists and the mistake is plausible.
+4. **The spec's "a `no` fails the build" was verified against the installed
+   parser**: the frontmatter pipeline resolves to YAML 1.2 (`yaml@2.9.0`),
+   which parses a bare `no` as the *string* `"no"`, failing `z.boolean()`.
+   True today, and true *because* the parser speaks YAML 1.2 — a YAML 1.1
+   parser would make `no` a boolean. Pinned here for the day the pipeline
+   changes.
+5. **Criterion 5's "indistinguishable" is a substantive match, not
+   byte-for-byte** — the reviewer and its verifier concur with T08's record:
+   both 404s take the same code path, and the only body difference is the
+   framework echoing each request's own path segments, which discloses
+   nothing. The residual distinguisher is timing (the unpublished path
+   compiles the file before refusing); the spec disclaims secrecy as the
+   goal, so recorded, not fixed.
+6. **Process note:** the plan subagent's inputs exceeded the letter of
+   AGENTS.md §2's "only inputs" rule — it read the code it needed for the
+   file map, as its own status line honestly discloses; the T02 commit
+   *subject* ("written from the spec alone") is looser than the commit body
+   and the artifact. Recorded here and in the journal rather than rewritten:
+   history is permanent (Article IV), and the artifact trail is the honest
+   one.
+
+Nothing outside the slice's scope was touched: no content commit, no
+dependency, no visual change, no sitemap. Criterion 11 closes on this
+review.

@@ -59,7 +59,7 @@ Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
       its command and output in `verification.md`, or a named human-eye
       remainder.
 
-- [ ] **T09 — Close the slice.** Fresh-context review of the whole diff
+- [x] **T09 — Close the slice.** Fresh-context review of the whole diff
       against the spec's criteria; fix what affects correctness or a
       criterion, record the rest without fixing (criterion 11). *Check:* the
       review's findings and their disposition recorded in `verification.md`;
