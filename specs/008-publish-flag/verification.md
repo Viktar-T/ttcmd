@@ -109,3 +109,17 @@ the emitted page list byte-compares equal to the baseline
 (`diff baseline-routes.txt t06-routes.txt` → no output,
 `ROUTE TABLE IDENTICAL TO BASELINE`). **Criterion 1 holds** — nothing on
 disk carries the flag, so nothing moved.
+
+## T07 — the landing page starts at the first published lesson
+
+The derivation widens from the first module's lessons to the flattened
+course, falling back to the first module's page when no lesson anywhere is
+published. `npm run build` **passes**, 15/15. The emitted landing page:
+
+```
+<a class="button" href="/moduly/00-start/git-i-github">
+```
+
+— the same entry href as the baseline, as it must be while nothing is
+unpublished. The behaviour under an all-drafts first module is criterion 8's
+to stage, in T08.

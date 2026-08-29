@@ -6,10 +6,15 @@ export default async function HomePage() {
   const course = await getCourse();
 
   /* Derived, never written down: a hand-written URL here goes stale the day a
-     module is inserted before this one. A module with no lessons yet is not a
-     dead end — the button falls back to the module's own page. */
-  const first = course[0];
-  const start = first?.lessons[0]?.href ?? first?.href;
+     module is inserted before this one. The first published lesson of the
+     whole course, not of the first module — the day the first module is all
+     drafts, the course's front door must open on the first lesson a student
+     can actually read, not on an empty module page (slice 008). With no
+     published lesson anywhere the button falls back to the first module's
+     own page: a real route, never a hidden lesson. */
+  const start =
+    course.flatMap((moduleItem) => moduleItem.lessons)[0]?.href ??
+    course[0]?.href;
 
   return (
     <>

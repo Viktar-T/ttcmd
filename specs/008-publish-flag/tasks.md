@@ -41,7 +41,7 @@ Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
       file changed, `npm run build` emits the baseline route table
       byte-for-byte (criterion 1). Output recorded.
 
-- [ ] **T07 — The landing page starts the course at its first published
+- [x] **T07 — The landing page starts the course at its first published
       lesson.** The entry-link derivation widens from the first module to the
       flattened course, falling back to the first module's page. *Check:*
       `npm run build` passes; the emitted landing page carries the same entry
