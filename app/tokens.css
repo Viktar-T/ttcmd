@@ -95,3 +95,17 @@
   --gap-subsection: 3rem; /* above an h3 and below */
   --gap-section: 4.25rem; /* above an h2 */
 }
+
+/*
+ * Bold, per theme. Both faces are variable, so these are real values and not
+ * rounded to the nearest named weight. Light text on a dark ground gains
+ * apparent weight: the value that reads correctly on the light theme blooms on
+ * the dark one, and the lessons are dense enough with bold for that to matter.
+ */
+:root {
+  --weight-strong: 650;
+}
+
+:root[data-theme="light"] {
+  --weight-strong: 700;
+}

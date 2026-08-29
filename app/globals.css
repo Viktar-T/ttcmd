@@ -43,10 +43,17 @@ pre {
 }
 
 /* Inline code: the face and a slightly smaller size, and no background box.
-   The pill treatment turns a paragraph of identifiers into a ransom note. */
+   The pill treatment turns a paragraph of identifiers into a ransom note.
+
+   Size and colour are relative to the context, never fixed (slice 004): the
+   size is an em so it scales with whatever it sits in, and the colour is
+   inherited so a section heading named after the command it teaches does not
+   arrive muted against its own title. The 0.9375em is a correction for mono
+   sitting inside sans; inside a heading, which is already mono, it is cancelled
+   in prose.css. */
 :not(pre) > code {
   font-size: 0.9375em;
-  color: var(--text-muted);
+  color: inherit;
 }
 
 /* Nothing renders a <nav> yet. The rule is the contract with the nav slice. */

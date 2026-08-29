@@ -108,3 +108,76 @@
 .prose > :first-child {
   margin-top: 0;
 }
+
+/* ------------------------------------------------------------------ *
+ * Headings
+ *
+ * The face is already monospace, from globals.css. What is set here is size,
+ * weight and wrap — and all six levels are set, not only the two the lessons
+ * use today, so the first lesson to need an h4 gets typography rather than a
+ * browser default with no build failure to say so.
+ *
+ * h2 and h3 are told apart on three axes at once, not on size alone: 28px
+ * against 22px, 700 against 600, and 68px of space above against 48px.
+ * ------------------------------------------------------------------ */
+
+.prose :is(h1, h2, h3, h4, h5, h6) {
+  text-wrap: balance;
+}
+
+.prose h1 {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+}
+
+.prose h2 {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+}
+
+.prose h3 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+}
+
+.prose h4 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
+.prose h5 {
+  font-size: var(--text-base);
+  font-weight: 700;
+}
+
+.prose h6 {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Inline code inside a heading is heading-sized. globals.css shrinks inline
+   code by 0.9375em because monospace set inside the sans face reads larger
+   than it is; a heading is already monospace, so the correction would only
+   make a section named after a command visibly smaller than its neighbours. */
+.prose :is(h1, h2, h3, h4, h5, h6) code {
+  font-size: 1em;
+}
+
+/* ------------------------------------------------------------------ *
+ * Bold
+ *
+ * The weight is a token because it is not the same number in both themes:
+ * light text on a dark ground gains apparent weight, and the value that reads
+ * as bold on the light theme smears on the dark one. The lessons are dense
+ * with bold, so this is a reading decision rather than a detail.
+ * ------------------------------------------------------------------ */
+
+.prose strong {
+  font-weight: var(--weight-strong);
+}
+
+/* A heading is already at its own weight; bold inside one must not lighten it. */
+.prose :is(h1, h2, h3, h4, h5, h6) strong {
+  font-weight: inherit;
+}
