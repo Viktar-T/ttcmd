@@ -197,11 +197,17 @@ async function readLessonFrontmatterAndBody(
     source,
     relativePath
   );
-  return {
-    frontmatter: lessonFrontmatterSchema.parse(frontmatter),
-    content,
-    sections,
-  };
+  /* The schema failure joins the convention `compile` establishes above: a
+     build that stops on a frontmatter mistake must say which file, not print
+     a bare issue list somebody has to bisect across every lesson on disk. */
+  let parsed: LessonFrontmatter;
+  try {
+    parsed = lessonFrontmatterSchema.parse(frontmatter);
+  } catch (error) {
+    const detail = error instanceof Error ? error.message : String(error);
+    throw new Error(`${relativePath}: ${detail}`, { cause: error });
+  }
+  return { frontmatter: parsed, content, sections };
 }
 
 async function listLessons(moduleSlug: string): Promise<LessonSummary[]> {

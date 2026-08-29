@@ -7,17 +7,17 @@ task says so in `specs/008-publish-flag/verification.md`.
 
 Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
 
-- [ ] **T01 — Record the spec.** `spec.md` with acceptance criteria and
+- [x] **T01 — Record the spec.** `spec.md` with acceptance criteria and
       decisions taken. *Check:* file in the tree, committed on its own.
-- [ ] **T02 — Record the plan.** `plan.md` written by a fresh-context
+- [x] **T02 — Record the plan.** `plan.md` written by a fresh-context
       subagent from constitution, AGENTS.md and the spec alone; whether the
       spec sufficed is the test's result, reported in the run's final report.
       *Check:* file in the tree, committed as the subagent wrote it.
-- [ ] **T03 — Record the tasks.** This file. *Check:* committed on its own.
+- [x] **T03 — Record the tasks.** This file. *Check:* committed on its own.
 
 ---
 
-- [ ] **T04 — A lesson frontmatter failure names its file.** The
+- [x] **T04 — A lesson frontmatter failure names its file.** The
       lesson-frontmatter parse joins the path-naming convention the compile
       step already uses, so a schema error reads `content/moduly/…mdx: …` in
       the build log. Start `verification.md` with the baselines already
