@@ -2,6 +2,7 @@ import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import type { ReactElement } from "react";
 import { compileMDX } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 import {
   lessonFrontmatterSchema,
   moduleFrontmatterSchema,
@@ -11,6 +12,21 @@ import {
 
 const contentRoot = path.join(process.cwd(), "content", "moduly");
 const moduleIndexFile = "index.mdx";
+
+/*
+ * MDX implements CommonMark, and Markdown tables are not CommonMark — they are
+ * a GitHub Flavored Markdown extension. Without this plugin the one table in
+ * the lessons renders as a paragraph of pipe characters, which is how it had
+ * been rendering on the live site. See ADR-0009 for what else GFM brings and
+ * why none of it changes the content as written today.
+ *
+ * Both compileMDX calls below share these options: a module index is written
+ * in the same Markdown as a lesson and must parse the same way.
+ */
+const mdxOptions = {
+  parseFrontmatter: true,
+  mdxOptions: { remarkPlugins: [remarkGfm] },
+};
 
 export interface ModuleSummary extends ModuleFrontmatter {
   slug: string;
@@ -41,7 +57,7 @@ async function readModuleFrontmatter(
   );
   const { frontmatter } = await compileMDX({
     source,
-    options: { parseFrontmatter: true },
+    options: mdxOptions,
   });
   return moduleFrontmatterSchema.parse(frontmatter);
 }
@@ -88,7 +104,7 @@ async function readLessonFrontmatterAndBody(
   );
   const { frontmatter, content } = await compileMDX({
     source,
-    options: { parseFrontmatter: true },
+    options: mdxOptions,
   });
   return { frontmatter: lessonFrontmatterSchema.parse(frontmatter), content };
 }

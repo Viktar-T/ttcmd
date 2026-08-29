@@ -78,6 +78,24 @@ rendered page and recorded in `verification.md`, not asserted here.
   quotation and the prose around it, printed.
   *(Acceptance criteria 10 and 11; 9 is judged in T12.)*
 
+- [ ] **T06a — Markdown tables have to render before they can be styled**
+
+  *Added during execution, not present when this file was written, and
+  deliberately suffixed rather than renumbered so that is visible. Found while
+  measuring T04's rhythm: the prose column has no `<table>` in it at all.*
+
+  MDX implements CommonMark and Markdown tables are a GFM extension, so the one
+  table in the lessons has been rendering as a paragraph of pipe characters on
+  the live site. `remark-gfm`, wired into both `compileMDX` calls in
+  `lib/content.ts`. **ADR-0009** records the dependency, the alternatives, and
+  the fact that the approved `plan.md` said neither would happen.
+
+  **Check:** `npm run build` succeeds; the rendered lesson's prose column
+  contains exactly one `<table>` with a `<thead>`, an empty first header cell,
+  and its two body rows, printed; and no other element in any of the six lessons
+  changes shape — counted, since GFM also brings strikethrough, footnotes, task
+  lists and literal autolinks, and the content uses none of them.
+
 - [ ] **T07 — Lists, tables, rules and code containment**
 
   Lists: hanging indent kept, marker colour, tight item gap. Table: scrolls in
