@@ -296,3 +296,34 @@ a.contentsLesson:focus-visible .contentsId {
 main:focus {
   outline: none;
 }
+
+/* ------------------------------------------------------------------ *
+ * Reference-page specimens
+ *
+ * The styleguide shows the housings statically, outside a lesson: the panel
+ * un-stuck and visible at every width, the disclosure likewise, the
+ * back-to-top in flow instead of fixed over the page. Nothing else may use
+ * this attribute; a lesson page never renders it.
+ * ------------------------------------------------------------------ */
+
+[data-specimen-contents] {
+  font-size: var(--text-sm);
+  line-height: var(--leading-tight);
+}
+
+[data-specimen-contents] .contentsPanel {
+  display: block;
+  position: static;
+  width: min(13rem, 100%);
+  max-height: none;
+  font-size: var(--text-sm);
+  line-height: var(--leading-tight);
+}
+
+[data-specimen-contents] .contentsDisclosure {
+  display: block;
+}
+
+[data-specimen-contents] .backToTop {
+  position: static;
+}

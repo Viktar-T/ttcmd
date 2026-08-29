@@ -255,3 +255,25 @@ At **375×812** and at **1280×800**, on the longest lesson:
 - The landing page, `/moduly` and the module page contain no trace of it in
   their served HTML; nor does the **lesson's own served HTML** — the control
   is client-rendered from null, so with JavaScript disabled it never exists.
+
+## T10 — The reference page (criterion 18)
+
+`npm run build` passes. `/styleguide` gains a "The contents panel" section
+with four specimens, read from the rendered page:
+
+1. **The panel**, the real component with specimen data — visible and
+   `position: static` under the specimen override at every width; 2 lesson
+   rows, 4 section entries, the skip control present.
+2. **The row states**, hand-frozen: the current-lesson row a `SPAN`; the
+   active entry carries `aria-current="location"` and computes to the
+   inverted pair (`rgb(237, 235, 230)` on `rgb(42, 41, 38)`); rest and
+   hover/focus states live.
+3. **The disclosure**, the real component — visible at every width, native
+   `details`, collapsed by default.
+4. **Back to top** — the real markup, in flow (`position: static`), 44 px.
+
+*(A screenshot of the section could not be captured: the driven browser pane
+runs hidden and suspends repaints on deep scrolls, so frames beyond the
+initial paint come back stale. Every property above is read from the DOM and
+computed styles instead; how the section looks is one of the human-eye items
+in the final report.)*

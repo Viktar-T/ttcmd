@@ -73,7 +73,7 @@ Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
       activation; absent on module and landing pages; absent with JavaScript
       disabled.
 
-- [ ] **T10 — The reference page carries the specimens.** Row states at rest,
+- [x] **T10 — The reference page carries the specimens.** Row states at rest,
       hover, focus; the inverted active entry; the current-lesson row; the
       disclosure; the back-to-top control as a static specimen. *Check:* the
       styleguide's rendered markup carries each (criterion 18); build passes.

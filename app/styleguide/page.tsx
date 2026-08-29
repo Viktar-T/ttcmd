@@ -3,6 +3,7 @@ import { compileProse } from "@/lib/content";
 import type { CourseLesson, CourseModule } from "@/lib/content";
 import { Band } from "@/components/band";
 import { Breadcrumb } from "@/components/breadcrumb";
+import { ContentsDisclosure, ContentsPanel } from "@/components/contents";
 import { LessonList } from "@/components/lesson-list";
 import { ModuleGrid } from "@/components/module-grid";
 import { Pager } from "@/components/pager";
@@ -162,7 +163,14 @@ const SPECIMEN_LESSONS: CourseLesson[] = [
     href: "#",
     title: "Tytuł na tyle długi, że zawija się w wierszu i sprawdza kształt",
     summary: "Specimen.",
-    sections: [],
+    /* Slice 007: the second lesson plays "current" in the contents-panel
+       specimens, so it is the one carrying sections. */
+    sections: [
+      { id: "wprowadzenie", title: "Wprowadzenie" },
+      { id: "dluzszy-tytul-sekcji-ktory-zawija-sie-w-panelu", title: "Dłuższy tytuł sekcji, który zawija się w panelu" },
+      { id: "cwiczenia", title: "Ćwiczenia 7.1–7.3" },
+      { id: "zrodla", title: "Źródła" },
+    ],
   },
 ];
 
@@ -516,6 +524,96 @@ export default async function StyleguidePage() {
             <a className="button" href="#">
               Zacznij kurs
             </a>
+          </p>
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <h2>The contents panel</h2>
+        <p className={styles.muted}>
+          Slice 007. On a lesson page the panel is sticky in the frame&apos;s
+          left gutter at 80rem and up, and folds into the disclosure below;
+          here both housings are shown statically, at every width. The divider
+          and the disclosure&apos;s box are <code>--rule-strong</code>; the
+          active entry is the inverted body-text/page pair, applied by the
+          scroll-spy as <code>aria-current=&quot;location&quot;</code> — frozen
+          by hand in the states specimen, since nothing scrolls here.
+        </p>
+
+        <div className={styles.specimen} data-specimen-contents>
+          <span className={styles.specimenLabel}>
+            the panel — current lesson expanded, others links; Tab into it to
+            reveal the skip control
+          </span>
+          <ContentsPanel
+            moduleItem={SPECIMEN_MODULES[0]}
+            current={SPECIMEN_LESSONS[1]}
+          />
+        </div>
+
+        <div className={styles.specimen} data-specimen-contents>
+          <span className={styles.specimenLabel}>
+            row states — a section at rest, the inverted active entry, and the
+            non-link current-lesson row; hover or focus for the accent fill
+          </span>
+          <nav aria-label="Stany spisu treści (specimen)">
+            <ol className="contentsLessons">
+              <li>
+                <span className="contentsLesson contentsCurrent">
+                  <span className="contentsId">7b</span> Bieżąca lekcja — nie
+                  jest linkiem
+                </span>
+                <ol className="contentsSections">
+                  <li>
+                    <a className="contentsSection" href="#">
+                      <span aria-hidden="true">- </span>Sekcja w spoczynku
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="contentsSection"
+                      href="#"
+                      aria-current="location"
+                    >
+                      <span aria-hidden="true">- </span>Sekcja aktywna —
+                      odwrócone pole
+                    </a>
+                  </li>
+                </ol>
+              </li>
+              <li>
+                <a className="contentsLesson" href="#">
+                  <span className="contentsId">7a</span> Inna lekcja — link
+                </a>
+              </li>
+            </ol>
+          </nav>
+        </div>
+
+        <div className={styles.specimen} data-specimen-contents>
+          <span className={styles.specimenLabel}>
+            the disclosure — the same list folded for one column, collapsed by
+            default
+          </span>
+          <ContentsDisclosure
+            moduleItem={SPECIMEN_MODULES[0]}
+            current={SPECIMEN_LESSONS[1]}
+          />
+        </div>
+
+        <div className={styles.specimen} data-specimen-contents>
+          <span className={styles.specimenLabel}>
+            back to top — in flow here; fixed to the bottom-right on a lesson,
+            absent until a viewport of scroll
+          </span>
+          <p>
+            <button
+              type="button"
+              className="backToTop"
+              aria-label="Wróć na początek (specimen)"
+            >
+              <span aria-hidden="true">↑</span>
+            </button>
           </p>
         </div>
       </section>
