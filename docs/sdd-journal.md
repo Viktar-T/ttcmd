@@ -256,3 +256,37 @@ in the reflection sections.
   the failure ADR-0003 exists to prevent, and slice 006 is the first to make the
   string visible on every page. The schema belongs to slice 001; the fix belongs
   to a slice that asks for it.
+
+## Slice 007 — contents panel
+
+**Agent notes** *(factual, appended by agents)*
+
+- **Run autonomously end to end** — spec, plan, tasks, nine implementation
+  commits, fresh-context review — with both of the mode's required subagents:
+  the plan was written by a session whose only briefing was the constitution,
+  AGENTS.md and the spec, and the closing diff was reviewed by another. The
+  plan subagent surfaced one real spec ambiguity (the bottom-of-document rule
+  against the followed-link rule) and resolved it with a pin that releases on
+  the next real scroll; the spec was left as written and the gap recorded in
+  the plan, which is the honest order.
+- **The panel landed without moving the article by a pixel**, by replicating
+  the frame's grid tracks in a full-bleed wrapper and hanging the panel in the
+  left gutter track. The baseline was committed before any code (T04), which
+  turned "the article does not move" from an intention into a diff of two
+  measurements: 264.5/736 and 320.5/624, both times.
+- **The instrument shaped one line of product code.** The driven browser pane
+  runs hidden, and a hidden document suspends rendering steps — native scroll
+  events and rAF with them. The harness dispatches the scroll event a visible
+  browser fires itself; the one code change was a direct fallback in the spy
+  when `document.hidden`, so an rAF that never fires is not the only path.
+- **What the working tree taught:** Viktar's uncommitted content edits changed
+  lesson count, letters and section titles between the committed tree and the
+  build. Everything derived — ids, letters, the panel — simply followed, which
+  is ADR-0003 doing its job; the verification records working-tree counts.
+- **Carried forward, not fixed:** the transliteration map is NFC-only (an NFD
+  heading would mint a mangled slug rather than fail); the layout wrapper's
+  tracks are a verbatim copy of the frame's and a future frame edit would
+  silently diverge them; nothing yet enforces distinct `order` per module
+  (already in 006's notes). The untracked `_to_delete/` leftovers had begun
+  failing the build's type-check and were deleted per the roadmap's own
+  housekeeping note.
