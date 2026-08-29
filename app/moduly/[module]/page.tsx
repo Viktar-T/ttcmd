@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCourse } from "@/lib/content";
 import { Band } from "@/components/band";
+import { Breadcrumb } from "@/components/breadcrumb";
 
 export async function generateStaticParams() {
   const course = await getCourse();
@@ -20,8 +21,14 @@ export default async function ModulePage({
 
   return (
     <>
-      {/* The breadcrumb arrives in the next task; the stripe is measured here. */}
-      <Band>{null}</Band>
+      <Band>
+        <Breadcrumb
+          trail={[
+            { label: "Moduły", href: "/moduly" },
+            { label: moduleItem.label },
+          ]}
+        />
+      </Band>
       <div className="prose">
         <h1>{moduleItem.title}</h1>
         <ul>

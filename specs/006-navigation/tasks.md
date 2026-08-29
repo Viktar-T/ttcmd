@@ -71,7 +71,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   beside `specs/005-code-blocks/verification.md`.
   *(Acceptance criteria 11, 12, 13.)*
 
-- [ ] **T05 — Chevron breadcrumbs, and a focus ring that survives the band**
+- [x] **T05 — Chevron breadcrumbs, and a focus ring that survives the band**
 
   `components/breadcrumb.tsx` and the chevron rules in `app/nav.css`: the two
   clipped pseudo-elements, the notched variant, the filled current step, and the

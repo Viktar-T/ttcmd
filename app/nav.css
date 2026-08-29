@@ -44,11 +44,20 @@
   border-block-end: 1px solid var(--rule);
 }
 
-/* The same box as a content child of `main`: 46rem of content at desktop,
-   343px at 375px. That is what keeps the wordmark on the same left edge as the
-   breadcrumb below it and the prose below that. */
+/* THE LANE. Every page-level block on this site — the wordmark, the breadcrumb,
+   the lesson rows, the module grid, the previous/next pair — sits in a box one
+   --measure wide, so the whole site has ONE left edge. Slice 004 centres the
+   measure inside the wider content column, which means anything aligned to the
+   content column instead lands 56px to its left on a desktop and reads as a
+   mistake beside the article it belongs to. --content-width keeps exactly the
+   role 004 gave it: the wide lane a diagram or a table may use INSIDE the prose
+   column.
+
+   The 2rem is the frame's gutters, which a full-bleed element does not get from
+   the grid and has to reproduce. Below 41rem the max-width stops applying and
+   the padding alone matches the frame's 1rem gutters. */
 .siteHeaderInner {
-  max-width: var(--content-width);
+  max-width: calc(var(--measure) + 2rem);
   margin-inline: auto;
   padding: 0.75rem 1rem;
 
@@ -81,7 +90,155 @@
 }
 
 .bandInner {
-  max-width: var(--content-width);
+  max-width: calc(var(--measure) + 2rem);
   margin-inline: auto;
   padding: 0.7rem 1rem;
+}
+
+/* The same lane, for a block that is already inside the frame's content column
+   and therefore already has its gutters. */
+.lane {
+  max-width: var(--measure);
+  margin-inline: auto;
+}
+
+/* ------------------------------------------------------------------ *
+ * The chevron
+ *
+ * An outlined chevron is a shape whose stroke has to follow two diagonals.
+ * `border` cannot draw that, and `clip-path` on the element cuts the border off
+ * along exactly the edges that matter — and cuts the focus ring off with it,
+ * which is why the element itself is never the clipped thing. Two absolutely
+ * positioned pseudo-elements sit behind its text instead: the outer one clipped
+ * and painted in the stroke colour, the inner one inset by the stroke width,
+ * clipped by the same polygon, and painted in the colour of the ground behind
+ * it. `isolation: isolate` is what keeps a negative z-index above the element's
+ * own background instead of escaping to the nearest ancestor stacking context
+ * and disappearing behind the page.
+ *
+ * --point is a LENGTH, not a percentage, so the inner polygon on a box inset by
+ * 1px is the outer polygon moved 1px inward on every edge. Along the diagonal
+ * the perpendicular stroke is 1px x sin(theta) — about 0.87px here — which
+ * reads as the same hairline as the flat edges.
+ *
+ * Six custom properties and one shape. Colour comes from the context — the band
+ * overrides all of them below — so a chevron on the accent stripe and a chevron
+ * on the page are the same rules with different values, not two treatments.
+ * ------------------------------------------------------------------ */
+
+.chev {
+  --point: 0.5rem;
+  --stroke: var(--rule-strong);
+  --ground: var(--bg);
+  --ink: var(--text);
+  --fill: var(--text);
+  --fill-ink: var(--bg);
+  --shape: polygon(
+    0 0,
+    calc(100% - var(--point)) 0,
+    100% 50%,
+    calc(100% - var(--point)) 100%,
+    0 100%
+  );
+
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.9rem;
+  padding-inline: 0.7rem calc(0.7rem + var(--point));
+
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.chev::before,
+.chev::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  clip-path: var(--shape);
+}
+
+.chev::before {
+  inset: 0;
+  background: var(--stroke);
+}
+
+.chev::after {
+  inset: 1px;
+  background: var(--ground);
+}
+
+/* Every step but the first takes the previous step's point out of its own left
+   edge, which is what makes the trail read as one connected run of arrows. */
+.chevNotched {
+  --shape: polygon(
+    0 0,
+    calc(100% - var(--point)) 0,
+    100% 50%,
+    calc(100% - var(--point)) 100%,
+    0 100%,
+    var(--point) 50%
+  );
+  padding-inline-start: calc(0.7rem + var(--point));
+}
+
+/* ------------------------------------------------------------------ *
+ * The breadcrumb
+ * ------------------------------------------------------------------ */
+
+.breadcrumb {
+  font-size: var(--text-sm);
+}
+
+.breadcrumbList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 0.2rem;
+  row-gap: 0.35rem;
+}
+
+.breadcrumbItem {
+  display: flex;
+}
+
+/* ------------------------------------------------------------------ *
+ * On the band, everything inverts
+ *
+ * The accent surface is the ground, so the stroke and the text are the ink that
+ * ADR-0007 pairs with it — 10.27:1 in both themes, and the same value in both,
+ * because --accent-surface and --accent-ink do not move between themes.
+ * ------------------------------------------------------------------ */
+
+[data-band] .chev {
+  --stroke: var(--accent-ink);
+  --ground: var(--accent-surface);
+  --ink: var(--accent-ink);
+  --fill: var(--accent-ink);
+  --fill-ink: var(--accent-surface);
+}
+
+/*
+ * The design reference's inverted active item, written as `.chev.chevCurrent`
+ * and placed AFTER the band block deliberately. `[data-band] .chev` is (0,2,0);
+ * a bare `.chevCurrent` is (0,1,0) and loses to it, so on the band — the only
+ * place a breadcrumb actually appears — the current step rendered outlined,
+ * with its text in the band's own colour and therefore invisible. Equal
+ * specificity and later in the file is the fix; raising it further would only
+ * move the fight.
+ *
+ * --fill is a separate token from --stroke on purpose: on the page background
+ * the stroke is --rule-strong at 3.69:1, which is a legible line and an
+ * illegible fill.
+ */
+.chev.chevCurrent {
+  --ground: var(--fill);
+  --stroke: var(--fill);
+  color: var(--fill-ink);
 }
