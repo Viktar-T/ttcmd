@@ -129,6 +129,164 @@ export default function StyleguidePage() {
           bound to values that already exist; no new hue enters here.
         </p>
       </section>
+
+      <section className={styles.section}>
+        <h2>Lesson typography</h2>
+        <p className={styles.muted}>
+          Slice 004. One specimen of every construct a lesson written in plain
+          Markdown can produce. Six lessons do not cover this — there is
+          exactly one table on the whole site, and no single lesson contains
+          every construct — so this block is the surface those criteria are
+          checked against. The prose below is Polish because Polish typography
+          is the thing under test; the labels stay English like the rest of
+          this page.
+        </p>
+
+        <div className="prose">
+          <h2>Nagłówek drugiego stopnia</h2>
+          <p>
+            Ten akapit stoi tuż pod nagłówkiem, żeby pokazać rytm: odstęp nad
+            nagłówkiem jest wyraźnie większy niż pod nim, a żaden inny odstęp na
+            stronie go nie przekracza. Wewnątrz zdania identyfikator{" "}
+            <code>useState</code> zachowuje krój, ale nie dostaje pudełka, więc
+            akapit pełen nazw nadal czyta się jak akapit.
+          </p>
+
+          <h3>
+            <code>git status</code> — nagłówek nazwany od komendy
+          </h3>
+          <p>
+            Kod w nagłówku ma rozmiar nagłówka i jego kolor. Gdyby dziedziczył
+            stałą wielkość kodu w tekście, tytuł sekcji skurczyłby się tylko
+            dlatego, że nazywa się tak jak polecenie, którego uczy.
+          </p>
+
+          <h4>Nagłówek czwartego stopnia</h4>
+          <p>
+            Żadna lekcja nie używa dziś tego poziomu. Jest opisany, żeby
+            pierwsza, która go potrzebuje, nie dostała ustawień przeglądarki.
+          </p>
+
+          <h5>Nagłówek piątego stopnia</h5>
+          <h6>Nagłówek szóstego stopnia</h6>
+
+          <p>
+            <strong>Wyróżnienia</strong> są w tych lekcjach gęste, więc warto na
+            nie patrzeć na prawdziwym akapicie:{" "}
+            <strong>nie tracisz pracy</strong>, <strong>widzisz, co się
+            zmieniło i kiedy</strong>, a jeśli coś zepsujesz —{" "}
+            <strong>wracasz do wersji, która działała</strong>. Na ciemnym
+            motywie ta sama waga rozlewa się bardziej niż na jasnym, dlatego
+            waga jest tokenem, a nie jedną liczbą.
+          </p>
+
+          <p>
+            Ten odnośnik istnieje po to, żeby sprawdzić podkreślenie pod
+            ogonkiem:{" "}
+            <a href="https://pl.wikipedia.org/wiki/Ogonek_(znak_diakrytyczny)">
+              żądanie, pętla i gałąź — Ą Ę ą ę
+            </a>{" "}
+            — linia musi przechodzić pod ogonkiem, a nie przez niego, i musi
+            być widoczna także wtedy, gdy z ekranu zniknie kolor.
+          </p>
+
+          <h3>Listy</h3>
+          <ul>
+            <li>
+              <strong>Krótki punkt z wytłuszczonym początkiem</strong> — tak
+              wygląda większość list w lekcjach.
+            </li>
+            <li>
+              <strong>Punkt, który się zawija</strong> — jego dalsze wiersze
+              muszą trafiać pod tekst punktu, a nie pod jego znacznik, bo
+              inaczej lista przestaje być jednym obiektem i zaczyna być zbiorem
+              luźnych zdań na stronie.
+            </li>
+          </ul>
+
+          <ol>
+            <li>
+              Krótkie zadanie mieszczące się w jednym wierszu.
+            </li>
+            <li>
+              Zadanie długie: wykonaj polecenie <code>git log --oneline</code>,
+              przeczytaj wynik, a potem opisz własnymi słowami, co się zmieniło
+              między dwoma ostatnimi commitami i dlaczego akurat ta różnica jest
+              tu istotna. Ten punkt zawija się na co najmniej trzy wiersze
+              celowo.
+            </li>
+            <li>Trzecie zadanie, żeby numeracja miała kontekst.</li>
+          </ol>
+
+          <h3>Cytaty</h3>
+          <p>
+            Cytat jednoakapitowy, bez podpisu — najczęstszy kształt w tych
+            lekcjach:
+          </p>
+
+          <blockquote>
+            <p>
+              Vibe coding nie oznacza „używania narzędzi AI do pomocy w pisaniu
+              kodu". Oznacza „generowanie kodu przy pomocy AI bez dbania o to,
+              jaki kod powstaje".
+            </p>
+          </blockquote>
+
+          <p>
+            Cytat wieloakapitowy zakończony wierszem atrybucji. Wiersz atrybucji
+            jest zwykłym akapitem cytatu — myślnik i data robią całą robotę:
+          </p>
+
+          <blockquote>
+            <p>
+              Wartość 90% moich umiejętności właśnie spadła do 0 dolarów.
+              Dźwignia pozostałych 10% wzrosła 1000-krotnie. Muszę się
+              przekalibrować.
+            </p>
+            <p>
+              — Kent Beck,{" "}
+              <a href="https://x.com/KentBeck/status/1648413998025707520">
+                18 kwietnia 2023
+              </a>
+            </p>
+          </blockquote>
+
+          <h3>Tabela</h3>
+          <p>
+            Pierwsza komórka nagłówka jest pusta — to jest kształt, który psuje
+            każde rozwiązanie zakładające, że nagłówek jest wypełnionym pasem.
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Jednostka pracy</th>
+                <th>Twoja rola</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Warstwy 1–3</td>
+                <td>linijka, fragment</td>
+                <td>piszesz</td>
+              </tr>
+              <tr>
+                <td>Warstwy 4–5</td>
+                <td>zadanie</td>
+                <td>zlecasz i sprawdzasz</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <hr />
+
+          <p>
+            Poziomej linii nie ma dziś w żadnej lekcji. Jest opisana z tego
+            samego powodu co nagłówki czwartego stopnia.
+          </p>
+        </div>
+      </section>
     </div>
   );
 }
