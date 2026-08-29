@@ -277,3 +277,81 @@ runs hidden and suspends repaints on deep scrolls, so frames beyond the
 initial paint come back stale. Every property above is read from the DOM and
 computed styles instead; how the section looks is one of the human-eye items
 in the final report.)*
+
+## T11 — The verification pass (criteria 1, 13, 15, 16, 19, 20)
+
+### Criteria 1 and 16 — the build's own guards
+
+`npm run build` passes end to end: "Design invariants OK." — no colour
+literal outside `app/tokens.css` (Check B scans every `.css`/`.ts`/`.tsx`
+under `app/`, `lib/`, `components/`, which includes everything this slice
+added) — and Check E prints, among the floors unchanged from slice 006:
+
+```
+dark  (:root)               --rule-strong  on --bg   3.69:1  (needs 3)
+:root[data-theme="light"]   --rule-strong  on --bg   3.64:1  (needs 3)
+```
+
+which is the value on the panel's divider, the disclosure's box and the
+back-to-top's border (computed border colours read off the DOM in T06 and
+T09). The decorative `--rule` is untouched — `git log` for the slice shows no
+commit editing `app/tokens.css` at all. The inverted active entry and the
+focus indicator are existing pairs the same report covers (`--text` on
+`--bg`, `--accent-line` on `--bg` at 8.67:1 / 5.86:1).
+
+### Criterion 13 — the no-JavaScript walk, whole
+
+A same-origin iframe sandboxed **without** `allow-scripts`, loaded with the
+longest lesson at 1280×800 — no page script runs in that frame:
+
+- the panel is present with 6 lesson links and 9 section links;
+- clicking a section link navigates the frame to `#cwiczenia` and the
+  browser scrolls it — the heading lands at **32 px** below the top edge,
+  the `scroll-margin-top` doing its work as pure CSS;
+- the disclosure's summary opens and closes it (user-agent default action);
+- a lesson link's `href` resolves to the real lesson route;
+- **no** `aria-current="location"` exists anywhere, and **no** back-to-top
+  control exists — neither is in the server HTML at all;
+- the console shows no page errors (the only entries are React's dev-only
+  kebab-case SVG warnings from the lessons' own diagrams, pre-existing).
+
+### Criterion 15 — the skip control, under real keys
+
+With focus in the page, two Tab steps after the breadcrumb land on
+`a.contentsSkip` — which is **visible while focused** (156×22 px, from
+1×1 clipped), matches `:focus-visible`, and shows the site's focus outline
+in `--accent-line` (8.67:1 on the panel's surface, per Check E above).
+Activating it sets `#tresc` and moves real focus to the article
+(`document.activeElement` = the `.prose` div, outside the panel). One
+honest caveat: activation was driven by `.click()` on the focused link —
+the harness's synthetic Return keystroke did not trigger link activation
+(a driver quirk; anchor activation on Enter is the browser's own,
+unscripted behaviour).
+
+### Criterion 19 — no new resource
+
+The network log for a full lesson load: every request is
+`http://localhost:3000` — the document, script chunks, two stylesheets, and
+the **four** font files already shipped (two faces × two subsets, ADR-0005).
+No image, no other font, no third-party host. (The dev server adds its own
+HMR/devtools requests, including a devtools-only font — dev machinery, not
+part of the built site.)
+
+### Criterion 20 — nothing under `content/`
+
+`git log 8862b22..HEAD -- content/` (the whole slice) lists **no commit**.
+The working tree's `content/` modifications are Viktar's own, byte-for-byte
+the set present in the session's opening status, before this slice began.
+
+### Left for a human eye
+
+Named per AGENTS.md §3; none blocks the behavioural criteria above:
+
+1. **How the panel reads at a glance** — muted rows, the accent identity
+   strings, the inverted active box — on a projector and on the light theme.
+   Measured legible; whether it looks *right* is taste.
+2. **The reference page's new section**, which the harness could not
+   screenshot (hidden-pane repaint limits).
+3. **The scroll-following highlight in live motion** — every state was
+   verified from the DOM at rest; the feel of the transition while a human
+   scrolls was not observable here.

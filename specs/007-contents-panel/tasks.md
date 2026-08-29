@@ -78,7 +78,7 @@ Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
       disclosure; the back-to-top control as a static specimen. *Check:* the
       styleguide's rendered markup carries each (criterion 18); build passes.
 
-- [ ] **T11 — The verification pass.** The full sweep into
+- [x] **T11 — The verification pass.** The full sweep into
       `verification.md`: build output for the colour guard and the contrast
       report (criteria 1, 16); the JavaScript-disabled walk (criterion 13,
       whole); the network log showing no new resource (criterion 19);
