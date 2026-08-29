@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 import { compileProse } from "@/lib/content";
+import type { CourseLesson, CourseModule } from "@/lib/content";
+import { Band } from "@/components/band";
+import { Breadcrumb } from "@/components/breadcrumb";
+import { LessonList } from "@/components/lesson-list";
+import { ModuleGrid } from "@/components/module-grid";
+import { Pager } from "@/components/pager";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -121,6 +127,61 @@ const SIZES: { token: string; className: string }[] = [
   { token: "--text-lg", className: styles.sizeLg },
   { token: "--text-base", className: styles.sizeBase },
   { token: "--text-sm", className: styles.sizeSm },
+];
+
+/*
+ * The navigation furniture — slice 006 §8.
+ *
+ * Built from LITERAL props rather than from the course, so the specimens keep
+ * showing what they were written to show when a module is added or a lesson is
+ * reordered. The identity strings below are invented on purpose: 7a and 7b
+ * belong to no real module, so nothing here can be mistaken for content.
+ *
+ * The labels around them are English like the rest of this page; the specimens'
+ * own text is Polish, because that is what they render on the site.
+ */
+const SPECIMEN_LESSONS: CourseLesson[] = [
+  {
+    moduleSlug: "07-przyklad",
+    slug: "krotki",
+    order: 1,
+    letter: "a",
+    id: "7a",
+    href: "#",
+    title: "Krótki tytuł",
+    summary: "Specimen.",
+  },
+  {
+    moduleSlug: "07-przyklad",
+    slug: "dlugi",
+    order: 2,
+    letter: "b",
+    id: "7b",
+    href: "#",
+    title: "Tytuł na tyle długi, że zawija się w wierszu i sprawdza kształt",
+    summary: "Specimen.",
+  },
+];
+
+const SPECIMEN_MODULES: CourseModule[] = [
+  {
+    slug: "07-przyklad",
+    title: "Przykładowy moduł",
+    number: 7,
+    label: "Moduł 7",
+    href: "#",
+    body: <></>,
+    lessons: SPECIMEN_LESSONS,
+  },
+  {
+    slug: "08-drugi",
+    title: "Drugi przykładowy moduł z dłuższym tytułem",
+    number: 8,
+    label: "Moduł 8",
+    href: "#",
+    body: <></>,
+    lessons: SPECIMEN_LESSONS.slice(0, 1),
+  },
 ];
 
 export default async function StyleguidePage() {
@@ -383,6 +444,77 @@ export default async function StyleguidePage() {
         </p>
 
         <div className="prose">{codeSpecimens}</div>
+      </section>
+
+      <section className={styles.section}>
+        <h2>Navigation</h2>
+        <p className={styles.muted}>
+          Slice 006. The chevron is one clipped polygon drawn twice by two
+          pseudo-elements, so it keeps a visible outline on both diagonals and
+          does not clip its own focus ring — tab through the shapes below to see
+          it, including on the band, where the site&apos;s usual focus colour is
+          the band&apos;s own colour. Every outline here is{" "}
+          <code>--rule-strong</code>, which clears 3:1 in both themes; the
+          hairlines that only separate are still <code>--rule</code>.
+        </p>
+
+        <div className={styles.specimen}>
+          <span className={styles.specimenLabel}>
+            breadcrumb, on the band — earlier steps outlined, the current one
+            filled
+          </span>
+          <Band>
+            <Breadcrumb
+              trail={[
+                { label: "Moduły", href: "#" },
+                { label: "Moduł 7", href: "#" },
+                { label: "7b" },
+              ]}
+            />
+          </Band>
+        </div>
+
+        <div className={styles.specimen}>
+          <span className={styles.specimenLabel}>
+            chevron rows — hover or focus one to see the inverted active item
+          </span>
+          <LessonList lessons={SPECIMEN_LESSONS} />
+        </div>
+
+        <div className={styles.specimen}>
+          <span className={styles.specimenLabel}>
+            module cards — the number where an illustration would be, and the
+            doubled frame
+          </span>
+          <ModuleGrid modules={SPECIMEN_MODULES} />
+        </div>
+
+        <div className={styles.specimen}>
+          <span className={styles.specimenLabel}>
+            previous / next, with the second step crossing into another module
+          </span>
+          <Pager
+            ariaLabel="Specimen"
+            previousLabel="Poprzednia lekcja"
+            nextLabel="Następna lekcja"
+            previous={{ href: "#", id: "7a", title: "Krótki tytuł" }}
+            next={{
+              href: "#",
+              id: "8a",
+              title: "Pierwsza lekcja następnego modułu",
+              crossesInto: "Moduł 8",
+            }}
+          />
+        </div>
+
+        <div className={styles.specimen}>
+          <span className={styles.specimenLabel}>bordered button</span>
+          <p>
+            <a className="button" href="#">
+              Zacznij kurs
+            </a>
+          </p>
+        </div>
       </section>
     </div>
   );

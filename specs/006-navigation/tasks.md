@@ -130,7 +130,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   filtered to images and third-party origins: zero.
   *(Acceptance criteria 6, 15, 16, 21.)*
 
-- [ ] **T09 — The reference page carries the navigation furniture**
+- [x] **T09 — The reference page carries the navigation furniture**
 
   A section on `/styleguide` with a breadcrumb in both segment states, a chevron
   row, a module card and a previous/next pair, built from literal props so the
