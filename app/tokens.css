@@ -77,3 +77,21 @@
   --measure: 39rem;
   --content-width: 48rem;
 }
+
+/*
+ * The vertical rhythm. Five gaps, strictly increasing, with the two heading
+ * gaps the largest two — and that ordering is the acceptance criterion, not a
+ * preference. It is a property of this block rather than of any rule that uses
+ * it, which is why the values live together and are read together.
+ *
+ * Every gap in a lesson is applied as a margin-top and nothing carries a
+ * margin-bottom, so between two adjacent blocks there is exactly one margin.
+ * A doubled gap and a collapsed gap both become unconstructible.
+ */
+:root {
+  --gap-tight: 0.5rem; /* between list items; between paragraphs of one quotation */
+  --gap-block: 1.6rem; /* the ordinary gap between two blocks */
+  --gap-apart: 2.5rem; /* around a quotation, a diagram, a table */
+  --gap-subsection: 3rem; /* above an h3 and below */
+  --gap-section: 4.25rem; /* above an h2 */
+}

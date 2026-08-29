@@ -55,3 +55,56 @@
 .prose {
   overflow-wrap: break-word;
 }
+
+/* ------------------------------------------------------------------ *
+ * The rhythm
+ *
+ * Order matters here, and it is the whole of acceptance criterion 5: block
+ * gap, then the tight gaps, then the set-apart gaps, then the heading gaps
+ * last, so a heading following a quotation still gets the heading's space.
+ *
+ * Read the tokens in tokens.css alongside this: the five gaps are strictly
+ * increasing and the heading gaps are the largest two, which is why "no other
+ * block gap exceeds the heading gap" is a fact about the file rather than
+ * something to re-check per page.
+ * ------------------------------------------------------------------ */
+
+/* Margin-bottom is abolished, not overridden. :where() so the reset carries no
+   specificity and never has to be fought later. */
+.prose :where(p, h1, h2, h3, h4, h5, h6, ul, ol, li, blockquote, pre, table, figure, hr) {
+  margin: 0;
+}
+
+.prose > * {
+  margin-top: var(--gap-block);
+}
+
+.prose li + li,
+.prose blockquote > p + p {
+  margin-top: var(--gap-tight);
+}
+
+.prose > :is(blockquote, svg, table, pre) {
+  margin-top: var(--gap-apart);
+}
+
+/* Set apart below as well as above — unless a heading follows, in which case
+   the heading's own larger gap wins. Written as :not() rather than left to
+   source order, so re-ordering this file cannot silently break it. */
+.prose > :is(blockquote, svg, table, pre) + :not(:is(h1, h2, h3, h4, h5, h6)) {
+  margin-top: var(--gap-apart);
+}
+
+.prose > :is(h3, h4, h5, h6) {
+  margin-top: var(--gap-subsection);
+}
+
+.prose > h2 {
+  margin-top: var(--gap-section);
+}
+
+/* Beats every rule above on specificity, so a lesson opening with a heading
+   does not open with a hole. */
+.prose > :first-child {
+  margin-top: 0;
+}
