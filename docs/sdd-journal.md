@@ -290,3 +290,50 @@ in the reflection sections.
   (already in 006's notes). The untracked `_to_delete/` leftovers had begun
   failing the build's type-check and were deleted per the roadmap's own
   housekeeping note.
+
+## Slice 008 — publish flag
+
+**Agent notes** *(factual, appended by agents)*
+
+- **Run autonomously end to end** — spec, plan, tasks, four implementation
+  commits, fresh-context closing review — with both required subagents, plus
+  an extra pass the mode does not require: the spec was adversarially
+  critiqued by three fresh reviewers *before* it was committed. That pass
+  caught a blocking defect — an acceptance criterion whose module-boundary
+  scenario no flag configuration on this content tree could stage (the only
+  inter-module boundary follows a single-lesson module) — plus an unnamed
+  derived surface (the landing page's entry link) and a lesson census that
+  described the committed tree while verification would run against the
+  working tree. All three were fixed in the spec before T01 was committed.
+- **The plan subagent found the spec sufficient** and surfaced a repair the
+  spec had forced without saying so: criterion 2's "fails the build, naming
+  the file" was untrue of *any* frontmatter schema failure — the parse sat
+  outside the path-wrapping the compile step already had — so the slice
+  necessarily improved the error for every lesson frontmatter mistake, not
+  just `publish`. On the letter of AGENTS.md §2 the plan session's inputs
+  exceeded the three named documents: it read the code it needed for the
+  file map and disclosed that in its own status line; the T02 commit subject
+  ("from the spec alone") is looser than the commit body. Recorded, not
+  rewritten.
+- **The whole feature is a filter at one derivation plus one refusal.**
+  Every listing, count, contents panel and pager was correct with zero
+  component changes because slice 006 put the course behind `getCourse()`;
+  the only code beyond the filter was the data-level refusal in the
+  single-lesson read (the host renders unlisted routes on demand, so absence
+  from the build output is not a refusal) and the landing-page derivation
+  widening to the flattened course.
+- **Verification ran against the served production build**, staging three
+  flag flips (a mid-sequence lesson, the lowest-order lesson, a whole module
+  gone dark), each reverted; the content tree byte-compared equal to its
+  pre-slice snapshot afterwards — status list, diff hash and untracked-file
+  hashes all identical. One nuance recorded openly: the two 404 bodies match
+  in substance, not byte-for-byte — the framework echoes each request's own
+  path segments in its payload, disclosing nothing.
+- **Carried forward, not fixed** (all confirmed pre-existing by the closing
+  review): a module-index frontmatter failure still surfaces a bare ZodError
+  with no file path; a lesson URL under a module directory that does not
+  exist renders the framework error page rather than the 404 (`readdir`
+  throws before any guard); a stray `publish` on a module's `index.mdx` is
+  silently stripped by the non-strict module schema. Also pinned: the spec's
+  "a `no` fails the build" is true because the frontmatter pipeline resolves
+  to a YAML 1.2 parser — a YAML 1.1 parser would read `no` as `false`.
