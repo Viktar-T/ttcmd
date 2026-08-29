@@ -42,6 +42,13 @@
  *   is legible on one theme and invisible on the other — and everything in this
  *   repo is built while looking at the dark one.
  *
+ * Check E — the contrast floors, in both themes (ADR-0007/0012, WCAG 1.4.3/1.4.11).
+ *   Slices 003, 004 and 005 each computed these ratios by hand into a
+ *   verification document. Every one of them was true on the day it was written
+ *   and none of them would notice a token being edited afterwards — which is the
+ *   same silent failure as the rest of this file, arrived at by a different
+ *   route. The arithmetic is cheap and the token file is right here.
+ *
  * Node built-ins only, EXCEPT `shiki` in Check C: the list of variables the
  * theme can emit belongs to the theme, and a second copy of it here would be a
  * second thing to keep in step. `shiki` is already a dependency of the project
@@ -314,11 +321,137 @@ function checkCodePalette() {
   }
 }
 
+/* ------------------------------------------------------------------ *
+ * Check E — the contrast floors, computed from the token file
+ *
+ * The pairs below are the promises this repository has already made: body and
+ * muted text and links at the WCAG 1.4.3 floor of 4.5:1, and the two rules that
+ * carry meaning at 1.4.11's 3:1. They are checked for the dark block and for
+ * the light one, because a token overridden in one theme and not the other is
+ * exactly how a value passes on the theme somebody was looking at.
+ *
+ * Not covered here: the code palette. Its eight colours sit on a surface that
+ * does not follow the page, Checks C and D already keep them defined and
+ * theme-independent, and slice 005's verification computes them against their
+ * own ground. Extending this table to them is a slice's decision, not a
+ * side effect of this one.
+ * ------------------------------------------------------------------ */
+
+const CONTRAST_FLOORS = [
+  { foreground: "--text", background: "--bg", floor: 4.5, what: "body text and headings" },
+  { foreground: "--text-muted", background: "--bg", floor: 4.5, what: "muted text" },
+  { foreground: "--link", background: "--bg", floor: 4.5, what: "links in prose" },
+  { foreground: "--accent-line", background: "--bg", floor: 4.5, what: "accent lines and the circled letter" },
+  { foreground: "--accent-ink", background: "--accent-surface", floor: 4.5, what: "text on the accent band" },
+  { foreground: "--rule-strong", background: "--bg", floor: 3, what: "a rule that identifies a component (ADR-0012)" },
+  { foreground: "--rule-quote", background: "--bg", floor: 3, what: "the rule beside a quotation (slice 004)" },
+];
+
+/** WCAG 2.x relative luminance of a #rgb or #rrggbb literal. */
+function relativeLuminance(hex) {
+  const digits = hex.slice(1);
+  const full =
+    digits.length === 3
+      ? digits.split("").map((d) => d + d)
+      : [digits.slice(0, 2), digits.slice(2, 4), digits.slice(4, 6)];
+  const [r, g, b] = full.map((pair) => {
+    const channel = parseInt(pair, 16) / 255;
+    return channel <= 0.03928
+      ? channel / 12.92
+      : Math.pow((channel + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+function contrastRatio(a, b) {
+  const [high, low] = [relativeLuminance(a), relativeLuminance(b)].sort((x, y) => y - x);
+  return (high + 0.05) / (low + 0.05);
+}
+
+function checkContrastFloors() {
+  const blocks = readTokenBlocks();
+  if (!blocks) return;
+
+  /* Every theme the file defines, as a name and the declarations in force for
+     it: the :root blocks merged in source order, then that theme's own blocks
+     merged over them. Both selectors appear several times in tokens.css — the
+     file groups its declarations by subject, not by selector — so a theme is
+     the union of its blocks and not any one of them. Reading only the first
+     would compute the dark values and label them light. */
+  const merge = (target, selector) => {
+    for (const block of blocks) {
+      if (block.selector !== selector) continue;
+      for (const [name, value] of block.declarations) target.set(name, value);
+    }
+    return target;
+  };
+
+  const root = merge(new Map(), ":root");
+  const themeSelectors = [
+    ...new Set(
+      blocks
+        .map((block) => block.selector)
+        .filter((selector) => selector.includes("[data-theme")),
+    ),
+  ];
+  const themes = [
+    { name: "dark (:root)", declarations: root },
+    ...themeSelectors.map((selector) => ({
+      name: selector,
+      declarations: merge(new Map(root), selector),
+    })),
+  ];
+  const nameWidth = Math.max(...themes.map((theme) => theme.name.length));
+
+  /** Follows var() aliases to a colour literal, or null with the reason. */
+  function resolve(name, declarations, seen = new Set()) {
+    if (seen.has(name)) return { error: `\`${name}\` refers to itself` };
+    seen.add(name);
+    const value = declarations.get(name);
+    if (value === undefined) return { error: `\`${name}\` is not defined` };
+    const alias = /^var\((--[\w-]+)\)$/.exec(value.trim());
+    if (alias) return resolve(alias[1], declarations, seen);
+    if (!/^#[0-9a-f]{3}$|^#[0-9a-f]{6}$/i.test(value.trim())) {
+      return { error: `\`${name}\` is \`${value.trim()}\`, which is not a hex literal or a var() alias` };
+    }
+    return { colour: value.trim() };
+  }
+
+  for (const theme of themes) {
+    for (const pair of CONTRAST_FLOORS) {
+      const foreground = resolve(pair.foreground, theme.declarations);
+      const background = resolve(pair.background, theme.declarations);
+      const problem = foreground.error ?? background.error;
+      if (problem) {
+        fail("E", `${theme.name}: ${problem}. Check E cannot compute ${pair.foreground} on ${pair.background}.`);
+        continue;
+      }
+      const ratio = contrastRatio(foreground.colour, background.colour);
+      if (ratio < pair.floor) {
+        fail(
+          "E",
+          `${theme.name}: ${pair.foreground} (${foreground.colour}) on ${pair.background} ` +
+            `(${background.colour}) is ${ratio.toFixed(2)}:1, under the ${pair.floor}:1 floor — ` +
+            `${pair.what}. The value is what changes, not the floor.`,
+        );
+      } else {
+        contrastReport.push(
+          `    ${theme.name.padEnd(nameWidth)}  ${pair.foreground.padEnd(15)} on ${pair.background.padEnd(17)} ` +
+            `${ratio.toFixed(2).padStart(6)}:1  (needs ${pair.floor})`,
+        );
+      }
+    }
+  }
+}
+
+const contrastReport = [];
+
 /* ------------------------------------------------------------------ */
 
 checkFontSubsets();
 checkColourLiterals();
 checkCodePalette();
+checkContrastFloors();
 
 if (failures.length > 0) {
   console.error("\n  Design invariants failed:\n");
@@ -329,3 +462,7 @@ if (failures.length > 0) {
 }
 
 console.log("  Design invariants OK.");
+if (contrastReport.length > 0) {
+  console.log("  Contrast floors (Check E):");
+  for (const line of contrastReport) console.log(line);
+}

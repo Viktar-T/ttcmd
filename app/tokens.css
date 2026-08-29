@@ -43,6 +43,24 @@
 }
 
 /*
+ * A rule that IS a component rather than a separator between two — slice 006,
+ * ADR-0012. A card's frame, a chevron's outline, a button's border: in each of
+ * those the line is the only thing identifying the component, which WCAG 1.4.11
+ * holds to 3:1. --rule is 1.47:1 on dark and 1.36:1 on light and stays exactly
+ * where slices 003 to 005 put it, on the hairlines that separate and mean
+ * nothing.
+ *
+ * DEFINED ONCE, and the same value in both themes on purpose: a rule has to be
+ * lighter than a near-black page and darker than a near-white one, and a mid
+ * grey is both. 3.69:1 on dark, 3.64:1 on light — almost exactly the point
+ * where the two meet, which is where the worse of the two is at its best.
+ * Check E recomputes both on every build.
+ */
+:root {
+  --rule-strong: #83807a;
+}
+
+/*
  * Role aliases. Slice 004 needs a name for each of these; they are bound to
  * values that already exist, so no new hue enters the palette here.
  */

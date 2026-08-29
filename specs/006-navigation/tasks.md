@@ -36,7 +36,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   build failing with the folder named, and revert.
   *(Acceptance criteria 4 and 5's mechanical half.)*
 
-- [ ] **T03 — A rule that can be seen, and the floors the build now keeps**
+- [x] **T03 — A rule that can be seen, and the floors the build now keeps**
 
   List `docs/adr/`, claim the next free number, and write the ADR: the value,
   the arithmetic, and the amendment to ADR-0007. `--rule-strong` in
