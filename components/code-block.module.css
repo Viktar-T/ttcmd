@@ -152,3 +152,24 @@
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* ------------------------------------------------------------------ *
+ * The filename header
+ *
+ * On the code surface, not on a bar of its own: the copy control's occluding
+ * background is the same colour wherever it sits, so there is no seam where
+ * the two meet. A hairline separates them, and `--control-space` keeps a long
+ * filename from running under the control.
+ * ------------------------------------------------------------------ */
+
+.filename {
+  padding-block: 0.3rem;
+  padding-inline: var(--gutter) var(--control-space);
+  border-block-end: 1px solid var(--code-rule);
+
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--code-token-comment);
+  overflow-wrap: anywhere;
+}

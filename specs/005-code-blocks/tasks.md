@@ -86,7 +86,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   control at rest is scrolled clear and that is shown.
   *(Acceptance criteria 11, 12, 13, 19.)*
 
-- [ ] **T06 — The fence info line, and the filename header**
+- [x] **T06 — The fence info line, and the filename header**
 
   `lib/code-meta.ts`: the grammar of the plan, strict, with errors naming what
   was written and what is accepted. Wired as `parseMetaString`, and the file

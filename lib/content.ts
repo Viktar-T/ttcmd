@@ -47,6 +47,28 @@ const mdxOptions = {
  */
 const mdxComponents = { pre: CodeBlock };
 
+/**
+ * Every compile goes through here so that a failure names the file.
+ *
+ * The things slice 005 made into build failures — an unrecognised language, an
+ * info line that does not parse, a marked line past the end of a block — are
+ * thrown from inside the highlighter, which knows the block but not the lesson.
+ * A build that stops on "cannot read the info line" without saying which of
+ * eight files it is in is a build somebody has to bisect.
+ */
+async function compile(source: string, relativePath: string) {
+  try {
+    return await compileMDX({
+      source,
+      options: mdxOptions,
+      components: mdxComponents,
+    });
+  } catch (error) {
+    const detail = error instanceof Error ? error.message : String(error);
+    throw new Error(`${relativePath}: ${detail}`, { cause: error });
+  }
+}
+
 export interface ModuleSummary extends ModuleFrontmatter {
   slug: string;
 }
@@ -70,15 +92,12 @@ async function readModuleSlugs(): Promise<string[]> {
 async function readModuleFrontmatter(
   moduleSlug: string
 ): Promise<ModuleFrontmatter> {
+  const relativePath = `content/moduly/${moduleSlug}/${moduleIndexFile}`;
   const source = await readFile(
     path.join(contentRoot, moduleSlug, moduleIndexFile),
     "utf8"
   );
-  const { frontmatter } = await compileMDX({
-    source,
-    options: mdxOptions,
-    components: mdxComponents,
-  });
+  const { frontmatter } = await compile(source, relativePath);
   return moduleFrontmatterSchema.parse(frontmatter);
 }
 
@@ -118,15 +137,12 @@ async function readLessonFrontmatterAndBody(
   moduleSlug: string,
   lessonSlug: string
 ) {
+  const relativePath = `content/moduly/${moduleSlug}/${lessonSlug}.mdx`;
   const source = await readFile(
     path.join(contentRoot, moduleSlug, `${lessonSlug}.mdx`),
     "utf8"
   );
-  const { frontmatter, content } = await compileMDX({
-    source,
-    options: mdxOptions,
-    components: mdxComponents,
-  });
+  const { frontmatter, content } = await compile(source, relativePath);
   return { frontmatter: lessonFrontmatterSchema.parse(frontmatter), content };
 }
 

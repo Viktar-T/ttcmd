@@ -2,6 +2,7 @@ import rehypeShiki, { type RehypeShikiOptions } from "@shikijs/rehype";
 import { createCssVariablesTheme } from "shiki";
 import type { ShikiTransformer } from "shiki";
 import type { Element } from "hast";
+import { parseCodeMeta, type CodeMeta } from "./code-meta";
 
 /**
  * Syntax highlighting, computed when the site is built.
@@ -38,8 +39,39 @@ const codeTheme = createCssVariablesTheme({
   fontStyle: true,
 });
 
+/**
+ * The parsed info line, put there by `parseMetaString` and read back in the
+ * hooks below — parsed once per block rather than once per hook. shiki types
+ * `meta` as an open record, so the cast happens here, once, with a shape check.
+ */
+function metaOf(meta: Record<string, unknown> | undefined): CodeMeta | null {
+  const parsed = meta?.ttcmd;
+  return parsed && typeof parsed === "object" ? (parsed as CodeMeta) : null;
+}
+
 const ttcmdCodeTransformer: ShikiTransformer = {
   name: "ttcmd:code",
+
+  /*
+   * The only hook that sees the code after the trailing newline has been
+   * stripped, so it is the only place that knows how many lines the block
+   * really has. A range that used to point at the interesting line and now
+   * points past the end of the block is exactly the silent rot this repo
+   * builds checks for.
+   */
+  preprocess(code) {
+    const meta = metaOf(this.options.meta);
+    if (!meta || meta.highlighted.length === 0) return;
+
+    const lineCount = code.split("\n").length;
+    const overrun = meta.highlighted.filter((line) => line > lineCount);
+    if (overrun.length > 0) {
+      throw new Error(
+        `code block: the info line marks line ${overrun.join(", ")}, but the block ` +
+          `has ${lineCount} line${lineCount === 1 ? "" : "s"}.`
+      );
+    }
+  },
 
   /*
    * The inline style shiki writes here paints the surface and the foreground.
@@ -49,6 +81,9 @@ const ttcmdCodeTransformer: ShikiTransformer = {
    */
   pre(node: Element) {
     delete node.properties.style;
+
+    const filename = metaOf(this.options.meta)?.filename;
+    if (filename) node.properties["data-filename"] = filename;
   },
 };
 
@@ -73,6 +108,10 @@ export const rehypeCodeHighlight: [typeof rehypeShiki, RehypeShikiOptions] = [
     defaultLanguage: "text",
 
     /* Deliberately absent: `fallbackLanguage` and `onError`. See the header. */
+
+    /* Called once per block that carries an info line, and it throws rather
+       than shrugging at anything it cannot read. See lib/code-meta.ts. */
+    parseMetaString: (raw: string) => ({ ttcmd: parseCodeMeta(raw) }),
 
     transformers: [ttcmdCodeTransformer],
   },

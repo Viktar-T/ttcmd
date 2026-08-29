@@ -23,9 +23,27 @@ import { CopyButton } from "./copy-button";
  * region has to be reachable from a keyboard, and on this site some blocks
  * scroll and some do not.
  */
-export function CodeBlock({ children }: ComponentPropsWithoutRef<"pre">) {
+/**
+ * `data-filename` is put on the `<pre>` by the transformer in
+ * `lib/code-highlight.ts`, from the fence's own info line. It is not part of
+ * React's `pre` props, so it is declared here.
+ */
+type CodeBlockProps = ComponentPropsWithoutRef<"pre"> & {
+  "data-filename"?: string;
+};
+
+export function CodeBlock({
+  children,
+  "data-filename": filename,
+}: CodeBlockProps) {
   return (
     <figure className={styles.block} data-code-block="">
+      {/* No filename, no header — and no empty bar in its place. Eight of the
+          nine blocks in the Git lesson are one or two lines, and a permanent
+          header would double the height of every one of them. */}
+      {filename ? (
+        <figcaption className={styles.filename}>{filename}</figcaption>
+      ) : null}
       <pre className={styles.pre} tabIndex={0}>
         {children}
       </pre>
