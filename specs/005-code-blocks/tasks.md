@@ -130,7 +130,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   and comment spans are printed with the variable each resolves to.
   *(Acceptance criteria 8, 10, 21, 23.)*
 
-- [ ] **T09 — The verification pass**
+- [x] **T09 — The verification pass**
 
   `specs/005-code-blocks/verification.md`, in 003's and 004's shape: the
   contrast table; the theme-independence comparison printed for both themes;
