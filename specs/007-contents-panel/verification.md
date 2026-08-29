@@ -355,3 +355,41 @@ Named per AGENTS.md §3; none blocks the behavioural criteria above:
 3. **The scroll-following highlight in live motion** — every state was
    verified from the DOM at rest; the feel of the transition while a human
    scrolls was not observable here.
+
+## T12 — The fresh-context review (criterion 21)
+
+A fresh-context subagent reviewed `git diff 8862b22..HEAD` against the spec,
+its only briefing the constitution, AGENTS.md and this slice's documents. It
+re-verified independently rather than trusting the record: re-ran the build,
+re-read the built HTML, re-measured the article's geometry post-change
+(equal to the baseline to the pixel), and reproduced the scroll-spy's three
+states and the pin.
+
+**Gaps affecting correctness or a criterion: none.** Commit hygiene clean;
+scope clean; all 21 criteria confirmed met or honestly recorded.
+
+**Observations recorded, not fixed** — none affects a criterion; each is a
+one-commit change if Viktar wants it:
+
+1. Criterion 7's post-change record was thinner than its wording (only the
+   prose box was re-measured after the panel landed); the reviewer closed it
+   itself — post-change adjacency gaps 25.6/68/40 equal 004's record and all
+   006 furniture present.
+2. The styleguide shows hover/focus row states live rather than frozen
+   `data-specimen-state` twins the plan promised; rest, active and current
+   are frozen. T10's record says so honestly.
+3. The transliteration map covers precomposed (NFC) characters only; a
+   heading saved in NFD form would mint a mangled-but-valid slug instead of
+   failing. All current content is NFC.
+4. `scrollbar-color`'s `transparent` keyword is outside Check B's pattern —
+   theme-neutral by nature, noted so the guard's pass is not mistaken for
+   keyword coverage.
+5. The layout wrapper's column template is a verbatim copy of the frame's;
+   a future frame edit would silently diverge them. Both files carry
+   comments naming the coupling.
+6. The followed-link pin releases only on a `scrollY` change; a resize alone
+   keeps it. Micro-edge outside any criterion.
+7. Two same-named landmarks coexist in the DOM with exactly one ever in the
+   accessibility tree, guaranteed by the single `display: none` boundary.
+
+The slice closes on this report.

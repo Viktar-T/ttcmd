@@ -86,7 +86,7 @@ Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
       eye can close, named as such. *Check:* every criterion has evidence or
       a named human-eye remainder.
 
-- [ ] **T12 — Close the slice.** Fresh-context subagent review of the whole
+- [x] **T12 — Close the slice.** Fresh-context subagent review of the whole
       diff against the spec's criteria; fix what affects correctness or a
       criterion, record the rest without fixing (criterion 21). *Check:* the
       review's findings and their disposition recorded in
