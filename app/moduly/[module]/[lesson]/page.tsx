@@ -1,19 +1,16 @@
 import { notFound } from "next/navigation";
-import { getLesson, listLessons, listModules } from "@/lib/content";
+import { getCourse, getLesson } from "@/lib/content";
+import { Band } from "@/components/band";
 import { LessonHeader } from "./lesson-header";
 
 export async function generateStaticParams() {
-  const modules = await listModules();
-  const paramsPerModule = await Promise.all(
-    modules.map(async (moduleItem) => {
-      const lessons = await listLessons(moduleItem.slug);
-      return lessons.map((lesson) => ({
-        module: moduleItem.slug,
-        lesson: lesson.slug,
-      }));
-    })
+  const course = await getCourse();
+  return course.flatMap((moduleItem) =>
+    moduleItem.lessons.map((lesson) => ({
+      module: moduleItem.slug,
+      lesson: lesson.slug,
+    }))
   );
-  return paramsPerModule.flat();
 }
 
 export default async function LessonPage({
@@ -27,6 +24,8 @@ export default async function LessonPage({
 
   return (
     <>
+      {/* The breadcrumb arrives in the next task; the stripe is measured here. */}
+      <Band>{null}</Band>
       <LessonHeader
         title={lesson.title}
         order={lesson.order}

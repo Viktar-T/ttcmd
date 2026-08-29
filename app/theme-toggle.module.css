@@ -1,11 +1,7 @@
-/* PROVISIONAL — see app/theme-toggle.tsx. The navigation slice moves this. */
+/* In the site header since slice 006 — see app/theme-toggle.tsx. It is laid
+   out by the header's flex row and positions nothing itself. */
 
 .toggle {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 10;
-
   display: inline-flex;
   align-items: center;
   justify-content: center;

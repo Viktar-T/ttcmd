@@ -3,10 +3,10 @@
 import styles from "./theme-toggle.module.css";
 
 /**
- * PROVISIONAL PLACEMENT — slice 003.
- * The header and the navigation are out of this slice's scope, so this control
- * is pinned to the corner instead. The navigation slice moves it into the
- * header; this is a recorded debt, not finished work.
+ * Slice 003 pinned this to the corner of the viewport and recorded, here, that
+ * the navigation slice would move it into a header. Slice 006 built the header
+ * and moved it; nothing about its behaviour changed, which is why slice 003's
+ * theme criteria are re-checked rather than re-derived.
  *
  * No React state and no useEffect, deliberately. State would have to be
  * initialised to something on the server, and that something is wrong for every

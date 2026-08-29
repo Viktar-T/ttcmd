@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { mono, sans } from "./fonts";
-import { ThemeToggle } from "./theme-toggle";
+import { SiteHeader } from "@/components/site-header";
 import "./tokens.css";
 import "./globals.css";
 import "./prose.css";
+import "./nav.css";
 
 export const metadata: Metadata = {
   title: "ttcmd",
@@ -39,7 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: applyStoredTheme }} />
       </head>
       <body>
-        <ThemeToggle />
+        <SiteHeader />
         <main>{children}</main>
       </body>
     </html>

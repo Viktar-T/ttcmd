@@ -50,7 +50,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   the ratio and the floor named; revert; show it passing.
   *(Acceptance criteria 2 and 3.)*
 
-- [ ] **T04 — The frame: a full-width lane, a header, and 004 unmoved**
+- [x] **T04 — The frame: a full-width lane, a header, and 004 unmoved**
 
   `main` becomes the named-line grid of the plan. `app/nav.css`, imported in
   `app/layout.tsx`. `components/site-header.tsx` with the wordmark and the theme

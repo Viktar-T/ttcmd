@@ -1,0 +1,87 @@
+/*
+ * The navigation treatment — slice 006.
+ *
+ * One global stylesheet with plain class names, beside prose.css and for the
+ * reason prose.css records: every check in this slice is performed by reading a
+ * rendered page, and a hashed CSS-Module class name makes that harder for no
+ * gain. Five modules, one per component, would be five files and five hashed
+ * prefixes to query around.
+ *
+ * No colour literal may appear here. Use a token from tokens.css.
+ */
+
+/* ------------------------------------------------------------------ *
+ * Focus
+ *
+ * Site-wide, and set here because this slice is the first to put links
+ * anywhere but inside prose. :where() so it carries no specificity and the
+ * theme control's own rule still wins.
+ *
+ * THE OVERRIDE IS NOT A REFINEMENT. On the dark theme — the default —
+ * --accent-line and --accent-surface are the same value (ADR-0007: one pale
+ * value serves both roles there). A focus ring in the site's accent, drawn on
+ * the accent band, is therefore invisible: not faint, absent. This is the exact
+ * failure that passes every review carried out with a mouse.
+ * ------------------------------------------------------------------ */
+
+:where(a, button):focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}
+
+[data-band] :where(a, button):focus-visible {
+  outline-color: var(--accent-ink);
+}
+
+/* ------------------------------------------------------------------ *
+ * The site header
+ *
+ * Its bottom hairline is --rule and stays --rule: it separates two areas and
+ * identifies nothing, which is the distinction ADR-0012 draws.
+ * ------------------------------------------------------------------ */
+
+.siteHeader {
+  border-block-end: 1px solid var(--rule);
+}
+
+/* The same box as a content child of `main`: 46rem of content at desktop,
+   343px at 375px. That is what keeps the wordmark on the same left edge as the
+   breadcrumb below it and the prose below that. */
+.siteHeaderInner {
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding: 0.75rem 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.wordmark {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.wordmark:hover {
+  color: var(--accent-line);
+}
+
+/* ------------------------------------------------------------------ *
+ * The band
+ * ------------------------------------------------------------------ */
+
+.band {
+  background: var(--accent-surface);
+  color: var(--accent-ink);
+}
+
+.bandInner {
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding: 0.7rem 1rem;
+}

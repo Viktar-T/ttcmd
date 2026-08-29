@@ -61,13 +61,65 @@ nav {
   font-family: var(--font-mono), ui-monospace, monospace;
 }
 
+/*
+ * The page frame — slice 006.
+ *
+ * `main` was a centred box 48rem wide with 1rem of side padding, so its content
+ * box was min(48rem, 100vw) − 2rem: 46rem at desktop, 343px at 375px. The
+ * accent band has to touch the edges of the viewport, and nothing inside a
+ * centred box can. So the box becomes a grid with named lines — the identical
+ * idiom .prose already uses one level down, chosen there for the identical
+ * reason: `margin-inline: calc(50% - 50vw)` and its relatives are the usual
+ * breakout trick and they are how a page acquires a horizontal scrollbar.
+ *
+ * The two numbers above are reproduced exactly, and that is a criterion of the
+ * slice rather than an intention: the content column is min(48rem, 100%) and
+ * each child carries the 1rem of side padding `main` used to carry, so .prose
+ * computes its own tracks inside the same box it always did.
+ *
+ * row-gap rather than margins between children: margins do not collapse between
+ * grid items, so a top margin on every child plus a bottom margin on the lesson
+ * header would produce two gaps where the page had one. A row gap produces
+ * exactly one, by construction — which is why the lesson header no longer
+ * carries a bottom margin.
+ */
 main {
-  /* The content width, not the measure. Slice 004 separated the two: the prose
-     column carries the measure, and this is the box a diagram or a table may
-     use. Widening it is why the landing page and /moduly are wider too. */
-  max-width: var(--content-width);
-  margin: 0 auto;
-  padding: 2rem 1rem;
+  display: grid;
+  grid-template-columns:
+    [full-start] minmax(1rem, 1fr)
+    [content-start] min(var(--content-width) - 2rem, 100% - 2rem) [content-end]
+    minmax(1rem, 1fr) [full-end];
+  align-content: start;
+  row-gap: var(--gap-apart);
+  padding-block-end: var(--gap-section);
+}
+
+/*
+ * The content column is the old content BOX — 48rem less its 1rem of padding
+ * on each side — and the gutters are that padding, moved out of the children.
+ * Children therefore carry no horizontal padding at all, so an element sized
+ * against the measure is still exactly the measure wide. Putting the padding
+ * back on the children instead makes the lesson header 32px narrower than the
+ * prose beneath it and shifts its left edge by 16px, which is the misalignment
+ * slice 004 closed in T12a.
+ *
+ * min-width: 0 for the reason .prose already carries it — a grid item defaults
+ * to min-width: auto, and one long unbreakable run inside it pushes the track
+ * wider than its declared size, which is a horizontal page scrollbar.
+ */
+main > * {
+  grid-column: content;
+  min-width: 0;
+}
+
+main > [data-full-bleed] {
+  grid-column: full;
+}
+
+/* A page that does not open with a band opens with air instead. The band is
+   meant to meet the header, so it gets none. */
+main > :first-child:not([data-full-bleed]) {
+  margin-block-start: var(--gap-apart);
 }
 
 a {

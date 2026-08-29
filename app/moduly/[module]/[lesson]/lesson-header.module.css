@@ -22,7 +22,9 @@
      stop the lesson's first sentence from touching it. */
   padding-block-end: var(--gap-block);
   border-block-end: 1px solid var(--rule);
-  margin-block-end: var(--gap-apart);
+  /* The gap below the rule is the page frame's row gap since slice 006, at the
+     same token and therefore at the same rendered size. Margins do not collapse
+     between grid items, so leaving it here as well would double it. */
 
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
