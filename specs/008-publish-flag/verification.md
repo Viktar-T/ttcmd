@@ -97,3 +97,15 @@ Staged: `publish: false` (bare boolean), same file. `npm run build`:
 valid flag changes nothing; the check is only that a real boolean parses.
 
 Reverted. The staging line removed; the file back to its baseline bytes.
+
+## T06 — the filter and the refusal (criterion 1)
+
+The course model drops `publish: false` lessons after every file is read,
+parsed and compiled; the single-lesson read returns the not-found signal for
+an unpublished lesson.
+
+With no content file changed: `npm run build` **passes**, 15/15 pages, and
+the emitted page list byte-compares equal to the baseline
+(`diff baseline-routes.txt t06-routes.txt` → no output,
+`ROUTE TABLE IDENTICAL TO BASELINE`). **Criterion 1 holds** — nothing on
+disk carries the flag, so nothing moved.

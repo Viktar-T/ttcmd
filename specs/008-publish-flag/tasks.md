@@ -33,7 +33,7 @@ Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
       the file (criterion 2), an unquoted `publish: false` builds clean;
       both reverted. Output recorded.
 
-- [ ] **T06 — Unpublished lessons leave the course model, and the direct
+- [x] **T06 — Unpublished lessons leave the course model, and the direct
       request is refused.** The course derivation filters `publish: false`
       lessons after every file is read, parsed and compiled — the position is
       load-bearing and commented — and the single-lesson read returns the

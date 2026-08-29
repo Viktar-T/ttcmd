@@ -221,7 +221,17 @@ async function listLessons(moduleSlug: string): Promise<LessonSummary[]> {
       return { slug, ...frontmatter, sections };
     })
   );
-  return lessons.sort((a, b) => a.order - b.order);
+  /* The filter runs after every file on disk has been read, schema-parsed
+     and compiled — the position is load-bearing. Filtering at the slug stage
+     would park an unpublished draft outside the build gate, and the gate is
+     the reason drafts live in this repo at all: a draft that breaks fails
+     the build today, not on the morning its flag is flipped. Everything
+     derived downstream — lists, counts, pagers, emitted routes — sees only
+     published lessons; letters cannot shift because they come from `order`,
+     never from a position in this filtered array (ADR-0003). */
+  return lessons
+    .filter((lesson) => lesson.publish !== false)
+    .sort((a, b) => a.order - b.order);
 }
 
 /**
@@ -325,5 +335,13 @@ export async function getLesson(
     moduleSlug,
     lessonSlug
   );
+  /* The refusal is data-level, and it sits after the parse-and-compile for
+     the same reason the filter in listLessons sits after it. The host
+     renders routes absent from the emitted pages on first request by running
+     this very function, so absence from the build output alone is not a
+     refusal — this is what makes a direct request for an unpublished lesson
+     the site's not-found response, the same null as a slug that never
+     existed, identically under `next dev` and in production. */
+  if (frontmatter.publish === false) return null;
   return { slug: lessonSlug, ...frontmatter, sections, body: content };
 }
