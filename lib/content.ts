@@ -1,10 +1,11 @@
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
-import type { ReactElement } from "react";
+import { cache, type ReactElement } from "react";
 import { compileMDX } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { CodeBlock } from "@/components/code-block";
 import { rehypeCodeHighlight } from "./code-highlight";
+import { lessonId, lessonLetter, moduleLabel, moduleNumber } from "./numbering";
 import {
   lessonFrontmatterSchema,
   moduleFrontmatterSchema,
@@ -99,6 +100,26 @@ export interface Lesson extends LessonSummary {
   body: ReactElement;
 }
 
+/**
+ * A lesson as the navigation knows it: its frontmatter, plus everything that is
+ * derived rather than written down — the letter, the identity string a teacher
+ * says out loud, and the URL.
+ */
+export interface CourseLesson extends LessonSummary {
+  moduleSlug: string;
+  letter: string;
+  id: string;
+  href: string;
+}
+
+export interface CourseModule extends ModuleSummary {
+  number: number;
+  label: string;
+  href: string;
+  body: ReactElement;
+  lessons: CourseLesson[];
+}
+
 async function readModuleSlugs(): Promise<string[]> {
   const entries = await readdir(contentRoot, { withFileTypes: true });
   return entries
@@ -107,16 +128,23 @@ async function readModuleSlugs(): Promise<string[]> {
     .sort();
 }
 
-async function readModuleFrontmatter(
+/**
+ * The index file's frontmatter **and** its body.
+ *
+ * The body was compiled and thrown away until slice 006. Both module index
+ * files carry a written introduction to their module, and nothing had ever
+ * rendered one.
+ */
+async function readModule(
   moduleSlug: string
-): Promise<ModuleFrontmatter> {
+): Promise<{ frontmatter: ModuleFrontmatter; content: ReactElement }> {
   const relativePath = `content/moduly/${moduleSlug}/${moduleIndexFile}`;
   const source = await readFile(
     path.join(contentRoot, moduleSlug, moduleIndexFile),
     "utf8"
   );
-  const { frontmatter } = await compile(source, relativePath);
-  return moduleFrontmatterSchema.parse(frontmatter);
+  const { frontmatter, content } = await compile(source, relativePath);
+  return { frontmatter: moduleFrontmatterSchema.parse(frontmatter), content };
 }
 
 export async function listModules(): Promise<ModuleSummary[]> {
@@ -124,17 +152,9 @@ export async function listModules(): Promise<ModuleSummary[]> {
   return Promise.all(
     slugs.map(async (slug) => ({
       slug,
-      ...(await readModuleFrontmatter(slug)),
+      ...(await readModule(slug)).frontmatter,
     }))
   );
-}
-
-export async function getModule(
-  moduleSlug: string
-): Promise<ModuleSummary | null> {
-  const slugs = await readModuleSlugs();
-  if (!slugs.includes(moduleSlug)) return null;
-  return { slug: moduleSlug, ...(await readModuleFrontmatter(moduleSlug)) };
 }
 
 async function readLessonSlugs(moduleSlug: string): Promise<string[]> {
@@ -178,6 +198,97 @@ export async function listLessons(
     })
   );
   return lessons.sort((a, b) => a.order - b.order);
+}
+
+/**
+ * The whole course, with everything derived that a page might need to render a
+ * link to any part of it.
+ *
+ * One function, because a breadcrumb, a lesson list, a previous/next control
+ * and a module card are four views of the same three facts — which modules
+ * exist, in what order, and which lessons are in each. Deriving them four times
+ * is how one page comes to disagree with another about what a lesson is called,
+ * which is the concern lib/numbering.ts already opens with.
+ *
+ * Wrapped in React's `cache()`, so it is built once per render pass rather than
+ * once per component that asks. Deliberately NOT a module-level Map: that would
+ * survive a content edit under `next dev` and keep serving the old course until
+ * the process was restarted.
+ *
+ * Modules are sorted by the number their prefix carries, not by folder name as
+ * text — the directory sort is correct only while every prefix is two digits,
+ * and puts module 10 before module 2 the day one is not.
+ */
+export const getCourse = cache(async (): Promise<CourseModule[]> => {
+  const slugs = await readModuleSlugs();
+
+  const modules = await Promise.all(
+    slugs.map(async (slug) => {
+      const number = moduleNumber(slug);
+      const { frontmatter, content } = await readModule(slug);
+      const lessons = (await listLessons(slug)).map((lesson) => ({
+        ...lesson,
+        moduleSlug: slug,
+        letter: lessonLetter(lesson.order),
+        id: lessonId(number, lesson.order),
+        href: `/moduly/${slug}/${lesson.slug}`,
+      }));
+
+      return {
+        slug,
+        ...frontmatter,
+        number,
+        label: moduleLabel(number),
+        href: `/moduly/${slug}`,
+        body: content,
+        lessons,
+      };
+    })
+  );
+
+  return modules.sort((a, b) => a.number - b.number);
+});
+
+export interface LessonPosition {
+  module: CourseModule;
+  lesson: CourseLesson;
+}
+
+/**
+ * The lesson before and the lesson after, **across module boundaries**.
+ *
+ * The course is flattened into one sequence first, so crossing from the last
+ * lesson of one module into the first of the next needs no special case — which
+ * is the whole point: a module edge is a dead end only if the code makes one.
+ */
+export async function getLessonNeighbours(
+  moduleSlug: string,
+  lessonSlug: string
+): Promise<{ previous: LessonPosition | null; next: LessonPosition | null }> {
+  const course = await getCourse();
+  const sequence: LessonPosition[] = course.flatMap((module) =>
+    module.lessons.map((lesson) => ({ module, lesson }))
+  );
+
+  const index = sequence.findIndex(
+    (entry) =>
+      entry.module.slug === moduleSlug && entry.lesson.slug === lessonSlug
+  );
+  if (index === -1) return { previous: null, next: null };
+
+  return {
+    previous: sequence[index - 1] ?? null,
+    next: sequence[index + 1] ?? null,
+  };
+}
+
+export async function getModuleNeighbours(
+  moduleSlug: string
+): Promise<{ previous: CourseModule | null; next: CourseModule | null }> {
+  const course = await getCourse();
+  const index = course.findIndex((module) => module.slug === moduleSlug);
+  if (index === -1) return { previous: null, next: null };
+  return { previous: course[index - 1] ?? null, next: course[index + 1] ?? null };
 }
 
 export async function getLesson(

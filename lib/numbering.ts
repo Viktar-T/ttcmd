@@ -27,3 +27,41 @@ const FIRST_LETTER = "a".charCodeAt(0);
 export function lessonLetter(order: number): string {
   return String.fromCharCode(FIRST_LETTER + order - 1);
 }
+
+/**
+ * The number a module's folder prefix carries: `01-jak-…` → 1, `00-start` → 0.
+ *
+ * Throws when the folder does not carry one. Article VI derives the number
+ * from the prefix and from nothing else; deriving it from the folder's position
+ * in the directory would be the same mistake ADR-0003 forbids for lesson
+ * letters, with a different index — and *Moduł NaN* on a public page is worse
+ * than a build that stops.
+ */
+export function moduleNumber(moduleSlug: string): number {
+  const match = /^(\d+)-/.exec(moduleSlug);
+  if (!match) {
+    throw new Error(
+      `content/moduly/${moduleSlug}: a module folder must begin with its ` +
+        `number and a hyphen, as "01-slug". The module's number comes from ` +
+        `that prefix and from nowhere else (constitution Article VI, ADR-0003).`
+    );
+  }
+  return Number(match[1]);
+}
+
+/** What the module is called out loud, and in the breadcrumb: 1 → "Moduł 1". */
+export function moduleLabel(number: number): string {
+  return `Moduł ${number}`;
+}
+
+/**
+ * A lesson's public name — the string a teacher says and a student types:
+ * module 1, `order: 2` → "1b".
+ *
+ * One function, because the breadcrumb, the module list and the previous/next
+ * controls all render it, and three spellings of it is how two pages come to
+ * disagree about what a lesson is called.
+ */
+export function lessonId(moduleNumber: number, order: number): string {
+  return `${moduleNumber}${lessonLetter(order)}`;
+}

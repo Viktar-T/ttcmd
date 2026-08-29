@@ -11,14 +11,14 @@ rendered page and recorded in `verification.md`, not asserted here.
 
 ---
 
-- [ ] **T01 — Record the slice**
+- [x] **T01 — Record the slice**
 
   `plan.md` and this file into the repository. `spec.md` is already written.
 
   **Check:** the three files exist under `specs/006-navigation/` and are
   committed.
 
-- [ ] **T02 — Identity, and one model of the course**
+- [x] **T02 — Identity, and one model of the course**
 
   `lib/numbering.ts`: `moduleNumber`, `moduleLabel`, `lessonId` — the module
   number from the folder prefix, throwing when there is none. `lib/plural.ts`:
