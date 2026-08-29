@@ -101,7 +101,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   `git diff --stat` reports no change under `content/`.
   *(Acceptance criteria 5, 17, 19.)*
 
-- [ ] **T07 — Previous and next, across the module boundary**
+- [x] **T07 — Previous and next, across the module boundary**
 
   The pager on the lesson route, with the neighbour's module named when the step
   crosses into it.

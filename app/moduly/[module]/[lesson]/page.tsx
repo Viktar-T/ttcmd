@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
-import { getCourse, getLesson } from "@/lib/content";
+import { getCourse, getLesson, getLessonNeighbours } from "@/lib/content";
+import type { LessonPosition } from "@/lib/content";
 import { Band } from "@/components/band";
 import { Breadcrumb } from "@/components/breadcrumb";
+import { Pager, type PagerItem } from "@/components/pager";
 import { LessonHeader } from "./lesson-header";
 
 export async function generateStaticParams() {
@@ -31,6 +33,8 @@ export default async function LessonPage({
   const entry = moduleItem?.lessons.find((item) => item.slug === lessonSlug);
   if (!moduleItem || !entry) notFound();
 
+  const { previous, next } = await getLessonNeighbours(moduleSlug, lessonSlug);
+
   return (
     <>
       <Band>
@@ -48,6 +52,35 @@ export default async function LessonPage({
         summary={lesson.summary}
       />
       <div className="prose">{lesson.body}</div>
+      <Pager
+        ariaLabel="Lekcje"
+        previousLabel="Poprzednia lekcja"
+        nextLabel="Następna lekcja"
+        previous={toPagerItem(previous, moduleSlug)}
+        next={toPagerItem(next, moduleSlug)}
+      />
     </>
   );
+}
+
+/**
+ * The module is named only when the step leaves the one the reader is in. The
+ * sequence itself does not stop at a module edge — the lesson before `1a` is
+ * `0c` — and a reader who is not told they have crossed has silently left the
+ * module they were reading.
+ */
+function toPagerItem(
+  position: LessonPosition | null,
+  currentModuleSlug: string
+): PagerItem | null {
+  if (!position) return null;
+  return {
+    href: position.lesson.href,
+    id: position.lesson.id,
+    title: position.lesson.title,
+    crossesInto:
+      position.module.slug === currentModuleSlug
+        ? undefined
+        : position.module.label,
+  };
 }
