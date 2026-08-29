@@ -96,8 +96,16 @@
 }
 
 /* The same lane, for a block that is already inside the frame's content column
-   and therefore already has its gutters. */
+   and therefore already has its gutters.
+
+   width: 100% is load-bearing, not belt-and-braces. `margin-inline: auto` on a
+   GRID ITEM suppresses the default `justify-self: stretch`, so the item is
+   sized to its content and centred — which made the previous/next pair 186px
+   wide on a phone while the lesson rows beside it were 343px, because their
+   content happened to want more. Filling first and clamping second is what
+   makes the lane a lane rather than a shrink-wrap. */
 .lane {
+  width: 100%;
   max-width: var(--measure);
   margin-inline: auto;
 }
@@ -241,4 +249,123 @@
   --ground: var(--fill);
   --stroke: var(--fill);
   color: var(--fill-ink);
+}
+
+/* ------------------------------------------------------------------ *
+ * The lesson list on a module page
+ *
+ * The same chevron, at a deeper point and a taller row, so it reads as a step
+ * in a sequence rather than as a bullet. white-space is reset: a chevron in a
+ * breadcrumb must never wrap, and a lesson title at 375px must.
+ * ------------------------------------------------------------------ */
+
+.lessonRows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.lessonRow {
+  --point: 0.9rem;
+
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  min-height: 3rem;
+  padding-block: 0.7rem;
+  white-space: normal;
+
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--text-base);
+  line-height: var(--leading-tight);
+}
+
+.lessonRowId {
+  color: var(--accent-line);
+  font-weight: 700;
+  /* The widest identity string today is two characters; at three (module 10)
+     the titles would step right by one character rather than misaligning. */
+  min-width: 1.5em;
+}
+
+/*
+ * Hover and keyboard focus fill the row with the accent and invert its text —
+ * the design reference's inverted active item, on the only state a module page
+ * has. The rows are outlined at rest rather than filled: an accent fill on
+ * every row floods the page with the one colour reserved for pointing at
+ * things, and leaves nothing for a state to say.
+ */
+.lessonRow:hover,
+.lessonRow:focus-visible {
+  --ground: var(--accent-surface);
+  --stroke: var(--accent-surface);
+  color: var(--accent-ink);
+}
+
+.lessonRow:hover .lessonRowId,
+.lessonRow:focus-visible .lessonRowId {
+  color: var(--accent-ink);
+}
+
+/* ------------------------------------------------------------------ *
+ * Previous / next
+ *
+ * The separating line above the pair is decorative — it divides two areas and
+ * identifies nothing — so it is --rule. The links' own borders identify a
+ * component and are --rule-strong. ADR-0012 is that distinction.
+ * ------------------------------------------------------------------ */
+
+.pager {
+  display: grid;
+  gap: 0.75rem;
+  border-block-start: 1px solid var(--rule);
+  padding-block-start: var(--gap-apart);
+}
+
+.pagerLink {
+  display: grid;
+  gap: 0.4rem;
+  align-content: start;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--rule-strong);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.pagerLink:hover {
+  border-color: var(--accent-line);
+}
+
+.pagerKicker {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.pagerTitle {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--text-base);
+  line-height: var(--leading-tight);
+}
+
+.pagerId {
+  color: var(--accent-line);
+  font-weight: 700;
+  margin-inline-end: 0.6em;
+}
+
+/* Two columns where there is room, and the next step keeps the right-hand one
+   even when there is no previous step — so the pair reads as a direction
+   rather than as whatever happens to exist. */
+@media (min-width: 34rem) {
+  .pager {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pagerNext {
+    grid-column: 2;
+    text-align: end;
+  }
 }

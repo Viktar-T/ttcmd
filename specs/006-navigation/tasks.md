@@ -87,7 +87,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   ratio of an outlined step and of the filled step, printed, both ≥ 4.5:1.
   *(Acceptance criteria 9, 10, and 18's measured half.)*
 
-- [ ] **T06 — The module page: introduction, chevron rows, module pager**
+- [x] **T06 — The module page: introduction, chevron rows, module pager**
 
   `components/lesson-list.tsx` and its rules. `components/pager.tsx`, used here
   for modules. The module route renders the band, the introduction body, the
