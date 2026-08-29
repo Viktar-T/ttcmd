@@ -102,7 +102,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   without one showing no header and no empty bar.
   *(Acceptance criteria 9, 14, 17; 10's mechanical half.)*
 
-- [ ] **T07 — Marked lines**
+- [x] **T07 — Marked lines**
 
   The line ranges parsed by T06 applied by the transformer, and their treatment
   in the module CSS: a change in lightness across the full width plus a marker

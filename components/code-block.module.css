@@ -173,3 +173,29 @@
   color: var(--code-token-comment);
   overflow-wrap: anywhere;
 }
+
+/* ------------------------------------------------------------------ *
+ * Marked lines
+ *
+ * A lesson marks a line so it can point at *the* line instead of writing "the
+ * third one" above the block.
+ *
+ * The band is a change in LIGHTNESS rather than a hue, so it survives having
+ * colour removed from the page — and every syntax colour was checked against
+ * this band as well as against the plain surface, so nothing on a marked line
+ * drops below 4.5:1.
+ *
+ * It spans the whole scrollable width, not the visible one: `.line` is a block
+ * inside a code box that is `fit-content` with `min-width: 100%`. A tint that
+ * stopped at the viewport edge would lie about which line is marked as soon as
+ * the block was scrolled.
+ *
+ * The marker is an inset shadow rather than a border, so a marked line is not
+ * two pixels narrower than its neighbours. It scrolls with the code; pinning it
+ * to the block's left edge would need a second scrolling mechanism for a detail.
+ * ------------------------------------------------------------------ */
+
+.pre :global(.line[data-highlighted]) {
+  background: var(--code-line-highlight);
+  box-shadow: inset 2px 0 0 var(--code-line-marker);
+}

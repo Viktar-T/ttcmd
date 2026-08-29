@@ -85,6 +85,14 @@ const ttcmdCodeTransformer: ShikiTransformer = {
     const filename = metaOf(this.options.meta)?.filename;
     if (filename) node.properties["data-filename"] = filename;
   },
+
+  /** `line` is 1-based, which is what an author writing `{2,4-5}` means. */
+  line(node: Element, line: number) {
+    const meta = metaOf(this.options.meta);
+    if (meta?.highlighted.includes(line)) {
+      node.properties["data-highlighted"] = "";
+    }
+  },
 };
 
 export const rehypeCodeHighlight: [typeof rehypeShiki, RehypeShikiOptions] = [
