@@ -141,7 +141,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   query that counts them.
   *(Acceptance criterion 20.)*
 
-- [ ] **T10 — The verification pass**
+- [x] **T10 — The verification pass**
 
   `specs/006-navigation/verification.md`, in 003's, 004's and 005's shape: the
   contrast table; the frame's geometry; the parity measurements against 004 and

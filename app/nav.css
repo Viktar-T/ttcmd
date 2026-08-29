@@ -433,7 +433,11 @@
 
 .moduleGrid {
   list-style: none;
-  margin: 0;
+  /* margin-block, NOT margin: the inline margins are .lane's `auto` and a
+     blanket reset here overrode them — the grid sat 56px left of the headline
+     above it on a desktop, which is exactly the misalignment the lane exists to
+     prevent. Found by measuring the left edges, not by looking at it. */
+  margin-block: 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
