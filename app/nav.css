@@ -369,3 +369,136 @@
     text-align: end;
   }
 }
+
+/* ------------------------------------------------------------------ *
+ * The landing page
+ * ------------------------------------------------------------------ */
+
+.hero {
+  display: grid;
+  justify-items: start;
+  gap: 1.1rem;
+}
+
+/*
+ * Outside the reading scale on purpose. --text-3xl is the top of the scale
+ * slice 004 built for reading, and this is not read — it is the one graphic
+ * element on a site that has no illustrations.
+ */
+.heroTitle {
+  margin: 0;
+  font-size: calc(var(--text-3xl) * 1.6);
+}
+
+.heroLede {
+  margin: 0;
+  max-width: 34rem;
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+}
+
+/* The design reference's bordered button: rectangular, outlined, monospace
+   label, no fill and no rounding. Its border is the only thing that makes it a
+   button, so it is --rule-strong (ADR-0012) and not --rule. */
+.button {
+  display: inline-block;
+  padding: 0.7rem 1.4rem;
+  border: 1px solid var(--rule-strong);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--text-base);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.button:hover {
+  background: var(--accent-surface);
+  border-color: var(--accent-surface);
+  color: var(--accent-ink);
+}
+
+/* The heading on a page that is not an article — /moduly. Matches the prose
+   h1 rather than inventing a second display size. */
+.pageTitle {
+  margin: 0;
+  font-size: var(--text-3xl);
+}
+
+/* ------------------------------------------------------------------ *
+ * The module grid
+ *
+ * auto-fit rather than a media query: three across where there is room inside
+ * the lane, one across on a phone, and it stays right when a third module is
+ * written.
+ * ------------------------------------------------------------------ */
+
+.moduleGrid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 1rem;
+}
+
+.moduleCard {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.35rem;
+  min-height: 11rem;
+  padding: 1rem 1.2rem 1.2rem;
+
+  border: 1px solid var(--rule-strong);
+  background: var(--bg);
+  color: var(--text);
+  text-decoration: none;
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+/*
+ * The doubled frame: a second border offset behind the card, which is what the
+ * design reference asks for in place of a shadow. No `isolation` here, unlike
+ * the chevron — a negative z-index has to fall BELOW the card's own background
+ * so only the offset L shows on the right and the bottom. Isolating would put
+ * it above that background and draw a full second rectangle across the card.
+ *
+ * 0.3rem of overhang, which sits inside the frame's 1rem gutter and therefore
+ * cannot reach the viewport edge. Checked at 375px rather than reasoned about.
+ */
+.moduleCard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  translate: 0.3rem 0.3rem;
+  border: 1px solid var(--rule-strong);
+}
+
+.moduleCard:hover,
+.moduleCard:hover::after {
+  border-color: var(--accent-line);
+}
+
+.moduleCardKicker {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+/* Where the illustration would be. Outside the reading scale, like the hero. */
+.moduleCardNumber {
+  font-size: calc(var(--text-3xl) * 1.75);
+  line-height: 1;
+  font-weight: 700;
+  color: var(--accent-line);
+  margin-block-end: 0.4rem;
+}
+
+.moduleCardTitle {
+  font-size: var(--text-base);
+  line-height: var(--leading-tight);
+}
+
+.moduleCardCount {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}

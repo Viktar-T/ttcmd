@@ -114,7 +114,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   printed.
   *(Acceptance criteria 7 and 8.)*
 
-- [ ] **T08 — The module grid, the landing page, and `/moduly`**
+- [x] **T08 — The module grid, the landing page, and `/moduly`**
 
   `components/module-grid.tsx` and its rules, including the doubled frame. The
   landing page: headline, the existing description verbatim, the bordered button
