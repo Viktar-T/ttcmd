@@ -52,7 +52,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   palette colour against the code surface, computed and printed, all ≥ 4.5:1.
   *(Acceptance criteria 3 and 6; 2 by the build's own guard.)*
 
-- [ ] **T04 — The block: surface, geometry, and 004's rhythm intact**
+- [x] **T04 — The block: surface, geometry, and 004's rhythm intact**
 
   `components/code-block.tsx` and `components/code-block.module.css`. The
   `components` map on both `compileMDX` calls in `lib/content.ts`. The

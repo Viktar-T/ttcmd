@@ -3,6 +3,7 @@ import path from "node:path";
 import type { ReactElement } from "react";
 import { compileMDX } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
+import { CodeBlock } from "@/components/code-block";
 import { rehypeCodeHighlight } from "./code-highlight";
 import {
   lessonFrontmatterSchema,
@@ -37,6 +38,15 @@ const mdxOptions = {
   },
 };
 
+/*
+ * The one element a lesson does not get as plain HTML. A code block needs a
+ * wrapper the copy control can be pinned to while the code scrolls underneath
+ * it, which means the scroller cannot be the outermost element — so `pre` is
+ * mapped, and everything else in a lesson stays a plain element with a plain
+ * stylesheet, as slices 003 and 004 left it.
+ */
+const mdxComponents = { pre: CodeBlock };
+
 export interface ModuleSummary extends ModuleFrontmatter {
   slug: string;
 }
@@ -67,6 +77,7 @@ async function readModuleFrontmatter(
   const { frontmatter } = await compileMDX({
     source,
     options: mdxOptions,
+    components: mdxComponents,
   });
   return moduleFrontmatterSchema.parse(frontmatter);
 }
@@ -114,6 +125,7 @@ async function readLessonFrontmatterAndBody(
   const { frontmatter, content } = await compileMDX({
     source,
     options: mdxOptions,
+    components: mdxComponents,
   });
   return { frontmatter: lessonFrontmatterSchema.parse(frontmatter), content };
 }

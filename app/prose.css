@@ -83,14 +83,17 @@
   margin-top: var(--gap-tight);
 }
 
-.prose > :is(blockquote, svg, table, pre) {
+/* `pre` was the flow child until slice 005 wrapped a code block in an element
+   the copy control can be pinned to. The gap is unchanged — the rhythm is 004's
+   and stays 004's — but the thing carrying it is now the wrapper. */
+.prose > :is(blockquote, svg, table, [data-code-block]) {
   margin-top: var(--gap-apart);
 }
 
 /* Set apart below as well as above — unless a heading follows, in which case
    the heading's own larger gap wins. Written as :not() rather than left to
    source order, so re-ordering this file cannot silently break it. */
-.prose > :is(blockquote, svg, table, pre) + :not(:is(h1, h2, h3, h4, h5, h6)) {
+.prose > :is(blockquote, svg, table, [data-code-block]) + :not(:is(h1, h2, h3, h4, h5, h6)) {
   margin-top: var(--gap-apart);
 }
 
@@ -303,11 +306,11 @@
  * No lesson contains an <hr> today. It is one line to stop the first one that
  * does from arriving at a browser default.
  *
- * A code block gets its place in the rhythm — set above — and containment, and
- * nothing else. Background, syntax highlighting, the copy control, the
- * filename header and line highlighting are slice 005. overflow-x is not an
- * exception to that: without it one long bash line widens the whole page, and
- * containment is not styling.
+ * A code block's own treatment moved to components/code-block.module.css in
+ * slice 005 — the surface, the highlighting, the copy control, the filename
+ * header and the marked lines all live with the component now. The rule below
+ * stays as the floor: any `pre` that is NOT a code block, present or future,
+ * still may not widen the page with one long line.
  * ------------------------------------------------------------------ */
 
 .prose hr {
