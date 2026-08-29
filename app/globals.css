@@ -55,8 +55,10 @@ nav {
 }
 
 main {
-  /* Measure is slice 004's decision; this is the pre-existing value, untouched. */
-  max-width: 40rem;
+  /* The content width, not the measure. Slice 004 separated the two: the prose
+     column carries the measure, and this is the box a diagram or a table may
+     use. Widening it is why the landing page and /moduly are wider too. */
+  max-width: var(--content-width);
   margin: 0 auto;
   padding: 2rem 1rem;
 }

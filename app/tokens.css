@@ -54,8 +54,6 @@
 
 /*
  * The type scale. Sizes in rem, line heights unitless.
- * The reading column's max-width is NOT here: measure is a layout decision
- * about a lesson page, and it belongs to slice 004.
  */
 :root {
   --text-sm: 0.875rem;
@@ -67,4 +65,15 @@
 
   --leading-tight: 1.25;
   --leading-normal: 1.6;
+}
+
+/*
+ * Slice 004. Two widths, not one: --content-width is the page's box and the
+ * column a diagram or a table may use; --measure is the prose column inside
+ * it. Keeping them apart is what lets the contents panel arrive beside the
+ * prose later without reopening the measure.
+ */
+:root {
+  --measure: 36rem;
+  --content-width: 48rem;
 }

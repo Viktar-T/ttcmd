@@ -28,7 +28,7 @@ export default async function LessonPage({
     <>
       <h1>{lesson.title}</h1>
       <p>{lesson.summary}</p>
-      {lesson.body}
+      <div className="prose">{lesson.body}</div>
     </>
   );
 }

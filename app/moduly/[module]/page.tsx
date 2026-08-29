@@ -19,7 +19,7 @@ export default async function ModulePage({
   const lessons = await listLessons(moduleSlug);
 
   return (
-    <>
+    <div className="prose">
       <h1>{moduleItem.title}</h1>
       <ul>
         {lessons.map((lesson) => (
@@ -30,6 +30,6 @@ export default async function ModulePage({
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 }

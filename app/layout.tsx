@@ -3,6 +3,7 @@ import { mono, sans } from "./fonts";
 import { ThemeToggle } from "./theme-toggle";
 import "./tokens.css";
 import "./globals.css";
+import "./prose.css";
 
 export const metadata: Metadata = {
   title: "ttcmd",

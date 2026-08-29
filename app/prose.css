@@ -1,0 +1,57 @@
+/*
+ * The reading treatment — slice 004.
+ *
+ * Everything here is scoped under a single `.prose` class, applied by the page
+ * components rather than by `main`. The styleguide's own furniture must not sit
+ * inside a reading measure, and a lesson's body must.
+ *
+ * Kept out of globals.css deliberately: that file is the reset and the
+ * element-level defaults, and this is a treatment. Kept out of a CSS Module
+ * deliberately too — every check in this slice is performed by reading a
+ * rendered page, and a hashed class name makes that harder for no gain.
+ *
+ * No colour literal may appear here. Use a token from tokens.css.
+ */
+
+/* ------------------------------------------------------------------ *
+ * The column, and the breakout
+ * ------------------------------------------------------------------ */
+
+/*
+ * Named grid lines rather than a negative-margin breakout. `margin-inline:
+ * calc(50% - 50vw)` and its relatives are the usual trick and they are how a
+ * page acquires a horizontal scrollbar at 375px — spec criteria 13 and 20.
+ *
+ * min() is what makes the phone case fall out without a media query: below the
+ * measure, the text column is simply the container.
+ */
+.prose {
+  display: grid;
+  grid-template-columns:
+    [full-start] minmax(0, 1fr)
+    [text-start] min(var(--measure), 100%) [text-end]
+    minmax(0, 1fr) [full-end];
+  font-size: var(--text-lg);
+  line-height: var(--leading-normal);
+}
+
+/*
+ * min-width: 0 is not decoration. A grid item defaults to min-width: auto, and
+ * one long unbreakable run inside it pushes the track wider than its declared
+ * size — which is a horizontal page scrollbar.
+ */
+.prose > * {
+  grid-column: text;
+  min-width: 0;
+}
+
+/* The wide blocks of spec §1: the diagrams already in the lessons, and tables.
+   Their internal typography is not this slice's; their place in the flow is. */
+.prose > svg,
+.prose > table {
+  grid-column: full;
+}
+
+.prose {
+  overflow-wrap: break-word;
+}
