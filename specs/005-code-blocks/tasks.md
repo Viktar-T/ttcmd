@@ -11,14 +11,14 @@ rendered page and recorded in `verification.md`, not asserted here.
 
 ---
 
-- [ ] **T01 — Record the slice**
+- [x] **T01 — Record the slice**
 
   `plan.md` and this file into the repository. `spec.md` is already written.
 
   **Check:** the three files exist under `specs/005-code-blocks/` and are
   committed.
 
-- [ ] **T02 — Highlighting arrives, and nothing about it reaches the browser**
+- [x] **T02 — Highlighting arrives, and nothing about it reaches the browser**
 
   List `docs/adr/`, claim the next free number, and write the ADR for the
   engine and the two dependencies. Install `shiki` and `@shikijs/rehype`.

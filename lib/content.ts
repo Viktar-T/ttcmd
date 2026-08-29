@@ -3,6 +3,7 @@ import path from "node:path";
 import type { ReactElement } from "react";
 import { compileMDX } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
+import { rehypeCodeHighlight } from "./code-highlight";
 import {
   lessonFrontmatterSchema,
   moduleFrontmatterSchema,
@@ -22,10 +23,18 @@ const moduleIndexFile = "index.mdx";
  *
  * Both compileMDX calls below share these options: a module index is written
  * in the same Markdown as a lesson and must parse the same way.
+ *
+ * Slice 005 adds the code highlighter to the same object, for the same reason:
+ * a fenced block in a module index is a fenced block, and a second place to
+ * configure it is a second place for the two to drift apart. It runs here, at
+ * build, inside a Server Component — nothing about it is shipped to a browser.
  */
 const mdxOptions = {
   parseFrontmatter: true,
-  mdxOptions: { remarkPlugins: [remarkGfm] },
+  mdxOptions: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [rehypeCodeHighlight],
+  },
 };
 
 export interface ModuleSummary extends ModuleFrontmatter {
