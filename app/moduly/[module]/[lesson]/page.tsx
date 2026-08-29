@@ -3,6 +3,7 @@ import { getCourse, getLesson, getLessonNeighbours } from "@/lib/content";
 import type { LessonPosition } from "@/lib/content";
 import { Band } from "@/components/band";
 import { Breadcrumb } from "@/components/breadcrumb";
+import { BackToTop } from "@/components/back-to-top";
 import { ContentsDisclosure, ContentsPanel } from "@/components/contents";
 import { ScrollSpy } from "@/components/scroll-spy";
 import { Pager, type PagerItem } from "@/components/pager";
@@ -66,6 +67,7 @@ export default async function LessonPage({
         </div>
       </div>
       <ScrollSpy />
+      <BackToTop />
       <Pager
         ariaLabel="Lekcje"
         previousLabel="Poprzednia lekcja"

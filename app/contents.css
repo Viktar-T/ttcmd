@@ -257,3 +257,42 @@ a.contentsLesson:focus-visible .contentsId {
 .contentsDetails > .contentsLessons {
   padding: 0.7rem 0.9rem 0.85rem;
 }
+
+/* ------------------------------------------------------------------ *
+ * Back to top
+ *
+ * Quiet on purpose: the page's own ground, a border in the structural rule
+ * value (its border is what makes it a control — ADR-0012), an arrow glyph
+ * at 12.21:1 / 14.71:1. The accent arrives only on hover and focus — a
+ * control floating over every screen of every lesson must not glow at rest.
+ * A 44px square: it is a touch target first.
+ * ------------------------------------------------------------------ */
+
+.backToTop {
+  position: fixed;
+  inset-block-end: 1.25rem;
+  inset-inline-end: 1.25rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--rule-strong);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--text-lg);
+  cursor: pointer;
+}
+
+.backToTop:hover {
+  border-color: var(--accent-line);
+  color: var(--accent-line);
+}
+
+/* Programmatic focus targets (the skip control's article, back-to-top's
+   main): not tab stops, so the UA's default ring on them marks nothing a
+   keyboard user did. */
+main:focus {
+  outline: none;
+}

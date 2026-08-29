@@ -66,7 +66,7 @@ Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
       at 375 px highlights identically (criterion 12's dynamic half). All
       read from the DOM and recorded.
 
-- [ ] **T09 — Back to top.** `components/back-to-top.tsx` and its styles:
+- [x] **T09 — Back to top.** `components/back-to-top.tsx` and its styles:
       threshold visibility, instant scroll, focus returned to the top.
       *Check:* criterion 14 at 375 px and desktop — absent at top, present
       past a viewport, viewport and `document.activeElement` at the top after

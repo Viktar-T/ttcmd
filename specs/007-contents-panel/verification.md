@@ -240,3 +240,18 @@ disclosure's `liczba-ktora-dotyczy-ciebie-najbardziej` entry carries
 `aria-current="location"` and computes to the inverted pair —
 `background rgb(237, 235, 230)` = `--text`, `color rgb(42, 41, 38)` =
 `--bg`. No horizontal scrollbar.
+
+## T09 — Back to top (criterion 14)
+
+At **375×812** and at **1280×800**, on the longest lesson:
+
+- `scrollY = 0`: the control is **absent** (not hidden — not in the DOM).
+- Past one viewport of scroll: present — a 44×44 px `<button
+  aria-label="Wróć na początek">`, fixed 20 px from the bottom-right,
+  computing to `--bg` ground, `--text` glyph, `--rule-strong` border.
+- Activation: `scrollY` returns to 0 **and** `document.activeElement` is
+  `MAIN` — a keyboard user's next Tab starts from the top. Back at the top,
+  the control is absent again.
+- The landing page, `/moduly` and the module page contain no trace of it in
+  their served HTML; nor does the **lesson's own served HTML** — the control
+  is client-rendered from null, so with JavaScript disabled it never exists.
