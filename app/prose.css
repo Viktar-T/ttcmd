@@ -85,15 +85,23 @@
 
 /* `pre` was the flow child until slice 005 wrapped a code block in an element
    the copy control can be pinned to. The gap is unchanged — the rhythm is 004's
-   and stays 004's — but the thing carrying it is now the wrapper. */
-.prose > :is(blockquote, svg, table, [data-code-block]) {
+   and stays 004's — but the thing carrying it is now the wrapper.
+
+   :where() around the attribute selector, and it is not decoration. :is() takes
+   the specificity of its most specific argument, so a bare [data-code-block]
+   would raise these two rules from (0,1,1) to (0,2,0) — a tie with the
+   :first-child reset below, whose comment claims to beat everything above it on
+   specificity. :where() contributes zero, so the selector keeps exactly the
+   specificity it had when it said `pre`, and the cascade below stays a
+   guarantee rather than an accident of source order. */
+.prose > :is(blockquote, svg, table, :where([data-code-block])) {
   margin-top: var(--gap-apart);
 }
 
 /* Set apart below as well as above — unless a heading follows, in which case
    the heading's own larger gap wins. Written as :not() rather than left to
    source order, so re-ordering this file cannot silently break it. */
-.prose > :is(blockquote, svg, table, [data-code-block]) + :not(:is(h1, h2, h3, h4, h5, h6)) {
+.prose > :is(blockquote, svg, table, :where([data-code-block])) + :not(:is(h1, h2, h3, h4, h5, h6)) {
   margin-top: var(--gap-apart);
 }
 

@@ -615,7 +615,122 @@ one-line block — the whole of spec §8.
 
 ## 24 — The closing review
 
-Recorded below once T10 has run.
+Carried out in a fresh context against `spec.md`, `plan.md` and the whole diff
+`61a4243..HEAD`, per AGENTS.md §3 and Article IX.
+
+**No blocking findings.** The reviewer re-derived the contrast table from the
+token values, re-extracted all nine code texts from the prerendered HTML and
+compared them to the `.mdx` itself, re-grepped the client chunks, and ran 35
+info-line cases and 15 pathological documents — an empty block, a blank-line
+block, a block inside a list and inside a blockquote, an indented block, a raw
+`<pre>`, a mark on a one-line block, `bash{2}`, `BASH`, a whitespace-only info
+line — through the real pipeline. Nothing crashed, nothing was wrongly accepted
+or wrongly refused, and a filename containing a script tag is inert: it is a
+React text child, and the grammar cannot produce a double quote inside a
+filename, so the attribute cannot be broken either.
+
+Ten notes came back. **Four were fixed** because they affect correctness or a
+criterion; the rest are recorded here rather than chased, per T10.
+
+### Fixed
+
+**1. `lib/code-meta.ts` — the parser allocated before it refused.** Ranges were
+expanded into a list of line numbers at parse time, and the bounds check happens
+afterwards, in `preprocess`, which is the only hook that knows the block's real
+length. So a range of two million lines built two million entries in ~290 ms
+before anything looked at a three-line block; a larger typo exhausts memory
+instead of producing criterion 16's message. **Ranges are now kept as ranges and
+never expanded**; `marksLine` tests membership and `rangesPast` reports the
+overrun. Re-checked, with a two-million-line range on the three-line block:
+
+    Error: content/moduly/00-start/git-i-github.mdx: [next-mdx-remote] error compiling MDX:
+    code block: the info line marks 1-2000000, but the block has 3 lines.
+      build wall time, including the failure: 4683 ms
+
+and criterion 16's own case still reads `marks 4-5, but the block has 3 lines`.
+
+**2. `app/prose.css` — a cascade guarantee had quietly become source order.**
+`:is()` takes the specificity of its most specific argument, so replacing `pre`
+with `[data-code-block]` raised the two `--gap-apart` rules from (0,1,1) to
+(0,2,0) — a tie with `.prose > :first-child`, whose comment claims to beat
+everything above it on specificity. Behaviour was unchanged only because the
+reset comes later in the file, and no lesson currently opens with a code block,
+so nothing would have caught it. **The attribute selector is now wrapped in
+`:where()`**, which contributes zero specificity, so the rules keep exactly what
+they had when they said `pre`. Re-checked on the Git lesson:
+`firstChildMarginTop: "0px"`, code blocks `40px`, largest gap on the page `68`.
+
+**3. `scripts/check-design-invariants.mjs` — the flat scan did not fail to read
+nesting, it mis-read it.** A `:root` inside an `@media` block would have been
+parsed as a bare `:root` and passed Check D — the exact failure Check D exists
+to catch. **Brace depth is now measured first and the check refuses to answer
+rather than answering wrongly:**
+
+    [Check D] app/tokens.css nests rules 2 deep (braces balanced). Checks C and D
+    read it with a flat scan, which would read a nested `:root` as a bare one and
+    let a theme-dependent code colour through. The scan has to grow before the
+    file does.
+
+**4. `lib/code-highlight.ts` — a stray attribute, latent.** shiki copies every
+`meta` key not starting with an underscore onto the `<pre>`'s properties
+(`@shikijs/core/dist/index.mjs:835`), so `parseMetaString` returning `ttcmd`
+put `ttcmd="[object Object]"` in the hast tree. It never reached a page only
+because the block component builds its own `<pre>` and ignores incoming props —
+one refactor away from being visible. **Renamed to `_ttcmd`**, the documented
+escape. Confirmed on the rendered page: the `<pre>` carries `class` and
+`tabindex` and nothing else, and `ttcmd=` appears nowhere in the DOM.
+
+### Recorded, not fixed
+
+**5. Criterion 19's margin is under three pixels and nothing checks it.**
+`--control-space` is 72 px; the control's footprint is 69.2 px
+(`min-width: 4.6em` at `--text-sm`, plus its 0.3 rem inset). Raising
+`--text-sm`, widening the control's padding, or a monospace fallback with a
+wider advance would silently put text back under it — and shrinking the
+reservation is bounded from the other side by the 55-character line fitting the
+measure. The comment in `code-block.module.css` warned about one direction; it
+now warns about both. Not fixed further because both bounds are content-derived,
+and inventing a check for a three-pixel slack is a worse trade than writing it
+down.
+
+**6. Check D covers the palette, not its use.** Nothing stops a future edit to
+`components/code-block.module.css` from reaching for `--text-muted` or `--rule`
+inside a surface that does not flip — which is spec decision 4, currently held
+by discipline rather than by the build. A Check E confining that file to the
+`--code-*` set would close it. Deliberately not added at the closing review:
+criterion 5 is met and measured today, and a new build check is a new task, not
+a fix.
+
+**7. The code surface is 1.16:1 against the dark page.** `--bg-code` `#1e1d1b`
+against `--bg` `#2a2926`; 15.58:1 on the light theme. Spec §1 asks for "a
+surface distinctly darker than the page", and on the dark theme that separation
+is carried mostly by the rounded corners. `--bg-code` is ADR-0007's and predates
+this slice, and no numbered criterion measures it, so retuning it here would be
+changing a ratified token silently. **Added to the outstanding by-eye list**;
+the cheap answer if it does read as flat is a hairline in `--code-rule`, which
+changes no ratified value.
+
+**8. A marked line scrolled right is carried by the 1.19:1 band alone.** The
+accent marker sits at the line's start and scrolls out of view with the code.
+Spec decision 14 chose that explicitly over a pinned gutter, so it is sanctioned
+rather than a defect — recorded because §6's "visible without colour" leans on
+the marker.
+
+**9. Every copy control has the same accessible name.** Nine identical "Kopiuj
+kod do schowka" buttons in a screen reader's element list on the Git lesson, and
+`tabIndex={0}` on all nine `<pre>`s including the six that do not scroll at a
+desktop width. Both are deliberate — which blocks scroll depends on the
+viewport, so a focusable region cannot be chosen at build time — and no
+criterion requires otherwise. Distinguishing the labels wants the filename or a
+section anchor, which is the contents-panel slice's material.
+
+**10. `npm run lint` is red, and it is not this slice's.** Two
+`react/no-unescaped-entities` errors at `app/styleguide/page.tsx:312-313`. The
+identical JSX sits at line 229 of the same file at `61a4243`; the specimen block
+merely displaced it. It is an App-lane change (Article IX) and therefore not
+this slice's to make. **Flagged for Viktar.**
+
+**Pass**, with the five by-eye judgements below still open.
 
 ---
 
@@ -632,6 +747,7 @@ listed rather than asserted.
 | 14 — the filename reads as a header | Font, size, colour, rule and geometry all measured; no seam by construction | Whether it reads as a header rather than as a first line of code |
 | 21 — the diacritics draw | Both faces report they can render all 18 characters; text content intact | Whether `ł` and `ę` draw rather than falling back, in a code block specifically |
 | the palette as a whole | Every ratio computed and recorded | Whether eight colours on warm near-black look like this site or like an editor — the taste question ADR-0011 exists to let Viktar veto |
+| spec §1 — "distinctly darker than the page" | 1.16:1 on dark, 15.58:1 on light; the rounded corners and the gutter also separate the block | Whether a code block reads as an object on the dark theme. If it does not, a hairline in `--code-rule` fixes it without touching a ratified token |
 
 Slice 004 settled its equivalent list from four screenshots supplied by Viktar,
 recorded as task T12a. The same is available here, and until it happens these

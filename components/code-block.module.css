@@ -15,10 +15,14 @@
   /* The gutter, and the space the copy control needs at the end of a line.
      Local names, not `--code-…`: that prefix belongs to app/tokens.css. */
   --gutter: 1.1rem;
-  /* Wide enough for the control at rest plus its inset. It is also the reason
-     the widest line in the written lessons — 55 characters — still fits the
-     measure without scrolling at a desktop width: 528 + 17.6 + 72 < 624. Grow
-     it and that stops being true. */
+  /* Wide enough for the control at rest plus its inset, and it is squeezed from
+     both sides. GROW IT and the widest line in the written lessons — 55
+     characters — stops fitting the measure without scrolling: 528 + 17.6 + 72
+     < 624 today. SHRINK IT, or widen the control (its font size, its padding,
+     its min-width, or a monospace fallback with a wider advance), and text
+     goes back under the control permanently. The control's footprint is
+     currently 69.2px against these 72px, so the slack is under three pixels
+     and neither side of it is checked by anything. */
   --control-space: 4.5rem;
 
   position: relative;

@@ -2,7 +2,12 @@ import rehypeShiki, { type RehypeShikiOptions } from "@shikijs/rehype";
 import { createCssVariablesTheme } from "shiki";
 import type { ShikiTransformer } from "shiki";
 import type { Element } from "hast";
-import { parseCodeMeta, type CodeMeta } from "./code-meta";
+import {
+  marksLine,
+  parseCodeMeta,
+  rangesPast,
+  type CodeMeta,
+} from "./code-meta";
 
 /**
  * Syntax highlighting, computed when the site is built.
@@ -45,7 +50,7 @@ const codeTheme = createCssVariablesTheme({
  * `meta` as an open record, so the cast happens here, once, with a shape check.
  */
 function metaOf(meta: Record<string, unknown> | undefined): CodeMeta | null {
-  const parsed = meta?.ttcmd;
+  const parsed = meta?._ttcmd;
   return parsed && typeof parsed === "object" ? (parsed as CodeMeta) : null;
 }
 
@@ -64,10 +69,10 @@ const ttcmdCodeTransformer: ShikiTransformer = {
     if (!meta || meta.highlighted.length === 0) return;
 
     const lineCount = code.split("\n").length;
-    const overrun = meta.highlighted.filter((line) => line > lineCount);
+    const overrun = rangesPast(meta, lineCount);
     if (overrun.length > 0) {
       throw new Error(
-        `code block: the info line marks line ${overrun.join(", ")}, but the block ` +
+        `code block: the info line marks ${overrun.join(", ")}, but the block ` +
           `has ${lineCount} line${lineCount === 1 ? "" : "s"}.`
       );
     }
@@ -89,7 +94,7 @@ const ttcmdCodeTransformer: ShikiTransformer = {
   /** `line` is 1-based, which is what an author writing `{2,4-5}` means. */
   line(node: Element, line: number) {
     const meta = metaOf(this.options.meta);
-    if (meta?.highlighted.includes(line)) {
+    if (meta && marksLine(meta, line)) {
       node.properties["data-highlighted"] = "";
     }
   },
@@ -118,8 +123,14 @@ export const rehypeCodeHighlight: [typeof rehypeShiki, RehypeShikiOptions] = [
     /* Deliberately absent: `fallbackLanguage` and `onError`. See the header. */
 
     /* Called once per block that carries an info line, and it throws rather
-       than shrugging at anything it cannot read. See lib/code-meta.ts. */
-    parseMetaString: (raw: string) => ({ ttcmd: parseCodeMeta(raw) }),
+       than shrugging at anything it cannot read. See lib/code-meta.ts.
+
+       The leading underscore is load-bearing: shiki copies every meta key that
+       does not start with one onto the <pre> as an attribute, which would put
+       `ttcmd="[object Object]"` in the tree. Nothing renders it today only
+       because the block component builds its own <pre> and ignores the
+       incoming props. */
+    parseMetaString: (raw: string) => ({ _ttcmd: parseCodeMeta(raw) }),
 
     transformers: [ttcmdCodeTransformer],
   },

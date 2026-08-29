@@ -86,6 +86,15 @@ rendered page and recorded in `verification.md`, not asserted here.
   control at rest is scrolled clear and that is shown.
   *(Acceptance criteria 11, 12, 13, 19.)*
 
+  *Done except for the screenshot: the Browser pane never composited a frame in
+  this session, so none could be taken. The focus indicator was read from
+  computed styles instead — outline `rgb(201,194,245) solid 2px`, and the label
+  `#a29a8c` at rest against `#e8e4db` on focus — and the scrolled-clear
+  measurement was taken with a Range: 176px of the first line beyond the
+  control at rest, 0px once scrolled. Both are in `verification.md`, and
+  criterion 11's "reads as quiet rather than as broken" is on its outstanding
+  list.*
+
 - [x] **T06 — The fence info line, and the filename header**
 
   `lib/code-meta.ts`: the grammar of the plan, strict, with errors naming what
@@ -143,7 +152,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   reports no change under `content/`.
   *(Acceptance criteria 1, 4, 5, 7.)*
 
-- [ ] **T10 — Close the slice**
+- [x] **T10 — Close the slice**
 
   Review the complete diff against `spec.md` in a **fresh context**, per
   AGENTS.md §3 and Article IX. Report gaps that affect correctness or an

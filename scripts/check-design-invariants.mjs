@@ -178,11 +178,38 @@ function stripCssComments(source) {
   return source.replace(/\/\*[\s\S]*?\*\//g, "");
 }
 
-/** [{ selector, declarations: Map<name, value> }], in source order. */
+/**
+ * [{ selector, declarations: Map<name, value> }], in source order — or null.
+ *
+ * The scan is flat, and `app/tokens.css` has no nested rule and no at-rule with
+ * a block, so it is exact rather than approximate. It does not merely fail to
+ * read nesting, though: it would read `@media { :root { … } }` as a bare
+ * `:root` and let a theme-dependent definition through Check D. So the depth is
+ * measured first and the check refuses to answer rather than answering wrongly.
+ * If tokens.css ever needs nesting, THIS is what has to grow.
+ */
 function readTokenBlocks() {
   const source = stripCssComments(
     readFileSync(path.join(repoRoot, TOKEN_FILE), "utf8"),
   );
+
+  let depth = 0;
+  let deepest = 0;
+  for (const character of source) {
+    if (character === "{") deepest = Math.max(deepest, ++depth);
+    else if (character === "}") depth -= 1;
+  }
+  if (deepest > 1 || depth !== 0) {
+    fail(
+      "D",
+      `${TOKEN_FILE.split(path.sep).join("/")} nests rules ${deepest} deep (braces ` +
+        `${depth === 0 ? "balanced" : "unbalanced"}). Checks C and D read it with a flat ` +
+        `scan, which would read a nested \`:root\` as a bare one and let a ` +
+        `theme-dependent code colour through. The scan has to grow before the file does.`,
+    );
+    return null;
+  }
+
   return [...source.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map(([, selector, body]) => {
     const declarations = new Map();
     for (const [, name, value] of body.matchAll(/(--[\w-]+)\s*:\s*([^;]+);/g)) {
@@ -217,6 +244,8 @@ function checkCodePalette() {
   if (!prefix) return;
 
   const blocks = readTokenBlocks();
+  if (!blocks) return;
+
   const rootDeclarations = new Map();
   for (const block of blocks) {
     if (block.selector === ":root") {
