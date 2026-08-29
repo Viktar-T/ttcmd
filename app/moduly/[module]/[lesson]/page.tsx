@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getLesson, listLessons, listModules } from "@/lib/content";
+import { LessonHeader } from "./lesson-header";
 
 export async function generateStaticParams() {
   const modules = await listModules();
@@ -26,8 +27,11 @@ export default async function LessonPage({
 
   return (
     <>
-      <h1>{lesson.title}</h1>
-      <p>{lesson.summary}</p>
+      <LessonHeader
+        title={lesson.title}
+        order={lesson.order}
+        summary={lesson.summary}
+      />
       <div className="prose">{lesson.body}</div>
     </>
   );

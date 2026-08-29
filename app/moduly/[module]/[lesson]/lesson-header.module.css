@@ -1,0 +1,83 @@
+/*
+ * The lesson header's geometry.
+ *
+ * It is held to --measure and centred, so its left edge is the same as the
+ * prose column's below it, and closed with a rule so the block reads as a
+ * header rather than as prose that starts indented.
+ *
+ * No colour literal may appear here. Use a token from tokens.css.
+ */
+
+.header {
+  /* One variable drives both the title and the circle. That is why the
+     narrow-viewport rule at the bottom is a single line: the circle follows
+     the title without being told to. */
+  --title-size: var(--text-3xl);
+
+  max-width: var(--measure);
+  margin-inline: auto;
+  margin-block-end: var(--gap-section);
+  padding-block-end: var(--gap-block);
+  border-block-end: 1px solid var(--rule);
+
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 1rem;
+  row-gap: var(--gap-block);
+  /* start, not center: the circle belongs to the first line of the title and
+     must not drift downwards when the title wraps to two or three lines. */
+  align-items: start;
+}
+
+/*
+ * The diameter is exactly one line box of the title, so the circle's vertical
+ * centre lands on the centre of the first line whatever the title does below
+ * it. Nothing here is a magic number: both factors are the tokens the title
+ * itself is set with.
+ */
+.letter {
+  grid-column: 1;
+  inline-size: calc(var(--title-size) * var(--leading-tight));
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+
+  border: 1px solid var(--accent-line);
+  border-radius: 50%;
+  color: var(--accent-line);
+
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: calc(var(--title-size) * 0.5);
+  line-height: 1;
+}
+
+.title {
+  grid-column: 2;
+  margin: 0;
+  font-size: var(--title-size);
+  line-height: var(--leading-tight);
+  font-weight: 700;
+  text-wrap: balance;
+  /* Both of the longest written titles wrap at the measure and at 375px. */
+  overflow-wrap: break-word;
+}
+
+/*
+ * The summary, which every lesson carries and which reads as an abstract.
+ * Larger than body, quieter than body, and separated from it by the rule
+ * below — three signals at once that it is not the lesson's first sentence,
+ * because in every written lesson the real first paragraph says something else.
+ */
+.standfirst {
+  grid-column: 2;
+  margin: 0;
+  font-size: var(--text-xl);
+  line-height: var(--leading-normal);
+  color: var(--text-muted);
+}
+
+@media (max-width: 30rem) {
+  .header {
+    --title-size: var(--text-2xl);
+  }
+}
