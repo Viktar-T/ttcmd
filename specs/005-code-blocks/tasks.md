@@ -38,7 +38,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   grammar marker: zero hits, printed.
   *(Acceptance criterion 22; the mechanical half of 4.)*
 
-- [ ] **T03 — The palette, and the two checks that keep it honest**
+- [x] **T03 — The palette, and the two checks that keep it honest**
 
   The second ADR: the values, why seven, why theme-independent. The code
   palette block in `app/tokens.css` — defined once on bare `:root`, never under

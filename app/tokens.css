@@ -116,3 +116,103 @@
 :root[data-theme="light"] {
   --weight-strong: 700;
 }
+
+/*
+ * The code surface palette — slice 005, ADR-0011.
+ *
+ * DEFINED ONCE, ON BARE :root, AND NEVER REPEATED UNDER [data-theme]. The code
+ * surface stays dark on the light theme (ADR-0007), so the ground these sit on
+ * does not flip — and a colour that flips underneath a ground that does not is
+ * legible on one theme and invisible on the other. That is the single easiest
+ * way for this slice to be wrong, because everything here is built while
+ * looking at the dark theme, where the page palette happens to work on a dark
+ * surface too. Checks C and D in scripts/check-design-invariants.mjs make it
+ * structural rather than remembered.
+ *
+ * The highlighter emits these names; it does not choose them. Its theme
+ * resolves every token colour to var(--code-...), so the generated markup
+ * carries no colour value and the palette is here, where it can be checked.
+ * Check C fails the build if the highlighter can emit a name this block does
+ * not define — an undefined one renders as ordinary body text, silently.
+ *
+ * Eight text colours: four hues, and four steps of a warm grey ramp. Every one
+ * of them clears 4.5:1 against the surface AND against the marked-line band —
+ * the table is in specs/005-code-blocks/verification.md. Highlighting is
+ * supplementary, so nothing here is allowed to be a colour you cannot read.
+ */
+:root {
+  --code-background: var(--bg-code);
+
+  /* The warm grey ramp: plain code, bash arguments, separators, comments. */
+  --code-foreground: #e8e4db; /* 13.28:1 */
+  --code-token-string: #bdb6a8; /* 8.36:1 — the generic `string` scope, which
+                                   in shell is an unquoted argument, and an
+                                   argument is the plainest thing on the line */
+  --code-token-punctuation: #b0a99c; /* 7.22:1 */
+  --code-token-comment: #a29a8c; /* 6.05:1 */
+
+  /* The four hues. */
+  --code-token-keyword: #c9c2f5; /* 10.04:1 — the site accent. Keywords are the
+                                    structure of a language, and the accent is
+                                    what marks structure everywhere else here */
+  --code-token-function: #8ed6c8; /* 10.11:1 — functions, and type names */
+  --code-token-string-expression: #e8c188; /* 9.96:1 — `string.quoted`, which is
+                                              a real string in every language
+                                              including C# */
+  --code-token-constant: #f0aca2; /* 8.93:1 — numbers, and variables */
+
+  /*
+   * Aliases. Nothing on the site renders any of these today; they are defined
+   * so that the first thing which does renders in this palette rather than
+   * inheriting body text with no error to say so.
+   */
+  --code-token-parameter: var(--code-token-constant);
+  --code-token-link: var(--code-token-keyword);
+  --code-token-inserted: var(--code-token-function);
+  --code-token-deleted: var(--code-token-constant);
+  --code-token-changed: var(--code-token-string-expression);
+
+  /*
+   * The sixteen terminal slots, for `ansi` code blocks. Red, green, yellow and
+   * blue map to the palette honestly; black, magenta, cyan and white collide
+   * with something else, and bright is not distinguished from normal. That is
+   * an accurate statement of how much thought terminal output has had, and the
+   * slice that renders any is the slice that fixes it. Black is NOT black: on
+   * a near-black surface that is an invisible slot rather than a dark one.
+   */
+  --code-ansi-black: var(--code-token-comment);
+  --code-ansi-red: var(--code-token-constant);
+  --code-ansi-green: var(--code-token-function);
+  --code-ansi-yellow: var(--code-token-string-expression);
+  --code-ansi-blue: var(--code-token-keyword);
+  --code-ansi-magenta: var(--code-token-keyword);
+  --code-ansi-cyan: var(--code-token-function);
+  --code-ansi-white: var(--code-foreground);
+  --code-ansi-bright-black: var(--code-token-comment);
+  --code-ansi-bright-red: var(--code-token-constant);
+  --code-ansi-bright-green: var(--code-token-function);
+  --code-ansi-bright-yellow: var(--code-token-string-expression);
+  --code-ansi-bright-blue: var(--code-token-keyword);
+  --code-ansi-bright-magenta: var(--code-token-keyword);
+  --code-ansi-bright-cyan: var(--code-token-function);
+  --code-ansi-bright-white: var(--code-foreground);
+
+  /*
+   * The block's own furniture, which the highlighter knows nothing about.
+   *
+   * --code-rule is decorative: the filename is already told apart from the code
+   * by its colour and its position, and the hairline only reinforces it. Slice
+   * 003's precedent — a rule may sit under 3:1 while it is decorative, and the
+   * moment it carries meaning it needs its own value.
+   *
+   * --code-line-highlight is a change in LIGHTNESS, not a hue, so a marked line
+   * stays marked with colour removed from the page.
+   *
+   * --code-line-marker is the site's accent, which is what points at things
+   * everywhere else here. --accent-surface is the same value in both themes,
+   * which Check D enforces rather than assumes.
+   */
+  --code-rule: #3b3831; /* 1.44:1, decorative */
+  --code-line-highlight: #2e2b25; /* 1.19:1 against the surface */
+  --code-line-marker: var(--accent-surface);
+}
