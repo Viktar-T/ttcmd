@@ -55,7 +55,7 @@ Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
       `document.documentElement.scrollWidth <= clientWidth` holds (criterion
       12's static half, criterion 13 in part).
 
-- [ ] **T08 — The scroll-spy.** `components/scroll-spy.tsx` (reading line,
+- [x] **T08 — The scroll-spy.** `components/scroll-spy.tsx` (reading line,
       the two edge rules, the followed-link pin, `aria-current="location"`
       applied to both lists, minimal panel self-scroll), the active styling.
       *Check:* on the longest lesson — top: nothing active; mid-lesson:

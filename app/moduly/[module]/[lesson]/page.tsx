@@ -4,6 +4,7 @@ import type { LessonPosition } from "@/lib/content";
 import { Band } from "@/components/band";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { ContentsDisclosure, ContentsPanel } from "@/components/contents";
+import { ScrollSpy } from "@/components/scroll-spy";
 import { Pager, type PagerItem } from "@/components/pager";
 import { SKIP_TARGET_ID } from "@/lib/section-anchors";
 import { LessonHeader } from "./lesson-header";
@@ -64,6 +65,7 @@ export default async function LessonPage({
           {lesson.body}
         </div>
       </div>
+      <ScrollSpy />
       <Pager
         ariaLabel="Lekcje"
         previousLabel="Poprzednia lekcja"

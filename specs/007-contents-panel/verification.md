@@ -188,3 +188,55 @@ a user-agent default action, no page script runs in that frame — set
 `details.open` to true, with all 9 section links present in the frame's
 markup. (The full no-JS walk, including the absence of highlight and
 back-to-top, is T11's, after those exist.)
+
+## T08 — The scroll-spy (criteria 8, 9, 10, 11, 12's dynamic half)
+
+**Instrument note, so the numbers are honest:** the driven browser pane runs
+hidden, and a hidden document suspends the rendering steps — native `scroll`
+events and `requestAnimationFrame` with them — so the harness dispatches
+`new Event("scroll")` after each programmatic `scrollTo`, which is precisely
+the event a visible browser fires on its own. One code change came out of
+this rather than the harness: `schedule()` falls through to a direct
+`apply()` when `document.hidden`, since an rAF that never fires must not be
+the only path to the state. A double check of every state below was also read
+synchronously via that path.
+
+### Criterion 8 — the three states, longest lesson, 1280×800
+
+| state | expected | `aria-current="location"` reads |
+| --- | --- | --- |
+| `scrollY = 0` (the introduction) | nothing | **nothing** (0 elements) |
+| 4th heading 10px past the 6rem reading line | `dlaczego-nastepowala-zmiana` | exactly that id — 2 elements, the panel's copy and the disclosure's, one id |
+| document bottom | `zrodla` (the last) | `zrodla` |
+
+### Criterion 9 — following a section link
+
+From the top, clicking the panel's `obietnica-wraca-po-raz-kolejny`: the
+heading lands at **32.4 px** below the viewport top (`scroll-margin-top:
+2rem`), the URL gains the fragment, and the highlight moves to the target.
+
+**The pin, including the case the plan's "Gaps in the spec" records:** on
+`git-i-github` at 1280×1600, clicking `cwiczenia` (not the last section)
+lands the viewport **at the document bottom**, where the geometric bottom
+rule alone would highlight `zrodla` — the pinned target `cwiczenia` stays
+active. A real scroll of −500 px releases the pin and geometry resumes
+(`galaz-i-pull-request`, correct for that position).
+
+### Criteria 10 and 11 — the panel scrolls itself; sticky
+
+The fourteen-section lesson at **1280×600**: the panel's content is 963 px in
+a 536 px box (`hasOwnScrollbar: true`). Scrolling the page to its bottom made
+the spy self-scroll the panel to `scrollTop = 240`, the active `zrodla` entry
+**visible inside the panel** — and the page's own position bit-identical
+before and after the panel's self-scroll. Driving the panel's scroller from 0
+to its end moved the page by **0 px** (`9250 → 9250`). Deep in the longest
+lesson at 1280×800 (`scrollY = 8985`) the panel sits on screen at
+`top = 32 px` — sticky.
+
+### Criterion 12, dynamic half — the disclosure highlights the same way
+
+375×812, disclosure open, scrolled so the 6th heading passed the line: the
+disclosure's `liczba-ktora-dotyczy-ciebie-najbardziej` entry carries
+`aria-current="location"` and computes to the inverted pair —
+`background rgb(237, 235, 230)` = `--text`, `color rgb(42, 41, 38)` =
+`--bg`. No horizontal scrollbar.
