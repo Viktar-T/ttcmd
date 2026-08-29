@@ -15,7 +15,11 @@
   /* The gutter, and the space the copy control needs at the end of a line.
      Local names, not `--code-…`: that prefix belongs to app/tokens.css. */
   --gutter: 1.1rem;
-  --control-space: 3.75rem;
+  /* Wide enough for the control at rest plus its inset. It is also the reason
+     the widest line in the written lessons — 55 characters — still fits the
+     measure without scrolling at a desktop width: 528 + 17.6 + 72 < 624. Grow
+     it and that stops being true. */
+  --control-space: 4.5rem;
 
   position: relative;
   margin: 0;
@@ -75,4 +79,76 @@
 .pre :global(.line) {
   display: block;
   padding-inline: var(--gutter) var(--control-space);
+}
+
+/* ------------------------------------------------------------------ *
+ * The copy control
+ *
+ * A muted label, not a button with chrome — the design reference asks for
+ * "a muted `copy` label at the top-right inside the code block". It is quiet
+ * at rest and raised to the code's own colour on hover and on focus, which is
+ * what "muted until hover" means when the control is never hidden.
+ *
+ * The background is the code surface, so the control occludes cleanly whatever
+ * scrolls under it; `.line`'s trailing `--control-space` is what guarantees
+ * that text can always be scrolled clear of it again.
+ *
+ * All three labels are six characters or fewer and the box has a min-width, so
+ * the corner does not move when the state changes. The precise sentence goes
+ * to `.announcement` instead.
+ * ------------------------------------------------------------------ */
+
+.copy {
+  position: absolute;
+  inset-block-start: 0.3rem;
+  inset-inline-end: 0.3rem;
+
+  min-width: 4.6em;
+  padding: 0.15rem 0.45rem;
+  border: 0;
+  border-radius: 0.2rem;
+  background: var(--code-background);
+
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  text-align: center;
+  color: var(--code-token-comment);
+
+  cursor: pointer;
+  /* So dragging a selection across the block does not put the word `kopiuj`
+     in it. What the control copies is the code; what a hand-made selection
+     copies should be too. */
+  user-select: none;
+  transition: color 120ms ease;
+}
+
+.copy:hover,
+.copy:focus-visible {
+  color: var(--code-foreground);
+}
+
+.copy:focus-visible {
+  outline: 2px solid var(--code-line-marker);
+  outline-offset: -2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copy {
+    transition: none;
+  }
+}
+
+/* The live region. Present from the first render — a region added to the DOM at
+   the moment it has something to say is a region screen readers do not read. */
+.announcement {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

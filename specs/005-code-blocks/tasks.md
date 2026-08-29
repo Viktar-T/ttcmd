@@ -69,7 +69,7 @@ rendered page and recorded in `verification.md`, not asserted here.
   `document.documentElement.scrollWidth <= clientWidth` holds, both printed.
   *(Acceptance criteria 18 and 20; the surface half of 4.)*
 
-- [ ] **T05 — The copy control**
+- [x] **T05 — The copy control**
 
   `components/copy-button.tsx`, `"use client"`, rendered by the block. Three
   states in Polish, stable `aria-label`, visually hidden `role="status"`,

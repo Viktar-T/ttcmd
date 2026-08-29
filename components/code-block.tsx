@@ -1,5 +1,6 @@
 import type { ComponentPropsWithoutRef } from "react";
 import styles from "./code-block.module.css";
+import { CopyButton } from "./copy-button";
 
 /**
  * A fenced code block.
@@ -28,6 +29,7 @@ export function CodeBlock({ children }: ComponentPropsWithoutRef<"pre">) {
       <pre className={styles.pre} tabIndex={0}>
         {children}
       </pre>
+      <CopyButton />
     </figure>
   );
 }
