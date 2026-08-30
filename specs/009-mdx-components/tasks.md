@@ -77,7 +77,7 @@ T01–T03; the plan's own §9 numbering is offset by three.
       This task changes no source file; its commit carries the verification
       document only. (Criteria 2–9, 12, 13, 16.)
 
-- [ ] **T10 — close the slice.**
+- [x] **T10 — close the slice.**
       Fresh-context review of the diff against `spec.md` (criterion 17),
       `tasks.md` matching reality, and the final report naming the criterion
       left open for a human eye.

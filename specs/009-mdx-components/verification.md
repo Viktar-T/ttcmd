@@ -342,6 +342,42 @@ before — the tree is identical, so its output is identical by construction.
 
 ---
 
+## 17 — the fresh-context review
+
+Carried out in a fresh context against `spec.md` and the nine-commit diff. It
+re-ran the build, re-read the numbering path end to end, parsed fifteen
+adoption shapes through the real pipeline, and checked slices 004–008 for
+regressions. Its verdict: the slice closes.
+
+It confirmed independently that no per-file numbering is possible (the count is
+taken from the parsed tree, the offsets are accumulated only after the publish
+filter and the `order` sort, and `getLesson` cannot compile without awaiting
+`getCourse`), that no module-level mutable state exists so concurrent renders
+cannot interleave, that slice 008's three behaviours survive `getLesson` being
+rewritten, and that the `:where()` specificity of slice 004's rhythm selectors
+is unchanged. It also verified that module 1's lessons sort *completely
+differently* by filename than by `order` — which is what makes §2's table a
+discriminating check rather than a decorative one.
+
+**One finding, fixed here.** Exercises had no `scroll-margin-top`, while every
+section heading has had 2 rem of it since slice 007. Following `#zadanie-1-7`
+landed the exercise flush against the viewport's top edge — the criterion 8
+letter met and its point missed, on the one link this slice exists to make
+possible. `app/contents.css` now scopes that rule to `h2[id]` and
+`[data-exercise]` together:
+
+```
+scrollMarginTop  32px
+landedTopPx      32
+```
+
+Two carried-forward facts the review recorded and did not treat as findings:
+two lessons sharing one `order` have an undefined relative position (they
+already collide on letter and lesson id — pre-existing, and already in the
+journal), and an exercise written under `content/interesting-to-read/` is
+silently invisible rather than a build failure, because that tree is outside
+the content root the pipeline reads.
+
 ## Not verified here
 
 **"Unmissable when scrolling back."** The design reference asks an exercise to

@@ -44,8 +44,13 @@
 
 /* Room under the viewport's top edge when an anchor lands — spec §1. Below
    the 6rem reading line on purpose: a just-followed heading has always
-   "passed" it, so the geometric rule and the followed link agree. */
-.prose h2[id] {
+   "passed" it, so the geometric rule and the followed link agree.
+
+   Slice 009 adds the exercise, which is the site's other anchor target: an
+   exercise number is what a teacher says out loud, so `#zadanie-1-7` is a link
+   students actually follow, and it must land with the same breathing room a
+   section does rather than flush against the top edge. */
+.prose :is(h2[id], [data-exercise]) {
   scroll-margin-top: 2rem;
 }
 
