@@ -33,7 +33,7 @@ T01–T03; the plan's own §9 numbering is offset by three.
       loop. Nothing renders differently yet.
       Check: `npm run build` passes and the emitted route list is unchanged.
 
-- [ ] **T05 — the plugin, and every refusal it makes.**
+- [x] **T05 — the plugin, and every refusal it makes.**
       `lib/exercises.ts`: the policy union, the tree walk, the count, the
       stamping of `number` and `id`, and the refusals of plan §3 — an
       author-written attribute, an empty or non-literal `title`, an inline
