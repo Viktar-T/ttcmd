@@ -153,6 +153,11 @@ const SPECIMEN_LESSONS: CourseLesson[] = [
     title: "Krótki tytuł",
     summary: "Specimen.",
     sections: [],
+    /* Slice 009: this specimen holds no exercises, which is what makes the
+       one below start at 7.1 — the offset is the running total of the
+       module's earlier published lessons, never the lesson's position. */
+    exerciseCount: 0,
+    exerciseOffset: 0,
   },
   {
     moduleSlug: "07-przyklad",
@@ -171,6 +176,9 @@ const SPECIMEN_LESSONS: CourseLesson[] = [
       { id: "cwiczenia", title: "Ćwiczenia 7.1–7.3" },
       { id: "zrodla", title: "Źródła" },
     ],
+    /* Three, which is what the contents specimen above already claims. */
+    exerciseCount: 3,
+    exerciseOffset: 0,
   },
 ];
 

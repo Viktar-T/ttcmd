@@ -4,8 +4,15 @@ import { cache, type ReactElement } from "react";
 import { compileMDX } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { CodeBlock } from "@/components/code-block";
+import { Exercise } from "@/components/exercise";
 import { rehypeCodeHighlight } from "./code-highlight";
 import { rehypeSectionAnchors, type SectionEntry } from "./section-anchors";
+import {
+  EXERCISE_ELEMENT,
+  rehypeExercises,
+  type ExerciseEntry,
+  type ExercisePolicy,
+} from "./exercises";
 import { lessonId, lessonLetter, moduleLabel, moduleNumber } from "./numbering";
 import {
   lessonFrontmatterSchema,
@@ -37,11 +44,26 @@ const moduleIndexFile = "index.mdx";
  * sections of every lesson compiled in the same pass — so the options are
  * built per call around a fresh array. Everything else is unchanged, and
  * still configured exactly once.
+ *
+ * Slice 009 adds the exercise plugin and a second per-compile collector, on
+ * the same argument. It runs FIRST of the three, which correctness does not
+ * depend on — the identifier it might collide with is reserved by shape rather
+ * than by a list (lib/numbering.ts) — but a reader meets the reservation's
+ * cause before its effect.
  */
-function buildMdxOptions(collect: SectionEntry[]) {
-  /* Typed as the tuple it is — the same shape code-highlight.ts exports —
+function buildMdxOptions(
+  collect: SectionEntry[],
+  policy: ExercisePolicy,
+  collectExercises: ExerciseEntry[]
+) {
+  /* Typed as the tuples they are — the same shape code-highlight.ts exports —
      because inference widens a two-element array literal into a union array,
      which Pluggable rejects. */
+  const exercises: [
+    typeof rehypeExercises,
+    { policy: ExercisePolicy; collect: ExerciseEntry[] },
+  ] = [rehypeExercises, { policy, collect: collectExercises }];
+
   const sectionAnchors: [
     typeof rehypeSectionAnchors,
     { collect: SectionEntry[] },
@@ -51,19 +73,43 @@ function buildMdxOptions(collect: SectionEntry[]) {
     parseFrontmatter: true,
     mdxOptions: {
       remarkPlugins: [remarkGfm],
-      rehypePlugins: [sectionAnchors, rehypeCodeHighlight],
+      rehypePlugins: [exercises, sectionAnchors, rehypeCodeHighlight],
     },
   };
 }
 
 /*
- * The one element a lesson does not get as plain HTML. A code block needs a
- * wrapper the copy control can be pinned to while the code scrolls underneath
- * it, which means the scroller cannot be the outermost element — so `pre` is
- * mapped, and everything else in a lesson stays a plain element with a plain
- * stylesheet, as slices 003 and 004 left it.
+ * The two elements a lesson does not get as plain HTML.
+ *
+ * A code block needs a wrapper the copy control can be pinned to while the code
+ * scrolls underneath it, which means the scroller cannot be the outermost
+ * element — so `pre` is mapped. An exercise has no HTML element to be, and it
+ * carries a number the author did not write. Everything else in a lesson stays
+ * a plain element with a plain stylesheet, as slices 003 and 004 left it.
+ *
+ * The map is a function of the policy for one reason: a body compiled for
+ * COUNTING carries exercises with no number on them, and it is discarded
+ * unrendered (see `listLessons`). Binding the real component there would make
+ * a future refactor that starts rendering that body publish `Zadanie
+ * undefined`; binding a stub that throws makes the same refactor stop the
+ * build. It can never fire, and that is the point.
  */
-const mdxComponents = { pre: CodeBlock };
+function mdxComponents(policy: ExercisePolicy) {
+  if (policy.mode === "number") {
+    return { pre: CodeBlock, [EXERCISE_ELEMENT]: Exercise };
+  }
+
+  return {
+    pre: CodeBlock,
+    [EXERCISE_ELEMENT]: () => {
+      throw new Error(
+        `<${EXERCISE_ELEMENT}>: this body was compiled to count exercises, ` +
+          `not to render them, and carries no numbers. Render the body ` +
+          `getLesson() returns.`
+      );
+    },
+  };
+}
 
 /**
  * Every compile goes through here so that a failure names the file.
@@ -74,20 +120,40 @@ const mdxComponents = { pre: CodeBlock };
  * A build that stops on "cannot read the info line" without saying which of
  * eight files it is in is a build somebody has to bisect.
  */
-async function compile(source: string, relativePath: string) {
+async function compile(
+  source: string,
+  relativePath: string,
+  policy: ExercisePolicy
+) {
   const sections: SectionEntry[] = [];
+  const exercises: ExerciseEntry[] = [];
   try {
     const { frontmatter, content } = await compileMDX({
       source,
-      options: buildMdxOptions(sections),
-      components: mdxComponents,
+      options: buildMdxOptions(sections, policy, exercises),
+      components: mdxComponents(policy),
     });
-    return { frontmatter, content, sections };
+    return { frontmatter, content, sections, exercises };
   } catch (error) {
     const detail = error instanceof Error ? error.message : String(error);
     throw new Error(`${relativePath}: ${detail}`, { cause: error });
   }
 }
+
+/**
+ * Where an exercise may not be written, and why — the message an author reads.
+ *
+ * A module's introduction is not a lesson: it has no `order`, so it is not on
+ * the walk that produces the numbers, and an exercise written there could only
+ * render as a blank or a zero on a public page (spec §6, Article VIII).
+ */
+const EXERCISES_FORBIDDEN: ExercisePolicy = {
+  mode: "forbidden",
+  reason:
+    "an exercise belongs to a lesson. A module's introduction is not on the " +
+    "walk that numbers exercises across the module (ADR-0003), so there is " +
+    "no number this one could be given. Move it into a lesson.",
+};
 
 /**
  * Compiles a Markdown string through the pipeline a lesson gets — the same
@@ -98,12 +164,17 @@ async function compile(source: string, relativePath: string) {
  * filename, none marks a line, none is long enough to scroll, and none is C# —
  * which Article VII makes the language that must work. The specimens have to go
  * through the real path or they prove nothing, and this is that path.
+ *
+ * Slice 009 adds the policy, and it defaults to `forbidden` rather than to
+ * counting: a caller that renders a specimen without saying which module it
+ * belongs to gets a build failure, not a page with no number on it.
  */
 export async function compileProse(
   source: string,
-  label: string
+  label: string,
+  policy: ExercisePolicy = EXERCISES_FORBIDDEN
 ): Promise<ReactElement> {
-  const { content } = await compile(source, label);
+  const { content } = await compile(source, label, policy);
   return content;
 }
 
@@ -117,6 +188,10 @@ export interface LessonSummary extends LessonFrontmatter {
       article's DOM and the id the contents panel links to, one derivation
       (lib/section-anchors.ts). */
   sections: SectionEntry[];
+  /** How many exercises this lesson contains, counted from the same parsed
+      tree that renders them. It is what the module's walk adds up; the lesson
+      itself has no use for it. */
+  exerciseCount: number;
 }
 
 export interface Lesson extends LessonSummary {
@@ -133,6 +208,11 @@ export interface CourseLesson extends LessonSummary {
   letter: string;
   id: string;
   href: string;
+  /** How many exercises the module's earlier published lessons hold — so this
+      lesson's first exercise is `<module>.<exerciseOffset + 1>`. Produced by
+      the walk in `getCourse` and by nothing else: it is the whole of ADR-0003's
+      "an exercise cannot know its own number from inside its own file". */
+  exerciseOffset: number;
 }
 
 export interface CourseModule extends ModuleSummary {
@@ -166,7 +246,11 @@ async function readModule(
     path.join(contentRoot, moduleSlug, moduleIndexFile),
     "utf8"
   );
-  const { frontmatter, content } = await compile(source, relativePath);
+  const { frontmatter, content } = await compile(
+    source,
+    relativePath,
+    EXERCISES_FORBIDDEN
+  );
   return { frontmatter: moduleFrontmatterSchema.parse(frontmatter), content };
 }
 
@@ -184,18 +268,27 @@ async function readLessonSlugs(moduleSlug: string): Promise<string[]> {
     .map((entry) => entry.name.replace(/\.mdx$/, ""));
 }
 
+/**
+ * `policy` is the caller's, and the two callers want different things from the
+ * same file: `listLessons` counts, `getLesson` numbers. That is the double
+ * compile ADR-0003 forces — the offsets cannot exist until every earlier lesson
+ * of the module has been counted, and a compiled body's props are fixed at the
+ * moment it is compiled.
+ */
 async function readLessonFrontmatterAndBody(
   moduleSlug: string,
-  lessonSlug: string
+  lessonSlug: string,
+  policy: ExercisePolicy
 ) {
   const relativePath = `content/moduly/${moduleSlug}/${lessonSlug}.mdx`;
   const source = await readFile(
     path.join(contentRoot, moduleSlug, `${lessonSlug}.mdx`),
     "utf8"
   );
-  const { frontmatter, content, sections } = await compile(
+  const { frontmatter, content, sections, exercises } = await compile(
     source,
-    relativePath
+    relativePath,
+    policy
   );
   /* The schema failure joins the convention `compile` establishes above: a
      build that stops on a frontmatter mistake must say which file, not print
@@ -207,18 +300,30 @@ async function readLessonFrontmatterAndBody(
     const detail = error instanceof Error ? error.message : String(error);
     throw new Error(`${relativePath}: ${detail}`, { cause: error });
   }
-  return { frontmatter: parsed, content, sections };
+  return { frontmatter: parsed, content, sections, exercises };
 }
 
+/**
+ * The counting pass.
+ *
+ * Every `.mdx` in the module is read, schema-parsed and compiled here — the
+ * same pass that has always produced the frontmatter and the section anchors
+ * now also produces each lesson's exercise count, from the same parsed tree
+ * that will render them. A regular expression over the raw source would be a
+ * second derivation of one fact, and it would disagree with the first the day
+ * a lesson teaches this element inside a fenced code block.
+ *
+ * The compiled bodies are dropped, exactly as they were before: this function
+ * returns frontmatter, sections and the count. They carry no numbers, because
+ * no offset exists yet — see the stub in `mdxComponents`.
+ */
 async function listLessons(moduleSlug: string): Promise<LessonSummary[]> {
   const slugs = await readLessonSlugs(moduleSlug);
   const lessons = await Promise.all(
     slugs.map(async (slug) => {
-      const { frontmatter, sections } = await readLessonFrontmatterAndBody(
-        moduleSlug,
-        slug
-      );
-      return { slug, ...frontmatter, sections };
+      const { frontmatter, sections, exercises } =
+        await readLessonFrontmatterAndBody(moduleSlug, slug, { mode: "count" });
+      return { slug, ...frontmatter, sections, exerciseCount: exercises.length };
     })
   );
   /* The filter runs after every file on disk has been read, schema-parsed
@@ -260,13 +365,41 @@ export const getCourse = cache(async (): Promise<CourseModule[]> => {
     slugs.map(async (slug) => {
       const number = moduleNumber(slug);
       const { frontmatter, content } = await readModule(slug);
-      const lessons = (await listLessons(slug)).map((lesson) => ({
-        ...lesson,
-        moduleSlug: slug,
-        letter: lessonLetter(lesson.order),
-        id: lessonId(number, lesson.order),
-        href: `/moduly/${slug}/${lesson.slug}`,
-      }));
+
+      /* THE EXERCISE WALK — ADR-0003, and the one thing in this slice that is
+         easy to get wrong.
+
+         It runs HERE and nowhere else, because `listLessons` has just returned
+         the module's lessons already filtered to the published ones and already
+         sorted by `order`, and this is the only point in the repository where
+         all three facts an offset needs exist at once: which lessons a student
+         can open, what sequence they run in, and how many exercises each holds.
+
+         The running total starts at zero for every module, so a module whose
+         earlier letters do not exist still starts at 1 — module 0's only
+         lesson has `order: 3` and its first exercise is 0.1. An unpublished
+         lesson is gone before the accumulation begins, so it consumes no
+         numbers. Insert an exercise anywhere and every later offset moves, with
+         no lesson file touched.
+
+         Accumulating before the filter and the sort would count drafts and
+         count in directory order: right today, wrong the first time a lesson is
+         withdrawn or renamed. Numbering from a lesson's index in this array
+         would be the mistake lib/numbering.ts already opens by warning about,
+         with a different index. */
+      let exercisesSoFar = 0;
+      const lessons = (await listLessons(slug)).map((lesson) => {
+        const exerciseOffset = exercisesSoFar;
+        exercisesSoFar += lesson.exerciseCount;
+        return {
+          ...lesson,
+          moduleSlug: slug,
+          letter: lessonLetter(lesson.order),
+          id: lessonId(number, lesson.order),
+          href: `/moduly/${slug}/${lesson.slug}`,
+          exerciseOffset,
+        };
+      });
 
       return {
         slug,
@@ -325,23 +458,49 @@ export async function getModuleNeighbours(
   return { previous: course[index - 1] ?? null, next: course[index + 1] ?? null };
 }
 
+/**
+ * The rendering pass: the one lesson a page is about, with its exercises
+ * numbered.
+ *
+ * IT RESOLVES THE LESSON THROUGH THE COURSE, and the `await` on the first line
+ * is what makes the numbering correct rather than a convention somebody has to
+ * remember. A body cannot be compiled with an offset until the offset exists,
+ * and the offset does not exist until every earlier published lesson of the
+ * module has been counted — so the dependency is expressed as data. There is no
+ * ordering here for a future edit to break.
+ *
+ * Slice 008's refusal is preserved and its argument has moved one function
+ * along. The **gate** is still `listLessons`, which reads, schema-parses and
+ * compiles every file on disk before the publish filter runs, so a broken draft
+ * still fails the build today rather than on the morning its flag is flipped.
+ * The **refusal** is still data-level and still happens per request: an
+ * unpublished lesson is absent from the course model, so the lookup below
+ * misses and the page answers with the site's not-found response — the same
+ * `null` as a slug that never existed, identically under `next dev` and in
+ * production, which is what matters on a host that renders routes absent from
+ * the build output on first request.
+ */
 export async function getLesson(
   moduleSlug: string,
   lessonSlug: string
 ): Promise<Lesson | null> {
-  const slugs = await readLessonSlugs(moduleSlug);
-  if (!slugs.includes(lessonSlug)) return null;
-  const { frontmatter, content, sections } = await readLessonFrontmatterAndBody(
-    moduleSlug,
-    lessonSlug
-  );
-  /* The refusal is data-level, and it sits after the parse-and-compile for
-     the same reason the filter in listLessons sits after it. The host
-     renders routes absent from the emitted pages on first request by running
-     this very function, so absence from the build output alone is not a
-     refusal — this is what makes a direct request for an unpublished lesson
-     the site's not-found response, the same null as a slug that never
-     existed, identically under `next dev` and in production. */
-  if (frontmatter.publish === false) return null;
-  return { slug: lessonSlug, ...frontmatter, sections, body: content };
+  const course = await getCourse();
+  const moduleItem = course.find((item) => item.slug === moduleSlug);
+  const entry = moduleItem?.lessons.find((item) => item.slug === lessonSlug);
+  if (!moduleItem || !entry) return null;
+
+  const { frontmatter, content, sections, exercises } =
+    await readLessonFrontmatterAndBody(moduleSlug, lessonSlug, {
+      mode: "number",
+      moduleNumber: moduleItem.number,
+      offset: entry.exerciseOffset,
+    });
+
+  return {
+    slug: lessonSlug,
+    ...frontmatter,
+    sections,
+    exerciseCount: exercises.length,
+    body: content,
+  };
 }

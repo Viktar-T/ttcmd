@@ -49,7 +49,7 @@ T01–T03; the plan's own §9 numbering is offset by three.
       Check: `npm run build` passes with Check B scanning the new stylesheet,
       and Check E's report unchanged.
 
-- [ ] **T07 — wire the pipeline.**
+- [x] **T07 — wire the pipeline.**
       `lib/content.ts`: the policy through `buildMdxOptions`, `compile`,
       `readModule`, `readLessonFrontmatterAndBody`, `listLessons`,
       `getCourse` (the offsets, accumulated after the publish filter and the
