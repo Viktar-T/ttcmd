@@ -1,4 +1,5 @@
 import type { Root } from "hast";
+import { EXERCISE_ID_PATTERN } from "./numbering";
 
 /**
  * Section anchors, minted when the site is built.
@@ -101,13 +102,21 @@ export function rehypeSectionAnchors(options: { collect: SectionEntry[] }) {
   return (tree: Root) => {
     const used = new Set<string>([SKIP_TARGET_ID]);
 
+    /* The second reservation, and the same move as SKIP_TARGET_ID above: an
+       exercise's identifier is `zadanie-1-7` (lib/numbering.ts), and a heading
+       reading "Zadanie 1.7" derives exactly that. The shape is reserved rather
+       than the minted ids, because a lesson is compiled once to count its
+       exercises — before any id exists — and once to render it, and the two
+       passes have to agree about what a section is called. */
+    const taken = (id: string) => used.has(id) || EXERCISE_ID_PATTERN.test(id);
+
     const visit = (node: HastNode) => {
       if (node.type === "element" && node.tagName === "h2") {
         const title = textOf(node).trim();
         const base = slugifyHeading(title);
 
         let id = base;
-        for (let n = 2; used.has(id); n += 1) id = `${base}-${n}`;
+        for (let n = 2; taken(id); n += 1) id = `${base}-${n}`;
         used.add(id);
 
         node.properties = { ...node.properties, id };

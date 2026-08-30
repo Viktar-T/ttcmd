@@ -26,7 +26,7 @@ T01–T03; the plan's own §9 numbering is offset by three.
 
 - [x] **T03 — record the tasks.** This file.
 
-- [ ] **T04 — the numbering primitives, and the anchor reservation.**
+- [x] **T04 — the numbering primitives, and the anchor reservation.**
       `lib/numbering.ts` gains `exerciseNumber`, `exerciseId` and
       `EXERCISE_ID_PATTERN`; `lib/section-anchors.ts` treats a heading-derived
       id of that shape as taken, so it falls through to the existing collision
