@@ -1,0 +1,93 @@
+/*
+ * The exercise — slice 009.
+ *
+ * No colour literal may appear here. Use a token from app/tokens.css; Check B
+ * in scripts/check-design-invariants.mjs already walks this directory.
+ *
+ * Three token pairs, and all three are ones Check E recomputes on every build,
+ * so this file makes no promise the build does not keep:
+ *
+ *   the frame   --rule-strong on --bg              3:1   (ADR-0012 — the line
+ *                                                        is the only thing
+ *                                                        identifying the block)
+ *   the band    --accent-ink on --accent-surface   4.5:1
+ *   the text    --text on --bg                     4.5:1 (inherited)
+ *
+ * WHAT THIS IS NOT, deliberately:
+ *
+ *  - Not a tinted surface. A fill is the obvious way to make a block
+ *    unmissable and it needs a token that does not exist; inventing one is a
+ *    Check B failure and it reaches for the note/warning palette ADR-0007 still
+ *    records as indicative and unverified.
+ *  - Not the code surface. --bg-code would make an exercise look like a thing
+ *    to copy rather than a thing to do.
+ *  - Not the quotation treatment. A left rule and an indent is how this site
+ *    says "somebody else said this", and the lessons spend that treatment on
+ *    twelve real quotations.
+ *
+ * The accent band carries the number because the accent is what marks
+ * structure everywhere else here — the band at the top of a lesson, the circle
+ * around its letter — and because the number has to be the most prominent
+ * thing about the block (spec §5).
+ */
+
+.exercise {
+  /* Local names; the --code-… prefix belongs to the code block and the rest of
+     the prefix space belongs to app/tokens.css. */
+  --gutter: 1.1rem;
+
+  border: 1px solid var(--rule-strong);
+  border-radius: 0.375rem;
+  /* Clips the band's square corners to the frame's rounded ones — the same
+     move, for the same reason, as the code block's wrapper. */
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------------ *
+ * The band
+ *
+ * Full width rather than a chip, so it reads at a glance while scrolling back
+ * past it, which is the one thing the design reference asks an exercise to do.
+ * Monospace, because on this site everything structural is monospace and
+ * everything you actually read is not.
+ * ------------------------------------------------------------------ */
+
+.label {
+  padding: 0.3rem var(--gutter);
+  background: var(--accent-surface);
+  color: var(--accent-ink);
+
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--text-base);
+  font-weight: 700;
+  line-height: var(--leading-normal);
+}
+
+.content {
+  padding: var(--gutter);
+  font-size: var(--text-lg);
+  line-height: var(--leading-normal);
+}
+
+/*
+ * app/prose.css zeroes the margin of every p, ul, ol, blockquote and pre INSIDE
+ * .prose, and applies its rhythm only to .prose's own children. An exercise's
+ * paragraphs are children of this box, not of the prose, so without this rule a
+ * two-paragraph exercise runs together into one block of text.
+ *
+ * --gap-block is the ordinary gap between two blocks, which is what these are.
+ */
+.content > * + * {
+  margin-top: var(--gap-block);
+}
+
+.title {
+  font-weight: var(--weight-strong);
+}
+
+/* The gap after the title is the tight one: a title and the exercise it names
+   are one unit, and the ordinary block gap would set them apart from each
+   other rather than from the prose. */
+.title + * {
+  margin-top: var(--gap-tight);
+}

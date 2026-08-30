@@ -42,7 +42,7 @@ T01–T03; the plan's own §9 numbering is offset by three.
       Check: `npm run build` passes (the file is type-checked; nothing imports
       it yet).
 
-- [ ] **T06 — the exercise, and its treatment.**
+- [x] **T06 — the exercise, and its treatment.**
       `components/exercise.tsx`, `components/exercise.module.css`, and
       `[data-exercise]` joining the two set-apart selectors in `app/prose.css`.
       Still unreachable from any page.

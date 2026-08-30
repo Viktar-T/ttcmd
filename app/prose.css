@@ -93,15 +93,20 @@
    :first-child reset below, whose comment claims to beat everything above it on
    specificity. :where() contributes zero, so the selector keeps exactly the
    specificity it had when it said `pre`, and the cascade below stays a
-   guarantee rather than an accident of source order. */
-.prose > :is(blockquote, svg, table, :where([data-code-block])) {
+   guarantee rather than an accident of source order.
+
+   Slice 009 adds the exercise to the same pair rather than to a rule of its
+   own: it is set apart from the prose exactly as a quotation, a diagram, a
+   table and a code block are, and a second rule saying so is a second place
+   for the rhythm to drift. */
+.prose > :is(blockquote, svg, table, :where([data-code-block], [data-exercise])) {
   margin-top: var(--gap-apart);
 }
 
 /* Set apart below as well as above — unless a heading follows, in which case
    the heading's own larger gap wins. Written as :not() rather than left to
    source order, so re-ordering this file cannot silently break it. */
-.prose > :is(blockquote, svg, table, :where([data-code-block])) + :not(:is(h1, h2, h3, h4, h5, h6)) {
+.prose > :is(blockquote, svg, table, :where([data-code-block], [data-exercise])) + :not(:is(h1, h2, h3, h4, h5, h6)) {
   margin-top: var(--gap-apart);
 }
 
