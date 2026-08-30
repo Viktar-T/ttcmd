@@ -337,3 +337,65 @@ in the reflection sections.
   silently stripped by the non-strict module schema. Also pinned: the spec's
   "a `no` fails the build" is true because the frontmatter pipeline resolves
   to a YAML 1.2 parser — a YAML 1.1 parser would read `no` as `false`.
+
+## Slice 009 — the exercise component
+
+**Agent notes** *(factual, appended by agents)*
+
+- **Run autonomously end to end** — spec, plan, tasks, seven implementation
+  commits, fresh-context closing review — with both subagents AGENTS.md §2
+  requires. One question was asked before the spec, on the component list; the
+  answer confirmed one component and no others.
+- **The slice was scoped by reading the content first.** Every entry in
+  `docs/design-reference.md`'s component inventory was checked against the
+  written corpus. Exactly one is asked for: seven lesson files carry a comment
+  saying the exercise numbers were left out because a lesson cannot derive
+  them. The prompt block, the objectives block, the callout and the captioned
+  image were left out with the reason for each recorded in the spec's *Out of
+  scope* — the prompt because the single prompt in the corpus is already a
+  fenced block with a copy control, the objectives block because the style
+  guide argues against opening a lesson that way, the callout because the two
+  block quotations that quote nobody are an inference rather than a request.
+- **Article IX leak, recorded not rewritten.** `spec.md` §1 fixes the
+  authoring element's name and the spelling of its `title` attribute. Article
+  IX says a spec never names a component; the spec argues the name is
+  student-facing identity rather than an implementation choice, which is
+  debatable. The closing review did not treat it as a finding. Noted here
+  because Article IX asks for the leak to be noted, not because it was fixed.
+- **ADR-0003 forced a double compile, and the ordering is a data dependency.**
+  A lesson is compiled once to count its exercises — no offset exists yet, and
+  that body is discarded — and once to render them, with the module offset
+  stamped onto the node before the tree becomes JSX. `getLesson` cannot produce
+  a numbered body without awaiting `getCourse`, so "count before number" is not
+  a convention anybody has to remember. React context, the reflex answer, is
+  unavailable: a Server Component cannot read it, and reaching for it would
+  have shipped JavaScript for a number.
+- **One defect the checks caught that inspection would not have.** Written as
+  `Zadanie {number}`, React emitted `Zadanie <!-- -->7.1` into the server HTML
+  — two text nodes with a comment between them, in the one string that has to
+  survive find-in-page and a selection copy. Interpolating into one string
+  fixed it. The criterion that caught it is the one that reads the built HTML
+  rather than the rendered page.
+- **Verification staged all 33 exercises into the real lessons and reverted
+  them.** Module 1 rendered 1.1–1.29 continuously across six files in `order`;
+  module 0, whose only lesson is `order: 3`, started at 0.1; one inserted
+  exercise moved every later number in five other files; an unpublished lesson
+  consumed no numbers. The revert used a pre-staging copy rather than git —
+  seven files under `content/` carry uncommitted work and two paths are
+  untracked, so `git checkout -- content/` would have destroyed work this slice
+  never touched while looking like a success. All ten files verified against a
+  hash manifest afterwards.
+- **The closing review found one thing:** exercises had no `scroll-margin-top`
+  while every section heading has had 2 rem since slice 007, so following an
+  exercise anchor landed it flush against the viewport's top edge. Fixed in
+  T10.
+- **Left open for a human eye:** whether the treatment reads as "unmissable
+  when scrolling back", which is what the design reference asks an exercise to
+  be. No box is checked for it. Screenshots could not be captured in the
+  session — the browser pane returned blank frames — so every browser check was
+  made by reading the DOM, the computed styles and the measured geometry.
+- **Carried forward, not fixed:** an exercise written under
+  `content/interesting-to-read/` is silently invisible rather than a build
+  failure, because that tree sits outside the content root the pipeline reads;
+  and the seven lessons still render their exercises as unnumbered ordered
+  lists until a content-lane pass adopts the element.
