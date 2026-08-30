@@ -5,6 +5,11 @@ import { compileMDX } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { CodeBlock } from "@/components/code-block";
 import { Exercise } from "@/components/exercise";
+import { Figure } from "@/components/figure";
+import { FurtherReading, ReadingItem } from "@/components/further-reading";
+import { ProseLink } from "@/components/prose-link";
+import { Quote } from "@/components/quote";
+import { Sources, SourceEntry } from "@/components/sources";
 import { rehypeCodeHighlight } from "./code-highlight";
 import { rehypeSectionAnchors, type SectionEntry } from "./section-anchors";
 import {
@@ -13,7 +18,15 @@ import {
   type ExerciseEntry,
   type ExercisePolicy,
 } from "./exercises";
-import { rehypeBlocks } from "./blocks";
+import {
+  FIGURE_ELEMENT,
+  FURTHER_READING_ELEMENT,
+  QUOTE_ELEMENT,
+  READING_ELEMENT,
+  SOURCES_ELEMENT,
+  SOURCE_ELEMENT,
+  rehypeBlocks,
+} from "./blocks";
 import {
   rehypeLinks,
   resolveInternalLinks,
@@ -114,24 +127,43 @@ function buildMdxOptions(
 }
 
 /*
- * The two elements a lesson does not get as plain HTML.
+ * The elements a lesson does not get as plain HTML.
  *
  * A code block needs a wrapper the copy control can be pinned to while the code
  * scrolls underneath it, which means the scroller cannot be the outermost
  * element — so `pre` is mapped. An exercise has no HTML element to be, and it
- * carries a number the author did not write. Everything else in a lesson stays
- * a plain element with a plain stylesheet, as slices 003 and 004 left it.
+ * carries a number the author did not write.
+ *
+ * Slice 010 adds two kinds of entry to the same map. The four elements and two
+ * entry children of that slice have no HTML element to be either. And `a` is
+ * mapped, which is the one entry here that replaces something a lesson already
+ * had: every anchor on a compiled page now renders through one component, so a
+ * link written as Markdown in a paragraph and a link built out of an evidence
+ * entry's `url` cannot be treated differently. Everything else in a lesson
+ * stays a plain element with a plain stylesheet, as slices 003 and 004 left it.
  *
  * The map is a function of the policy for one reason: a body compiled for
  * COUNTING carries exercises with no number on them, and it is discarded
  * unrendered (see `listLessons`). Binding the real component there would make
  * a future refactor that starts rendering that body publish `Zadanie
  * undefined`; binding a stub that throws makes the same refactor stop the
- * build. It can never fire, and that is the point.
+ * build. It can never fire, and that is the point. Nothing in slice 010 needs
+ * that treatment: its elements derive everything they render from what the
+ * author wrote, so they are the same in both modes.
  */
+const BLOCK_COMPONENTS = {
+  a: ProseLink,
+  [QUOTE_ELEMENT]: Quote,
+  [FIGURE_ELEMENT]: Figure,
+  [SOURCES_ELEMENT]: Sources,
+  [SOURCE_ELEMENT]: SourceEntry,
+  [FURTHER_READING_ELEMENT]: FurtherReading,
+  [READING_ELEMENT]: ReadingItem,
+};
+
 function mdxComponents(policy: ExercisePolicy) {
   if (policy.mode === "number") {
-    return { pre: CodeBlock, [EXERCISE_ELEMENT]: Exercise };
+    return { pre: CodeBlock, [EXERCISE_ELEMENT]: Exercise, ...BLOCK_COMPONENTS };
   }
 
   return {
@@ -143,6 +175,7 @@ function mdxComponents(policy: ExercisePolicy) {
           `getLesson() returns.`
       );
     },
+    ...BLOCK_COMPONENTS,
   };
 }
 

@@ -1,0 +1,79 @@
+/*
+ * A quotation and its source — slice 010.
+ *
+ * No colour literal may appear here. Use a token from app/tokens.css; Check B
+ * in scripts/check-design-invariants.mjs already walks this directory.
+ *
+ * Three token pairs, all three already in Check E's table, so this file makes
+ * no promise the build does not recompute on every run:
+ *
+ *   the bounding rules   --rule-strong on --bg    3:1   (ADR-0012 — they are
+ *                                                       the only thing saying
+ *                                                       where the block ends)
+ *   the quoted words     --text on --bg           4.5:1 (inherited)
+ *   the attribution      --text-muted on --bg     4.5:1
+ *
+ * WHAT THIS IS NOT, deliberately:
+ *
+ *  - Not a plain Markdown blockquote. That treatment — a 2px LEFT rule in
+ *    --rule-quote with an indent, and nothing else — stays exactly where slice
+ *    004 put it, because the lessons keep using blockquotes for passages that
+ *    are not attributed quotations, including the teacher's own rule at the end
+ *    of 1f. If the two rendered alike this element would buy the reader
+ *    nothing, so this one is bounded top and bottom and has no left rule at
+ *    all: a different object at a glance, in both themes.
+ *  - Not the exercise's frame, and not the code surface. The first makes a
+ *    quotation look like something to do, the second like something to copy.
+ *  - Not a left rule in --rule-strong. On the dark theme --rule-strong is 3.69:1
+ *    and --rule-quote is 5.86:1, so a "stronger" left rule would read as a
+ *    weaker one — the token names describe the job, not the weight.
+ */
+
+.quote {
+  border-block: 1px solid var(--rule-strong);
+  padding-block: var(--gap-block);
+}
+
+/* The quoted words keep the body colour and the body size. That is the point
+   of slice 004's quotation criteria: a quotation is read, not glanced at. The
+   left rule and indent it would inherit from `.prose blockquote` are removed in
+   app/prose.css, where that rule lives — a CSS Module class would lose the
+   specificity contest with it. */
+.words {
+  color: var(--text);
+}
+
+/*
+ * The attribution.
+ *
+ * Monospace and small, because on this site everything structural is monospace
+ * and everything you actually read is not — and this line is structure: who,
+ * where, when. It is muted so that the words above it stay the thing being
+ * read.
+ *
+ * Not styled by position, and not a paragraph the author writes. Slice 004
+ * deliberately left the attribution line unstyled because half the corpus's
+ * quotations end in one and half end in quoted text, so no :last-child rule
+ * could tell them apart. Here the attribution is a different element from the
+ * words, so there is nothing to guess.
+ */
+.attribution {
+  margin-top: var(--gap-block);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--text-muted);
+}
+
+/* The em dash and the name are one unit; keeping them in a span of their own
+   means a long source can wrap without stranding the dash. */
+.who {
+  white-space: nowrap;
+}
+
+/* The transcript link and the printed locator are afterthoughts to the
+   attribution, not part of the sentence — they break onto their own line
+   rather than pushing the date away from the name. */
+.aside {
+  display: inline-block;
+}

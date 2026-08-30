@@ -109,7 +109,7 @@ the refusal table.
       links instead: every one of them resolved, and a staged broken one
       failed the build naming the file and the real line.
 
-- [ ] **T09 — the components and the treatment.**
+- [x] **T09 — the components and the treatment.**
       `components/prose-link.tsx`, `quote.tsx`, `figure.tsx`, `sources.tsx`,
       `further-reading.tsx` and their three stylesheets; the four edits to
       `app/prose.css`. Nothing writes an element yet, so the corpus is

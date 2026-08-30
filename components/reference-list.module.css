@@ -1,0 +1,95 @@
+/*
+ * The two reference lists — slice 010.
+ *
+ * No colour literal may appear here. Use a token from app/tokens.css; Check B
+ * in scripts/check-design-invariants.mjs already walks this directory.
+ *
+ * Token pairs, all already in Check E's table:
+ *
+ *   the bounding rules   --rule-strong on --bg   3:1    (ADR-0012 — where the
+ *                                                       list begins and ends)
+ *   the row hairlines    --rule on --bg          none   (decorative: they
+ *                                                       separate rows inside a
+ *                                                       block whose edges are
+ *                                                       already drawn, which is
+ *                                                       the ADR's own exemption)
+ *   the titles           --link on --bg          4.5:1
+ *   the meta and notes   --text-muted on --bg    4.5:1
+ *
+ * ONE STYLESHEET FOR BOTH LISTS, because they are the same kind of object: a
+ * run of short rows the reader scans rather than reads. What tells them apart
+ * is what a row holds — an evidence row leads with its title and carries a
+ * publisher and a date; a further-reading row leads with its kind and carries
+ * no date at all — not a second frame in a second colour (spec, criterion 11).
+ *
+ * SET AT --text-base, not the prose's --text-lg. Reference material is scanned;
+ * at the reading size a thirty-entry sources list is a second lesson.
+ */
+
+.block {
+  border-block: 1px solid var(--rule-strong);
+  padding-block: var(--gap-block);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+}
+
+/* `Stan na **2026-08-29**.` — the line docs/content-style.md fixes verbatim,
+   above the list and inside the block, so the date the list was checked is
+   bounded together with what it is a statement about. */
+.checked {
+  margin-bottom: var(--gap-block);
+  color: var(--text-muted);
+}
+
+/* The markers and the indent are removed in app/prose.css, keyed on the block's
+   data attribute: `.prose :is(ul, ol)` outranks a CSS Module class, so a reset
+   written here would simply lose. */
+.list {
+  margin: 0;
+}
+
+.entry + .entry {
+  margin-top: var(--gap-block);
+  padding-top: var(--gap-block);
+  border-top: 1px solid var(--rule);
+}
+
+/*
+ * Who published it and when — the line that makes an entry weighable.
+ *
+ * Monospace, like every other structural line on this site, and muted so the
+ * title stays the thing the eye lands on.
+ */
+.meta {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+/* One line, and the only rich part of a row: it holds a second link, a moment
+   inside a recording, "źródło wtórne" or "sprawdzone później" — everything
+   today's lists carry in prose. `lib/blocks.ts` refuses a note written as a
+   block, so this never has to lay out a paragraph. */
+.note {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--text-muted);
+}
+
+/*
+ * The kind of a further-reading item: artykuł · wideo · dokumentacja · kurs.
+ *
+ * A label on its own line above the title rather than a chip beside it. A chip
+ * would need a fill, and the only fill token on this site is the accent
+ * surface, which is what marks an exercise — the block a student has to DO.
+ * Four kinds set in the structural face, muted, are enough to sort the list by
+ * eye, and they cost no new token.
+ */
+.kind {
+  display: block;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}

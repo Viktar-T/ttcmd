@@ -98,6 +98,22 @@ export function classifyLink(rawHref: string): LinkKind {
   };
 }
 
+/**
+ * A link's own address, as link text: `lexfridman.com/dhh-2-transcript`.
+ *
+ * For the one link on the page whose title the author has not written and
+ * should not have to — the transcript beside a quotation. Deriving it keeps
+ * `docs/content-style.md` §Mechanics ("link text names the thing") without an
+ * eighth attribute on `Cytat` saying what the URL already says, and it is what
+ * the corpus already writes by hand in three source lists.
+ */
+export function readableUrl(href: string): string {
+  const url = new URL(href);
+  const host = url.hostname.replace(/^www\./, "");
+  const path = url.pathname === "/" ? "" : url.pathname.replace(/\/$/, "");
+  return `${host}${path}`;
+}
+
 /* ------------------------------------------------------------------ *
  * A moment inside a recording
  * ------------------------------------------------------------------ */

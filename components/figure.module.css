@@ -1,0 +1,52 @@
+/*
+ * A figure and its caption — slice 010.
+ *
+ * No colour literal may appear here. Use a token from app/tokens.css; Check B
+ * in scripts/check-design-invariants.mjs already walks this directory.
+ *
+ * Two token pairs, both already in Check E's table:
+ *
+ *   the closing rule   --rule-strong on --bg    3:1   (ADR-0012 — the one line
+ *                                                     in the figure, and what
+ *                                                     says where it ends)
+ *   the caption        --text-muted on --bg     4.5:1
+ *
+ * THE WIDTHS ARE THE ELEMENT. `app/prose.css` gives a bare `.prose > svg` the
+ * full grid column; a wrapped drawing is no longer a child of `.prose`, so the
+ * figure claims that column instead (the rule is in app/prose.css, beside the
+ * one it joins) and the caption is pulled back to the reading measure here.
+ * Drawing at the drawing's scale, caption at the reading scale — which is the
+ * whole argument for taking the caption out of the SVG in the first place.
+ */
+
+.figure {
+  /* The figure is now the grid item, so the guard `.prose > *` carries has to
+     be on it: a grid item defaults to min-width: auto, and one wide drawing
+     inside it would push the track out into a horizontal page scrollbar. */
+  min-width: 0;
+}
+
+.caption {
+  max-width: var(--measure);
+  margin-inline: auto;
+  margin-top: var(--gap-block);
+  padding-bottom: var(--gap-block);
+  border-bottom: 1px solid var(--rule-strong);
+
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--text-muted);
+}
+
+/*
+ * The data source, on its own line under the caption.
+ *
+ * Its own line rather than a clause of the caption, because it answers a
+ * different question — the caption says what the drawing shows, this says where
+ * its numbers came from — and because it is the line a reader checking a figure
+ * goes looking for.
+ */
+.source {
+  display: block;
+  margin-top: var(--gap-tight);
+}

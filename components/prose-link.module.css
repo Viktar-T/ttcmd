@@ -1,0 +1,45 @@
+/*
+ * The mark on a link that leaves the site — slice 010.
+ *
+ * No colour literal may appear here. Use a token from app/tokens.css; Check B
+ * in scripts/check-design-invariants.mjs already walks this directory.
+ *
+ * Nothing here sets a colour at all: the arrow inherits the anchor's, which
+ * app/prose.css binds to --link. Check E already holds that token to 4.5:1 on
+ * --bg in both themes, so the mark carries no promise this build does not
+ * already keep.
+ *
+ * The arrow is not the only signal, and that is deliberate: a reader who
+ * cannot see it hears the phrase in `.announcement` instead, and a reader who
+ * can see it gets the arrow without hearing anything twice.
+ */
+
+.mark {
+  /* Smaller than the text it follows, in em so it scales with whatever the
+     link sits in — a heading, a sources row, a paragraph. */
+  font-size: 0.85em;
+  /* The arrow is one glyph after a no-break space; this stops the pair from
+     being split when the line breaks inside it. */
+  white-space: nowrap;
+  /* Not underlined with the link text. The underline belongs to the words. */
+  text-decoration: none;
+}
+
+/*
+ * Announced, never drawn — the standard clip pattern, identical to
+ * components/code-block.module.css's `.announcement` and app/contents.css's
+ * skip control. Kept in the DOM rather than expressed as aria-label, which
+ * would REPLACE the link's accessible name: a sources list of thirty entries
+ * would lose thirty titles and gain thirty identical announcements.
+ */
+.announcement {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

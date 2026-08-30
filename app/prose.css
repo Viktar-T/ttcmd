@@ -46,9 +46,16 @@
 }
 
 /* The wide blocks of spec §1: the diagrams already in the lessons, and tables.
-   Their internal typography is not this slice's; their place in the flow is. */
+   Their internal typography is not this slice's; their place in the flow is.
+
+   Slice 010 adds the figure to the same rule rather than to one of its own. A
+   wrapped drawing is no longer a child of .prose, so it would lose this column
+   and shrink silently to the reading measure — the wrapper has to claim what
+   the drawing had. `.prose > svg` is untouched, which is what keeps the five
+   diagrams already in the lessons rendering exactly as they do today. */
 .prose > svg,
-.prose > table {
+.prose > table,
+.prose > [data-figure] {
   grid-column: full;
 }
 
@@ -98,15 +105,19 @@
    Slice 009 adds the exercise to the same pair rather than to a rule of its
    own: it is set apart from the prose exactly as a quotation, a diagram, a
    table and a code block are, and a second rule saying so is a second place
-   for the rhythm to drift. */
-.prose > :is(blockquote, svg, table, :where([data-code-block], [data-exercise])) {
+   for the rhythm to drift.
+
+   Slice 010 adds its four blocks to the same pair, for the same reason and
+   inside the same :where(). Every one of them is a block the reader steps out
+   of the prose to look at. */
+.prose > :is(blockquote, svg, table, :where([data-code-block], [data-exercise], [data-quote], [data-figure], [data-sources], [data-further-reading])) {
   margin-top: var(--gap-apart);
 }
 
 /* Set apart below as well as above — unless a heading follows, in which case
    the heading's own larger gap wins. Written as :not() rather than left to
    source order, so re-ordering this file cannot silently break it. */
-.prose > :is(blockquote, svg, table, :where([data-code-block], [data-exercise])) + :not(:is(h1, h2, h3, h4, h5, h6)) {
+.prose > :is(blockquote, svg, table, :where([data-code-block], [data-exercise], [data-quote], [data-figure], [data-sources], [data-further-reading])) + :not(:is(h1, h2, h3, h4, h5, h6)) {
   margin-top: var(--gap-apart);
 }
 
@@ -243,6 +254,26 @@
   margin-top: var(--gap-block);
 }
 
+/*
+ * The quotation element of slice 010 is a `<blockquote>` too — it has to be,
+ * so that what a screen reader announces is a quotation and not a group of
+ * paragraphs — and it must NOT wear the treatment above. That treatment is how
+ * this site says "a passage set apart"; the lessons keep using it for passages
+ * that are nobody's quotation, including the teacher's own rule at the end of
+ * 1f, and if the two rendered alike the element would buy the reader nothing.
+ * `<Cytat>` is bounded top and bottom instead (components/quote.module.css).
+ *
+ * Written here rather than in that CSS Module deliberately: `.prose blockquote`
+ * is (0,1,1) and a module class is (0,1,0), so a reset written beside the
+ * component would simply lose. This selector is (0,2,1) and wins outright,
+ * rather than by being further down the file — the cascade in this stylesheet
+ * is a guarantee, not an accident of source order.
+ */
+.prose [data-quote] blockquote {
+  border-inline-start: 0;
+  padding-inline-start: 0;
+}
+
 /* ------------------------------------------------------------------ *
  * Lists
  *
@@ -264,6 +295,22 @@
 
 .prose li::marker {
   color: var(--text-muted);
+}
+
+/*
+ * The two reference lists of slice 010 are real lists — a sources block is a
+ * list of n entries and should be announced as one — but they are not read as
+ * bulleted prose: every row already begins with a link, and a bullet in front
+ * of it is a second marker for the same thing.
+ *
+ * Here, and not in components/reference-list.module.css, for the specificity
+ * reason the blockquote reset above records: `.prose :is(ul, ol)` is (0,1,1)
+ * and a module class is (0,1,0). A reset written beside the component would
+ * lose, and the bullets would stay.
+ */
+.prose :is([data-sources], [data-further-reading]) :is(ul, ol) {
+  list-style: none;
+  padding-inline-start: 0;
 }
 
 /* ------------------------------------------------------------------ *
