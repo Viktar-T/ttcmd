@@ -60,7 +60,7 @@ T01–T03; the plan's own §9 numbering is offset by three.
       the baseline — no content writes an exercise yet, so the site is
       unchanged.
 
-- [ ] **T08 — the permanent specimen.**
+- [x] **T08 — the permanent specimen.**
       `app/styleguide/page.tsx` gains two exercises compiled through
       `compileProse`: one with a title, one without.
       Check: the built page carries `Zadanie 7.1` with its title and

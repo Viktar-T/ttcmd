@@ -52,7 +52,12 @@ export function Exercise({ number, id, title, children }: ExerciseProps) {
 
   return (
     <section className={styles.exercise} data-exercise="" id={id}>
-      <p className={styles.label}>Zadanie {number}</p>
+      {/* Interpolated into ONE string rather than written as `Zadanie
+          {number}`. Two JSX children are two text nodes, and React separates
+          them in the server HTML with an empty comment — which is exactly the
+          kind of thing that decides whether find-in-page for "Zadanie 1.7"
+          matches. One string, one text node, no separator. */}
+      <p className={styles.label}>{`Zadanie ${number}`}</p>
       <div className={styles.content}>
         {/* No title, no element — and nothing in its place. Twenty-nine of the
             corpus's thirty-three exercises were written without one. */}

@@ -104,6 +104,52 @@ dotnet publish -c Release -r win-x64 --self-contained false -p:PublishSingleFile
 ~~~
 `;
 
+/**
+ * The exercise specimens — slice 009 §7.
+ *
+ * Permanent, and for the same reason the code specimens above are: no lesson
+ * writes `<Zadanie>` yet, so without these the treatment could not be looked at
+ * on the site at all, and the next slice to touch typography or colour would
+ * have nothing to re-check it against.
+ *
+ * The blank lines inside the element are required by MDX, not by this slice:
+ * without them the children stay inline content and never become paragraphs.
+ * Every exercise in every lesson has to be written the same way, which is why
+ * the second specimen has two paragraphs and a list — the spacing between an
+ * exercise's own blocks comes from its component, since app/prose.css zeroes
+ * those margins and applies its rhythm only to the prose's own children.
+ *
+ * NEITHER SPECIMEN CARRIES A NUMBER, and neither may: the numbers come from the
+ * numbering context the page passes to `compileProse`, and the plugin refuses
+ * an author-written one. That refusal is the thing being demonstrated as much
+ * as the treatment is.
+ */
+const EXERCISE_SPECIMENS = `
+<Zadanie title="Cztery rankingi.">
+
+Otwórz dziś TIOBE, ostatnią ankietę Stack Overflow, ostatni raport Octoverse i
+ostatni ranking IEEE Spectrum. Do każdego zapisz: datę, język na pierwszym
+miejscu i miejsce C#.
+
+</Zadanie>
+
+<Zadanie>
+
+Ćwiczenie bez tytułu — tak jest napisana zdecydowana większość zadań w kursie,
+więc nagłówka nie ma tu wcale, a nie jako pusty pasek. Ten akapit jest na tyle
+długi, żeby zawijał się na telefonie i pokazywał, gdzie kończy się kolumna
+tekstu wewnątrz ramki: Zażółć gęślą jaźń — ĄĆĘŁŃÓŚŹŻ ążćęłńóśź.
+
+Drugi akapit istnieje po to, żeby było widać odstęp między blokami wewnątrz
+zadania. Lista poniżej sprawdza to samo dla wypunktowania:
+
+- pierwsza pozycja,
+- druga pozycja, dłuższa, żeby też się zawinęła przy wąskim ekranie,
+- trzecia.
+
+</Zadanie>
+`;
+
 /** ADR-0005's verification string: every Polish diacritic, upper and lower. */
 const PANGRAM = "Zażółć gęślą jaźń — ĄĆĘŁŃÓŚŹŻ ążćęłńóśź";
 
@@ -207,6 +253,16 @@ export default async function StyleguidePage() {
   const codeSpecimens = await compileProse(
     CODE_SPECIMENS,
     "app/styleguide/page.tsx (code specimens)"
+  );
+
+  /* The numbering context is passed explicitly. `compileProse` defaults to
+     refusing exercises outright, so a future specimen that forgets to say
+     which module it belongs to fails the build rather than rendering a block
+     with no number in it. */
+  const exerciseSpecimens = await compileProse(
+    EXERCISE_SPECIMENS,
+    "app/styleguide/page.tsx (exercise specimens)",
+    { mode: "number", moduleNumber: 7, offset: 0 }
   );
 
   return (
@@ -463,6 +519,22 @@ export default async function StyleguidePage() {
         </p>
 
         <div className="prose">{codeSpecimens}</div>
+      </section>
+
+      <section className={styles.section}>
+        <h2>Exercises</h2>
+        <p className={styles.muted}>
+          Slice 009, and the same argument as the code specimens above: compiled
+          through the pipeline a lesson goes through, so the plugin that refuses
+          an author-written number and the walk that supplies the real one both
+          run here. No lesson writes an exercise yet — adopting the element is a
+          content change — so without these two the treatment would be
+          unrenderable anywhere on the site. The numbers below belong to the
+          invented module 7 and count from a lesson with three exercises, which
+          is what the contents specimen further down already claims.
+        </p>
+
+        <div className="prose">{exerciseSpecimens}</div>
       </section>
 
       <section className={styles.section}>
