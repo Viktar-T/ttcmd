@@ -150,6 +150,161 @@ zadania. Lista poniżej sprawdza to samo dla wypunktowania:
 </Zadanie>
 `;
 
+/**
+ * The sourcing specimens — slice 010 §9.
+ *
+ * Permanent, and for the reason the code and exercise specimens above are
+ * permanent: no lesson writes any of these elements yet — adopting them is
+ * content-lane work — so without this block the treatment could not be looked
+ * at on the site at all, and the next slice to touch typography or colour
+ * would have nothing to re-check it against.
+ *
+ * EVERY FACT IN HERE IS ONE THE SITE ALREADY PUBLISHES. The quotations, the
+ * source entries and the further-reading items are taken from the lessons'
+ * existing `Źródła` lists with their own links and dates, so this page asserts
+ * nothing new about the world (constitution Article V, and the rule these
+ * elements exist to make visible). Where a variant has no counterpart in the
+ * corpus — a source that exists only on paper — the specimen says in its own
+ * text that it is a specimen, rather than inventing a citation.
+ *
+ * The internal link at the end points at a real published lesson, and has to:
+ * `compileProse` resolves its links against the same course model a lesson's
+ * do, so an invented target would have to be exempted from the check — which
+ * is the "synthetic fixture" this slice's spec rejects arriving by the back
+ * door. Renaming or unpublishing that lesson fails the build on this file, and
+ * the fix is one path.
+ */
+const SOURCE_SPECIMENS = `
+#### A quotation: one paragraph, a person, a full date
+
+<Cytat
+  author="Andrej Karpathy"
+  source="X"
+  date="2025-02-02"
+  url="https://x.com/karpathy/status/1886192184808149383">
+
+Jest nowy rodzaj kodowania, który nazywam „vibe codingiem”: całkowicie
+poddajesz się wibracjom, wchodzisz w wykładniczość i zapominasz, że kod w
+ogóle istnieje.
+
+</Cytat>
+
+#### The same element with a moment inside a recording, a transcript, and a date given only to the month
+
+<Cytat
+  author="DHH"
+  source="Lex Fridman Podcast, odcinek 501"
+  date="2026-08"
+  url="https://www.youtube.com/watch?v=NYFGCESmikA"
+  at="51:05"
+  transcript="https://lexfridman.com/dhh-2-transcript/">
+
+vibe coding, jeśli mamy go tu zdefiniować, polega na tym, że każesz agentowi
+zbudować dla ciebie oprogramowanie. Nie patrzysz na implementację.
+
+</Cytat>
+
+#### Several paragraphs, an organisation rather than a person, a source on paper, and a date given only to the year
+
+<Cytat
+  author="Kurs ttcmd"
+  source="Okaz do sprawdzania składu"
+  date="2019"
+  print="okaz — wydanie papierowe, które nie ma adresu w sieci">
+
+To nie są niczyje słowa. Ten blok jest okazem: sprawdza, jak wygląda cytat
+złożony z kilku akapitów i jak duży jest odstęp między nimi. Zażółć gęślą
+jaźń — ĄĆĘŁŃÓŚŹŻ ążćęłńóśź.
+
+Drugi akapit istnieje po to, żeby ten odstęp było widać. Autorem jest tu nazwa,
+a nie osoba — organizacja zapisuje się dokładnie tak samo. Źródła nie ma w
+sieci, więc zamiast odnośnika stoi opis wydania.
+
+</Cytat>
+
+#### A figure with a caption and a data source
+
+<Rysunek
+  caption="Ten sam zestaw narzędzi daje różny zysk w zależności od tego, ile lat ma projekt."
+  source="analiza Stanford (Denisov-Blanch, 2025)"
+  sourceUrl="https://ingoeichhorst.medium.com/state-of-ai-coding-efficiency-2026-1abfa0ab7434">
+
+<svg viewBox="0 0 660 150" role="img" aria-label="Dwa słupki: nowy projekt +30–40%, stary projekt 0–10%" style={{ width: "100%", height: "auto" }}>
+  <g stroke="currentColor" fill="none" stroke-width="1.5">
+    <rect x="20" y="30" width="260" height="80" rx="3" stroke="var(--accent-line, currentColor)" stroke-width="2.5" />
+    <rect x="300" y="30" width="260" height="80" rx="3" />
+  </g>
+  <g fill="currentColor" font-size="24" font-weight="700">
+    <text x="40" y="72" fill="var(--accent-line, currentColor)">+30–40%</text>
+    <text x="320" y="72">0–10%</text>
+  </g>
+  <g fill="currentColor" font-size="12" opacity="0.8">
+    <text x="40" y="94">nowy, mały projekt</text>
+    <text x="320" y="94">duży i stary projekt</text>
+  </g>
+</svg>
+
+</Rysunek>
+
+#### A figure with a caption and nothing else — a drawing of an idea measures nothing
+
+<Rysunek caption="Pętla agenta: to samo pytanie wraca, dopóki wynik nie jest dobry.">
+
+<svg viewBox="0 0 660 120" role="img" aria-label="Trzy pudełka połączone strzałkami w pętlę: polecenie, zmiana, sprawdzenie" style={{ width: "100%", height: "auto" }}>
+  <g stroke="currentColor" fill="none" stroke-width="1.5">
+    <rect x="20" y="30" width="170" height="50" rx="3" />
+    <rect x="245" y="30" width="170" height="50" rx="3" />
+    <rect x="470" y="30" width="170" height="50" rx="3" />
+    <path d="M190 55 L245 55" />
+    <path d="M415 55 L470 55" />
+    <path d="M555 80 L555 100 L105 100 L105 80" stroke-dasharray="5 3" />
+  </g>
+  <g fill="currentColor" font-size="13">
+    <text x="40" y="60">polecenie</text>
+    <text x="265" y="60">zmiana w kodzie</text>
+    <text x="490" y="60">sprawdzenie</text>
+  </g>
+</svg>
+
+</Rysunek>
+
+#### The evidence list: a checked date, and four entries
+
+<Zrodla checked="2026-08-29">
+
+<Zrodlo title="Introducing the Model Context Protocol" publisher="Anthropic" date="2024-11-25" url="https://www.anthropic.com/news/model-context-protocol" />
+
+<Zrodlo title="DHH: Future of Programming, AI, Agentic Engineering, Vibe Coding & Linux" publisher="Lex Fridman Podcast, odcinek 501" date="2026-08" url="https://www.youtube.com/watch?v=NYFGCESmikA">o „linii podziału” i harnessie od 7:55; pełny zapis: [lexfridman.com/dhh-2-transcript](https://lexfridman.com/dhh-2-transcript/)</Zrodlo>
+
+<Zrodlo title="Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity" publisher="METR" date="2025-07-10" url="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/">badanie o 19% i 20%</Zrodlo>
+
+<Zrodlo title="Linus Torvalds reckons AI is '90% marketing and 10% reality'" publisher="Tom's Hardware" date="2024-10" url="https://www.tomshardware.com/tech-industry/artificial-intelligence/linus-torvalds-reckons-ai-is-90-percent-marketing-and-10-percent-reality">relacja z Open Source Summit w Wiedniu — źródło wtórne</Zrodlo>
+
+</Zrodla>
+
+#### Further reading: the four kinds, and no dates
+
+<CzytajDalej>
+
+<Lektura kind="artykul" title="AI Blindspots" url="https://ezyang.github.io/ai-blindspots/">krótkie, praktyczne obserwacje o pracy z modelami</Lektura>
+
+<Lektura kind="wideo" title="DHH: Future of Programming, AI, Agentic Engineering, Vibe Coding & Linux" url="https://www.youtube.com/watch?v=NYFGCESmikA">trzy godziny o tym, jak zmienił się warsztat programisty</Lektura>
+
+<Lektura kind="dokumentacja" title="Best practices for Claude Code" url="https://code.claude.com/docs/en/best-practices">jak wygląda praca z agentem w praktyce</Lektura>
+
+<Lektura kind="kurs" title="Основы программирования с ИИ" url="https://learn.evocoders.ai/">rozdziały o podpowiedziach, next edit, czacie w IDE i agentach</Lektura>
+
+</CzytajDalej>
+
+#### Two links in a paragraph
+
+Odnośnik do innej strony jest oznaczony i otwiera się w nowej karcie —
+[Full Stack Open](https://fullstackopen.com/en/) — a odnośnik do lekcji na tym
+samym serwisie nie jest oznaczony i otwiera się w tej samej karcie:
+[Git i GitHub](/moduly/00-start/git-i-github). Adres tej drugiej jest
+sprawdzany przy budowaniu strony, więc literówka w nim zatrzymuje build.
+`;
+
 /** ADR-0005's verification string: every Polish diacritic, upper and lower. */
 const PANGRAM = "Zażółć gęślą jaźń — ĄĆĘŁŃÓŚŹŻ ążćęłńóśź";
 
@@ -263,6 +418,11 @@ export default async function StyleguidePage() {
     EXERCISE_SPECIMENS,
     "app/styleguide/page.tsx (exercise specimens)",
     { mode: "number", moduleNumber: 7, offset: 0 }
+  );
+
+  const sourceSpecimens = await compileProse(
+    SOURCE_SPECIMENS,
+    "app/styleguide/page.tsx (sourcing specimens)"
   );
 
   return (
@@ -535,6 +695,29 @@ export default async function StyleguidePage() {
         </p>
 
         <div className="prose">{exerciseSpecimens}</div>
+      </section>
+
+      <section className={styles.section}>
+        <h2>Sources, figures and links</h2>
+        <p className={styles.muted}>
+          Slice 010, and the same argument as the two blocks above: compiled
+          through the pipeline a lesson goes through, so the plugin that refuses
+          a quotation with no date and the component that renders every anchor
+          both run here. No lesson writes these elements yet — adopting them is
+          a content change — so without these specimens the treatment would be
+          unrenderable anywhere on the site.
+        </p>
+        <p className={styles.muted}>
+          Every date, link and quotation below is one the lessons already
+          publish, so this page asserts nothing new about the world; the one
+          variant the corpus has no counterpart for — a source that exists only
+          on paper — says in its own text that it is a specimen. Note that the
+          anchors in the hand-written blocks further up this page are ordinary
+          JSX and are <em>not</em> compiled, so they carry no external mark:
+          the marked ones here are the ones that went through the pipeline.
+        </p>
+
+        <div className="prose">{sourceSpecimens}</div>
       </section>
 
       <section className={styles.section}>

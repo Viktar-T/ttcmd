@@ -117,7 +117,7 @@ the refusal table.
       Check: `npm run build` passes with Check B scanning the new stylesheets
       and Check E's report unchanged.
 
-- [ ] **T10 — the permanent specimens.**
+- [x] **T10 — the permanent specimens.**
       `app/styleguide/page.tsx` gains one section: every element and every
       variant of plan §7, compiled through `compileProse`.
       Check: the built page carries all eight specimens; both themes; 375 px
