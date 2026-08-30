@@ -124,7 +124,7 @@ the refusal table.
       with no horizontal scrollbar; each caption outside its drawing.
       (Criteria 2, 3, 4, 6, 9, 11, 17, 18, 19.)
 
-- [ ] **T11 — the refusals and the corpus, staged and reverted.**
+- [x] **T11 — the refusals and the corpus, staged and reverted.**
       Stage each refusal of plan §10 in a real lesson, read the message, revert
       it; prove an unwrapped diagram renders identically; prove the content
       tree is byte-for-byte what it was. Evidence into
