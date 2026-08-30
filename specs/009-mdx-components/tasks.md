@@ -68,7 +68,7 @@ T01–T03; the plan's own §9 numbering is offset by three.
       `zadanie-7-2`; both themes; 375 px with no horizontal scrollbar.
       (Criteria 10, 12, 14.)
 
-- [ ] **T09 — the numbering, proved on real lessons and reverted.**
+- [x] **T09 — the numbering, proved on real lessons and reverted.**
       Stage the corpus's 33 exercises per plan §10, read the numbers off the
       built pages, stage the insertion, the unpublish and the three refusals,
       then restore `content/` from the pre-staging copy and prove the tree is
