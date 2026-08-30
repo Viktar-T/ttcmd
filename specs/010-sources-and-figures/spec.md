@@ -135,7 +135,10 @@ measurement, and requiring a source would make its author invent one.
 
 The block carries the date the list was checked. Each entry carries a title,
 who published it, the date the source itself bears, a link, and an optional
-one-line note.
+one-line note. **Everything but the note is required**: an entry whose publisher
+is unknown is an entry a reader cannot weigh, and the title is the link's text,
+so an entry without one is a link that does not name the thing
+(`docs/content-style.md` §Mechanics).
 
 **The note is where every irregularity in today's lists goes**, and it is rich
 enough to hold them: a second link, a moment inside a recording, "źródło
@@ -151,8 +154,11 @@ puts the section in the contents panel, and this slice does not touch the panel.
 
 ### 5. `CzytajDalej` — further reading, which is a different promise
 
-Each item carries a link, a **kind** — at most four, and the four are *artykuł*,
-*wideo*, *dokumentacja*, *kurs* — and one line saying why to read it.
+Each item carries a link, a title that names what is behind it and is the link's
+text, a **kind** — at most four, and the four are *artykuł*, *wideo*,
+*dokumentacja*, *kurs* — and one line saying why to read it. It carries **no
+date**, and writing one is refused: an item that needs a date is evidence and
+belongs in the other list.
 
 It is a separate element rather than a flag on `Zrodla`, and the reason is the
 obligation, not the layout: **evidence must be dated because a claim rests on
@@ -190,6 +196,19 @@ element's decision, not the author's**, so the guide's two forms stop being two
 things an author has to remember and become two things the site cannot get
 wrong. A date may be given to the day, the month or the year, and the rendering
 never invents a precision the author did not write.
+
+Which element takes which form:
+
+| Where the date appears | Form | Example |
+| --- | --- | --- |
+| a quotation's attribution — it reads as a sentence | prose | `2 lutego 2025` |
+| an entry in either list | list | `02.02.2025` |
+| after *Stan na*, which the guide fixes | ISO | `2026-08-29` |
+
+**The elements supply every fixed Polish word around those values** — *Stan na*,
+the label before a data source, the one before a transcript link, the one before
+a printed locator, and the four kind names. An author writes none of them, and
+they live in one place, so rewording them is one edit and not seven.
 
 ### 8. Misuse fails the build, and no element may hide the rule it exists for
 
@@ -403,6 +422,25 @@ Per AGENTS.md §4. One line each, naming what was rejected.
 20. **No lesson is migrated by this slice.** Rejected: converting the six
     lessons' quotations, diagrams and source lists here, which is a content-lane
     change with its own commit prefix (Article IX).
+
+Four more, added after the plan was written from this spec alone and reported
+them as gaps — §2 of AGENTS.md asks for exactly that, and the plan's own
+`## Gaps in the spec` section is the record of what it had to assume:
+
+21. **An evidence entry's publisher and title are required, not only its date
+    and link.** Rejected: making the acceptance criteria the whole contract,
+    which would let an entry ship with no publisher and a link whose text is a
+    raw URL.
+22. **A further-reading item carries a title of its own, and refuses a date.**
+    Rejected: an item whose link text is its URL, and rejected: tolerating a
+    date on it, which would quietly re-merge the two lists this slice separated.
+23. **A quotation's attribution takes the prose date form; a list entry takes
+    `dd.mm.yyyy`; the checked date stays ISO.** Rejected: leaving the choice to
+    each element as it is written, which is how the corpus's one list came to
+    hold all three.
+24. **The fixed Polish words the elements supply live in one place.** Rejected:
+    a string beside each component, which makes Viktar's editorial pass over
+    student-facing wording a search rather than an edit.
 
 ## Notes for the reviewer
 
