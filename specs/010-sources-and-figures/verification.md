@@ -436,6 +436,68 @@ including the seven that carry Viktar's uncommitted edits and the untracked
 
 ---
 
+## 22 · What the closing review found, and what was done about it
+
+The fresh-context review of the diff against `spec.md` (AGENTS.md §3) reported
+**no gap in scope** — no surviving content edit, no change to the contents
+panel, no new dependency, exactly six registered elements, and one definition of
+"external" (`/^https?:\/\//i` appears once in the repository). It measured
+85 of 85 external anchors marked and 128 of 128 internal anchors unmarked across
+the corpus, and re-derived the frontmatter offset independently: `rehypeLinks`
+over the body of `co-model-naprawde-potrafi.mdx` plus the offset gives lines
+`[7, 223, 260]`, and a grep of the file for `](/moduly/` gives `[7, 223, 260]`.
+
+It found three defects. Two affect an acceptance criterion and were fixed; the
+third is recorded and left.
+
+**Fixed — a kind outside the four could reach the page as an empty chip.**
+`kind in READING_KINDS` walks the prototype chain, so `kind="toString"`,
+`"valueOf"`, `"constructor"` and `"hasOwnProperty"` all passed the build, and
+the component's lookup then returned a *function* — truthy, so its backstop
+passed too, and the row rendered with a blank kind. A literal miss against
+criterion 10 and spec §8. Both places now use `Object.hasOwn`:
+
+```
+…/jak-nie-wypasc-z-obiegu.mdx:224: <Lektura>: kind="toString" is not one of the four:
+    artykul, wideo, dokumentacja, kurs. …
+```
+
+**Fixed — a transcript pointing into the course crashed the render with no
+location.** `transcript` accepted an internal link, and `Quote` then called
+`readableUrl`, which is `new URL(href)` with no base and throws a bare
+`Invalid URL` — a build failure with no file and no line, which is the one shape
+criterion 16 exists to remove. `transcript` is now declared as an attribute that
+must leave the site, refused where the file and the line are known:
+
+```
+…/jak-nie-wypasc-z-obiegu.mdx:228: <Cytat>: transcript="/moduly/00-start/git-i-github" is a
+    page of this course, and this attribute takes a link to another site — its text is
+    derived from the address, which says nothing about a lesson. Link to the lesson from
+    the prose instead.
+```
+
+**Fixed — a scheme with no address classified as external.** `https://` matched
+the pattern and would have rendered as a marked anchor to nothing. `classifyLink`
+now parses the URL rather than only matching it:
+
+```
+…/jak-nie-wypasc-z-obiegu.mdx:234: the link https:// is refused: it has a scheme but no
+    address behind it.
+```
+
+All three staged in one run, all three reverted. After the fixes: build green,
+route list identical to the pre-slice baseline, Check E identical, 85 external
+anchors, `content/` byte-for-byte unchanged.
+
+**Recorded and not fixed:** an internal link written with a trailing slash
+(`/moduly/00-start/`) is validated against the normalised target and rendered
+with the slash, so the reader reaches the page through Next's 308 redirect
+rather than directly. The link works and nothing is published wrongly; the
+normalisation exists so the *check* has one spelling of every target, and
+rewriting what an author typed is a decision for whoever wants it.
+
+**Criterion 22 met.**
+
 ## Not closable by an agent
 
 Both are the spec's *Needs a human eye*, and no box is checked for either:

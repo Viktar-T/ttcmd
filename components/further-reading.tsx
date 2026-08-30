@@ -40,7 +40,13 @@ interface ReadingItemProps {
 }
 
 export function ReadingItem({ title, url, kind, children }: ReadingItemProps) {
-  const label = kind ? READING_KINDS[kind] : undefined;
+  /* `Object.hasOwn`, not a bare lookup: `READING_KINDS["toString"]` is a
+     function, which is truthy, so the backstop below would pass and the chip
+     would render empty. lib/blocks.ts refuses the same thing at build; this is
+     the second half of the same guard, for the day somebody compiles without
+     the plugin. */
+  const label =
+    kind && Object.hasOwn(READING_KINDS, kind) ? READING_KINDS[kind] : undefined;
 
   /* Unreachable through the pipeline; the same backstop the other elements
      carry. `label` is checked rather than `kind` so that a kind outside the

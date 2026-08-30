@@ -97,6 +97,12 @@ interface AttributeSpec {
       internal nor http(s), and collected for resolution if it is internal —
       exactly like a link written in prose (criterion 15). */
   url?: boolean;
+  /** …and it must leave the site. Only `transcript` is: its link text is
+      derived from the address (`readableUrl`), which has no meaning for a path
+      into this course, and a lesson is not a transcript of anything. Refused
+      here, where the file and the line are known, rather than left to throw a
+      bare `Invalid URL` out of the render. */
+  external?: boolean;
 }
 
 type Children =
@@ -119,6 +125,7 @@ const REQUIRED: AttributeSpec = { required: true };
 const REQUIRED_URL: AttributeSpec = { required: true, url: true };
 const OPTIONAL: AttributeSpec = {};
 const OPTIONAL_URL: AttributeSpec = { url: true };
+const OPTIONAL_EXTERNAL_URL: AttributeSpec = { url: true, external: true };
 
 const CONTRACTS: Record<string, Contract> = {
   [QUOTE_ELEMENT]: {
@@ -129,7 +136,7 @@ const CONTRACTS: Record<string, Contract> = {
       url: OPTIONAL_URL,
       print: OPTIONAL,
       at: OPTIONAL,
-      transcript: OPTIONAL_URL,
+      transcript: OPTIONAL_EXTERNAL_URL,
     },
     children: { kind: "block" },
   },
@@ -294,7 +301,7 @@ function check(
   for (const [attribute, spec] of Object.entries(contract.attributes)) {
     const value = written.get(attribute);
     if (spec.url && value !== undefined) {
-      checkUrl(node, attribute, value, fail, collect);
+      checkUrl(node, attribute, spec, value, fail, collect);
     }
   }
 
@@ -455,6 +462,7 @@ function describe(node: Node): string {
 function checkUrl(
   node: Node,
   attribute: string,
+  spec: AttributeSpec,
   value: string,
   fail: (node: Node, message: string) => void,
   collect: CollectedLink[]
@@ -463,6 +471,16 @@ function checkUrl(
   if (link.kind === "refused") {
     fail(node, `${attribute}="${value}" is refused: ${link.why}.`);
   } else if (link.kind === "internal") {
+    if (spec.external) {
+      fail(
+        node,
+        `${attribute}="${value}" is a page of this course, and this ` +
+          `attribute takes a link to another site — its text is derived from ` +
+          `the address, which says nothing about a lesson. Link to the lesson ` +
+          `from the prose instead.`
+      );
+      return;
+    }
     collect.push({ line: lineOf(node), href: link.href, target: link.target });
   }
 }
@@ -561,7 +579,12 @@ function checkKind(
 ): void {
   const kind = written.get("kind");
   if (kind === undefined) return;
-  if (!(kind in READING_KINDS)) {
+  /* `Object.hasOwn`, not `in`: `in` walks the prototype chain, so `toString`,
+     `valueOf`, `constructor` and `__proto__` would all pass this test and
+     reach the component, where the lookup returns a function and the chip
+     renders empty. A kind nobody can read is the blank this element exists to
+     refuse. */
+  if (!Object.hasOwn(READING_KINDS, kind)) {
     fail(
       node,
       `kind="${kind}" is not one of the four: ` +

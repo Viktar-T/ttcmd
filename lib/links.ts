@@ -57,6 +57,22 @@ export function classifyLink(rawHref: string): LinkKind {
   }
 
   if (/^https?:\/\//i.test(href)) {
+    /* A scheme is not an address. `https://` passes the test above and would
+       render as an anchor to nothing — a link the reader cannot follow, which
+       is the failure these elements exist to prevent, arriving through the one
+       shape the pattern cannot see. Parsed rather than pattern-matched, because
+       `deepLink` and `readableUrl` parse it later and a value that fails there
+       fails with no file and no line. */
+    try {
+      const url = new URL(href);
+      if (url.hostname === "") throw new Error("no host");
+    } catch {
+      return {
+        kind: "refused",
+        href,
+        why: "it has a scheme but no address behind it",
+      };
+    }
     return { kind: "external", href };
   }
 

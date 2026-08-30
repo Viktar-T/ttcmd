@@ -132,10 +132,18 @@ the refusal table.
       This task changes no source file; its commit carries the verification
       document only. (Criteria 5, 7, 8, 10, 12, 13, 14, 15, 16, 21.)
 
-- [ ] **T12 — close the slice.**
+- [x] **T12 — close the slice.**
       Fresh-context review of the diff against `spec.md` (criterion 22),
       `tasks.md` matching reality, and the final report naming the criteria
       left open for a human eye.
+      The review reported no gap in scope and three defects. Two affected a
+      criterion and were fixed in this commit — a further-reading kind reaching
+      the page as a blank chip through the prototype chain, and a transcript
+      pointing into the course throwing a bare `Invalid URL` with no file and
+      no line — together with a scheme carrying no address. Each is staged,
+      shown refusing with its file and line, and reverted in
+      `verification.md`. The trailing-slash observation is recorded there and
+      deliberately not fixed.
 
 ---
 
