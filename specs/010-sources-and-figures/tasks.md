@@ -58,26 +58,26 @@ the refusal table.
 
 - [x] **T03 — record the tasks.** This file.
 
-- [ ] **T04 — dates: one written form in, two visible forms out.**
+- [x] **T04 — dates: one written form in, two visible forms out.**
       `lib/dates.ts` — `parseContentDate` at three precisions with its
       refusals, the two Polish month tables (genitive for a full date,
       nominative for a month standing alone), `formatDateProse`,
       `formatDateList`, `formatDateIso`. Nothing imports it yet.
       Check: `npm run build` passes — the file is type-checked.
 
-- [ ] **T05 — links, as functions.**
+- [x] **T05 — links, as functions.**
       `lib/links.ts` minus the plugin: `classifyLink` and the site's own
       routes, the external anchor's attributes, `parseTimestamp`, `deepLink`
       and its host table, `resolveInternalLinks`. Still nothing imports it.
       Check: `npm run build` passes.
 
-- [ ] **T06 — the link plugin.**
+- [x] **T06 — the link plugin.**
       `rehypeLinks` joins `lib/links.ts`: it classifies every anchor, refuses
       what is neither internal nor `http(s)`, and collects the internal ones
       with their line. Not yet wired.
       Check: `npm run build` passes.
 
-- [ ] **T07 — the element plugin, and every refusal it makes.**
+- [x] **T07 — the element plugin, and every refusal it makes.**
       `lib/blocks.ts`: the six element names, the attribute contract of plan
       §4.2, the fixed Polish of §4.4, and every refusal of §4.3 — an unknown
       attribute, a missing required one, an inline placement, an entry outside
@@ -87,7 +87,7 @@ the refusal table.
       Check: `npm run build` passes (the file is type-checked; nothing imports
       it yet).
 
-- [ ] **T08 — wire the pipeline.**
+- [x] **T08 — wire the pipeline.**
       `lib/content.ts`: the two new collectors through `buildMdxOptions`, the
       six element names and `a` bound in `mdxComponents`, `frontmatterLineOffset`
       and the collected problems raised as `path:line:` in `compile`, the links
@@ -99,7 +99,15 @@ the refusal table.
       anchors and nothing on internal ones; and the **line offset is proved end
       to end** — one refusable element staged at a known line, the reported
       line read against the editor's, reverted before the commit.
-      (Criteria 1, 12, 13, 16.)
+      (Criteria 1, 13, 16.)
+
+      *One line of this task moved to T09, and only one:* binding the six
+      element names and `a` in the components map, which cannot import
+      components that do not exist yet. Everything else here landed as
+      written, so criterion 12 — the rendered external treatment — closes in
+      T09 with the components, and this task closed on the corpus's internal
+      links instead: every one of them resolved, and a staged broken one
+      failed the build naming the file and the real line.
 
 - [ ] **T09 — the components and the treatment.**
       `components/prose-link.tsx`, `quote.tsx`, `figure.tsx`, `sources.tsx`,

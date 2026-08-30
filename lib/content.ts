@@ -13,6 +13,16 @@ import {
   type ExerciseEntry,
   type ExercisePolicy,
 } from "./exercises";
+import { rehypeBlocks } from "./blocks";
+import {
+  rehypeLinks,
+  resolveInternalLinks,
+  SITE_ROUTES,
+  type CollectedLink,
+  type ContentProblem,
+  type LinkTargets,
+  type LinkUse,
+} from "./links";
 import { lessonId, lessonLetter, moduleLabel, moduleNumber } from "./numbering";
 import {
   lessonFrontmatterSchema,
@@ -50,11 +60,20 @@ const moduleIndexFile = "index.mdx";
  * depend on — the identifier it might collide with is reserved by shape rather
  * than by a list (lib/numbering.ts) — but a reader meets the reservation's
  * cause before its effect.
+ *
+ * Slice 010 adds two more plugins and two more collectors, on the same
+ * argument again. Both share one `problems` array, because a build that stops
+ * on a lesson should say everything wrong with that lesson rather than the
+ * first thing; and both share one `links` array, because a link written inside
+ * a source entry and a link written in a paragraph are the same kind of thing
+ * and are resolved by the same pass (spec, criterion 15).
  */
 function buildMdxOptions(
   collect: SectionEntry[],
   policy: ExercisePolicy,
-  collectExercises: ExerciseEntry[]
+  collectExercises: ExerciseEntry[],
+  problems: ContentProblem[],
+  links: CollectedLink[]
 ) {
   /* Typed as the tuples they are — the same shape code-highlight.ts exports —
      because inference widens a two-element array literal into a union array,
@@ -69,11 +88,27 @@ function buildMdxOptions(
     { collect: SectionEntry[] },
   ] = [rehypeSectionAnchors, { collect }];
 
+  const blocks: [
+    typeof rehypeBlocks,
+    { problems: ContentProblem[]; collect: CollectedLink[] },
+  ] = [rehypeBlocks, { problems, collect: links }];
+
+  const linkUses: [
+    typeof rehypeLinks,
+    { collect: CollectedLink[]; problems: ContentProblem[] },
+  ] = [rehypeLinks, { collect: links, problems }];
+
   return {
     parseFrontmatter: true,
     mdxOptions: {
       remarkPlugins: [remarkGfm],
-      rehypePlugins: [exercises, sectionAnchors, rehypeCodeHighlight],
+      rehypePlugins: [
+        exercises,
+        blocks,
+        linkUses,
+        sectionAnchors,
+        rehypeCodeHighlight,
+      ],
     },
   };
 }
@@ -112,6 +147,43 @@ function mdxComponents(policy: ExercisePolicy) {
 }
 
 /**
+ * The frontmatter block, as `vfile-matter` matches it.
+ *
+ * `next-mdx-remote` strips the frontmatter before compiling — **removing** the
+ * block rather than blanking it — so every line number a plugin reads off the
+ * tree is body-relative. Measured, not assumed: a paragraph on file line 6,
+ * under a four-line frontmatter block, arrives in the rehype phase reported as
+ * line 2.
+ *
+ * That is the kind of wrong that looks right. Every number would be off by the
+ * same small amount, in every lesson, always in the same direction — and a
+ * message pointing three lines above the mistake sends its reader looking at
+ * the wrong paragraph. The offset is computed here, in the one function that
+ * holds the raw source and already owns the message.
+ *
+ * The guard is the point of it: a file that opens with `---` and whose block
+ * this pattern cannot match would silently produce numbers off by five, so it
+ * stops the build instead of guessing.
+ */
+const FRONTMATTER =
+  /^---(?:\r?\n|\r)(?:[\s\S]*?(?:\r?\n|\r))?---(?:\r?\n|\r|$)/;
+
+function frontmatterLineOffset(source: string, relativePath: string): number {
+  const match = FRONTMATTER.exec(source);
+  if (match) return (match[0].match(/\r\n|\r|\n/g) ?? []).length;
+
+  if (source.startsWith("---")) {
+    throw new Error(
+      `${relativePath}: this file opens with "---" but its frontmatter block ` +
+        `could not be matched, so every line number this build reports for it ` +
+        `would be wrong by the height of that block. Close the block with a ` +
+        `line of exactly "---".`
+    );
+  }
+  return 0;
+}
+
+/**
  * Every compile goes through here so that a failure names the file.
  *
  * The things slice 005 made into build failures — an unrecognised language, an
@@ -119,6 +191,16 @@ function mdxComponents(policy: ExercisePolicy) {
  * thrown from inside the highlighter, which knows the block but not the lesson.
  * A build that stops on "cannot read the info line" without saying which of
  * eight files it is in is a build somebody has to bisect.
+ *
+ * Slice 010 adds the line, and it arrives by a different route for a reason
+ * worth knowing before anything else is wired here. `next-mdx-remote` catches
+ * whatever is thrown inside a compile and **rebuilds it as a fresh plain Error
+ * carrying only the message text** — a custom class, a `line` property and a
+ * `cause` all disappear. So the two new plugins do not throw: they push onto
+ * `problems`, and this function raises them once `compileMDX` has resolved,
+ * outside the `catch` that would otherwise prefix the path twice. One place
+ * composes `path:line:`, the plugins know neither half, and every refusal in a
+ * file is reported in one run instead of one per build.
  */
 async function compile(
   source: string,
@@ -127,17 +209,47 @@ async function compile(
 ) {
   const sections: SectionEntry[] = [];
   const exercises: ExerciseEntry[] = [];
+  const problems: ContentProblem[] = [];
+  const collected: CollectedLink[] = [];
+
+  let compiled;
   try {
-    const { frontmatter, content } = await compileMDX({
+    compiled = await compileMDX({
       source,
-      options: buildMdxOptions(sections, policy, exercises),
+      options: buildMdxOptions(sections, policy, exercises, problems, collected),
       components: mdxComponents(policy),
     });
-    return { frontmatter, content, sections, exercises };
   } catch (error) {
     const detail = error instanceof Error ? error.message : String(error);
     throw new Error(`${relativePath}: ${detail}`, { cause: error });
   }
+
+  const offset = frontmatterLineOffset(source, relativePath);
+
+  if (problems.length > 0) {
+    throw new Error(
+      problems
+        .map((problem) => `${relativePath}:${problem.line + offset}: ${problem.message}`)
+        .join("\n\n")
+    );
+  }
+
+  /* Completed here and nowhere else, for the same reason the refusals are:
+     this is the one function holding both the path and the offset. Everything
+     downstream carries a location it does not have to compute. */
+  const links: LinkUse[] = collected.map((link) => ({
+    ...link,
+    path: relativePath,
+    line: link.line + offset,
+  }));
+
+  return {
+    frontmatter: compiled.frontmatter,
+    content: compiled.content,
+    sections,
+    exercises,
+    links,
+  };
 }
 
 /**
@@ -174,7 +286,16 @@ export async function compileProse(
   label: string,
   policy: ExercisePolicy = EXERCISES_FORBIDDEN
 ): Promise<ReactElement> {
-  const { content } = await compile(source, label, policy);
+  /* Slice 010: the one compile outside the course walk, so it resolves its own
+     internal links — against the same targets, through the same function, as
+     every lesson. That is deliberate rather than thorough: a specimen whose
+     links were exempt from the check would demonstrate a parallel derivation
+     instead of the one the site runs, which is the alternative the spec's
+     decision 19 rejects. It also means the reference page's internal link has
+     to point at a lesson that really exists. */
+  const { targets } = await readCourse();
+  const { content, links } = await compile(source, label, policy);
+  resolveInternalLinks(links, targets);
   return content;
 }
 
@@ -238,20 +359,26 @@ async function readModuleSlugs(): Promise<string[]> {
  * files carry a written introduction to their module, and nothing had ever
  * rendered one.
  */
-async function readModule(
-  moduleSlug: string
-): Promise<{ frontmatter: ModuleFrontmatter; content: ReactElement }> {
+async function readModule(moduleSlug: string): Promise<{
+  frontmatter: ModuleFrontmatter;
+  content: ReactElement;
+  links: LinkUse[];
+}> {
   const relativePath = `content/moduly/${moduleSlug}/${moduleIndexFile}`;
   const source = await readFile(
     path.join(contentRoot, moduleSlug, moduleIndexFile),
     "utf8"
   );
-  const { frontmatter, content } = await compile(
+  const { frontmatter, content, links } = await compile(
     source,
     relativePath,
     EXERCISES_FORBIDDEN
   );
-  return { frontmatter: moduleFrontmatterSchema.parse(frontmatter), content };
+  return {
+    frontmatter: moduleFrontmatterSchema.parse(frontmatter),
+    content,
+    links,
+  };
 }
 
 async function readLessonSlugs(moduleSlug: string): Promise<string[]> {
@@ -285,7 +412,7 @@ async function readLessonFrontmatterAndBody(
     path.join(contentRoot, moduleSlug, `${lessonSlug}.mdx`),
     "utf8"
   );
-  const { frontmatter, content, sections, exercises } = await compile(
+  const { frontmatter, content, sections, exercises, links } = await compile(
     source,
     relativePath,
     policy
@@ -300,7 +427,7 @@ async function readLessonFrontmatterAndBody(
     const detail = error instanceof Error ? error.message : String(error);
     throw new Error(`${relativePath}: ${detail}`, { cause: error });
   }
-  return { frontmatter: parsed, content, sections, exercises };
+  return { frontmatter: parsed, content, sections, exercises, links };
 }
 
 /**
@@ -317,15 +444,42 @@ async function readLessonFrontmatterAndBody(
  * returns frontmatter, sections and the count. They carry no numbers, because
  * no offset exists yet — see the stub in `mdxComponents`.
  */
-async function listLessons(moduleSlug: string): Promise<LessonSummary[]> {
+async function listLessons(moduleSlug: string): Promise<{
+  lessons: LessonSummary[];
+  links: LinkUse[];
+  /** The hrefs of lesson files that exist and are not published — kept so a
+      link to one can be refused in its own words rather than as "there is no
+      such page" (spec, criterion 14). Derived here because this is where the
+      publish flag is read; nothing else re-reads the directory to find them. */
+  unpublished: string[];
+}> {
   const slugs = await readLessonSlugs(moduleSlug);
-  const lessons = await Promise.all(
+  const read = await Promise.all(
     slugs.map(async (slug) => {
-      const { frontmatter, sections, exercises } =
+      const { frontmatter, sections, exercises, links } =
         await readLessonFrontmatterAndBody(moduleSlug, slug, { mode: "count" });
-      return { slug, ...frontmatter, sections, exerciseCount: exercises.length };
+      return {
+        lesson: {
+          slug,
+          ...frontmatter,
+          sections,
+          exerciseCount: exercises.length,
+        },
+        links,
+      };
     })
   );
+
+  /* Taken BEFORE the filter below, and that is the whole of it: a draft's
+     links are checked like everyone else's. Taking them from the filtered
+     array would leave every unpublished lesson's links unread until the
+     morning its flag is flipped — the same failure the filter's own position
+     exists to prevent, arriving through a different door. */
+  const links = read.flatMap((entry) => entry.links);
+  const unpublished = read
+    .filter((entry) => entry.lesson.publish === false)
+    .map((entry) => `/moduly/${moduleSlug}/${entry.lesson.slug}`);
+
   /* The filter runs after every file on disk has been read, schema-parsed
      and compiled — the position is load-bearing. Filtering at the slug stage
      would park an unpublished draft outside the build gate, and the gate is
@@ -334,9 +488,12 @@ async function listLessons(moduleSlug: string): Promise<LessonSummary[]> {
      derived downstream — lists, counts, pagers, emitted routes — sees only
      published lessons; letters cannot shift because they come from `order`,
      never from a position in this filtered array (ADR-0003). */
-  return lessons
+  const lessons = read
+    .map((entry) => entry.lesson)
     .filter((lesson) => lesson.publish !== false)
     .sort((a, b) => a.order - b.order);
+
+  return { lessons, links, unpublished };
 }
 
 /**
@@ -357,14 +514,21 @@ async function listLessons(moduleSlug: string): Promise<LessonSummary[]> {
  * Modules are sorted by the number their prefix carries, not by folder name as
  * text — the directory sort is correct only while every prefix is two digits,
  * and puts module 10 before module 2 the day one is not.
+ *
+ * Slice 010 splits the exported `getCourse` from the cached walk beneath it,
+ * because the walk now produces a second thing: the set of pages a link may
+ * point at. Every page still asks for the course and gets exactly what it got
+ * before; `compileProse` is the one caller that wants the other half, and it
+ * is the only compile outside this walk.
  */
-export const getCourse = cache(async (): Promise<CourseModule[]> => {
-  const slugs = await readModuleSlugs();
+const readCourse = cache(
+  async (): Promise<{ modules: CourseModule[]; targets: LinkTargets }> => {
+    const slugs = await readModuleSlugs();
 
-  const modules = await Promise.all(
-    slugs.map(async (slug) => {
+    const walked = await Promise.all(
+      slugs.map(async (slug) => {
       const number = moduleNumber(slug);
-      const { frontmatter, content } = await readModule(slug);
+      const { frontmatter, content, links: moduleLinks } = await readModule(slug);
 
       /* THE EXERCISE WALK — ADR-0003, and the one thing in this slice that is
          easy to get wrong.
@@ -387,8 +551,10 @@ export const getCourse = cache(async (): Promise<CourseModule[]> => {
          withdrawn or renamed. Numbering from a lesson's index in this array
          would be the mistake lib/numbering.ts already opens by warning about,
          with a different index. */
+      const listed = await listLessons(slug);
+
       let exercisesSoFar = 0;
-      const lessons = (await listLessons(slug)).map((lesson) => {
+      const lessons = listed.lessons.map((lesson) => {
         const exerciseOffset = exercisesSoFar;
         exercisesSoFar += lesson.exerciseCount;
         return {
@@ -402,19 +568,66 @@ export const getCourse = cache(async (): Promise<CourseModule[]> => {
       });
 
       return {
-        slug,
-        ...frontmatter,
-        number,
-        label: moduleLabel(number),
-        href: `/moduly/${slug}`,
-        body: content,
-        lessons,
+        module: {
+          slug,
+          ...frontmatter,
+          number,
+          label: moduleLabel(number),
+          href: `/moduly/${slug}`,
+          body: content,
+          lessons,
+        },
+        links: [...moduleLinks, ...listed.links],
+        unpublished: listed.unpublished,
       };
-    })
-  );
+      })
+    );
 
-  return modules.sort((a, b) => a.number - b.number);
-});
+    const modules = walked
+      .map((entry) => entry.module)
+      .sort((a, b) => a.number - b.number);
+
+    /* THE LINK RESOLUTION — and its position is the whole of it.
+
+       A link into the course is valid exactly when the course contains the
+       page it names, so the set of valid targets IS the model just built:
+       `href` is already computed above for the navigation, and `lessons` is
+       already filtered to the published ones and sorted. Deriving the targets
+       any other way — a second walk of the content directory, a scan in a
+       build script — would mean re-implementing the publish rule, the module
+       prefix rule and the slug rule, and disagreeing with the first
+       implementation the day any of the three changed.
+
+       It cannot happen any earlier. This function runs the compiles that
+       collect the links, so at the moment a lesson is compiled the model does
+       not exist; and this function is wrapped in `cache()`, so a plugin asking
+       it for the answer would re-enter a promise waiting on the very compile
+       that asked. Collect during, resolve after. */
+    const published = new Set<string>(SITE_ROUTES);
+    const moduleHrefs = new Set<string>();
+    for (const item of modules) {
+      published.add(item.href);
+      moduleHrefs.add(item.href);
+      for (const lesson of item.lessons) published.add(lesson.href);
+    }
+    const targets: LinkTargets = {
+      published,
+      unpublished: new Set(walked.flatMap((entry) => entry.unpublished)),
+      modules: moduleHrefs,
+    };
+
+    resolveInternalLinks(
+      walked.flatMap((entry) => entry.links),
+      targets
+    );
+
+    return { modules, targets };
+  }
+);
+
+export async function getCourse(): Promise<CourseModule[]> {
+  return (await readCourse()).modules;
+}
 
 export interface LessonPosition {
   module: CourseModule;
