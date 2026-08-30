@@ -23,6 +23,8 @@
  * pushes, `resolveInternalLinks` decides.
  */
 
+import type { Root } from "hast";
+
 /* ------------------------------------------------------------------ *
  * Classification
  * ------------------------------------------------------------------ */
@@ -246,4 +248,101 @@ export function resolveInternalLinks(
   if (problems.length > 0) {
     throw new Error(problems.join("\n\n"));
   }
+}
+
+/* ------------------------------------------------------------------ *
+ * The plugin
+ * ------------------------------------------------------------------ */
+
+/** A refusal, with the line it was written on — body-relative, because that is
+    what the tree carries. `compile()` in lib/content.ts adds the file and the
+    frontmatter offset; nothing here knows either.
+
+    COLLECTED RATHER THAN THROWN, and that is not a style choice.
+    `next-mdx-remote` catches anything thrown inside a compile and rebuilds it
+    as a fresh plain Error carrying only the message text, so a line number
+    attached to a throw does not survive the compile. Pushing lets one place —
+    `compile()` — compose `path:line: message`, and reports every refusal in a
+    file in one run instead of one per build. */
+export interface ContentProblem {
+  line: number;
+  message: string;
+}
+
+/** An internal link as the tree gives it: no file yet, and the line still
+    body-relative. `compile()` completes it into a `LinkUse`. */
+export type CollectedLink = Omit<LinkUse, "path">;
+
+interface HastNode {
+  type: string;
+  tagName?: string;
+  properties?: Record<string, unknown>;
+  position?: { start?: { line?: number } };
+  children?: HastNode[];
+  /** MDX's JSX nodes reach the rehype phase intact, so a link written as raw
+      JSX arrives as one of these rather than as an `element`. */
+  name?: string | null;
+  attributes?: { type: string; name?: string; value?: unknown }[];
+}
+
+/**
+ * Classifies every anchor in the tree, refuses the ones that are neither
+ * internal nor `http(s)`, and collects the internal ones for
+ * `resolveInternalLinks` to decide on once the course exists.
+ *
+ * **It writes nothing onto the node.** The anchor's markup — the new tab, the
+ * relationship attributes, the visible mark — is `components/prose-link.tsx`,
+ * which every anchor on a compiled page reaches because `a` is bound in the
+ * components map the way `pre` already is. A plugin that also wrote markup
+ * would be the second spelling this file's header exists to prevent.
+ *
+ * Walks the whole tree rather than the root's children, for the reason both
+ * existing plugins give: MDX nests flow content freely, and a link is a link
+ * wherever hast puts it.
+ */
+export function rehypeLinks(options: {
+  collect: CollectedLink[];
+  problems: ContentProblem[];
+}) {
+  return (tree: Root) => {
+    const visit = (node: HastNode) => {
+      const href = anchorHref(node);
+      if (href !== undefined) {
+        const line = node.position?.start?.line ?? 0;
+        const link = classifyLink(href);
+        if (link.kind === "refused") {
+          options.problems.push({
+            line,
+            message: `the link ${link.href} is refused: ${link.why}.`,
+          });
+        } else if (link.kind === "internal") {
+          options.collect.push({ line, href: link.href, target: link.target });
+        }
+      }
+      for (const child of node.children ?? []) visit(child);
+    };
+
+    visit(tree as unknown as HastNode);
+  };
+}
+
+/** The `href` of an anchor, whether it was written as Markdown or as JSX, or
+    `undefined` when the node is not an anchor. An `href={expr}` is deleted
+    before any rehype plugin runs — see the note in lib/blocks.ts — so it reads
+    here as absent rather than as an expression. */
+function anchorHref(node: HastNode): string | undefined {
+  if (node.type === "element" && node.tagName === "a") {
+    const href = node.properties?.href;
+    return typeof href === "string" ? href : undefined;
+  }
+  if (
+    (node.type === "mdxJsxFlowElement" || node.type === "mdxJsxTextElement") &&
+    node.name === "a"
+  ) {
+    const attribute = (node.attributes ?? []).find(
+      (a) => a.type === "mdxJsxAttribute" && a.name === "href"
+    );
+    return typeof attribute?.value === "string" ? attribute.value : undefined;
+  }
+  return undefined;
 }
