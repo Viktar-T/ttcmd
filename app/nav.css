@@ -397,17 +397,10 @@
  * Outside the reading scale on purpose. --text-3xl is the top of the scale
  * slice 004 built for reading, and this is not read — it is the one graphic
  * element on a site that has no illustrations.
- *
- * clamp, not a fixed size: the course name is thirty monospace characters, not
- * a five-letter wordmark, so the size has to follow the viewport. The upper
- * bound is what the lane can hold before the longest word breaks; the 8vw
- * middle term keeps 'desktopowe' inside a 375px phone; --text-2xl is the floor
- * below which it stops reading as the page's one graphic element.
  */
 .heroTitle {
   margin: 0;
-  font-size: clamp(var(--text-2xl), 8vw, calc(var(--text-3xl) * 1.35));
-  line-height: 1.1;
+  font-size: calc(var(--text-3xl) * 1.6);
 }
 
 .heroLede {
