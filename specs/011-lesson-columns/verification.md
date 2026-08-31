@@ -143,3 +143,104 @@ Every scroll check in this file therefore sets the real scroll position and
 then dispatches a `scroll` event by hand. The handler reads live geometry —
 heading rects, `scrollY`, `scrollHeight` — so what is synthesised is the
 trigger, never the measurement.
+
+---
+
+## T05 — The two columns (criteria 1, 2, 3, 4, 5, 6, 11)
+
+### The build
+
+`npm run build` succeeds. `Design invariants OK.` and the fourteen contrast
+lines are **character-for-character the T04 report** — no token moved, no
+colour literal entered. `✓ Compiled successfully in 6.9s`, `Finished
+TypeScript`, `✓ Generating static pages using 8 workers (15/15)`.
+
+### One failure worth recording, because it fails silently
+
+The first version of the fold's track list wrote `[panel-end]` and
+`[content-start]` as **two adjacent line-name blocks**. That is a parse error;
+the whole `grid-template-columns` was dropped, and grid fell back to
+auto-placed implicit tracks — computed `grid-template-columns: 0px 1209px`,
+panel and article stacked at the same 1209 px width, and **nothing in the
+console**. The fix is one line-names block, `[panel-end content-start]`, and
+the comment in `app/contents.css` now says why.
+
+### The grid, at 1280 px
+
+```
+grid-template-columns:
+  [full-start panel-start] 352px [panel-end content-start] 736px
+  [content-end] 97px [full-end]      (column-gap 24px, padding-inline-start 32px)
+```
+
+### `1c` at 1280 px and 1585 px — `left / width / top`
+
+| box | 1280 (client 1265) | 1585 (client 1570) |
+| --- | --- | --- |
+| contents column | 32 / **352** / 153.8 | 32 / **352** / 153.8 |
+| lesson column | 408 / 736 / 153.8 | 408 / 736 / 153.8 |
+| lesson header | 464 / **624** / **153.8** | 464 / **624** / **153.8** |
+| `.prose` (wide lane) | 408 / **736** / 396.5 | 408 / **736** / 396.5 |
+| first `> p` (measure) | 464 / **624** / 396.5 | 464 / **624** / 396.5 |
+| `> svg` (wide) | 408 / **736** | 408 / **736** |
+| pager | 464 / 624 | 464 / 624 |
+| `scrollWidth` vs `clientWidth` | 1265 = 1265 | 1570 = 1570 |
+
+- **Criterion 2** — contents right edge 32 + 352 = **384**, lesson column left
+  edge **408**: 384 ≤ 408, and both boxes have top 153.8 and overlapping
+  extents. Two columns.
+- **Criterion 3** — contents top **153.8**, lesson header top **153.8**.
+  Level, to the pixel. (Before: 396.5 against 153.8.)
+- **Criterion 4** — left margin **32 px at both widths**. Right slack
+  1265 − 1144 = **121** at 1280 and 1570 − 1144 = **426** at 1585: larger than
+  the left margin at both, and it grows with the viewport while the margin
+  does not.
+- **Criterion 6** — measure **624**, wide lane **736**, offset 464 − 408 =
+  **56**, at both widths. Identical to T04's 624 / 736 / 56. The article's left
+  edge moved, as §2 and §4 say it must; its widths did not.
+
+`1d` at 1585: contents 32 / 352 / 153.8 · lesson column 408 / 736 / 153.8 ·
+header 464 / 624 / 153.8 · `.prose` 408 / 736 · first `p` 464 / 624 ·
+`> svg` 408 / 736 · `> table` 408 / 736 · pager 464 / 624 ·
+`scrollWidth == clientWidth`.
+
+### Criterion 5 — the entries stopped wrapping
+
+`1c` at 1280. Section entry content box **311.8 px**, monospace advance
+8.4 px → **37 characters** on a line (the criterion's floor is 36).
+
+| lines | entry | was |
+| ---: | --- | ---: |
+| **2** | `- Badanie, które wyszło odwrotnie, niż wszyscy zakładali` | 4 |
+| 2 | `- Dlaczego ta lekcja jest zbudowana z liczb` | 3 |
+| 1 | the other eight section entries | 1–3 |
+| 1 | **every** lesson row, `1b` … `1h` | 2 |
+
+Worst section entry **2** lines, worst lesson row **1**. On `1d` at 1585 the
+same counts are **2** and **1**. Nothing in either lesson exceeds two lines.
+
+The long entry breaks after the comma — `- Badanie, które wyszło odwrotnie,` /
+`niż wszyscy zakładali` — which is the "breaks on a phrase, not after two
+words" half of §3.
+
+*(The module grew from six lessons to seven while this slice was running —
+`teraz-ty-pierwszy-agent.mdx` arrived in the working tree from the content
+lane, which is why the rows now read `1b`…`1h` where T04 recorded `1b`…`1g`.
+No file under `content/` was touched by this slice.)*
+
+### Criterion 11 — below the fold, nothing changed
+
+Every number equals T04's baseline exactly:
+
+| vw | client | scrollW | site header | band inner | lesson header | `.prose` | first `p` | disclosure | panel |
+| ---: | ---: | ---: | --- | --- | --- | --- | --- | --- | --- |
+| 1024 | 1009 | 1009 | 176.5 / 656 | 176.5 / 656 | 192.5 / 624 | 136.5 / 736 | 192.5 / 624 | block, 192.5 / 624 | none |
+| 768 | 753 | 753 | 48.5 / 656 | 48.5 / 656 | 64.5 / 624 | 16 / 721 | 64.5 / 624 | block, 64.5 / 624 | none |
+| 375 | 375 | 375 | 0 / 375 | 0 / 375 | 16 / 343 | 16 / 343 | 16 / 343 | block, 16 / 343 | none |
+
+`scrollWidth == clientWidth` at all three: no horizontal scrollbar.
+
+The lesson column's children, in document order at 1024 px:
+`header` → `nav.contentsDisclosure` → `div.prose` → `nav.pager`. The
+disclosure is between the lesson header and the first paragraph, which is what
+criterion 11 asks and what fixed the panel's DOM position for slice 007.

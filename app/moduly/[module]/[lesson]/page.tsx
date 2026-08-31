@@ -50,31 +50,42 @@ export default async function LessonPage({
           ]}
         />
       </Band>
-      <LessonHeader
-        title={lesson.title}
-        order={lesson.order}
-        summary={lesson.summary}
-      />
-      <ContentsDisclosure moduleItem={moduleItem} current={entry} />
-      {/* The panel hangs in the frame's left gutter beside an article whose
-          geometry the wrapper replicates rather than adjusts — contents.css
-          carries the argument. The article is the skip target: tabIndex -1
-          so the panel's skip control can move real focus to it. */}
-      <div className="lessonLayout" data-full-bleed>
+      {/* Two columns — slice 011. The panel is a track of this grid rather
+          than a passenger in the frame's left gutter, and everything that is
+          the lesson itself — header, article, pager — is the other track, so
+          the panel starts level with the title instead of below it.
+          contents.css carries the geometry and the argument.
+
+          The panel leads in the DOM: above the fold that puts the reading
+          order in the visual order, leftmost column first, and below it the
+          panel is display:none while the disclosure keeps its place inside
+          the lesson column, between the header and the first paragraph.
+
+          The article is the skip target: tabIndex -1 so the panel's skip
+          control can move real focus to it. */}
+      <div className="lessonColumns" data-full-bleed>
         <ContentsPanel moduleItem={moduleItem} current={entry} />
-        <div className="prose" id={SKIP_TARGET_ID} tabIndex={-1}>
-          {lesson.body}
+        <div className="lessonColumn">
+          <LessonHeader
+            title={lesson.title}
+            order={lesson.order}
+            summary={lesson.summary}
+          />
+          <ContentsDisclosure moduleItem={moduleItem} current={entry} />
+          <div className="prose" id={SKIP_TARGET_ID} tabIndex={-1}>
+            {lesson.body}
+          </div>
+          <Pager
+            ariaLabel="Lekcje"
+            previousLabel="Poprzednia lekcja"
+            nextLabel="Następna lekcja"
+            previous={toPagerItem(previous, moduleSlug)}
+            next={toPagerItem(next, moduleSlug)}
+          />
         </div>
       </div>
       <ScrollSpy />
       <BackToTop />
-      <Pager
-        ariaLabel="Lekcje"
-        previousLabel="Poprzednia lekcja"
-        nextLabel="Następna lekcja"
-        previous={toPagerItem(previous, moduleSlug)}
-        next={toPagerItem(next, moduleSlug)}
-      />
     </>
   );
 }
