@@ -189,3 +189,120 @@ Renders at 1280; site header inner 304.5 / 656 unchanged; its first child moved
 with the frame from 264.5 / 736 to **408 / 736**, and the contents specimen from
 264.5 / 352 to **408 / 352**. It prints no geometry numbers, so nothing there
 had to be re-worded.
+
+### The overflow question, asked properly
+
+Criterion 7 probes viewport widths, but the frame's above-fold track list is now
+made of **fixed** lengths — 25.5rem + 46rem + at least 1rem — where before this
+slice the content track carried a `min(…, 100% − 2rem)` clamp that could never
+exceed its container. So the question is whether the fold can ever fire on a
+viewport the layout does not fit.
+
+Forced by hand, it can: setting `document.documentElement.style.fontSize` to
+18px at a 1280px viewport gives `scrollWidth − clientWidth` = **40**, and 20 /
+24 / 32px give 185 / 475 / 1055. That is not, however, a state a browser
+produces. A media query's `rem` is the **initial** root font size, so raising
+the root's *computed* size by script or by a stylesheet moves the layout's rem
+without moving the fold's. Nothing in this repo sets a font size on `html` or
+`:root` — checked — so the two stay in step.
+
+When they are in step the arithmetic is decisive, and it holds at every root
+size because every term is a rem:
+
+```
+above-fold layout needs  25.5 + 46 + 1  =  72.5rem
+the fold fires at                          80rem
+headroom                                  7.5rem  (120px at a 16px root)
+```
+
+Slice 011's lesson grid has the same exposure and **less** headroom: its real
+minimum is 2 + 22 + 1.5 + 46 + 1.5 (its second column-gap) + 1 (its trailing
+track) = **74rem**, against this slice's 72.5rem. The closing review corrected
+that arithmetic — the first version here wrote 71.5rem by dropping the trailing
+track and the second gap — and the correction strengthens the conclusion rather
+than weakening it: 011 is the tighter of the two, so 012 can never be the first
+thing to overflow.
+Recorded rather than fixed: a defensive `min()` on the content track would
+change nothing at any width a browser can produce, and would obscure a track
+list whose whole point is that it is a fixed offset.
+
+---
+
+## T05, T06 — The closing review, and what it found (criterion 12)
+
+A subagent with no history of this session reviewed `git diff 3aa716a^ 27b0e51`
+against the twelve criteria, re-ran the build, the invariants script and eslint
+itself, and re-measured the site at nine widths from 320 to 2560.
+
+**It found criterion 6 broken, by a line this slice never meant to carry.**
+
+### The finding, and T05's fix
+
+`012/T04` staged `app/nav.css` whole. The file carried an in-progress change
+from **another session** — `.heroTitle` moving from `calc(var(--text-3xl) *
+1.6)` to `clamp(var(--text-2xl), 8vw, calc(var(--text-3xl) * 1.35))` plus a
+`line-height: 1.1`, written for a home-page `<h1>` that is still uncommitted in
+`app/page.tsx`. The reviewer measured the two rules side by side on the
+committed tree: the title is **57.6 px** tall before and **48.6 px** after at
+1585, and 30 px at 375 against 28 px at 320. So the home page did **not**
+measure what it measured before this slice, which is exactly what criterion 6
+forbids.
+
+Two failures, not one, and the second explains the first:
+
+1. `git add <file>` on a file another session is editing commits their work.
+   The same trap was avoided deliberately for the four content files in the
+   earlier `content:` commit, by rebuilding the index from `HEAD`, and then
+   walked into here.
+2. Because the hunk was never named, it never reached this file. **Nothing in
+   the T04 evidence measures the `<h1>`**, so no check could have caught it.
+   The reviewer caught it by reading the diff, not by reading the evidence.
+
+`012/T05` rebuilds the `app/nav.css` index entry from the pre-slice blob with
+only this slice's comment edit applied, and leaves the working tree alone so
+the other session keeps its work. Afterwards the slice's whole contribution to
+`app/nav.css` is **11 added lines, all of them one comment** — no declaration
+at all — so the home page's `<h1>` is untouched by this slice by construction,
+and criterion 6 holds without needing a measurement.
+
+### Criteria, as the review judged them
+
+1–5, 7–10 **MET**, independently re-measured. 6 **NOT MET at `27b0e51`**, met
+after `cd255da`. 11 reserved for a human eye. 12 is the review.
+
+One evidence gap it recorded rather than a defect: on `/moduly` and `/` no DOM
+element is 736 px wide, so the criterion-2 table above shows only the 464 / 624
+half for those two pages. The 408 / 736 half is the frame's computed track,
+which the reviewer read directly as
+`[full-start] 408px [content-start] 736px [content-end] …`.
+
+### Fixed on the review's finding
+
+Two pieces of prose that had gone false:
+
+- `app/globals.css` said a lesson page has "only two children of the frame".
+  Back-to-top becomes a third once the reader scrolls; it is `position: fixed`,
+  so it is out of flow and never a grid item, and the comment now says that
+  rather than stating an absolute that is not true.
+- `app/styleguide/page.tsx` still described the contents panel as "sticky in
+  the frame's left gutter at 80rem and up" — false since slice 011 took it out
+  of the gutter. T03 had dismissed the plan's gap 4 on the ground that the
+  reference page prints no geometry *numbers*; it prints this prose, and the
+  reference page is the one page that may not be wrong about the site's shape.
+
+### Recorded, not fixed
+
+- The fold literal `80rem` now appears in four places. Criterion 9 covers the
+  three lengths, not the fold, and a media query cannot read a custom property,
+  so removing the repetition is a different change.
+- **T03 has no commit of its own.** Its box was already checked when `tasks.md`
+  was committed as `012/T02`, so the log does not show the order the work was
+  really done in. T03 changed no code; the result is right and the sequence is
+  not what the log implies.
+- `app/page.tsx` is modified in the working tree by another session, changing
+  the home page's `<h1>` from `ttcmd` to *Aplikacje desktopowe i mobilne* with
+  a comment asserting the course title is confirmed. Two things follow for
+  whoever owns it: it touches `app/`, so Article IX puts it in the App lane and
+  it needs a slice rather than a `content:` commit; and constitution Article I
+  still carries that title as `TO CONFIRM`, which Article V says is not a
+  repository's to settle. Named here, untouched.

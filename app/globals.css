@@ -128,9 +128,11 @@ main > * {
  * that edge the same number at 1280 and at 2560.
  *
  * A lesson page is untouched by this, and that is structural rather than
- * lucky: its only two children of the frame — the accent band and the
- * two-column wrapper — are both full-bleed, so they take the `full` track and
- * never see where `content` starts.
+ * lucky: every child of the frame it has in flow — the accent band and the
+ * two-column wrapper — is full-bleed, so they take the `full` track and never
+ * see where `content` starts. (Back-to-top is a third child once the reader
+ * has scrolled, and it is `position: fixed`, so it is out of flow and is not a
+ * grid item at all.)
  *
  * The trailing track stays flexible and absorbs everything left over, which is
  * what keeps a full-bleed child spanning edge to edge. Below the fold nothing

@@ -463,3 +463,58 @@ in the reflection sections.
   breadcrumb keep the centred lane while the lesson's body is anchored left, so
   above the fold the breadcrumb no longer sits over the lesson's title. At
   1585 px they are 9 px apart, at 1280 px 144 px, at 2560 px 497 px.
+
+---
+
+## Slice 012 — one left edge for every page
+
+**Agent notes** *(factual, appended by agents)*
+
+- **Not on the roadmap.** Viktar asked for it directly after seeing slice 011
+  shipped, and it amends 011's decision 10 — "nothing happens to the module
+  page, the module grid or the home page" — which 011's own report had flagged
+  as the decision most likely to be vetoed. It took the next free slice number,
+  so the roadmap's 012 (search) and 013 now need renumbering; that is Viktar's
+  file and the slice did not touch it.
+- **Two questions were asked before the spec, and only two.** Where the content
+  should start, and whether the site header and the accent band should move
+  with it. Both clear AGENTS.md §4's bar — visual identity, two readings that
+  produce materially different sites — and both are recorded in the spec's
+  decisions as *his* answers rather than as the run's.
+- **The fresh-context plan derived the whole geometry from the criteria
+  alone.** Given only the constitution, AGENTS.md and the spec, the subagent
+  recovered 32 + 352 + 24 = 408 from the acceptance criteria's boxes without
+  reading a line of the repo, and then told the implementer not to trust it:
+  *take the three values from the stylesheet, and if they do not sum to 408,
+  stop and report it rather than making them.* They did sum to 408. It also
+  named the one fork it could not resolve — whether the lesson page's columns
+  are produced *by* the frame or bypass it — and asked for that to be checked
+  before any code was written. They bypass it, so the change is invisible on a
+  lesson page structurally rather than by luck.
+- **The plan's one wasted precaution was a good one.** It put a defensive
+  commit first in case full-bleed elements were built on `calc(50% - 50vw)`,
+  which would have overflowed by 136 px once the content column stopped being
+  centred. This repo builds full bleed from a named grid track, so the commit
+  was not made — but the risk was real and the plan could not know.
+- **The expensive mistake: `git add` on a file another session was editing.**
+  T04 staged `app/nav.css` whole, and the file carried an in-progress
+  `.heroTitle` change belonging to somebody else's home-page work. It rode into
+  a commit about grid tracks, unnamed — and because it was unnamed, nothing in
+  the slice's evidence measured the element it changed, so the slice's own
+  criterion 6 was broken and none of its nine checks could see it. The closing
+  review caught it by reading the diff rather than the evidence, and measured
+  the title at 57.6 px before and 48.6 px after.
+  **The same trap had been avoided deliberately two commits earlier**, on four
+  content files carrying ~995 uncommitted lines, by rebuilding the index from
+  `HEAD` instead of staging the file. The technique was known and simply not
+  applied the second time. T05 backs the hunk out the same way; the mistake
+  stays in the history.
+- **Concurrent sessions are now a standing condition of this repo, not an
+  incident.** During this run, files under `content/`, `app/page.tsx` and
+  `app/nav.css` all changed underneath the work. Anything that stages by
+  filename is unsafe here.
+- **Left open for a human eye:** whether a page with a 408 px empty strip
+  where a lesson has its contents panel reads as deliberate. Widest at 1280 px,
+  and on `/` at 2560 px, where the hero begins at 464 while the wordmark above
+  it begins at 952 — the chrome stays centred by decision, and the gap grows
+  with the window.

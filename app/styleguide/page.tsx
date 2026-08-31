@@ -794,10 +794,12 @@ export default async function StyleguidePage() {
       <section className={styles.section}>
         <h2>The contents panel</h2>
         <p className={styles.muted}>
-          Slice 007. On a lesson page the panel is sticky in the frame&apos;s
-          left gutter at 80rem and up, and folds into the disclosure below;
-          here both housings are shown statically, at every width. The divider
-          and the disclosure&apos;s box are <code>--rule-strong</code>; the
+          Slice 007, re-placed by 011. On a lesson page at 80rem and up the
+          panel is a sticky column of the page&apos;s own grid, level at the
+          top with the lesson header; below that width it folds into the
+          disclosure. Here both housings are shown statically, at every
+          width. The divider and the disclosure&apos;s box are
+          <code>--rule-strong</code>; the
           active entry is the inverted body-text/page pair, applied by the
           scroll-spy as <code>aria-current=&quot;location&quot;</code> — frozen
           by hand in the states specimen, since nothing scrolls here.
