@@ -434,3 +434,94 @@ Two application files, four slice documents.
 On a lesson page at 1280 px the network log holds **25 resources, 0
 third-party, 0 images, 4 font files** — the two faces the site already loads.
 No page requests anything it did not request before.
+
+---
+
+## T09 — The closing review (criterion 17), and what it found
+
+A subagent with no history of this session reviewed `git diff a26f3db^ fc8839c`
+against the spec's seventeen criteria, the constitution and AGENTS.md, and
+re-ran `npm run build` itself.
+
+**Verdict: criteria 1–15 MET, 16 correctly reserved for a human eye, 17 is the
+review. No gap affecting correctness or a criterion.**
+
+It re-derived rather than trusted two of the numbers: the 311.8 px section-entry
+content box from the CSS (352 − 1 px border − 0.9rem − 0.75rem − 2 × 0.4rem),
+and the above-fold minimum layout width as **74rem** against at least 80rem
+available — ~96 px of headroom, and because every term is in `rem` that margin
+is invariant under root-font-size and browser zoom. It confirmed independently
+that `.lessonColumns` / `.lessonColumn` appear in exactly two files and select
+nothing on any other route, which is the structural form of criterion 13.
+
+### Fixed on the review's finding
+
+Three pieces of documentation this slice made false or misleading:
+
+1. `components/contents.tsx` still described the panel as living "in the
+   frame's left gutter" — the exact thing the slice abandoned.
+2. `app/nav.css` asserts "the whole site has ONE left edge". That invariant now
+   has exactly one exception and the comment did not say so. It names it, and
+   points at spec §2 and decision 9, so the exception reads as a decision
+   rather than as drift.
+3. The fold's track list carried `[full-start …]` / `[… full-end]` names.
+   Above the fold the grid is inset by the page margin, so a line called
+   `full-start` sits 2rem in and would lie to whoever reached for it next;
+   nothing inside the wrapper claims a full track. Dropped.
+
+Re-checked afterwards: `npm run build` green, and at 1280 px the grid computes
+`[panel-start] 352px [panel-end content-start] 736px [content-end] 97px` with
+panel 32 / 352 / 153.8, lesson column 408 / 736 / 153.8, header 464 / 624 /
+153.8, measure 464 / 624, wide lane 408 / 736, pager 464 / 624, and no
+horizontal overflow — every number identical to T05.
+
+### Recorded, not fixed
+
+Neither correctness nor a criterion, so per AGENTS.md §3 they are written down
+and left:
+
+- **A latent empty column.** Above the fold the 352 px track is reserved
+  unconditionally, but the panel renders `null` for a module of one lesson with
+  no `##` sections (007's decision 23). Such a page would indent the article
+  408 px beside nothing. **Reproduced deliberately** by removing the panel from
+  the DOM: the lesson column stays at 408 / 736 with an empty column beside it.
+  Unreachable with today's content — module 0's only lesson has 8 sections.
+- **Reading order.** The panel's twenty-odd links now precede the `<h1>` in the
+  DOM. That is the price of criterion 3, it is mitigated by the nav landmark,
+  the skip control and heading navigation, and no criterion names it.
+- **Three custom properties on bare `:root` outside `app/tokens.css`.** Nothing
+  forbids it — only colour literals are constrained — but it is the first time
+  the token space is split across two files, and it deserves a ruling rather
+  than a precedent set in passing.
+- **Criterion 12's wording, inherited from 007's criterion 13**, asks for the
+  disclosure to open and close *at 1280 px*, where it is `display: none` by
+  design. Unsatisfiable as written; demonstrated at 768 px instead.
+- **`npm run lint`'s two pre-existing errors** in `app/styleguide/page.tsx`.
+
+### The vertical rhythm, measured rather than argued
+
+The review's static argument — `main` went from five in-flow rows to two while
+`.lessonColumn` took the other four with the same `align-content: start` and
+`row-gap` — checked against the page:
+
+| gap | measured | token |
+| --- | ---: | --- |
+| band → lesson columns | 40 px | `--gap-apart` = 2.5rem |
+| lesson header → article | 40 px | same |
+| article → pager | 40 px | same |
+
+`main`'s `row-gap` and `.lessonColumn`'s both compute to 40px, so there is
+exactly one gap at every join. The lesson header's top is **153.8** and the
+pager's is **10034.8** on `1c` at 1280 px — both identical to T04's baseline,
+which is the whole vertical rhythm unchanged, not merely close.
+
+### Method findings, all recorded in `tasks.md` or here
+
+- T04's box was `[x]` in T03's commit, before T04's evidence was committed.
+- T05, T06 and T07 did not touch `tasks.md`; every remaining box was checked in
+  T08's commit.
+- T07's one-line change shipped inside T05's commit, and T08's evidence inside
+  T07's.
+
+All four slips are left standing and written down rather than rebased away
+(Article II), and a factual entry now records the run in `docs/sdd-journal.md`.

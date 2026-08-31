@@ -46,7 +46,16 @@
 
 /* THE LANE. Every page-level block on this site — the wordmark, the breadcrumb,
    the lesson rows, the module grid, the previous/next pair — sits in a box one
-   --measure wide, so the whole site has ONE left edge. Slice 004 centres the
+   --measure wide, so the whole site has ONE left edge.
+
+   ONE EXCEPTION, since slice 011: a LESSON page at 80rem and wider is two
+   columns anchored to the left of the viewport, so its article and its header
+   sit right of this edge while the wordmark and the breadcrumb above them stay
+   on it. That is spec 011 §2 and its decision 9, taken deliberately and
+   recorded there — not drift. Every other page, and every lesson below the
+   fold, still shares the edge this rule describes.
+
+   Slice 004 centres the
    measure inside the wider content column, which means anything aligned to the
    content column instead lands 56px to its left on a desktop and reads as a
    mistake beside the article it belongs to. --content-width keeps exactly the

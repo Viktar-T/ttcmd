@@ -73,10 +73,13 @@ function ContentsList({ moduleItem, current }: ContentsProps) {
 }
 
 /**
- * The wide-viewport housing: a sticky, self-scrolling panel in the frame's
- * left gutter. Its first focusable is the skip control — the panel sits
- * between the breadcrumb and the article in focus order and can hold
- * twenty-plus links, and this is where that burden is answered.
+ * The wide-viewport housing: a sticky, self-scrolling panel that is a COLUMN
+ * of the lesson page's grid. It sat in the frame's left gutter until slice
+ * 011, which is why it was 13rem wide; app/contents.css carries that history.
+ *
+ * Its first focusable is the skip control — the panel stands between the
+ * breadcrumb and the article in focus order and can hold twenty-plus links,
+ * and this is where that burden is answered.
  */
 export function ContentsPanel(props: ContentsProps) {
   if (!hasAnyLink(props)) return null;

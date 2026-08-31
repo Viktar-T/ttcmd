@@ -81,7 +81,7 @@ Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
       no `package.json`, no lockfile, and adds no network request to any page
       (criterion 15).
 
-- [ ] **T09 — Close the slice.** Fresh-context subagent review of the whole
+- [x] **T09 — Close the slice.** Fresh-context subagent review of the whole
       diff against `spec.md` (AGENTS.md §3, criterion 17); fix what affects
       correctness or a criterion, record the rest without fixing it; this file
       matches reality. **Criterion 16 stays unchecked** — whether the page
@@ -92,6 +92,15 @@ Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
 
 ## Slips, recorded rather than tidied away
 
+- **T04's box was `[x]` when `tasks.md` was committed at T03**, before T04's
+  evidence existed in the tree. The baseline had been measured by then, but a
+  box is checked when the check has run *and its evidence is recorded*, and the
+  evidence was recorded one commit later.
+- **T05, T06 and T07 did not touch `tasks.md`.** Every remaining box was
+  checked in T08's commit rather than as each task closed.
+- **T07's one-line change shipped inside T05's commit** — the specimen's width
+  is the same declaration family in the same file, and it was edited in the
+  same pass.
 - **T08's evidence was appended inside T07's commit** (`67487e8`). The two
   sections were written in one pass and staged together; the mistake was
   noticed after the commit and is left standing, because rewriting it would

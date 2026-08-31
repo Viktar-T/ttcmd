@@ -80,10 +80,15 @@
        ones. Two `[...]` groups with no track between them is a parse error,
        and a dropped grid-template-columns fails silently into auto-placed
        implicit tracks — a page that looks broken with nothing in the console. */
+    /* No `full` lines here, deliberately. Above the fold the grid is inset by
+       the page margin, so a line called `full-start` would sit 2rem in and
+       lie to the next person who reaches for it; and nothing inside this
+       wrapper claims the full track anyway — the article's own wide lane is
+       .prose's business, one level down. */
     grid-template-columns:
-      [full-start panel-start] var(--contents-width)
+      [panel-start] var(--contents-width)
       [panel-end content-start] calc(var(--content-width) - 2rem)
-      [content-end] minmax(1rem, 1fr) [full-end];
+      [content-end] minmax(1rem, 1fr);
     column-gap: var(--contents-gap);
     padding-inline-start: var(--lesson-margin);
   }

@@ -399,3 +399,67 @@ in the reflection sections.
   failure, because that tree sits outside the content root the pipeline reads;
   and the seven lessons still render their exercises as unnumbered ordered
   lists until a content-lane pass adopts the element.
+
+---
+
+## Slice 011 — the lesson page as two columns
+
+**Agent notes** *(factual, appended by agents)*
+
+- **Run autonomously end to end** — spec, plan, tasks, five implementation
+  commits, fresh-context closing review — with both subagents AGENTS.md §2
+  requires. No question was asked; nothing cleared §4's escalation bar, since
+  the roadmap entry already fixed the arrangement, the alignment and the
+  constraints.
+- **The fresh-context plan earned its keep, by failing usefully.** The subagent
+  could plan from the spec, but only by guessing three numbers the spec fixed
+  by reference rather than stating: the article column's width (given only in a
+  parenthetical), the gap between the columns ("the value 007 used"), and
+  whether the page margin exists below the fold. It labelled all three as
+  guesses and reverse-derived the gap as 2rem from a sentence in a decision;
+  the real value is 1.5rem. The spec was completed in T02, before any code
+  existed, so the fix cannot be a spec retrofitted to a build.
+- **One parse error cost the slice its only real debugging.** `[panel-end]` and
+  `[content-start]` written as two adjacent line-name blocks is invalid CSS.
+  The whole `grid-template-columns` was dropped, grid fell back to auto-placed
+  implicit tracks, the panel and the article stacked at the same 1209 px width
+  — and **nothing appeared in the console**. It was found by reading the
+  computed `grid-template-columns`, not by looking at the page. The fix is one
+  block, `[panel-end content-start]`, and the comment in `app/contents.css` now
+  says why.
+- **The defect was counted, not described.** The baseline recorded the rendered
+  line count of every panel entry, so "entries wrap every two or three words"
+  became: the worst entry in `1c` sets on **four** lines at 208 px and on
+  **two** at 352 px, and every lesson row went from two lines to one. The
+  criterion that made this checkable is a character count — 37 per line against
+  a floor of 36 — which stays checkable as lessons are added.
+- **Two instrument properties were recorded because they explain numbers that
+  otherwise look wrong.** A media query does not see the vertical scrollbar, so
+  the fold fires at an inner width of 1280 while the layout is laid out in
+  1265 px; and the driven browser reports `document.hidden` and dispatches no
+  scroll events at all, so every scroll check sets the real position and then
+  dispatches the event by hand. What is synthesised is the trigger; the handler
+  still reads live geometry.
+- **The check that would have passed vacuously.** The wider column made the
+  panel's content shorter than an ordinary laptop viewport, so 007's
+  "the panel gains its own scrollbar" no longer triggers at 1280 × 900. The
+  plan's subagent predicted this from the spec alone; the check was re-taken at
+  1280 × 500, where the content is 459 px against a 436 px cap.
+- **Four bookkeeping slips, left standing.** T04's box was checked in T03's
+  commit before its evidence was committed; T05–T07 did not touch `tasks.md`
+  and every remaining box was checked in T08's; T07's one-line change shipped
+  inside T05's commit; and T08's evidence was appended inside T07's. All four
+  are written into `tasks.md` and `verification.md` rather than rebased away.
+- **The closing review found no gap against the criteria** and three pieces of
+  documentation the slice had made false — a comment still placing the panel
+  "in the frame's left gutter", `app/nav.css`'s claim that the whole site has
+  one left edge, and `full-start`/`full-end` line names that above the fold sit
+  2 rem inside the page margin. All three fixed; the rest of its findings
+  recorded without fixing, including a latent empty column for a module of one
+  lesson with no sections, which is unreachable with today's content and was
+  reproduced deliberately to see what it would look like.
+- **Left open for a human eye:** whether the page *reads* as two columns, and
+  whether spec §2's consequence is acceptable — the site header and the
+  breadcrumb keep the centred lane while the lesson's body is anchored left, so
+  above the fold the breadcrumb no longer sits over the lesson's title. At
+  1585 px they are 9 px apart, at 1280 px 144 px, at 2560 px 497 px.
