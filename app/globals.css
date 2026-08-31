@@ -112,6 +112,39 @@ main > * {
   min-width: 0;
 }
 
+/*
+ * Slice 012. Above the fold the content column is ANCHORED rather than
+ * centred: its leading track is the fixed distance at which a lesson page's
+ * article column begins — the page margin, the contents column, and the gap
+ * between them, summed once in tokens.css as --content-inset.
+ *
+ * Why it belongs to the frame and not to the pages. Slice 011 anchored the
+ * lesson page to the left and left every other page centred, so the site had
+ * two left edges and the prose jumped when a student opened a lesson from a
+ * module page — 144px at 1280, the other way at 1585, and by a different
+ * amount at every width, because one edge was a fraction of the viewport and
+ * the other was not. Anchoring the frame puts the module page, the module
+ * grid, the home page and the reference page on the lesson's edge, and makes
+ * that edge the same number at 1280 and at 2560.
+ *
+ * A lesson page is untouched by this, and that is structural rather than
+ * lucky: its only two children of the frame — the accent band and the
+ * two-column wrapper — are both full-bleed, so they take the `full` track and
+ * never see where `content` starts.
+ *
+ * The trailing track stays flexible and absorbs everything left over, which is
+ * what keeps a full-bleed child spanning edge to edge. Below the fold nothing
+ * here applies and the frame is the centred one slice 006 built.
+ */
+@media (min-width: 80rem) {
+  main {
+    grid-template-columns:
+      [full-start] var(--content-inset)
+      [content-start] calc(var(--content-width) - 2rem) [content-end]
+      minmax(1rem, 1fr) [full-end];
+  }
+}
+
 main > [data-full-bleed] {
   grid-column: full;
 }

@@ -104,6 +104,32 @@
 }
 
 /*
+ * Slice 011 introduced these three in app/contents.css, because only the
+ * contents panel needed them. Slice 012 moved them here, because the PAGE
+ * FRAME needs them too: above the fold every page's content column starts
+ * where a lesson's article column starts, so the frame has to know how wide
+ * the contents column and its gap are even on a page that has no panel.
+ *
+ * A stylesheet for one component is the wrong place for a length the frame
+ * reads, and the frame reaching into it would be worse. They live beside the
+ * measure and the content width because that is what they are: page geometry.
+ *
+ * --content-inset is DERIVED, not a fourth number. It is the one name the
+ * frame uses, so the sum is written once and cannot drift from its parts:
+ * 2 + 22 + 1.5 = 25.5rem = 408px at a 16px root, which is exactly where the
+ * lesson page's article column begins.
+ */
+:root {
+  --contents-width: 22rem;
+  --contents-gap: 1.5rem;
+  --lesson-margin: 2rem;
+
+  --content-inset: calc(
+    var(--lesson-margin) + var(--contents-width) + var(--contents-gap)
+  );
+}
+
+/*
  * The vertical rhythm. Five gaps, strictly increasing, with the two heading
  * gaps the largest two — and that ordering is the acceptance criterion, not a
  * preference. It is a property of this block rather than of any rule that uses

@@ -48,12 +48,16 @@
    the lesson rows, the module grid, the previous/next pair — sits in a box one
    --measure wide, so the whole site has ONE left edge.
 
-   ONE EXCEPTION, since slice 011: a LESSON page at 80rem and wider is two
-   columns anchored to the left of the viewport, so its article and its header
-   sit right of this edge while the wordmark and the breadcrumb above them stay
-   on it. That is spec 011 §2 and its decision 9, taken deliberately and
-   recorded there — not drift. Every other page, and every lesson below the
-   fold, still shares the edge this rule describes.
+   WHERE THAT EDGE IS, since slices 011 and 012. Below the fold it is the
+   centred lane this rule describes, unchanged. At 80rem and wider the frame
+   anchors its content column instead, so on EVERY page the lane below the
+   chrome starts at a fixed 464px rather than at a fraction of the viewport —
+   and the two boxes here, .siteHeaderInner and .bandInner, are the ones that
+   stay centred, because they are not in the frame's content column. That is
+   spec 011 decision 9 and spec 012 decision 2, both taken deliberately: the
+   wordmark and the breadcrumb drift with the window while everything under
+   them does not. It is the one place the site's single edge is not single, and
+   it is recorded rather than accidental.
 
    Slice 004 centres the
    measure inside the wider content column, which means anything aligned to the
@@ -393,10 +397,17 @@
  * Outside the reading scale on purpose. --text-3xl is the top of the scale
  * slice 004 built for reading, and this is not read — it is the one graphic
  * element on a site that has no illustrations.
+ *
+ * clamp, not a fixed size: the course name is thirty monospace characters, not
+ * a five-letter wordmark, so the size has to follow the viewport. The upper
+ * bound is what the lane can hold before the longest word breaks; the 8vw
+ * middle term keeps 'desktopowe' inside a 375px phone; --text-2xl is the floor
+ * below which it stops reading as the page's one graphic element.
  */
 .heroTitle {
   margin: 0;
-  font-size: calc(var(--text-3xl) * 1.6);
+  font-size: clamp(var(--text-2xl), 8vw, calc(var(--text-3xl) * 1.35));
+  line-height: 1.1;
 }
 
 .heroLede {

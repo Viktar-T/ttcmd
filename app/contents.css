@@ -33,21 +33,19 @@
  * rhythm is reproduced rather than approximated.
  * ------------------------------------------------------------------ */
 
-:root {
-  /* The panel's width is the point of slice 011, and it is derived, not
-     tasted. 22rem leaves 311.8px inside the section entries' padding and the
-     rule — 37 characters of JetBrains Mono at --text-sm — which puts 48 of
-     the corpus's 56 section entries on one line and the other 8 on two, and
-     breaks the longest of them after a comma rather than after two words.
+/* --contents-width, --contents-gap and --lesson-margin were declared here by
+   slice 011 and live in app/tokens.css since slice 012, which needed them for
+   the page frame as well. The reasoning stays with them:
 
-     --contents-gap is 007's own value, moved from the panel's margin onto the
-     grid: the rule still stands 1.5rem from the article container's edge.
-     --lesson-margin is the frame's 1rem gutter doubled, and exists only above
-     the fold, where there is a pair to anchor. */
-  --contents-width: 22rem;
-  --contents-gap: 1.5rem;
-  --lesson-margin: 2rem;
-}
+   22rem is the point of slice 011 and it is derived, not tasted — it leaves
+   311.8px inside the section entries' padding and the rule, 37 characters of
+   JetBrains Mono at --text-sm, which puts 48 of the corpus's 56 section
+   entries on one line and the other 8 on two, and breaks the longest of them
+   after a comma rather than after two words. The 1.5rem gap is 007's own
+   value, moved from the panel's margin onto the grid, so the rule still stands
+   1.5rem from the article container's edge. The 2rem margin is the frame's
+   1rem gutter doubled, and applies only above the fold, where there is a pair
+   to anchor. */
 
 .lessonColumns {
   display: grid;
