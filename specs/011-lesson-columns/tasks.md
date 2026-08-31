@@ -33,7 +33,7 @@ Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
       exists to fix is counted rather than asserted; `git status` shows no
       change outside `specs/011-lesson-columns/`.
 
-- [ ] **T05 — The lesson body becomes two columns.** The panel and a lesson
+- [x] **T05 — The lesson body becomes two columns.** The panel and a lesson
       column inside one full-bleed grid; the grid centred and one-column below
       the fold, left-anchored and two-column at 80rem; the panel a real track
       at `--contents-width`, sticky, `align-self: start`; the lesson header,
@@ -50,7 +50,7 @@ Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
       measured number equals T04's baseline exactly and `scrollWidth ==
       clientWidth` (criterion 11).
 
-- [ ] **T06 — Re-verify everything 007 shipped, in the new container.**
+- [x] **T06 — Re-verify everything 007 shipped, in the new container.**
       Nothing re-decided (decision 14); this task re-runs 007's own checks
       against the moved panel and fixes only what the move broke. *Check:*
       rendered markup of `1d` at 1280 shows the lesson rows in `order` with
@@ -67,12 +67,12 @@ Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
       no highlight, no back-to-top, no console errors (criterion 12);
       module 0's single-row panel still renders correctly.
 
-- [ ] **T07 — The reference page's specimen follows the width.** *Check:* the
+- [x] **T07 — The reference page's specimen follows the width.** *Check:* the
       specimen's rendered panel width equals the lesson page's contents column
       width, measured on both pages; the reference page renders without error
       at 1280 and at 375 (criterion 14).
 
-- [ ] **T08 — The regression sweep.** Re-measure exactly what T04 measured, on
+- [x] **T08 — The regression sweep.** Re-measure exactly what T04 measured, on
       the same pages at the same widths, and diff. *Check:* the home page, the
       module grid and the module page are identical at 1280 and 1585, as are
       the site header and the accent band on a lesson page and on a module page
@@ -87,6 +87,16 @@ Criterion numbers refer to `spec.md`; the mechanism is `plan.md`'s.
       matches reality. **Criterion 16 stays unchecked** — whether the page
       *reads* as two columns is Viktar's eye, not this run's, and the report
       names the page and the width to open.
+
+---
+
+## Slips, recorded rather than tidied away
+
+- **T08's evidence was appended inside T07's commit** (`67487e8`). The two
+  sections were written in one pass and staged together; the mistake was
+  noticed after the commit and is left standing, because rewriting it would
+  delete the only record that it happened (constitution, Article II). T08's own
+  commit is therefore this file's boxes and nothing else.
 
 ---
 
