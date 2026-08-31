@@ -352,3 +352,85 @@ panel 32 / 352, top **153.8** — level with the lesson header's 153.8. Exactly
 `0c Git i GitHub — minimum, które wystarczy`, expanded to its 8 sections. That
 row is the corpus's longest at 42 characters and sets on two lines; every
 section entry sets on at most two. `scrollWidth == clientWidth == 1265`.
+
+---
+
+## T07 — The reference page's specimen (criterion 14)
+
+The specimen's width is not a second literal: `app/contents.css` declares
+`--contents-width` once and both the lesson page's track and the specimen's
+`width: min(var(--contents-width), 100%)` read it, so the reference cannot
+drift from the site. The one-line change shipped inside T05's commit, because
+it is the same declaration family in the same file; this task is its check.
+
+| viewport | specimen panel | document |
+| ---: | --- | --- |
+| 1280 | 264.5 / **352** — the lesson page's contents column, to the pixel | `scrollWidth == clientWidth == 1265` |
+| 375 | 16 / **343** — `min()` clamps to the container, no overflow | `scrollWidth == clientWidth == 375` |
+
+The page renders at both widths. Its disclosure specimen still renders and its
+back-to-top specimen is still `position: static` (in flow, not fixed over the
+reference page). The only console errors are the same content-side
+`Invalid DOM property` warnings recorded in T06.
+
+---
+
+## T08 — The regression sweep (criteria 1, 13, 15)
+
+### Criterion 13 — the other pages did not move
+
+Every number below is **identical to T04's baseline**.
+
+| page | vw | site header inner | `main`'s children |
+| --- | ---: | --- | --- |
+| `/` | 1280 | 312 / 656 | `section.hero` 328 / 624 · `ul.moduleGrid` 328 / 624 |
+| `/` | 1585 | 464.5 / 656 | `section.hero` 480.5 / 624 · `ul.moduleGrid` 480.5 / 624 |
+| `/moduly` | 1280 | 312 / 656 | `header.lane` 328 / 624 · `ul.moduleGrid` 328 / 624 |
+| `/moduly` | 1585 | 464.5 / 656 | `header.lane` 480.5 / 624 · `ul.moduleGrid` 480.5 / 624 |
+| `/moduly/01-…` | 1280 | 304.5 / 656 | band 0 / 1265, inner 304.5 / 656 · `div.prose` **264.5 / 736** · `nav.lessonList` 320.5 / 624 · `nav.pager` 320.5 / 624 |
+| `/moduly/01-…` | 1585 | 457 / 656 | band 0 / 1570, inner 457 / 656 · `div.prose` **417 / 736** · `nav.lessonList` 473 / 624 · `nav.pager` 473 / 624 |
+
+The module page's own `.prose` is untouched at both widths, which is the check
+that the slice's rules are scoped to the lesson's container and not to `.prose`
+at large.
+
+**The site header and the accent band on a lesson page** measure 304.5 / 656 at
+1280 and 457 / 656 at 1585 — the baseline, unchanged. They keep the site's
+centred lane while the lesson's body is anchored left; that is decision 9, and
+its visible consequence is §2's last paragraph.
+
+### Criterion 1 — the build
+
+`npm run build` succeeds. `Design invariants OK.` and all fourteen contrast
+lines are character-for-character the T04 report.
+
+`npm run lint` reports **2 errors, both pre-existing**:
+`app/styleguide/page.tsx:608–609`, `react/no-unescaped-entities` on the Polish
+closing quote in a specimen blockquote. That file is byte-identical to the
+pre-slice tree (`git diff --quiet a26f3db^ HEAD -- app/styleguide/page.tsx`
+returns clean), so the errors predate slice 011 and are not this slice's to
+fix. `npm run build` — the repo's declared check — does not run eslint and
+passes.
+
+### Criterion 15 — the shape of the diff
+
+```
+ app/contents.css                         | 106 ++++--
+ app/moduly/[module]/[lesson]/page.tsx    |  51 +--
+ specs/011-lesson-columns/plan.md         | 576 +++++
+ specs/011-lesson-columns/spec.md         | 357 +++++
+ specs/011-lesson-columns/tasks.md        | 122 +++++
+ specs/011-lesson-columns/verification.md | 354 +++++
+```
+
+Two application files, four slice documents.
+
+| assertion | result |
+| --- | ---: |
+| files touched under `content/`, `package.json`, `package-lock.json` | **0** |
+| added lines matching `url(`, `@import`, `<link`, `<script`, `.woff`, `.png`, `.svg`, `http(s)://` | **0** |
+| added `"use client"` | **0** — nothing crossed into a client island |
+
+On a lesson page at 1280 px the network log holds **25 resources, 0
+third-party, 0 images, 4 font files** — the two faces the site already loads.
+No page requests anything it did not request before.
