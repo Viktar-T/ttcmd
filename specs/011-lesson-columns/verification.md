@@ -244,3 +244,111 @@ The lesson column's children, in document order at 1024 px:
 `header` → `nav.contentsDisclosure` → `div.prose` → `nav.pager`. The
 disclosure is between the lesson header and the first paragraph, which is what
 criterion 11 asks and what fixed the panel's DOM position for slice 007.
+
+---
+
+## T06 — Everything 007 shipped, re-verified in the new container (criteria 7–10, 12)
+
+Nothing was re-decided and nothing needed fixing: the move broke none of it, so
+this task changes no code and the commit is the evidence.
+
+### Criterion 7 — the markup, on `1d` at 1280 px
+
+Landmarks on the page, read off every `<nav>`:
+`Ścieżka nawigacji` (breadcrumb) · **`Spis treści`** (the panel, a `NAV`) ·
+`Spis treści` (the disclosure, `display: none` at this width) · `Lekcje`
+(pager). The panel's landmark is distinct from the breadcrumb's.
+
+Rows, in `order`, each carrying its identity string:
+
+| element | row |
+| --- | --- |
+| `A` | `1b Od podpowiedzi do agenta` |
+| `A` | `1c Co model naprawdę potrafi` |
+| **`SPAN`**, `aria-current="page"` | **`1d Na żywo: agent buduje aplikację`** |
+| `A` | `1e Teraz ty: twój pierwszy agent` |
+| `A` | `1f Nowy warsztat programisty` |
+| `A` | `1g Vibe coding kontra inżynieria` |
+| `A` | `1h Jak nie wypaść z obiegu` |
+
+The current lesson's row is the only non-link. Its nine section entries are all
+links, and their `data-section` sequence equals the document order of
+`.prose h2[id]` exactly — compared as a string, `true`.
+
+### Criterion 8 — the reader is still followed
+
+`1d` at 1280 px, reading `aria-current="location"` off the panel's entries:
+
+| position | active |
+| --- | --- |
+| top of the document | *(none)* |
+| `scrollY = 4000` | `prompt`, and **only** it — one marked entry in the panel |
+| bottom of the document | `zrodla`, the last section |
+
+Following the panel's `Na co patrzeć` entry: the heading lands **32.3 px**
+below the viewport's top edge — the 2rem `scroll-margin-top`, not flush — and
+the highlight moves to `na-co-patrzec`.
+
+### Criterion 9 — the panel still scrolls itself, and only itself
+
+At **1280 × 500**, deliberately short: the wider column makes the panel's
+content shorter, so a normal laptop height no longer overflows it and the check
+would otherwise pass vacuously.
+
+| | |
+| --- | --- |
+| panel `scrollHeight` / `clientHeight` | **459 / 436** — it overflows |
+| `overflow-y`, `max-height` | `auto`, `436px` (`100vh − 4rem`) |
+| panel top at `scrollY 1500` | **32** — stuck at its 2rem offset, on screen deep in the lesson |
+| page `scrollY` after scrolling the panel to its end | **1500**, unchanged |
+| page `scrollY` after the spy advanced the active entry to `na-co-patrzec` | **9000**, unchanged |
+
+### Criterion 10 — the skip control and back-to-top
+
+The panel's first focusable, by query, is `a.contentsSkip` → `#tresc`. Focused
+by keyboard it is revealed rather than clipped — `position: static`,
+`clip-path: none`, **155.6 × 22.3** at (32, 153.4) — and it matches
+`:focus-visible`, so the site's `rgb(201, 194, 245)` ring is on it. Panel links
+carry the same ring: the first one measures 337 × 22.3 at (32, 182.1) with
+`:focus-visible` true. Activating the skip control sets `#tresc` and leaves
+`document.activeElement` as **`DIV#tresc.prose`** — focus inside the article,
+whose `tabIndex` is −1.
+
+Back-to-top: **absent** at the top of the lesson; after a viewport of scroll it
+is present, labelled `Wróć na początek`, fixed at (1201, 836). Activating it
+returns `scrollY` to **0** and moves `document.activeElement` to **`MAIN`**.
+
+### Criterion 12 — without JavaScript
+
+Taken from the server-rendered HTML the dev server returns to `curl` — which is
+exactly the DOM a browser with scripting disabled builds. 131 767 bytes.
+
+| in the no-JS DOM | count |
+| --- | ---: |
+| `class="lessonColumns"` / `class="lessonColumn"` | 1 / 1 |
+| `class="contentsPanel"` (a `NAV` named `Spis treści`) | 1 |
+| `<details>` / `<summary>` | 1 / 1 |
+| `class="contentsSkip" href="#tresc"` and its target `id="tresc"` | 1 / 1 |
+| `class="contentsLesson" href=…` | 12 (panel + disclosure) |
+| `class="contentsSection" href="#…"` | 9 distinct anchors |
+| `aria-current="location"` | **0** — no highlight |
+| `class="backToTop"` | **0** — no dead control |
+
+The disclosure is a native `<details>`, so it opens without scripting. Driven
+at 768 px it reads `closedByDefault: true`, opens on the summary's activation,
+closes on the next, and holds 9 section links.
+
+**Console.** A fresh load at 1280 px logs only React's dev-mode
+`Invalid DOM property` warnings for hyphenated SVG attributes —
+`stroke-width`, `marker-end`, `font-size`, `font-weight`, `stroke-dasharray` —
+written by hand in the MDX of the lessons' inline diagrams. They are present in
+the T04 baseline, they come from `content/`, and they are not this slice's to
+fix. No error from anything this slice touched.
+
+### Module 0's degenerate panel, at 1280 px
+
+panel 32 / 352, top **153.8** — level with the lesson header's 153.8. Exactly
+**one** row, a `SPAN` and not a link, reading
+`0c Git i GitHub — minimum, które wystarczy`, expanded to its 8 sections. That
+row is the corpus's longest at 42 characters and sets on two lines; every
+section entry sets on at most two. `scrollWidth == clientWidth == 1265`.
