@@ -5,6 +5,14 @@
   unapproved by construction; Viktar reviews the `## Decisions taken` section
   and the final report afterwards
 - **Date:** 2026-08-31
+- **Amended:** 2026-08-31, before implementation, on the strength of the
+  fresh-context test AGENTS.md §2 requires. The plan's subagent could produce a
+  plan from this file, but only by guessing three numbers this spec fixed by
+  reference instead of stating: the width of the article's column, the gap
+  between the columns, and whether the page margin exists below the fold. Those
+  three are now stated — §4, decision 12, §2 — and criterion 6's wording is
+  disambiguated. Nothing else changed, and nothing was changed to match code:
+  no code exists yet.
 - **Supersedes:** slice 007's *placement* of the contents panel — §2 of that
   spec ("the panel hangs in the margin to the left of the article's column")
   and its decision 8. Constitution Article IX: slices are append-only, so 007
@@ -87,6 +95,10 @@ The two columns are anchored to the **left** of the viewport, one page margin
 in, and **all leftover width falls on the right**. Nothing is centred: not the
 pair, not the article inside it.
 
+**The page margin exists only where the second column does.** Below the fold
+there is no pair to anchor, and the page keeps the gutters slice 006 gave it,
+unchanged and unmeasured-against — see §5.
+
 That is what makes the arrangement legible as two columns rather than as one
 column with an ornament, and it is what buys the contents column a width that
 does not depend on how much slack the viewport happens to have.
@@ -123,13 +135,18 @@ The width freed by not centring goes to the contents column and to the
 right-hand slack. **It does not go to the article.**
 
 - **The measure does not move.** Prose has a comfortable line length; a wider
-  column is not a better one, and slice 004 measured this one.
+  column is not a better one, and slice 004 measured this one. It stays at
+  **39rem — 624 px rendered**.
 - **The wide lane does not move.** Tables, diagrams and figures keep the wider
   column 004 gave them inside the article, at the same width, in the same
-  relation to the measure and to the rule beside them.
+  relation to the measure and to the rule beside them. That is the content
+  width less the frame's two gutters: **46rem — 736 px rendered**, with the
+  measure centred inside it, 56 px of lane showing on each side.
 
-So the article is the same article, at the same two widths, moved to the right
-of the contents column.
+So the article is the same article, at the same two widths and the same
+internal offset, moved to the right of the contents column. Its **left edge on
+the page necessarily changes** — that is what §2 does — and criterion 6 is
+about the two widths and the offset, never about an absolute position.
 
 ### 5. Below the fold, nothing changes
 
@@ -218,10 +235,12 @@ Measurements are taken from a rendered page in a real browser.
    its own face on one line; in `1c` the entry `- Badanie, które wyszło
    odwrotnie, niż wszyscy zakładali` occupies **two** rendered lines, not four,
    and no entry in `1c` or in the longest lesson occupies more than two.
-6. **The article is unchanged.** At 1280 px and at 1585 px the prose text column
-   and the wide lane inside the article measure exactly what they measured on
-   the same pages before this slice, and the wide lane's offset from the prose
-   column is unchanged. Shown by the same measurement run before and after.
+6. **The article is unchanged — in width, not in position.** At 1280 px and at
+   1585 px the prose text column is 624 px and the wide lane 736 px, the two
+   numbers they measured on the same pages before this slice, and the wide
+   lane's offset from the prose column is the 56 px it was. The article's left
+   edge on the page is expected to move — §2 and §4 say so — and is not part of
+   this criterion. Shown by the same measurement run before and after.
 7. Slice 007's structural criteria still hold on the longest lesson at 1280 px,
    read from the rendered markup: every lesson of the module in `order` with
    identity string and title; the current lesson expanded with one entry per
@@ -307,9 +326,12 @@ Per AGENTS.md §4. One line each, naming what was rejected.
 11. **The vertical rule stays on the contents column's inner edge, at the same
     distance from the article as today.** Rejected: moving it into the gap as an
     element of its own, which is a new thing to style for no visible gain.
-12. **The gap between the columns keeps the value 007 used.** Rejected: widening
-    it with the room now available, which would change spacing this slice says
-    it does not change.
+12. **The gap between the columns keeps the value 007 used — 1.5rem, measured
+    from the rule on the contents column's inner edge to the article
+    container's edge, not to its text.** Rejected: widening it with the room
+    now available, which would change spacing this slice says it does not
+    change; and measuring it to the text, which would silently add the 56 px
+    of wide lane to the gap and push the pair 56 px wider for nothing.
 13. **The reference page's panel specimen follows the new width.** Rejected:
     leaving the specimen at the old width, which turns the page whose job is to
     show what the site looks like into a page that lies about it.
