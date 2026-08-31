@@ -605,8 +605,8 @@ export default async function StyleguidePage() {
           <blockquote>
             <p>
               Vibe coding nie oznacza „używania narzędzi AI do pomocy w pisaniu
-              kodu". Oznacza „generowanie kodu przy pomocy AI bez dbania o to,
-              jaki kod powstaje".
+              kodu”. Oznacza „generowanie kodu przy pomocy AI bez dbania o to,
+              jaki kod powstaje”.
             </p>
           </blockquote>
 
