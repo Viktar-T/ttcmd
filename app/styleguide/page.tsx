@@ -454,7 +454,7 @@ const SPECIMEN_MODULES: CourseModule[] = [
     href: "#",
     body: <></>,
     /* Slice 014: the introduction's own sections. Empty, like every real
-       module's — no index file carries a `##` — so the „Wstęp" row in the
+       module's — no index file carries a `##` — so the „Wstęp&quot; row in the
        specimens below stands alone, which is what the site renders. */
     sections: [],
     lessons: SPECIMEN_LESSONS,
@@ -888,26 +888,42 @@ export default async function StyleguidePage() {
       <section className={styles.section}>
         <h2>The contents panel</h2>
         <p className={styles.muted}>
-          Slice 007, re-placed by 011. On a lesson page at 80rem and up the
-          panel is a sticky column of the page&apos;s own grid, level at the
-          top with the lesson header; below that width it folds into the
-          disclosure. Here both housings are shown statically, at every
-          width. The divider and the disclosure&apos;s box are
-          <code>--rule-strong</code>; the
-          active entry is the inverted body-text/page pair, applied by the
-          scroll-spy as <code>aria-current=&quot;location&quot;</code> — frozen
-          by hand in the states specimen, since nothing scrolls here.
+          Slice 007, re-placed by 011, given to the module page by 014. At
+          80rem and up the panel is a sticky column of the page&apos;s own
+          grid, level at the top with the page&apos;s first block; below that
+          width it folds into the disclosure. Here both housings are shown
+          statically, at every width. The divider and the disclosure&apos;s
+          box are <code>--rule-strong</code>; the active entry is the inverted
+          body-text/page pair, applied by the scroll-spy as{" "}
+          <code>aria-current=&quot;location&quot;</code> — frozen by hand in
+          the states specimen, since nothing scrolls here.
+        </p>
+        <p className={styles.muted}>
+          The list opens with „Wstęp&quot;, the module&apos;s introduction. It wears
+          no letter — a letter is identity (ADR-0003) and <code>1a</code> is a
+          string a real lesson may claim later — and it is the current entry on
+          the module page, a link back to it from every lesson.
         </p>
 
         <div className={styles.specimen} data-specimen-contents>
           <span className={styles.specimenLabel}>
-            the panel — current lesson expanded, others links; Tab into it to
-            reveal the skip control
+            the panel on a lesson page — „Wstęp&quot; a link, the current lesson
+            expanded, the other lessons links; Tab into it to reveal the skip
+            control
           </span>
           <ContentsPanel
             moduleItem={SPECIMEN_MODULES[0]}
             current={SPECIMEN_LESSONS[1]}
           />
+        </div>
+
+        <div className={styles.specimen} data-specimen-contents>
+          <span className={styles.specimenLabel}>
+            the same panel on a module page — „Wstęp&quot; is the current entry, and
+            expands to the introduction&apos;s own sections when it has any;
+            no module index carries one yet, so the row stands alone
+          </span>
+          <ContentsPanel moduleItem={SPECIMEN_MODULES[0]} current="intro" />
         </div>
 
         <div className={styles.specimen} data-specimen-contents>
