@@ -47,7 +47,7 @@ here. Nothing is skipped.
       before this slice is unchanged in position and value.
       **Closes:** criterion 2.
 
-- [ ] **T06 — The mode's stylesheet.**
+- [x] **T06 — The mode's stylesheet.**
       `app/presentation.css` and its import in `app/layout.tsx`. No control yet;
       the mode is reached by setting `document.documentElement.dataset.mode`
       by hand, which is how the CSS is checked independently of the button.

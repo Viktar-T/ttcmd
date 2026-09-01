@@ -1,0 +1,146 @@
+/*
+ * Presentation mode — slice 013.
+ *
+ * The whole of the second mode: what the projector shows while the lesson is
+ * taught. The author marks the fragments to be read aloud with a plain <mark>;
+ * here they light up and the prose around them steps back, so the page works as
+ * a teleprompter and the class watches the course site do the presenting.
+ *
+ * THERE IS NO READING-MODE RULE IN THIS FILE, and that is the design rather
+ * than an omission. Reading mode is the ABSENCE of everything below — the same
+ * construction dark uses in tokens.css and for the same reason: a default that
+ * is a CSS fact rather than a promise about JavaScript. The one thing reading
+ * mode does need is the browser's yellow taken off <mark>, and that is
+ * unconditional in globals.css, where it holds even here.
+ *
+ * Imported last in app/layout.tsx. A global stylesheet with plain element and
+ * class selectors rather than a CSS Module, for the reason nav.css and
+ * contents.css both record: every check in this slice is performed by reading a
+ * rendered page, and a hashed class name makes that harder for no gain.
+ *
+ * No colour literal may appear here. Use a token from tokens.css.
+ */
+
+/* ------------------------------------------------------------------ *
+ * The lit fragment
+ * ------------------------------------------------------------------ */
+
+/*
+ * box-shadow, NOT border. A border on an inline box adds width and shifts the
+ * words around it every time the mode is switched; a shadow of zero blur and a
+ * 2px spread draws the same ring and changes no geometry. `outline` would do
+ * that too, but box-decoration-break does not govern an outline, and this
+ * fragment has to survive a line break.
+ *
+ * TWO PIXELS, NOT ONE. This ring is the only thing carrying the highlight's
+ * shape on the dark theme — the fill is 1.28:1 there by arithmetic, and the
+ * argument for accepting that is in tokens.css — and this is read from the back
+ * of a classroom through a projector, not from a laptop. A hairline is a screen
+ * decision.
+ *
+ * box-decoration-break: clone is criterion 6 and not a refinement. The default,
+ * `slice`, gives a fragment that wraps across a line break ONE box: no ring on
+ * the broken edges, no padding, an open-ended smear across two lines. `clone`
+ * gives the fill, the padding and the ring to each line's piece. The -webkit-
+ * prefix is still required and costs one line.
+ *
+ * No vertical padding, and that is measured rather than preferred: at
+ * --text-lg on --leading-normal the line box is 28.8px and Inter's content box
+ * is about 21.8px, so a 2px ring on each side leaves roughly 3px between the
+ * rings of two wrapped lines. Vertical padding is what makes them touch.
+ *
+ * No border-radius. Nothing on this site is rounded except a code block.
+ */
+:root[data-mode="presentation"] .prose mark {
+  background-color: var(--present-fill);
+  color: var(--present-ink);
+  box-shadow: 0 0 0 2px var(--present-line);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding-inline: 0.18em;
+}
+
+/*
+ * A marked link, both ways round, because Markdown writes both and the lessons
+ * will use whichever is convenient: `[<mark>x</mark>](url)` compiles to
+ * <a><mark> and `<mark>[x](url)</mark>` compiles to <mark><a>.
+ *
+ * <mark><a> — the anchor's own colour rule in prose.css is (0,1,1) and would
+ * otherwise paint the link text --link, which the dim below has moved to
+ * --present-dim: the lit fragment would carry dim text. Its underline follows
+ * for free, since text-decoration-color is currentColor.
+ */
+:root[data-mode="presentation"] .prose mark a {
+  color: var(--present-ink);
+}
+
+/*
+ * <a><mark> — the underline is drawn by the ANCHOR and propagated down, and a
+ * descendant cannot repaint decoration propagated from an ancestor. So the
+ * decorating box is what has to be selected, or the underline stays at
+ * --present-dim: 4.7:1 against the fill on the dark theme, but 1.63:1 on the
+ * light one, where it all but disappears inside the highlight.
+ *
+ * The cost, stated rather than discovered: this paints the WHOLE anchor's
+ * underline, so a link with only part of its text marked keeps a lit underline
+ * past the end of the fill. Mark a whole link or none of it. Nothing can scope
+ * it further — a propagated decoration has one colour for the whole box.
+ */
+:root[data-mode="presentation"] .prose a:has(mark) {
+  text-decoration-color: var(--present-ink);
+}
+
+/* ------------------------------------------------------------------ *
+ * The dim
+ * ------------------------------------------------------------------ */
+
+/*
+ * BOTH HALVES OF THIS RULE ARE LOAD-BEARING, and leaving one out is the
+ * likeliest way this slice ships half-broken.
+ *
+ * A custom property is substituted where it is USED. Ordinary paragraph text
+ * has no colour declaration of its own: it inherits the already-computed colour
+ * from `body { color: var(--text) }` in globals.css, resolved back at <body>.
+ * So rebinding --text here does nothing at all to a paragraph — and a page that
+ * dims its quotations, its small headings, its list markers and its links while
+ * leaving every ordinary paragraph at full brightness looks ALMOST dimmed,
+ * which is worse than not dimmed and easy to miss on a page full of blocks.
+ *
+ *   color:            dims everything that inherits — paragraphs, h1 to h5,
+ *                     inline code, and every diagram drawn in currentColor.
+ *   --text:           blockquote (prose.css) and the quotation element.
+ *   --text-muted:     h6, list markers, the table's header underline, a
+ *                     figure's caption, the reference rows — and, through its
+ *                     own alias, a quotation's left rule.
+ *   --link:           links in prose.
+ *
+ * --text-muted is rebound even though --present-dim is bound TO it and the
+ * rebinding is a no-op today. It is here for the day the projector says the
+ * step is too small and --present-dim moves off --text-muted: without this
+ * line, muted text would then be BRIGHTER than the prose it is meant to be
+ * quieter than. Structural rather than remembered, like Checks C, D and E.
+ *
+ * :has(mark) IS THE WHOLE OF SPEC §4. A page with no marked fragment is not
+ * dimmed — it renders in presentation mode exactly as in reading mode — and no
+ * list of page types has to be kept correct for that to be true. It matters
+ * today more than it will later: no lesson is marked up yet, so without this
+ * gate flipping the control would dim the entire site and light nothing, which
+ * reads as a fault rather than as a mode. What tells the teacher the mode is on
+ * is the control's own filled state, on every page, marked or not.
+ *
+ * NOT REBOUND, deliberately: --accent-line and --accent-surface. A diagram's
+ * accent is how the diagram points at the thing being talked about, and spec §8
+ * makes that emphasis the diagram's own job. --rule, --rule-strong and
+ * --rule-table are the FRAMES of blocks a reader steps out of the prose to look
+ * at, not the prose itself. And a code block dims nothing: every visible thing
+ * in one sets its own colour from the --code- palette, so a dimmed ancestor
+ * cannot reach it, and a second dimmed palette is a whole palette to keep in
+ * step (spec decision 11).
+ */
+:root[data-mode="presentation"] .prose:has(mark) {
+  --text: var(--present-dim);
+  --text-muted: var(--present-dim);
+  --link: var(--present-dim);
+
+  color: var(--present-dim);
+}

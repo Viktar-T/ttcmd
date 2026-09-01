@@ -6,6 +6,9 @@ import "./globals.css";
 import "./prose.css";
 import "./nav.css";
 import "./contents.css";
+/* Last, and it is the only one here whose order matters: it overrides the
+   reading treatment prose.css sets, and only while the mode is on. */
+import "./presentation.css";
 
 export const metadata: Metadata = {
   title: "ttcmd",
