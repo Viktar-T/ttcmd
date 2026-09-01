@@ -10,14 +10,14 @@ list departs from the plan's own ordering it says so on the spot — the plan wa
 written blind to the repository, and three of its inferences turned out not to
 match what is there.
 
-- [ ] **T00 — Record the spec.** *Check:* file in the tree, committed on its
+- [x] **T00 — Record the spec.** *Check:* file in the tree, committed on its
       own. Viktar's two calls are marked as his in `## Decisions taken`.
-- [ ] **T01 — Record the plan.** Written by a subagent from `constitution.md`,
+- [x] **T01 — Record the plan.** Written by a subagent from `constitution.md`,
       `AGENTS.md` and this slice's `spec.md` alone. *Check:* committed exactly
       as the subagent wrote it, inferred names and gaps included.
-- [ ] **T02 — Record the tasks.** This file. *Check:* committed on its own.
+- [x] **T02 — Record the tasks.** This file. *Check:* committed on its own.
 
-- [ ] **T03 — The baseline, and the plan's five gaps answered from the tree.**
+- [x] **T03 — The baseline, and the plan's five gaps answered from the tree.**
       The plan's one unrecoverable ordering constraint: the baseline exists
       before the first code commit. Measure every page and width the slice
       compares against, and answer each gap with a fact rather than an
