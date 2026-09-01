@@ -77,7 +77,7 @@ here. Nothing is skipped.
       `<html>`'s attribute list exactly as served; no horizontal scrollbar at
       320 px and 375 px. **Closes:** criterion 9.
 
-- [ ] **T09 — Persistence, before the paint.**
+- [x] **T09 — Persistence, before the paint.**
       The one inline script in `app/layout.tsx`, extended rather than duplicated.
       **Check:** choose presentation, navigate, reload — still in force; all four
       theme × mode combinations render and neither control moves the other; the

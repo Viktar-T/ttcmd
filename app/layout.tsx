@@ -26,8 +26,21 @@ export const metadata: Metadata = {
  *
  * localStorage throws outright in some privacy modes, and a theme preference
  * is not worth a blank page — hence the try/catch.
+ *
+ * Slice 013 added the mode to this same script rather than beside it. Both
+ * preferences have to land before the same first paint and both come out of the
+ * same store; two scripts would be two things to keep in step for no gain.
+ *
+ * The mode line only ever ADDS an attribute. Reading mode is the absence of
+ * data-mode — which is what the served HTML says, so a visitor who has never
+ * chosen executes nothing here either, and a visitor with scripting disabled
+ * gets reading mode because that is what was already sent to them.
  */
-const applyStoredTheme = `try{if(localStorage.getItem('ttcmd-theme')==='light')document.documentElement.dataset.theme='light'}catch(e){}`;
+const applyStoredPreferences =
+  `try{var d=document.documentElement;` +
+  `if(localStorage.getItem('ttcmd-theme')==='light')d.dataset.theme='light';` +
+  `if(localStorage.getItem('ttcmd-mode')==='presentation')d.dataset.mode='presentation'}` +
+  `catch(e){}`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -37,11 +50,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${sans.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
-      {/* Required, not decorative: the script above mutates data-theme on the
-          element React owns, and React would log a mismatch on every
-          light-theme load without it. */}
+      {/* Required, not decorative: the script above mutates data-theme and
+          data-mode on the element React owns, and React would log a mismatch on
+          every light-theme or presentation-mode load without it. */}
       <head>
-        <script dangerouslySetInnerHTML={{ __html: applyStoredTheme }} />
+        <script dangerouslySetInnerHTML={{ __html: applyStoredPreferences }} />
       </head>
       <body>
         <SiteHeader />
