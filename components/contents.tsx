@@ -68,6 +68,12 @@ function buildEntries({ moduleItem, current }: ContentsProps): ContentsEntry[] {
   const introIsCurrent = current === "intro";
 
   const intro: ContentsEntry = {
+    /* Every lesson key below is prefixed, so this one cannot be reached by a
+       lesson slug — and a lesson slug is any `.mdx` filename in the module's
+       folder except the index, so `intro.mdx` is a file somebody may write.
+       Two rows under one key is a React defect nobody would look for; the
+       collision is made unconstructible instead, the way the skip target's id
+       is reserved rather than hoped for (lib/section-anchors.ts). */
     key: "intro",
     label: INTRO_LABEL,
     href: introIsCurrent ? undefined : moduleItem.href,
@@ -80,7 +86,7 @@ function buildEntries({ moduleItem, current }: ContentsProps): ContentsEntry[] {
   const lessons = moduleItem.lessons.map((lesson) => {
     const isCurrent = !introIsCurrent && lesson.slug === current.slug;
     return {
-      key: lesson.slug,
+      key: `lesson:${lesson.slug}`,
       label: lesson.title,
       ident: lesson.id,
       href: isCurrent ? undefined : lesson.href,

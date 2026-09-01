@@ -652,6 +652,18 @@ in the reflection sections.
   lesson's column is a name that lies. Renamed in its own commit, before
   anything else, so no later measurement could be blamed on it — and the whole
   diff of that commit is five selectors and two class attributes.
+- **The closing review earned its place again, and mostly on the evidence
+  rather than on the code.** It found one real defect — the introduction's
+  React key `"intro"` is a string a lesson slug can also be, since a slug is
+  any `.mdx` in the folder but the index — and three places where this run's
+  own record was weaker than it read: criterion 8 was demonstrated on a
+  lesson-*less* module rather than on one whose lessons are unpublished, the
+  baseline and after-state tables printed the accent band as two *different*
+  boxes, and the skip control's reveal-on-focus reading depends on a browser
+  focus modality the record did not name. The key is fixed and made
+  unconstructible; criterion 8 was re-run as written, with a real before and
+  after on the same page; the band's invariant was closed through the header it
+  shares a lane with. The two cosmetic findings are recorded unfixed.
 - **Left open for a human eye:** whether the module page and a lesson page now
   read as the same site. Open `/moduly/01-jak-powstaje-oprogramowanie` at
   1280 px or wider and click `1b`.

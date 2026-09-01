@@ -546,3 +546,115 @@ shape to the untouched `/moduly` and `/` pages'.)*
 Whether the module page and a lesson page now read as the same site is Viktar's
 eye. **Open `/moduly/01-jak-powstaje-oprogramowanie` at 1280 px or wider, then
 click `1b` and compare.**
+
+## T11 — The closing review, and what it changed
+
+A second subagent, with no sight of this session, read `constitution.md`,
+`AGENTS.md`, this slice's `spec.md` and the whole diff `56253fa..HEAD`, ran the
+build, the lint and `tsc --noEmit`, and re-measured the pages itself.
+
+**Its verdict:** the diff meets the acceptance criteria, and nothing outside
+the slice's scope is touched. It re-derived criteria 1–6, 10–17 independently.
+It raised one code-level finding and three about how this file records its
+checks.
+
+### Fixed — the one code-level finding
+
+**A lesson slugged `intro` would have collided with the introduction's React
+key.** `buildEntries` gave the introduction `key: "intro"` and every lesson
+`key: lesson.slug`, and a lesson slug is any `.mdx` in the module's folder
+except the index — so `intro.mdx` is a file somebody may write, and two rows
+would have shared a key. No criterion and no page that exists is affected,
+which is exactly why it would not have been found later.
+
+Fixed by prefixing the lesson keys (`lesson:${slug}`), so the collision is
+**unconstructible** rather than merely absent — the same move the skip target's
+identifier already makes in the anchor plugin. React keys never reach the
+markup, and the rendered list is unchanged; `npm run lint`, `npx tsc --noEmit`
+and `npm run build` are green and the contrast report is still identical to the
+T03 baseline.
+
+### Corrected — criterion 8, now run as it is written
+
+The review was right that T07 substituted a lesson-*less* module for the
+criterion's "every lesson of a module temporarily unpublished", and that the
+criterion's other half — *the page is otherwise unchanged* — cannot be shown on
+a page with no before-state.
+
+Re-run properly, still without touching a tracked file: the temporary module
+was rebuilt with **two published lessons**, measured, then both lessons were
+given `publish: false` and it was measured again. Same page, before and after:
+
+```
+                     published            every lesson unpublished
+panel:               true          →      false
+disclosure:          true          →      false
+rows:                Wstęp, 99a, 99b (×2) →  []
+lessonList:          true          →      false
+pageColumns:         true          →      true
+pager:               true          →      true
+band:                true          →      true
+prose:               <div class="prose" id="tresc" tabindex="-1"><h1>Modul
+                     tymczasowy</h1><p>Wstep bez naglowkow…</p></div>
+                                   →      byte-identical
+```
+
+Neither housing, no dead row, and nothing else on the page changed except the
+lesson list — which empties because the module has no published lesson, a
+behaviour the module page already had before this slice. Geometry of that page
+at 1280 px with both housings gone: `div.prose` **408 / 736 t153.8**, pager
+**464 / 624**, `.bandInner` 312 / 656, `ovf 0` — the column is exactly where
+every other page's is.
+
+The directory was deleted and `git status --porcelain content/` diffed against
+the pre-experiment snapshot: no difference. `content/moduly/00-start/index.mdx`
+still hashes `1578f575…1ce7c065`.
+
+### Corrected — the band, measured as two different boxes
+
+The review found that T03's tables print `band` as the **full-bleed `.band`**
+(`0 / 1265`) while T07's print `band` as the **inner `.bandInner`**
+(`304.5 / 656`), so as laid out the two tables do not compare the same element
+— which is the one thing criterion 2 asks of the accent band.
+
+The claim holds; the record was sloppy. The inner box's baseline is in T03's
+answer to the plan's gap 4 — `.bandInner` **304.5 / 656** at 1280 px and
+**457 / 656** at 1585 px, on a module page and on a lesson page alike — and it
+is unmoved after. At every other width the invariant slice 006 established
+closes it: `.bandInner` and `.siteHeaderInner` share the lane, so
+
+```
+.bandInner (after)  ==  .siteHeaderInner (after)  ==  .siteHeaderInner (T03 baseline)
+Moduł 1:  1024 → 176.5 / 656   768 → 48.5 / 656   375 → 0 / 375
+Moduł 0:  1024 → 184 / 656     768 → 56 / 656     375 → 0 / 375
+```
+
+all three equal at every width. Neither the band component nor the stylesheet
+that positions it is in this slice's diff.
+
+### Noted — the skip control's reveal depends on the browser's focus modality
+
+The review could not reproduce T07's `clipPath: none · position: static`
+reading on a freshly loaded page, and it is right about why: `.contentsSkip`
+reveals itself on `:focus-visible`, which matches only when the browser
+considers the interaction modality to be keyboard. This session's reading was
+taken after real `Tab` presses had set that modality; a bare programmatic
+`.focus()` on a fresh load does not. Both observations are of the same correct
+rule — 007's, untouched by this diff and identical on a lesson page. What is
+demonstrated on the module page either way: the control is the panel's first
+focusable, it is 1×1 and `clip-path: inset(50%)` at rest, and activating it
+moves real focus to `div#tresc.prose` with no ring.
+
+### Recorded, not fixed
+
+Neither affects correctness or an acceptance criterion (AGENTS.md §3):
+
+- **The reference page writes `„Wstęp"` with a straight ASCII closing quote**
+  (`app/styleguide/page.tsx`, four occurrences), where the same file uses the
+  typographic `”` elsewhere. It came from escaping the character to satisfy the
+  lint rule on unescaped entities.
+- **Two comments now overshoot their subject.** `app/contents.css` still
+  explains the skip target as one whose focus ring "would ring the entire
+  article", though on a module page the target is the title-and-introduction
+  block; and a comment in `components/contents.tsx` cites "criterion 13's
+  no-JavaScript classroom case", which is 007's numbering, not this slice's.

@@ -88,7 +88,7 @@ match what is there.
       a factual entry under "Agent notes" in `docs/sdd-journal.md`
       (AGENTS.md §7).
 
-- [ ] **T11 — The closing review.** A fresh subagent reads the whole diff
+- [x] **T11 — The closing review.** A fresh subagent reads the whole diff
       against `spec.md` (AGENTS.md §3, criterion 19). What affects correctness
       or a criterion is fixed in a commit of its own; the rest is recorded
       without being fixed.
