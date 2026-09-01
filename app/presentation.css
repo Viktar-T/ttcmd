@@ -75,19 +75,38 @@
 }
 
 /*
- * <a><mark> — the underline is drawn by the ANCHOR and propagated down, and a
- * descendant cannot repaint decoration propagated from an ancestor. So the
- * decorating box is what has to be selected, or the underline stays at
- * --present-dim: 4.7:1 against the fill on the dark theme, but 1.63:1 on the
- * light one, where it all but disappears inside the highlight.
+ * <a><mark> — harder, because the underline is drawn by the ANCHOR and
+ * propagated down, and a descendant cannot repaint decoration it inherits that
+ * way. Left alone, the underline under the marked words stays --present-dim:
+ * 4.7:1 against the fill on the dark theme, but 1.63:1 on the light one, where
+ * it all but vanishes inside the highlight.
  *
- * The cost, stated rather than discovered: this paints the WHOLE anchor's
- * underline, so a link with only part of its text marked keeps a lit underline
- * past the end of the fill. Mark a whole link or none of it. Nothing can scope
- * it further — a propagated decoration has one colour for the whole box.
+ * Repainting the ANCHOR's decoration is the obvious move and it is wrong, which
+ * the closing review of this slice caught. A propagated decoration has one
+ * colour for the whole box, so it would paint the ink under every part of the
+ * anchor OUTSIDE the fill too — and --present-ink on the light page is 1.01:1,
+ * which is not a lit underline, it is no underline. That is not a hypothetical
+ * partly-marked link: components/prose-link.tsx appends an arrow span inside
+ * every external anchor, so even a fully marked external link has a run of
+ * anchor past the highlight.
+ *
+ * So the MARK draws its own underline instead, and the anchor keeps the dim one
+ * it already had. Outside the fill the reader sees a dimmed underline against
+ * the page at the body floor; over the fill they see this one at 10.05:1. The
+ * two coincide, and a descendant paints after its ancestor, so this is what
+ * shows either way — no double line, whichever order a browser paints
+ * a propagated decoration and a descendant background in.
+ *
+ * Only the line, the colour and the thickness are set. text-underline-position
+ * and text-underline-offset are inherited, so slice 004's ogonek clearance —
+ * the reason ą and ę are not struck through in this language — comes down from
+ * the anchor untouched. The thickness is prose.css's, repeated because
+ * text-decoration-thickness does not inherit.
  */
-:root[data-mode="presentation"] .prose a:has(mark) {
+:root[data-mode="presentation"] .prose a mark {
+  text-decoration-line: underline;
   text-decoration-color: var(--present-ink);
+  text-decoration-thickness: 0.06em;
 }
 
 /* ------------------------------------------------------------------ *
@@ -110,8 +129,8 @@
  *                     inline code, and every diagram drawn in currentColor.
  *   --text:           blockquote (prose.css) and the quotation element.
  *   --text-muted:     h6, list markers, the table's header underline, a
- *                     figure's caption, the reference rows — and, through its
- *                     own alias, a quotation's left rule.
+ *                     figure's caption, the reference rows.
+ *   --rule-quote:     the 2px rule down the side of a quotation.
  *   --link:           links in prose.
  *
  * --text-muted is rebound even though --present-dim is bound TO it and the
@@ -119,6 +138,17 @@
  * step is too small and --present-dim moves off --text-muted: without this
  * line, muted text would then be BRIGHTER than the prose it is meant to be
  * quieter than. Structural rather than remembered, like Checks C, D and E.
+ *
+ * --rule-quote IS ITS OWN LINE and cannot be left to --text-muted, which is the
+ * mistake the closing review of this slice caught in an earlier draft of this
+ * comment. tokens.css declares `--rule-quote: var(--text-muted)` on :root, and
+ * a custom property's var() is substituted where the property is DECLARED, not
+ * where it is used — so --rule-quote's computed value is already a literal by
+ * the time a blockquote inherits it, and rebinding --text-muted here cannot
+ * reach it. Measured, not reasoned: with --present-dim temporarily moved to an
+ * unmistakable green, the quotation's TEXT turned green and its RULE did not
+ * move at all. Invisible today, for the same reason as the line above, and
+ * wrong on the same day — a quotation whose rule is brighter than its words.
  *
  * :has(mark) IS THE WHOLE OF SPEC §4. A page with no marked fragment is not
  * dimmed — it renders in presentation mode exactly as in reading mode — and no
@@ -140,6 +170,7 @@
 :root[data-mode="presentation"] .prose:has(mark) {
   --text: var(--present-dim);
   --text-muted: var(--present-dim);
+  --rule-quote: var(--present-dim);
   --link: var(--present-dim);
 
   color: var(--present-dim);

@@ -91,7 +91,7 @@ here. Nothing is skipped.
       `"use client"`, no `fetch` and no colour literal outside `app/tokens.css`.
       **Closes:** criteria 1 and 14.
 
-- [ ] **T11 — The closing review, in a fresh context.**
+- [x] **T11 — The closing review, in a fresh context.**
       The whole diff against `spec.md`'s acceptance criteria, by a subagent that
       has not seen this session (AGENTS.md §3, Article IX). Fix what affects
       correctness or a criterion; record the rest without fixing it.
