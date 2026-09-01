@@ -19,10 +19,20 @@ import { SKIP_TARGET_ID } from "@/lib/section-anchors";
  * scripting absent this markup is complete and every link works.
  */
 
+/**
+ * Which entry of the list the reader is on: a lesson of this module, or the
+ * module's introduction — which is the module page itself.
+ */
+export type ContentsCurrent = CourseLesson | "intro";
+
 interface ContentsProps {
   moduleItem: CourseModule;
-  current: CourseLesson;
+  current: ContentsCurrent;
 }
+
+/** The name the module's introduction goes by in the list. Viktar's word, and
+    the only Polish string this slice adds to the site. */
+const INTRO_LABEL = "Wstęp";
 
 /**
  * One row of the list, and the two absences that carry its state.
@@ -47,9 +57,27 @@ interface ContentsEntry {
   sections: SectionEntry[];
 }
 
+/**
+ * The list: the module's introduction, then its lessons in `order`.
+ *
+ * „Wstęp" wears no letter. A lesson's letter is identity (ADR-0003) and `1a`
+ * is a string a real lesson may claim later, so minting one for a text that
+ * is not a lesson would put two different things under one address.
+ */
 function buildEntries({ moduleItem, current }: ContentsProps): ContentsEntry[] {
-  return moduleItem.lessons.map((lesson) => {
-    const isCurrent = lesson.slug === current.slug;
+  const introIsCurrent = current === "intro";
+
+  const intro: ContentsEntry = {
+    key: "intro",
+    label: INTRO_LABEL,
+    href: introIsCurrent ? undefined : moduleItem.href,
+    /* The introduction's own top-level sections, when it is the current entry
+       and has any. Nothing collects them yet — the next task does. */
+    sections: [],
+  };
+
+  const lessons = moduleItem.lessons.map((lesson) => {
+    const isCurrent = !introIsCurrent && lesson.slug === current.slug;
     return {
       key: lesson.slug,
       label: lesson.title,
@@ -58,6 +86,8 @@ function buildEntries({ moduleItem, current }: ContentsProps): ContentsEntry[] {
       sections: isCurrent ? lesson.sections : [],
     };
   });
+
+  return [intro, ...lessons];
 }
 
 /** The spec's dead-panel rule: a housing renders only when the list holds at
