@@ -260,3 +260,69 @@
   --code-line-highlight: #2e2b25; /* 1.19:1 against the surface */
   --code-line-marker: var(--accent-surface);
 }
+
+/*
+ * The presentation palette — slice 013, ADR-0013.
+ *
+ * What the projector shows while the lesson is taught: the fragments the author
+ * marked for reading aloud are lit in these colours and the prose around them
+ * steps back to --present-dim. In reading mode none of them is used at all.
+ *
+ * DARK RED IS VIKTAR'S CALL, NOT THIS SLICE'S. The values below are chosen
+ * inside that constraint, not around it.
+ *
+ * DEFINED ONCE, ON BARE :root, AND NEVER REPEATED UNDER [data-theme] — the same
+ * construction as the code palette above, and for a related reason. A teacher
+ * does not know which theme the classroom machine is in and should not have to:
+ * the lit fragment is the same three colours either way, which means the ground
+ * these sit on cannot be allowed to flip.
+ *
+ * AND NEVER, EVER UNDER [data-mode]. Check E enumerates themes by looking for
+ * `[data-theme` in a selector, so a token defined under `[data-mode]` here would
+ * be a colour held to no floor and reported for neither theme. The mode's own
+ * rules live in app/presentation.css and rebind tokens on .prose, never on
+ * :root.
+ *
+ * The arithmetic, against --bg = #2a2926 (dark) and #f7f6f2 (light). Check E
+ * recomputes the first three on every build; the fourth row is the one this
+ * block deliberately does NOT hold to a floor:
+ *
+ *   --present-ink  on --present-fill   10.05:1  both themes  (floor 4.5)
+ *   --present-line on --bg              3.84:1 / 3.50:1      (floor 3)
+ *   --present-dim  on --bg              5.86:1 / 6.34:1      (floor 4.5)
+ *   --present-fill on --bg              1.28:1 / 10.52:1     (NO floor)
+ *
+ * THE MISSING FLOOR IS A DECISION AND NOT AN OVERSIGHT, which is why it is
+ * written here rather than left to be noticed: a fill dark enough to be dark red
+ * is by arithmetic close to a near-black page, and forcing 3:1 on the dark theme
+ * would mean shipping some other colour. So the fill carries the identity and
+ * the LINE carries the shape — a rule that identifies a component, held to
+ * WCAG 1.4.11's 3:1 on both pages, exactly as ADR-0012 requires.
+ *
+ * --present-line is a lighter member of the fill's own family — the same hue,
+ * lifted — so the boundary belongs to the highlight rather than reading as a
+ * generic outline. Its luminance is pinned between two walls: above
+ * 3(L_dark + 0.05) - 0.05 and below (L_light + 0.05)/3 - 0.05, the same narrow
+ * band --rule-strong sits in and for the same reason. Inside that band it is
+ * placed to also clear 3:1 against the fill it is drawn on, which --rule-strong
+ * never had to do.
+ *
+ * --present-ink is a LITERAL and not var(--text), which is the single easiest
+ * way for this block to be wrong. --text flips with the theme and the ground
+ * under it does not, so on the light theme the lit fragment would be near-black
+ * on dark red — 1.7:1, unreadable, and invisible to anyone building this while
+ * looking at the dark theme. Same failure Check D exists to catch next door.
+ *
+ * --present-dim is an alias, deliberately. The dim is the token that already
+ * means "quieter" on this site, it is above the body-text floor in both themes,
+ * and no new hue enters for it. Dimmed means quieter, never illegible, and the
+ * 4.5:1 floor is what stops it going further. If the projector says the step is
+ * too small, THIS is the line that moves — and app/presentation.css rebinds
+ * --text-muted alongside --text for that day.
+ */
+:root {
+  --present-fill: #6e1c1c;
+  --present-ink: #f8efec;
+  --present-line: #ce6262;
+  --present-dim: var(--text-muted);
+}

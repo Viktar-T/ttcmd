@@ -38,7 +38,7 @@ here. Nothing is skipped.
       around it: same `color`, same `background-color`, same `font-weight`, same
       `text-decoration`. **Closes:** criteria 3 and 4.
 
-- [ ] **T05 — The tokens, and the floors the build computes.**
+- [x] **T05 — The tokens, and the floors the build computes.**
       Four tokens in `app/tokens.css`; three rows appended to `CONTRAST_FLOORS`
       in `scripts/check-design-invariants.mjs`; three swatch rows on the
       reference page now that the tokens exist.

@@ -376,6 +376,13 @@ const TOKENS: { name: string; chip: string }[] = [
   { name: "--link", chip: styles.chipLink },
   { name: "--rule-quote", chip: styles.chipRuleQuote },
   { name: "--rule-table", chip: styles.chipRuleTable },
+  /* Slice 013. The same value in both themes, unlike everything above them —
+     which is visible here for free: flip the theme and these three do not
+     move. --present-dim is not a swatch because it is an alias of
+     --text-muted, which already has one two rows up. */
+  { name: "--present-fill", chip: styles.chipPresentFill },
+  { name: "--present-line", chip: styles.chipPresentLine },
+  { name: "--present-ink", chip: styles.chipPresentInk },
 ];
 
 const SIZES: { token: string; className: string }[] = [

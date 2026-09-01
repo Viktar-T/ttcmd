@@ -141,6 +141,18 @@
 .chipRuleTable {
   background: var(--rule-table);
 }
+/* Slice 013. The fill carries its own ink and its own boundary, so the swatch
+   is the lit fragment in miniature rather than three unrelated squares. */
+.chipPresentFill {
+  background: var(--present-fill);
+  color: var(--present-ink);
+}
+.chipPresentLine {
+  background: var(--present-line);
+}
+.chipPresentInk {
+  background: var(--present-ink);
+}
 
 .stripe {
   background: var(--accent-surface);

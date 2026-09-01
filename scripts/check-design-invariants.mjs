@@ -345,6 +345,15 @@ const CONTRAST_FLOORS = [
   { foreground: "--accent-ink", background: "--accent-surface", floor: 4.5, what: "text on the accent band" },
   { foreground: "--rule-strong", background: "--bg", floor: 3, what: "a rule that identifies a component (ADR-0012)" },
   { foreground: "--rule-quote", background: "--bg", floor: 3, what: "the rule beside a quotation (slice 004)" },
+  /* Slice 013, appended rather than inserted so every line the report already
+     printed keeps its position. --present-fill is absent on purpose and the
+     reason is beside it in app/tokens.css: a fill dark enough to be dark red is
+     close to a near-black page by arithmetic, so the LINE is what is held to
+     1.4.11's 3:1 and the fill is not held to anything. A missing row is the
+     exact shape of an oversight, which is why it is named here too. */
+  { foreground: "--present-ink", background: "--present-fill", floor: 4.5, what: "text on the presentation highlight" },
+  { foreground: "--present-line", background: "--bg", floor: 3, what: "the highlight's boundary against the page (ADR-0012, WCAG 1.4.11)" },
+  { foreground: "--present-dim", background: "--bg", floor: 4.5, what: "prose dimmed behind the highlight — quieter, never illegible" },
 ];
 
 /** WCAG 2.x relative luminance of a #rgb or #rrggbb literal. */
