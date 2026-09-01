@@ -193,3 +193,356 @@ entries. **Neither list names the module's introduction** — the other hole.
 `ovf = 0` at **320, 1279, 1281, 1585 and 2560 px** on
 `/moduly/01-jak-powstaje-oprogramowanie`, and at 320 and 2560 px on
 `/moduly/00-start/git-i-github`. Nothing overflows before the change either.
+
+---
+
+## T04 — The rename moved nothing (every criterion's precondition)
+
+`git diff` for the task, comments filtered out, is five CSS selectors and two
+class attributes and nothing else:
+
+```
+-.lessonColumns {                       +.pageColumns {
+-.lessonColumns > .lessonColumn {       +.pageColumns > .pageColumn {
+-.lessonColumn > * {                    +.pageColumn > * {
+-  .lessonColumns {                     +  .pageColumns {
+-.lessonColumn > .prose:focus {         +.pageColumn > .prose:focus {
+-      <div className="lessonColumns" … +      <div className="pageColumns" …
+-        <div className="lessonColumn"> +        <div className="pageColumn">
+```
+
+`npm run lint` clean, `npm run build` exit 0.
+
+Re-measured with the T03 instrument, every box identical to the baseline:
+
+- Lesson `1b` at 1280 and 1585: panel 32 / 352 t153.8 · column 408 / 736
+  t153.8 · lesson header 464 / 624 t153.8 · `.prose` 408 / 736 t431.7 · pager
+  464 / 624 t7282.4 · first `p` 464 / 624 t431.7 · ovf 0. At 375: 16 / 343
+  throughout, disclosure 16 / 343 t527.1, ovf 0.
+- Moduł 1's page at 1280: header 304.5 / 656 · band 304.5 / 656 · prose
+  408 / 736 t153.8 · list 464 / 624 t1362 · pager 464 / 624 t1776.4 · ovf 0.
+- Moduł 0's page at 1280: header 312 / 656 · band 312 / 656 · prose 408 / 736
+  t153.8 · list 464 / 624 t433.9 · pager 464 / 624 t576.3 · ovf 0.
+- `/moduly` 464 / 624 · `/` hero and grid 464 / 624 · `/styleguide` ovf 0.
+
+## T05 — One entry model, byte-identical output (criterion 6's precondition)
+
+The panel's and the disclosure's server-rendered markup on `1b` and `0c`,
+fetched from the dev server before and after the refactor and diffed:
+
+```
+$ node grab.mjs …/od-podpowiedzi-do-agenta …/git-i-github > list-after.txt
+$ diff list-before.txt list-after.txt
+$ echo $?
+0
+```
+
+220 lines, no difference. `npm run lint` clean, `npm run build` exit 0.
+
+## T06 — „Wstęp" in the list (criteria 4 and 6, and 5's lesson half)
+
+Read from the server-rendered markup. The first row of both housings on `1b`:
+
+```html
+<li><a class="contentsLesson" href="/moduly/01-jak-powstaje-oprogramowanie">Wstęp</a></li>
+```
+
+No `contentsId` span, no number, no glyph in its place — criterion 4. The
+lessons follow it in `order`, each with its identity string; the current
+lesson's row is still a non-link `span` carrying `aria-current="page"` with its
+sections beneath it, and every other row and every section entry is a link —
+criterion 6.
+
+| page | first row | rows | disclosure identical to panel |
+| --- | --- | ---: | --- |
+| `1b` | link „Wstęp" → `/moduly/01-…` | 14 | yes |
+| `0c` | link „Wstęp" → `/moduly/00-start` | 11 | yes |
+| `0a` | link „Wstęp" → `/moduly/00-start` | 4 | yes |
+
+## T07 — The module page's two columns (criteria 2, 3, 4, 5, 8, 9, 10, 11, 13)
+
+### Criterion 2 — the left edge did not move
+
+Every `left / width` equals the T03 baseline, on both modules, at every width.
+`t` is given too: above the fold it is unchanged as well.
+
+Moduł 1:
+
+| vw | siteHeaderInner | band | `div.prose` | `nav.lessonList` | `nav.pager` | ovf |
+| ---: | --- | --- | --- | --- | --- | ---: |
+| 1280 | 304.5 / 656 | 304.5 / 656 | **408 / 736** t153.8 | **464 / 624** t1362 | 464 / 624 t1776.4 | 0 |
+| 1585 | 457 / 656 | 457 / 656 | **408 / 736** t153.8 | **464 / 624** t1362 | 464 / 624 t1776.4 | 0 |
+| 1024 | 176.5 / 656 | 176.5 / 656 | 136.5 / 736 t240.5 | 192.5 / 624 t1448.7 | 192.5 / 624 t1863.1 | 0 |
+| 768 | 48.5 / 656 | 48.5 / 656 | 16 / 721 t240.5 | 64.5 / 624 t1448.7 | 64.5 / 624 t1863.1 | 0 |
+| 375 | 0 / 375 | 0 / 375 | 16 / 343 t240.5 | 16 / 343 t2184.8 | 16 / 343 t2642.3 | 0 |
+
+Moduł 0:
+
+| vw | siteHeaderInner | band | `div.prose` | `nav.lessonList` | `nav.pager` | ovf |
+| ---: | --- | --- | --- | --- | --- | ---: |
+| 1280 | 312 / 656 | 312 / 656 | **408 / 736** t153.8 | **464 / 624** t433.9 | 464 / 624 t576.3 | 0 |
+| 1585 | 464.5 / 656 | 464.5 / 656 | **408 / 736** t153.8 | **464 / 624** t433.9 | 464 / 624 t576.3 | 0 |
+| 1024 | 184 / 656 | 184 / 656 | 144 / 736 t240.5 | 200 / 624 t520.6 | 200 / 624 t663 | 0 |
+| 768 | 56 / 656 | 56 / 656 | 16 / 736 t240.5 | 72 / 624 t520.6 | 72 / 624 t663 | 0 |
+| 375 | 0 / 375 | 0 / 375 | 16 / 343 t240.5 | 16 / 343 t635.8 | 16 / 343 t792.6 | 0 |
+
+### Criterion 3 — it is two columns
+
+At 1280 and 1585, on both modules: `nav.contentsPanel` **32 / 352 t153.8** —
+the same box it has on a lesson page — and `div.pageColumn` **408 / 736
+t153.8**. The panel's right edge is 384, at or left of 408. Their vertical
+extents overlap: both start at t153.8, which also makes the panel's top edge
+level with the module's text block to **0.0 px**, not 1.
+
+### Criterion 10 — below the fold, and the one delta
+
+Every `left / width` is the T03 baseline (tables above). Vertically, every box
+below the disclosure moves down by **one identical delta**, and nothing moves
+by any other:
+
+| page | vw | prose | lesson list | pager | delta |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Moduł 1 | 1024 | 153.8 → 240.5 | 1362 → 1448.7 | 1776.4 → 1863.1 | **+86.7** |
+| Moduł 1 | 768 | 153.8 → 240.5 | 1362 → 1448.7 | 1776.4 → 1863.1 | **+86.7** |
+| Moduł 1 | 375 | 153.8 → 240.5 | 2098.2 → 2184.8 | 2555.6 → 2642.3 | **+86.6/7** |
+| Moduł 0 | 1024 | 153.8 → 240.5 | 433.9 → 520.6 | 576.3 → 663 | **+86.7** |
+| Moduł 0 | 768 | 153.8 → 240.5 | 433.9 → 520.6 | 576.3 → 663 | **+86.7** |
+| Moduł 0 | 375 | 153.8 → 240.5 | 549.1 → 635.8 | 705.9 → 792.6 | **+86.7** |
+
+86.7 px is the collapsed disclosure's 46.7 px plus one `--gap-apart` (40 px) —
+exactly what T03's answer to the plan's gap 2 predicted. The disclosure renders
+between the breadcrumb and the module's title (`t153.8`, the prose below it at
+`t240.5`), so opening the page pushes the introduction 87 px down, not a
+screenful.
+
+### Criteria 4 and 5 — the module page's own list
+
+```
+Moduł 1:  text [current] Wstęp   ← <span class="contentsLesson contentsCurrent"
+                                     aria-current="page">Wstęp</span>
+          link 1b Od podpowiedzi do agenta  → /moduly/01-…/od-podpowiedzi-do-agenta
+          link 1c … 1h                        (seven lessons, in order)
+                                              eight entries; disclosure identical
+Moduł 0:  text [current] Wstęp
+          link 0a Jak działa ten kurs  → /moduly/00-start/jak-dziala-ten-kurs
+          link 0c Git i GitHub …       → /moduly/00-start/git-i-github
+```
+
+Landmarks on the module page: `Ścieżka nawigacji` (the breadcrumb) ·
+`Spis treści` (the panel) · `Spis treści` (the disclosure — one of the two is
+`display: none` at any width) · `Lekcje w tym module` · `Moduły`. The contents
+landmark is distinct from the breadcrumb's.
+
+### Criterion 9 — the skip control on a module page
+
+```
+focus(.contentsSkip)  → clipPath: none · position: static · 155.6 × 22.3 px
+                        · display: inline-block
+                        (at rest: 1×1 px, clip-path inset(50%) — hidden until focused)
+activate              → hash #tresc · document.activeElement = div#tresc.prose
+                        tabindex="-1" · outline-style: none
+```
+
+The next tab stop after that block, read from the document's own order, is
+`a.chev.lessonRow → /moduly/01-…/od-podpowiedzi-do-agenta` — the module's own
+content, not the pager. (Moduł 1's introduction carries no links of its own, so
+the first stop after it is the first lesson row. The Browser pane does not
+forward `Tab` to the page, so the order is read from the document rather than
+walked by hand.)
+
+### Criterion 11 — no horizontal scrollbar
+
+`ovf = 0` at **320, 1279, 1281, 1585 and 2560 px** on the module page, the
+lesson page, `/moduly` and `/`. Exactly one housing is displayed at each width,
+switching at the fold:
+
+```
+vw=1279  panel=none   disc=block
+vw=1281  panel=block  disc=none
+```
+
+### Criterion 13 — back-to-top is still absent on a module page
+
+Absent from the server markup (`class="backToTop"` does not appear) and absent
+in the browser at 1280, 1585, 1024, 768 and 375 px, on both modules.
+
+### Criterion 8 — the dead-housing rule in its new case
+
+Run against a temporary module created for the check and then deleted —
+`content/moduly/99-tymczasowy/`, an introduction with no heading and no lesson.
+Nothing tracked was edited, so no other session's work was at risk:
+
+```
+/moduly/99-tymczasowy      contentsPanel present:      false
+                           contentsDisclosure present: false
+                           pageColumns present:        true
+                           prose: <div class="prose" id="tresc" tabindex="-1">
+```
+
+Neither housing, and no single dead row. Then one section-less lesson added to
+the same module — the case spec §8 names as the rule's consequence:
+
+```
+/moduly/99-tymczasowy/jedyna-lekcja   link Wstęp → /moduly/99-tymczasowy
+                                      text [current] 99a
+/moduly/99-tymczasowy                 text [current] Wstęp
+                                      link 99a Jedyna lekcja
+```
+
+Before this slice that lesson page would have had no panel at all — one lesson,
+no sections, no link anywhere in the list. „Wstęp" is the link that gives it
+one.
+
+The directory was removed and `git status --porcelain content/` diffed against
+the snapshot taken before the experiment: **no difference**.
+
+## T08 — „Wstęp" expands (criterion 7)
+
+**With no introduction carrying a heading** — the corpus as written — the row
+stands alone on both modules' pages: `text [current] Wstęp` with no
+`contentsSections` list beneath it (the tables in T07 above).
+
+**With a heading temporarily added** to `content/moduly/00-start/index.mdx`
+(`## Co dalej — sekcja tymczasowa`), the file copied aside first and restored
+from that copy afterwards:
+
+```
+/moduly/00-start   text [current] Wstęp
+                   link - Co dalej — sekcja tymczasowa → #co-dalej-sekcja-tymczasowa
+                   link 0a Jak działa ten kurs
+                   link 0c Git i GitHub — minimum, które wystarczy
+
+page markup:       <h2 id="co-dalej-sekcja-tymczasowa">Co dalej — sekcja tymczasowa</h2>
+```
+
+The entry links to the identifier the page gives the heading — one derivation,
+two consumers, as for a lesson. Following it, on a viewport short enough for
+the document to scroll that far:
+
+```
+before: scrollY=0   heading top=462   scroll-margin-top=32px
+after:  hash=#co-dalej-sekcja-tymczasowa   scrollY=430   heading top=32
+        entries marked aria-current="location": 2 (panel + disclosure, one displayed)
+```
+
+The heading lands 32 px below the top edge and the highlight moves to it —
+007's behaviour, on the module page.
+
+Restored: the file's `sha256` is `1578f575…1ce7c065` before and after, and
+`git status --porcelain content/` is identical to the snapshot.
+
+## T09 — The reference page (criterion 16)
+
+Renders at 1280 px (`ovf 0`) and 375 px (`ovf 0`), with two panel specimens:
+
+```
+specimen 1 (a lesson page):  link Wstęp · link 7a Krótki tytuł · text 7b Tytuł na tyle długi…
+specimen 2 (a module page):  text Wstęp · link 7a Krótki tytuł · link 7b Tytuł na tyle długi…
+```
+
+Both states of the new row, as the site renders them.
+
+**Pre-existing, not this slice's:** the reference page logs React warnings about
+SVG attributes written in kebab-case (`stroke-width`, `font-size`,
+`font-weight`, `stroke-dasharray`) from a diagram specimen. They are in the file
+at commit `4180ffb`, before any code of this slice, and appear on no other page.
+
+## T10 — The sweeps
+
+### Criterion 1
+
+```
+$ node scripts/check-design-invariants.mjs   → exit 0
+$ diff baseline-invariants.txt after-invariants.txt
+$ echo $?
+0                        ← the contrast report is identical, token for token
+$ npm run lint           → clean
+$ npm run build          → exit 0, 16 static pages
+```
+
+### Criterion 12 — the lesson page did not otherwise move
+
+Boxes at 1280 and 1585 on `1b`, after everything: panel **32 / 352 t153.8** ·
+column **408 / 736 t153.8** · lesson header **464 / 624 t153.8** · `.prose`
+**408 / 736 t431.7** · first `p` **464 / 624 t431.7** · pager **464 / 624
+t7282.4** · site header 304.5 / 656 (457 at 1585) · ovf 0. Identical to T03.
+
+007's behaviours, in the browser:
+
+| state | highlighted | back-to-top |
+| --- | --- | --- |
+| top of the lesson, scrollY 0 | *(none)* | absent |
+| scrolled to scrollY 4504 | „- Co się naprawdę zmieniło", and only it | present |
+| the document's bottom | „- Źródła" — the last section | present |
+
+The panel's own scroller, on a 420 px-tall viewport where its content
+overflows:
+
+```
+before: pageScrollY=0  panelScrollTop=0  clientHeight=356  scrollHeight=397
+        overflow-y: auto
+set panel.scrollTop = 9999
+after:  pageScrollY=0  panelScrollTop=42   ← the panel reached its end; the page did not move
+```
+
+### Criterion 14 — a browser with scripting disabled
+
+Read from the server-rendered markup, which is exactly what such a browser
+receives and renders:
+
+| | Moduł 1 | Moduł 0 |
+| --- | --- | --- |
+| `<details class="contentsDetails">` + `<summary>Spis treści</summary>` | yes | yes |
+| `open` attribute | absent — collapsed | absent — collapsed |
+| links in the two housings | 14 | 4 |
+| `aria-current="location"` anywhere | absent | absent |
+| `class="backToTop"` anywhere | absent | absent |
+
+Every entry is a real `<a href>`, so „Wstęp" and every lesson link navigates
+with no scripting at all; the disclosure is a native `<details>`, so it opens
+and closes with none either — demonstrated live at 375 px by clicking the
+summary: `open: false → true` (8 rows, „Wstęp" first) `→ false`, with `ovf = 0`
+throughout and the prose returning to `t239`.
+
+Console on a freshly loaded module page: **no errors** — one React DevTools
+notice and the dev server's HMR line, both dev-server artefacts.
+
+### Criterion 15 — both modules
+
+Every module-page criterion above is recorded for **Moduł 0** — a 49-word
+introduction, two lessons, three entries — and for **Moduł 1** — 330 words,
+seven lessons, eight entries.
+
+### Criterion 17 — what the slice touches
+
+```
+$ git diff --stat 56253fa HEAD -- . ':!specs'
+ app/contents.css                      |  33 +++---
+ app/moduly/[module]/[lesson]/page.tsx |   4 +-
+ app/moduly/[module]/page.tsx          |  93 +++++++++++-----
+ app/styleguide/page.tsx               |  43 ++++++--
+ components/contents.tsx               | 195 ++++++++++++++++++++++++----------
+ lib/content.ts                        |  26 ++++-
+ 6 files changed, 281 insertions(+), 113 deletions(-)
+
+$ git diff --name-only 56253fa HEAD -- content/ | wc -l
+0
+$ git diff --stat 56253fa HEAD -- package.json package-lock.json | wc -l
+0
+```
+
+Network: in the production build every page loads the same **two** stylesheets
+and **eight** JS chunks — seven shared plus one route chunk each — so the module
+page requests no file it did not request before, and the one client-side thing
+it gained, the scroll-spy, is already inside the shared chunk the lesson page
+ships. Every request is same-origin `/_next/static`: the document, the four
+`woff2` faces the site loads on every page, the two stylesheets and the chunks.
+Nothing third-party, no image, no new font. *(Structural, not a before-and-after
+diff of the request list: the module page's asset set is identical in count and
+shape to the untouched `/moduly` and `/` pages'.)*
+
+### Criterion 18 — not closable by this run
+
+Whether the module page and a lesson page now read as the same site is Viktar's
+eye. **Open `/moduly/01-jak-powstaje-oprogramowanie` at 1280 px or wider, then
+click `1b` and compare.**

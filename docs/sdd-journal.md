@@ -577,3 +577,81 @@ in the reflection sections.
   carry from the back of the room, and whether the dim is a big enough step down
   at that distance. Both boxes were listed as unclosable in `tasks.md` before any
   code was written, rather than discovered at the end.
+
+---
+
+## Slice 014 — the module page's contents
+
+**Agent notes** *(factual, appended by agents)*
+
+- **Run autonomously, end to end, on Viktar's instruction.** Spec, plan, tasks
+  and implementation in one session, with both things AGENTS.md §2 requires of
+  an autonomous run: the plan written by a subagent whose only inputs were
+  `constitution.md`, `AGENTS.md` and this slice's `spec.md`, and the closing
+  diff reviewed by a second subagent that had not seen the session. Nothing in
+  the slice is approved; the `## Decisions taken` section and the final report
+  are where it gets reviewed.
+- **Two things were given, not decided:** that the module's introduction appears
+  in the list on both kinds of page, and the Polish word „Wstęp". Both are
+  marked as Viktar's in the spec's decisions.
+- **The blind plan was right about the mechanism and wrong about the tree, and
+  the split was clean.** Every file name it guessed was wrong; every mechanism
+  it named survived. Two of its five gaps dissolved on contact with the
+  repository — the skip control's label is already neutral („Pomiń spis
+  treści"), and the two pages' breadcrumbs already share an edge — and one of
+  its two geometry moves turned out to have been done by slice 012 already. Its
+  third gap, *are the introduction's sections really collected today*, was the
+  useful one: they are, by the same plugin on the same compile, and the loader
+  was dropping them.
+- **The plan caught a criterion the spec could not satisfy as written.**
+  Criterion 10 asks that below the fold "every other box measures what it
+  measured before", while §6 inserts a collapsed disclosure above the title.
+  The plan named the contradiction and proposed the reading — `left` and
+  `width` are the invariants, and every box below the disclosure shifts by one
+  identical delta. That reading was adopted, with one correction: the column is
+  a grid with a row gap, so the delta is the disclosure's height *plus* one
+  `--gap-apart`. Measured afterwards: **+86.7 px, the same number at every
+  width on both modules**, which is 46.7 + 40.
+- **The riskiest criterion cost nothing in the end, because slice 012 had
+  already paid for it.** The module page's content column had to land on
+  exactly the inset it already had. It does, to the pixel — 408 / 736 at 1280
+  and 1585 on both modules — and the reason is structural rather than lucky:
+  the frame's inset is *derived* from the same three lengths the two-column
+  grid uses, and a page escapes the frame's content track simply by being
+  full-bleed. No flag, no second geometry.
+- **The refactor was checked by diffing bytes, not by reading code.** Building
+  the list from one entry model instead of two hand-written rows is the kind of
+  change that silently moves markup. The panel's and the disclosure's
+  server-rendered HTML on `1b` and `0c` was fetched before and after and
+  `diff`ed: 220 lines, no difference.
+- **Making the new field required rather than optional was the cheap check.**
+  `sections` on a module is required, so `tsc` named every place a module is
+  constructed — which is how the reference page's fixtures were found rather
+  than remembered.
+- **Two checks needed a case the corpus does not contain, and neither touched a
+  tracked file.** The dead-housing rule and the §8 consequence were run against
+  a temporary module directory created and then deleted; „Wstęp" expanding was
+  run against a heading appended to `content/moduly/00-start/index.mdx` with
+  the file copied aside first and restored from that copy. `git status
+  --porcelain content/` was snapshotted before and diffed after in both cases —
+  no difference, and the file's `sha256` is unchanged. With sixteen sessions
+  live on this repository, editing a file another session is holding is a worse
+  risk than the check is worth; creating and deleting one that never existed is
+  not.
+- **The browser pane is a partial instrument for keyboard and scroll checks.**
+  It does not forward `Tab` to the page, and while the pane is hidden the
+  document is `hidden`, so a programmatic scroll dispatches no scroll event and
+  `requestAnimationFrame` never fires — one probe hung on an `await` of it for
+  45 seconds. Geometry, focus and the native disclosure were all verifiable;
+  the tab order after the skip control was read from the document instead of
+  walked, and the scroll-spy's three states were read with the pane made
+  visible by a screenshot first. Worth knowing before the next slice that has
+  scroll behaviour in it.
+- **One thing was renamed rather than left lying.** The two-column wrapper was
+  called `lessonColumns` / `lessonColumn`; a module page rendered inside a
+  lesson's column is a name that lies. Renamed in its own commit, before
+  anything else, so no later measurement could be blamed on it — and the whole
+  diff of that commit is five selectors and two class attributes.
+- **Left open for a human eye:** whether the module page and a lesson page now
+  read as the same site. Open `/moduly/01-jak-powstaje-oprogramowanie` at
+  1280 px or wider and click `1b`.

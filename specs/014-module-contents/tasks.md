@@ -25,14 +25,14 @@ match what is there.
       `verification.md`; `npm run build` and the contrast report captured for
       criterion 1 to be diffed against.
 
-- [ ] **T04 — Rename the two-column wrapper for what it now is.** Names only,
+- [x] **T04 — Rename the two-column wrapper for what it now is.** Names only,
       no declaration changed, done alone so no later measurement can be blamed
       on it (plan T01, decision 6). *Check:* `git diff` shows renames and
       comment edits and no changed declaration; the lesson page, both module
       pages, the module grid, the home page and the reference page measure the
       T03 baseline exactly; `npm run build` and `npm run lint` green.
 
-- [ ] **T05 — One built list, the same entries.** The list's rows stop being
+- [x] **T05 — One built list, the same entries.** The list's rows stop being
       derived twice over — an entry model inside the contents, one row
       renderer, `href` absent meaning *this is the page you are on* and the
       identity string rendered only where there is one. Emits exactly what the
@@ -40,7 +40,7 @@ match what is there.
       disclosure is **byte-identical** before and after; `npm run build` and
       `npm run lint` green.
 
-- [ ] **T06 — „Wstęp" enters the list, and the dead-housing rule generalises.**
+- [x] **T06 — „Wstęp" enters the list, and the dead-housing rule generalises.**
       The first entry, a link from every lesson page; a housing renders when
       its list holds at least one link. The module page is not touched yet.
       *Check:* criteria 4 and 6 and the lesson half of 5, read from the
@@ -48,7 +48,7 @@ match what is there.
       names — a one-lesson module's lesson page now has a panel — shown on the
       reference page's one-lesson specimen module.
 
-- [ ] **T07 — The module page becomes two columns and carries both housings.**
+- [x] **T07 — The module page becomes two columns and carries both housings.**
       The page moves into the renamed wrapper, gains the panel and the
       collapsed disclosure with „Wstęp" as the current entry, gives its title
       and introduction the skip target, and mounts the existing scroll-spy.
@@ -61,7 +61,7 @@ match what is there.
       temporarily unpublished, neither housing rendered, no dead row, reverted,
       `git status` clean under `content/`.
 
-- [ ] **T08 — The introduction's sections reach the list.** They are collected
+- [x] **T08 — The introduction's sections reach the list.** They are collected
       when the introduction is compiled and dropped by the loader; stop
       dropping them and hand them to the entry that names it. *Check:*
       criterion 7 in both halves — with no introduction carrying a heading,
@@ -71,12 +71,12 @@ match what is there.
       it lands the heading below the top edge; reverted, `git status` clean
       under `content/`.
 
-- [ ] **T09 — The reference page tells the truth about the list.** Specimens
+- [x] **T09 — The reference page tells the truth about the list.** Specimens
       for „Wstęp" as a link and „Wstęp" as the current entry. *Check:*
       criterion 16 — the page renders without error at 1280 px and 375 px and
       its specimens match what the module and lesson pages render.
 
-- [ ] **T10 — The sweeps.** No production code: run what is left and record it.
+- [x] **T10 — The sweeps.** No production code: run what is left and record it.
       Criterion 1 (build, lint, colour-literal guard, contrast report unchanged
       against T03); criterion 12 (the lesson page's boxes at 1280 and 1585, and
       007's behaviours — the three scroll-spy states, the panel's own
