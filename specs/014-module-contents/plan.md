@@ -223,13 +223,13 @@ height and by nothing else**, and that is the check: not "top unchanged" but
 collapsed disclosure". A box that shifts by a different amount is the defect.
 Under any other reading of criterion 10, §6 makes it unsatisfiable.
 
-**The risk, named.** The module page's content column is moving out of a track
-it gets by padding and into a track it gets by grid. Padding and grid round
+**The risk, named.** The module page's content column moves out of a track it
+gets by padding and into a track it gets by grid. Padding and grid round
 differently, a gap sits on one side or the other of a boundary, and a
 `max-width` measure inside a padded box does not necessarily land where the same
 measure inside a grid track lands. A one-gap or one-pixel error is invisible on
 the module page alone and glaring the moment a reader crosses from a module page
-to a lesson page — which is what slice 012 exists to prevent.
+to a lesson page — the thing slice 012 exists to prevent.
 
 **How the implementer proves it is absent.** Not by eye.
 
@@ -243,21 +243,19 @@ to a lesson page — which is what slice 012 exists to prevent.
   file.
 - **The baseline must exist before the first slice commit.** Afterwards there is
   nothing to compare against but a checkout, and a mismatch found then cannot be
-  attributed to a step. This is the one ordering constraint in the plan that
-  cannot be recovered from.
+  attributed to a step. This is the one ordering constraint here that cannot be
+  recovered from.
 - Re-run the same script, unmodified, after every geometry-bearing step and diff
   it. The diff is the evidence pasted under the task — the same instrument
   before and after, as criterion 2 demands.
-- If 011 or 012 left a harness, use it; the criteria speak of "the boxes slice
-  012 recorded", so a record probably exists. Re-measure anyway rather than
-  trusting it — the tree has moved since.
+- If 011 or 012 left a harness, use it. Re-measure anyway rather than trusting
+  any record it left: the tree has moved since.
 
 **One thing to watch that is not a criterion.** On Moduł 0 — a 49-word
-introduction and two lessons — the panel may be taller than the entire content
-column and so set the page's height. 007 capped the panel and gave it its own
+introduction and two lessons — the panel may be taller than the whole content
+column and so set the page's height. 007 capped it and gave it its own
 scrollbar; if that cap is expressed against the viewport this is fine, and if it
-is not, Moduł 0 at 1280 px is where it shows. Look before declaring the geometry
-closed.
+is not, Moduł 0 at 1280 px is where it shows.
 
 ## Order of work
 
@@ -344,11 +342,11 @@ so a wrong assumption shows up in review rather than buried in a commit.
    and §1 forbids redesigning the panel, but nothing says what the control
    reads. If today's label names a lesson it is a lie on a module page; if it is
    neutral, nothing is needed. *Assumption:* the label travels with the target as
-   one parameter, so the lesson page's string stays byte-identical (§9 allows
-   the lesson page exactly one visible change, and it is the new row) and the
-   module page gets a matching Polish string naming the module's own text. If
-   the existing label is already neutral, change nothing. Either way, name it in
-   the final report — a new student-facing string is worth a line.
+   one parameter, so the lesson page's string stays byte-identical (§9 allows it
+   exactly one visible change, and that is the new row) and the module page gets
+   a matching Polish string naming the module's own text. If the existing label
+   is already neutral, change nothing. Either way name it in the final report — a
+   new student-facing string is worth a line.
 
 2. **Criterion 10 versus §6.** "Every other box measures what it measured before
    this slice" cannot include vertical position, because §6 inserts a collapsed
@@ -362,7 +360,7 @@ so a wrong assumption shows up in review rather than buried in a commit.
    are collected at compile time and thrown away. If they are collected only on
    the lesson path, the premise is false in a way that turns T06 from "stop
    discarding" into "route the introduction through the collector that already
-   exists". *Assumption:* extend the existing collector's reach; never add a
+   exists". *Assumption:* extend the existing collector's reach, never add a
    second derivation (decision 13). Either way it stays one derivation; only
    T06's size changes. Report which it was.
 
@@ -370,14 +368,13 @@ so a wrong assumption shows up in review rather than buried in a commit.
    breadcrumb not to move, so it stays at today's inset, above the grid. If the
    lesson page's breadcrumb sits at the page margin instead, the two pages'
    breadcrumbs stay misaligned after this slice — exactly the sort of thing
-   criterion 18 asks a human to judge. *Assumption:* obey criterion 2, leave the
-   breadcrumb where it is, and name the discrepancy in the final report rather
-   than fixing it. Moving it is a spec change, and AGENTS.md §8 forbids editing
-   an approved spec to match what the code did.
+   criterion 18 asks a human to judge. *Assumption:* obey criterion 2, leave it,
+   and name the discrepancy in the final report rather than fixing it. Moving it
+   is a spec change, and AGENTS.md §8 forbids editing an approved spec to match
+   what the code did.
 
 5. **`aria-current`'s value.** §2 and criterion 5 say "marked as the current
-   location for assistive technology" without naming the attribute value.
-   *Assumption:* whatever 007 put on the current lesson's row, applied verbatim
-   to whichever entry is current — most likely `aria-current="page"`, which is
-   correct for „Wstęp" on the module page, since the module page *is* the page.
-   No new pattern is introduced.
+   location for assistive technology" without naming the value. *Assumption:*
+   whatever 007 put on the current lesson's row, applied verbatim to whichever
+   entry is current — most likely `aria-current="page"`, correct for „Wstęp" on
+   the module page since the module page *is* the page. No new pattern.
