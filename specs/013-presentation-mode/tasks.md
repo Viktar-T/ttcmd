@@ -61,7 +61,7 @@ here. Nothing is skipped.
       byte-identical in both modes; `/`, `/moduly` and a module page render
       identically in both modes. **Closes:** criteria 5, 6, 7, 8.
 
-- [ ] **T07 — ADR-0013.**
+- [x] **T07 — ADR-0013.**
       The palette and the mode attribute, with the rejected alternative for each.
       **Check:** `docs/adr/` listed first and the number confirmed free
       (AGENTS.md §7); the file carries the literals that are actually in
