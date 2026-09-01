@@ -84,7 +84,7 @@ here. Nothing is skipped.
       served HTML carries the script inside `<head>` and no `data-mode`
       attribute. **Closes:** criteria 10 and 12.
 
-- [ ] **T10 — The sweep.**
+- [x] **T10 — The sweep.**
       No code unless something fails. `npm run build`, `npm run lint`,
       `npm run check:content`. `git diff --stat` against this slice's base: no
       path under `content/`, no `package.json`, exactly one file containing
