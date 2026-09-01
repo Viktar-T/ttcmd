@@ -11,6 +11,11 @@
 /* ------------------------------------------------------------------ *
  * The two columns — slice 011, superseding 007's placement
  *
+ * Named `pageColumns` / `pageColumn` since slice 014, which gave the module
+ * page the same contents and therefore the same two columns. They were called
+ * `lessonColumns` / `lessonColumn` while a lesson was the only page that had
+ * them; nothing about the rules below changed with the name.
+ *
  * 007 put the panel in the frame's LEFT GUTTER, because the gutter's minimum
  * is a fixed 1rem and nothing placed in it can move the centred content
  * track. The article never moved, and the price was the panel: at the 80rem
@@ -19,18 +24,18 @@
  *
  * So the gutter is abandoned. Below the fold this wrapper still REPLICATES
  * the frame's three tracks verbatim — the same expressions over the same
- * width, since the full track spans the whole of `main` — and the lesson
+ * width, since the full track spans the whole of `main` — and the page's own
  * column sits in the replicated content track with the roles `main > *` used
- * to give it. Above the fold the tracks become the panel, the lesson, and
+ * to give it. Above the fold the tracks become the panel, the page, and
  * whatever is left: the pair is anchored by a page margin on the left and the
  * trailing 1fr eats the slack on the right.
  *
- * The lesson column is a wrapper rather than three separately placed items so
- * that the panel spans the whole column height with no row arithmetic: there
- * is only ever one row. It carries the frame's own row gap, because its
- * children used to be `main`'s children and got that gap from `main`'s grid.
- * Margins do not collapse between grid items either side of that move, so the
- * rhythm is reproduced rather than approximated.
+ * The page column is a wrapper rather than three or four separately placed
+ * items so that the panel spans the whole column height with no row
+ * arithmetic: there is only ever one row. It carries the frame's own row gap,
+ * because its children used to be `main`'s children and got that gap from
+ * `main`'s grid. Margins do not collapse between grid items either side of
+ * that move, so the rhythm is reproduced rather than approximated.
  * ------------------------------------------------------------------ */
 
 /* --contents-width, --contents-gap and --lesson-margin were declared here by
@@ -47,7 +52,7 @@
    1rem gutter doubled, and applies only above the fold, where there is a pair
    to anchor. */
 
-.lessonColumns {
+.pageColumns {
   display: grid;
   grid-template-columns:
     [full-start] minmax(1rem, 1fr)
@@ -55,7 +60,7 @@
     minmax(1rem, 1fr) [full-end];
 }
 
-.lessonColumns > .lessonColumn {
+.pageColumns > .pageColumn {
   grid-column: content;
   grid-row: 1;
   min-width: 0;
@@ -68,12 +73,12 @@
 /* min-width: 0 for the reason the frame already carries it — a grid item
    defaults to min-width: auto, and one long unbreakable run inside it pushes
    the track wider than its declared size, which is a horizontal scrollbar. */
-.lessonColumn > * {
+.pageColumn > * {
   min-width: 0;
 }
 
 @media (min-width: 80rem) {
-  .lessonColumns {
+  .pageColumns {
     /* [panel-end content-start] is ONE line-names block, not two adjacent
        ones. Two `[...]` groups with no track between them is a parse error,
        and a dropped grid-template-columns fails silently into auto-placed
@@ -94,7 +99,7 @@
 
 /* The skip target. Programmatic focus only (tabindex -1): the default UA
    outline would ring the entire article. */
-.lessonColumn > .prose:focus {
+.pageColumn > .prose:focus {
   outline: none;
 }
 
@@ -113,7 +118,7 @@
 /* ------------------------------------------------------------------ *
  * The panel
  *
- * Sticky inside a grid area as tall as the whole lesson column (align-self:
+ * Sticky inside a grid area as tall as the whole page column (align-self:
  * start — a stretched item has nowhere to stick). Height capped to the
  * viewport, its own scrollbar when the content is taller. The right border is
  * the rule the design reference asks for: a reader relies on it to tell the

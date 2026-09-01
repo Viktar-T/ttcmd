@@ -63,9 +63,9 @@ export default async function LessonPage({
 
           The article is the skip target: tabIndex -1 so the panel's skip
           control can move real focus to it. */}
-      <div className="lessonColumns" data-full-bleed>
+      <div className="pageColumns" data-full-bleed>
         <ContentsPanel moduleItem={moduleItem} current={entry} />
-        <div className="lessonColumn">
+        <div className="pageColumn">
           <LessonHeader
             title={lesson.title}
             order={lesson.order}
