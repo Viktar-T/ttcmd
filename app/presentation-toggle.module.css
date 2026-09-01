@@ -1,0 +1,98 @@
+/* The presentation-mode control — slice 013. In the site header, beside the
+   theme control, and laid out by .headerControls in app/nav.css; it positions
+   nothing itself.
+
+   The box is app/theme-toggle.module.css's box, copied rather than shared. Two
+   36px squares side by side must not drift apart, and one class reaching across
+   two files in two directories is a worse coupling than eleven duplicated
+   declarations — the theme control would then be unable to change without
+   thinking about this one. */
+
+.toggle {
+  /* The clipped name spans are absolutely positioned inside it. */
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+
+  color: var(--text-muted);
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.toggle:hover {
+  color: var(--text);
+  border-color: var(--accent-line);
+}
+
+.toggle:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}
+
+/*
+ * THE ON STATE.
+ *
+ * On a page with no marked fragments — every page on the site the day this
+ * ships — presentation mode changes nothing else, so this is the only thing
+ * telling the teacher the mode is on. It is therefore a filled control in the
+ * mode's own three colours, not a hover affordance and not something you have
+ * to compare against a second control to read.
+ *
+ * It needs no token of its own: the icon is --present-ink on --present-fill at
+ * 10.05:1, the border is --present-line against the page at 3.84:1 and 3.50:1,
+ * and the focus ring is drawn outside the button on --bg, where Check E already
+ * holds --accent-line at 4.5:1 in both themes.
+ */
+:root[data-mode="presentation"] .toggle {
+  color: var(--present-ink);
+  background: var(--present-fill);
+  border-color: var(--present-line);
+}
+
+:root[data-mode="presentation"] .toggle:hover {
+  color: var(--present-ink);
+  border-color: var(--present-ink);
+}
+
+/*
+ * The two halves of the accessible name.
+ *
+ * The clip pattern is the repo's, verbatim from components/code-block.module.css
+ * — neither phrase is ever drawn. display: none on the inactive one is what
+ * takes it out of the accessibility tree, so the button's computed name is
+ * exactly one phrase rather than both concatenated.
+ *
+ * Keyed off :root[data-mode], the same mechanism as the theme control's sun and
+ * moon, so the name is correct before hydration and correct with scripting
+ * disabled.
+ */
+.name {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.nameWhenPresenting {
+  display: none;
+}
+
+:root[data-mode="presentation"] .nameWhenReading {
+  display: none;
+}
+
+:root[data-mode="presentation"] .nameWhenPresenting {
+  display: inline;
+}

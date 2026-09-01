@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PresentationToggle } from "@/app/presentation-toggle";
 import { ThemeToggle } from "@/app/theme-toggle";
 
 /**
@@ -20,10 +21,31 @@ export function SiteHeader() {
   return (
     <header className="siteHeader">
       <div className="siteHeaderInner">
-        <Link href="/" className="wordmark">
-          ttcmd
+        {/* A shell prompt, not a word: the mark for "start here" on a course
+            whose whole identity is the terminal. Written as a JSX expression
+            because a bare > in JSX text trips react/no-unescaped-entities, and
+            kept to ASCII because the fonts load only the latin and latin-ext
+            subsets (app/fonts.ts) — a glyph outside them would silently fall
+            back to whatever the operating system has, and look different on
+            every machine.
+
+            aria-label is load-bearing, not decoration. The link's accessible
+            name used to be the word "ttcmd"; a screen reader given ">_" alone
+            announces "greater-than underscore", which names nothing. */}
+        <Link href="/" className="wordmark" aria-label="Strona główna">
+          {">_"}
         </Link>
-        <ThemeToggle />
+        {/* One box, not two children of the header row. .siteHeaderInner is a
+            flex row with justify-content: space-between, so a third child would
+            spread the two controls to opposite ends of the header.
+
+            Presentation first, theme second: the theme control has been the
+            rightmost thing on every page since slice 003 pinned it to the
+            corner, and moving it is a change slice 013 was not asked to make. */}
+        <div className="headerControls">
+          <PresentationToggle />
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );

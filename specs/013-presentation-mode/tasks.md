@@ -67,7 +67,7 @@ here. Nothing is skipped.
       (AGENTS.md §7); the file carries the literals that are actually in
       `app/tokens.css`; every decision in it names what it rejected.
 
-- [ ] **T08 — The control.**
+- [x] **T08 — The control.**
       `app/presentation-toggle.tsx`, `app/presentation-toggle.module.css`,
       `components/site-header.tsx`, `app/nav.css`.
       **Check:** it sits beside the theme control on the home page, a module
