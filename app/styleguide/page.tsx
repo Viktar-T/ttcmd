@@ -453,6 +453,10 @@ const SPECIMEN_MODULES: CourseModule[] = [
     label: "Moduł 7",
     href: "#",
     body: <></>,
+    /* Slice 014: the introduction's own sections. Empty, like every real
+       module's — no index file carries a `##` — so the „Wstęp" row in the
+       specimens below stands alone, which is what the site renders. */
+    sections: [],
     lessons: SPECIMEN_LESSONS,
   },
   {
@@ -462,6 +466,7 @@ const SPECIMEN_MODULES: CourseModule[] = [
     label: "Moduł 8",
     href: "#",
     body: <></>,
+    sections: [],
     lessons: SPECIMEN_LESSONS.slice(0, 1),
   },
 ];

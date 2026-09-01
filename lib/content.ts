@@ -374,6 +374,11 @@ export interface CourseModule extends ModuleSummary {
   label: string;
   href: string;
   body: ReactElement;
+  /** The introduction's own top-level sections, in document order — the same
+      collection a lesson's `sections` comes from, and the same ids the anchor
+      plugin wrote into the rendered introduction. Empty for every module
+      written so far: no index file carries a `##` yet. Slice 014. */
+  sections: SectionEntry[];
   lessons: CourseLesson[];
 }
 
@@ -391,10 +396,20 @@ async function readModuleSlugs(): Promise<string[]> {
  * The body was compiled and thrown away until slice 006. Both module index
  * files carry a written introduction to their module, and nothing had ever
  * rendered one.
+ *
+ * Its **sections** were thrown away until slice 014, for the same shape of
+ * reason. `compile` runs the anchor plugin on an index file exactly as it does
+ * on a lesson — a `##` in an introduction already gets an id, already fails
+ * the build if it cannot derive one — and this function dropped the collection
+ * on the floor because nothing read it. The contents does now: „Wstęp" expands
+ * to them the way a lesson's row expands to its own. No index file carries a
+ * `##` today, so the array is empty everywhere; the point is that the day one
+ * does, the list and the page agree without anything being added here.
  */
 async function readModule(moduleSlug: string): Promise<{
   frontmatter: ModuleFrontmatter;
   content: ReactElement;
+  sections: SectionEntry[];
   links: LinkUse[];
 }> {
   const relativePath = `content/moduly/${moduleSlug}/${moduleIndexFile}`;
@@ -402,7 +417,7 @@ async function readModule(moduleSlug: string): Promise<{
     path.join(contentRoot, moduleSlug, moduleIndexFile),
     "utf8"
   );
-  const { frontmatter, content, links } = await compile(
+  const { frontmatter, content, sections, links } = await compile(
     source,
     relativePath,
     EXERCISES_FORBIDDEN
@@ -410,6 +425,7 @@ async function readModule(moduleSlug: string): Promise<{
   return {
     frontmatter: moduleFrontmatterSchema.parse(frontmatter),
     content,
+    sections,
     links,
   };
 }
@@ -561,7 +577,12 @@ const readCourse = cache(
     const walked = await Promise.all(
       slugs.map(async (slug) => {
       const number = moduleNumber(slug);
-      const { frontmatter, content, links: moduleLinks } = await readModule(slug);
+      const {
+        frontmatter,
+        content,
+        sections,
+        links: moduleLinks,
+      } = await readModule(slug);
 
       /* THE EXERCISE WALK — ADR-0003, and the one thing in this slice that is
          easy to get wrong.
@@ -608,6 +629,7 @@ const readCourse = cache(
           label: moduleLabel(number),
           href: `/moduly/${slug}`,
           body: content,
+          sections,
           lessons,
         },
         links: [...moduleLinks, ...listed.links],

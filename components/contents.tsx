@@ -71,9 +71,10 @@ function buildEntries({ moduleItem, current }: ContentsProps): ContentsEntry[] {
     key: "intro",
     label: INTRO_LABEL,
     href: introIsCurrent ? undefined : moduleItem.href,
-    /* The introduction's own top-level sections, when it is the current entry
-       and has any. Nothing collects them yet — the next task does. */
-    sections: [],
+    /* The introduction's own top-level sections. No index file carries a `##`
+       today, so this is empty everywhere and the row stands alone — which is
+       what a lesson row with no sections already does. */
+    sections: introIsCurrent ? moduleItem.sections : [],
   };
 
   const lessons = moduleItem.lessons.map((lesson) => {
