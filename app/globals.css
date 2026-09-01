@@ -56,6 +56,32 @@ pre {
   color: inherit;
 }
 
+/*
+ * A marked fragment, in reading mode — slice 013.
+ *
+ * The author marks the sentences to be read aloud in class with <mark>. The
+ * browser paints that yellow by default (background-color: mark; color:
+ * marktext), and a student reading at home must never see it: lessons are
+ * marked up one at a time over a term, and the yellow would tell them which
+ * lessons have been prepared to teach and which have not.
+ *
+ * UNCONDITIONAL, AND AT ELEMENT LEVEL, both deliberately. Reading mode is not
+ * a state this file styles — it is the absence of the presentation rules in
+ * app/presentation.css, exactly as dark is the absence of [data-theme="light"]
+ * in tokens.css. A default expressed as a CSS fact rather than as a promise
+ * about JavaScript. And it is not scoped under .prose, because the failure it
+ * guards is a yellow fragment reaching a student anywhere, not only where this
+ * slice expects a mark to be.
+ *
+ * Not covered, and nothing here can cover it: forced-colors mode replaces these
+ * with system colours regardless of author styles. That is true of the whole
+ * palette, not of this element.
+ */
+mark {
+  background-color: transparent;
+  color: inherit;
+}
+
 /* Nothing renders a <nav> yet. The rule is the contract with the nav slice. */
 nav {
   font-family: var(--font-mono), ui-monospace, monospace;

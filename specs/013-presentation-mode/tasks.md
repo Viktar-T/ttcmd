@@ -28,7 +28,7 @@ here. Nothing is skipped.
       it, and every acceptance criterion in `spec.md` is closed by exactly one
       task or is listed under "Left unchecked".
 
-- [ ] **T04 — The reading-mode reset, and somewhere to see it.**
+- [x] **T04 — The reading-mode reset, and somewhere to see it.**
       `app/globals.css` gains an unconditional element-level `mark` reset;
       `app/styleguide/page.tsx` and `app/styleguide/page.module.css` gain the
       specimen block of plan §1.8 — one specimen of every case in spec §8,

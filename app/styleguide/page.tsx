@@ -305,6 +305,61 @@ samym serwisie nie jest oznaczony i otwiera się w tej samej karcie:
 sprawdzany przy budowaniu strony, więc literówka w nim zatrzymuje build.
 `;
 
+/**
+ * The presentation-mode specimens — slice 013 §9.
+ *
+ * Marking real lessons up is content-lane work that comes after this slice, so
+ * on the day the mode ships there is no marked page on the site. Without this
+ * block the whole mode would be unrenderable anywhere and its criteria would be
+ * checked against a screenshot. Compiled through `compileProse` for the reason
+ * the code, exercise and sourcing specimens above are: remark-gfm, the section
+ * anchors, the link classifier and the components map all run on it, so what is
+ * here is what a lesson would get.
+ *
+ * One specimen of every case spec §8 allows, and no specimen of the two it
+ * forbids — a mark inside a fenced code block is characters rather than markup,
+ * and a mark inside an SVG renders nothing at all. Neither belongs on a page
+ * whose job is to show what the site does.
+ *
+ * The prose is Polish because Polish is what is under test, ogonki included: ą
+ * and ę sit inside a mark on purpose, so slice 004's underline clearance is
+ * visible with a fill behind it.
+ */
+const PRESENTATION_SPECIMENS = `
+Ten akapit nie zawiera zaznaczenia i to on jest miarą przyciemnienia: w trybie
+prezentacji ma być wyraźnie cichszy od fragmentów obok, a mimo to czytelny z
+tyłu sali. W trybie czytania niczym się nie różni od reszty strony.
+
+<mark>Ten fragment jest zaznaczony do przeczytania na głos i celowo ciągnie się
+przez kilkanaście słów, żeby złamał się na dwie linie</mark> — na każdej z nich
+ma być zamkniętym prostokątem, a nie połową ramki. Wewnątrz zaznaczenia
+zostawiam ogonki: gęślą jaźń, węzeł, zażółć.
+
+#### Nagłówek z <mark>zaznaczonym fragmentem</mark>
+
+Odnośnik zaznaczony w obu zapisach, na które pozwala Markdown:
+[<mark>zaznaczenie wewnątrz odnośnika</mark>](https://fullstackopen.com/en/)
+oraz <mark>[odnośnik wewnątrz zaznaczenia](https://fullstackopen.com/en/)</mark>.
+W obu podkreślenie zostaje, bo bez niego odnośnik przestaje być odnośnikiem dla
+kogoś, kto nie widzi koloru.
+
+> Cytat też bywa czytany na głos, więc <mark>zaznaczenie działa i tutaj</mark>,
+> a kreska po lewej stronie zostaje kreską cytatu.
+
+- Pozycja listy bez zaznaczenia — punkt odniesienia.
+- Pozycja, w której <mark>zaznaczony jest tylko środek zdania</mark>, a początek
+  i koniec nie.
+- Jeszcze jedna pozycja bez zaznaczenia.
+
+| Komórka | Treść |
+| --- | --- |
+| bez zaznaczenia | zwykła komórka tabeli |
+| z zaznaczeniem | <mark>komórka z zaznaczonym fragmentem</mark> |
+
+Ostatni akapit, znowu bez zaznaczenia, żeby przyciemnienie miało się do czego
+porównać także na dole bloku.
+`;
+
 /** ADR-0005's verification string: every Polish diacritic, upper and lower. */
 const PANGRAM = "Zażółć gęślą jaźń — ĄĆĘŁŃÓŚŹŻ ążćęłńóśź";
 
@@ -423,6 +478,11 @@ export default async function StyleguidePage() {
   const sourceSpecimens = await compileProse(
     SOURCE_SPECIMENS,
     "app/styleguide/page.tsx (sourcing specimens)"
+  );
+
+  const presentationSpecimens = await compileProse(
+    PRESENTATION_SPECIMENS,
+    "app/styleguide/page.tsx (presentation specimens)"
   );
 
   return (
@@ -718,6 +778,28 @@ export default async function StyleguidePage() {
         </p>
 
         <div className="prose">{sourceSpecimens}</div>
+      </section>
+
+      <section className={styles.section}>
+        <h2>Presentation mode</h2>
+        <p className={styles.muted}>
+          Slice 013. The block below is the only marked page on the site: an
+          author marks the fragments to be read aloud with a plain{" "}
+          <code>&lt;mark&gt;</code>, and no lesson has been marked up yet, so
+          without these specimens the mode would be unrenderable anywhere.
+          Compiled through the pipeline a lesson goes through, like the three
+          blocks above it.
+        </p>
+        <p className={styles.muted}>
+          In reading mode — the default — nothing here may distinguish a marked
+          fragment from an unmarked one, in either theme. Flip the control in
+          the header to see the other mode: every marked fragment lights and the
+          prose around it steps back. The unmarked prose blocks further up this
+          page stay bright in both modes, which is what makes them the control:
+          only a block that actually contains a mark dims.
+        </p>
+
+        <div className="prose">{presentationSpecimens}</div>
       </section>
 
       <section className={styles.section}>
