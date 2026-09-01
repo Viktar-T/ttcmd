@@ -518,3 +518,62 @@ in the reflection sections.
   and on `/` at 2560 px, where the hero begins at 464 while the wordmark above
   it begins at 952 — the chrome stays centred by decision, and the gap grows
   with the window.
+
+---
+
+## Slice 013 — presentation mode
+
+**Agent notes** *(factual, appended by agents)*
+
+- **Run autonomously, end to end, on Viktar's instruction.** Spec, plan, tasks
+  and implementation in one session, with the two things AGENTS.md §2 requires
+  of an autonomous run both done: the plan written by a subagent whose brief was
+  `constitution.md`, `AGENTS.md` and this slice's `spec.md`, and the closing diff
+  reviewed by a second subagent that had not seen the session. Nothing in the
+  slice is approved; the `## Decisions taken` section and the final report are
+  where it gets reviewed.
+- **Two things were given, not decided: the dark red, and the control's place in
+  the header.** Both are recorded in the spec's preamble as Viktar's, so nobody
+  reading it later mistakes them for the run's choices. Everything else was
+  decided under §4 and no question was escalated — nothing cleared the bar.
+- **The fresh-context plan reported the spec sufficient**, and named four things
+  it filled in on Viktar's behalf rather than leaving them silent: an internal
+  tension between "the lit fragment must look the same in both themes" and the
+  fill being held to no floor, the exact colours, where "the prose recedes"
+  stops, and the control's two Polish phrases. It also confirmed by compiling —
+  not by assuming — that `<mark>` reaches the page as a literal element and that
+  a mark inside a heading leaves the section anchor byte-identical, so a
+  bookmarked URL cannot move when a lesson is marked up.
+- **The same `git add` mistake as slice 012, on the same two files.** `013/T08`
+  staged `app/nav.css` and `components/site-header.tsx` by name, and both
+  carried in-progress header work belonging to another session — the `>_`
+  wordmark and the `.heroTitle` clamp. They rode into a commit about a
+  presentation control, unnamed by its message. 012's journal entry already says
+  *"Anything that stages by filename is unsafe here"*, and names the technique
+  that avoids it. The technique was known, recorded, and not applied. `013/T10`
+  backs both hunks out and restores them to the working tree uncommitted; the
+  mistake stays in the history, as 012's did.
+- **The closing review earned its place, twice.** It caught a comment in
+  `app/presentation.css` asserting that rebinding `--text-muted` reaches a
+  quotation's rule through its alias — it does not, because a custom property's
+  `var()` is substituted where the property is *declared*. Invisible today,
+  wrong on the exact day the comment was written for. And it caught a marked
+  link's underline being repainted on the anchor, which on the light theme made
+  the underline outside the highlight vanish rather than light up. Both were
+  reproduced in the running page before being changed, and both are fixed in
+  `013/T11`.
+- **A build check caught the fix's own first draft.** Check B failed on colour
+  literals inside a CSS comment written to explain the fix. The literals were an
+  anecdote about a measurement, not a colour the site uses — and the guard was
+  reworded around rather than exempted.
+- **One check could not be reproduced with the tools here.** The control's
+  accessible name is swapped by CSS rather than by an attribute, and the browser
+  pane's accessibility view lists `display:none` nodes and does not compute a
+  button's name from its content — confirmed with a synthetic button of the same
+  shape, so it is a tool artifact. The mechanism was verified through rendering
+  instead. A minute in a real accessibility inspector, in both states, is what
+  closes it.
+- **Left open for a human eye, and a projector:** whether the lit fragments
+  carry from the back of the room, and whether the dim is a big enough step down
+  at that distance. Both boxes were listed as unclosable in `tasks.md` before any
+  code was written, rather than discovered at the end.

@@ -97,6 +97,16 @@ here. Nothing is skipped.
       correctness or a criterion; record the rest without fixing it.
       **Closes:** criterion 15.
 
+- [x] **T12 — Append the run's agent notes to `docs/sdd-journal.md`.**
+      **Added after T11 rather than planned**, and said so rather than slipped
+      in: the run repeated a mistake slice 012's journal had already named, and
+      constitution Article II makes an unrecorded shortcut the only real failure
+      available here. Factual entries only — the reflection sections of that file
+      are Viktar's (AGENTS.md §7).
+      **Check:** the entry sits under "Agent notes", states what happened rather
+      than what it meant, and every claim in it is one this slice's commits or
+      checks can be read against.
+
 ---
 
 ## Left unchecked, deliberately
