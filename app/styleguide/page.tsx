@@ -301,7 +301,7 @@ sieci, więc zamiast odnośnika stoi opis wydania.
 Odnośnik do innej strony jest oznaczony i otwiera się w nowej karcie —
 [Full Stack Open](https://fullstackopen.com/en/) — a odnośnik do lekcji na tym
 samym serwisie nie jest oznaczony i otwiera się w tej samej karcie:
-[Git i GitHub](/moduly/00-start/git-i-github). Adres tej drugiej jest
+[Jak działa ten kurs](/moduly/00-start/jak-dziala-ten-kurs). Adres tej drugiej jest
 sprawdzany przy budowaniu strony, więc literówka w nim zatrzymuje build.
 `;
 
