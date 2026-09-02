@@ -48,3 +48,6 @@ Thumbs.db
 
 # claude code local settings (personal, not shared)
 .claude/settings.local.json
+
+# word/excel lock files
+~$*

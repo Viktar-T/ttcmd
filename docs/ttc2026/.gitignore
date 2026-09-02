@@ -1,0 +1,10 @@
+# dependencies and build output (from slice 001 on)
+node_modules/
+.next/
+*.tsbuildinfo
+
+# cloned student repositories — disposable, never committed
+work/
+
+# local environment
+.env*
