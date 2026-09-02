@@ -1,0 +1,296 @@
+---
+title: "Po co komu specyfikacja"
+order: 1
+summary: "Trzy aplikacje działają i w żadnym z trzech repozytoriów nie ma zdania o tym, co miało powstać. Lekcja o tym, co model robi z tym, czego nikt nie napisał, dlaczego najtrudniejsza część programowania została tam, gdzie była — i co dokładnie warto spisać, zanim powstanie kod."
+publish: false
+---
+
+{/* Drafted 2026-09-02 from docs/content-briefs/04a-po-co-specyfikacja.md,
+    autonomous run — brief unapproved. The opening assumes the minutnik
+    repositories from Budowa 1 hold no written description of the app beyond
+    dziennik.md; if the class added one, soften „nie ma go nigdzie” to „nie ma
+    tam zdania, które dałoby się sprawdzić”. Intra-module references are plain
+    text: a link to an unpublished lesson fails the build. */}
+
+Otwórz repozytorium minutnika — pierwszej z trzech aplikacji, tej z siedmioma
+zasadami podanymi agentowi w jednej wiadomości. Minęło kilka tygodni. Przejrzyj
+pliki i historię i poszukaj miejsca, w którym jest napisane, co ten program ma
+robić.
+
+Kod jest. Jest historia commitów, w której da się odczytać, co agent kiedy
+dopisał. Jest `dziennik.md` z jednym wpisem wstecznym o tym, co zostało wtedy
+przyjęte bez sprawdzenia. Siedmiu zasad nie ma nigdzie: są w treści lekcji, w
+której zostały podane, i w wątku rozmowy, który dawno się skończył. Program działa,
+ale z samego repozytorium nie da się powiedzieć, czy robi to, co miał — trzeba by
+to pamiętać.
+
+Ta lekcja jest o tym, co z tego wynika. Pytanie brzmi: **skoro trzy aplikacje
+działają, po co jeszcze cokolwiek spisywać — i co dokładnie?**
+
+## Trzy repozytoria i ani jednego zdania o tym, co miało powstać
+
+Zrób inwentaryzację. W trzech repozytoriach z poprzedniego modułu leżą cztery
+rodzaje rzeczy i każda odpowiada na inne pytanie. Kod odpowiada na pytanie „co
+ten program robi” — pod warunkiem, że ktoś go przeczyta i zrozumie. Plik
+`AGENTS.md` w katalogu odpowiada na pytanie „jak ma być napisany kod w tym
+projekcie”. Dziennik odpowiada na pytanie „co zostało sprawdzone i z jakim
+wynikiem”. README, jeśli jest, mówi, jak to uruchomić.
+
+Na pytanie „co miało powstać” nie odpowiada żaden z nich. Odpowiedź istniała —
+w twojej głowie i w wiadomościach do agenta — i została tam, gdzie powstała. To
+nie jest szczególna cecha twoich projektów. Kiedy w listopadzie 2025 roku jedna
+z największych firm w branży wypuszczała narzędzie dla programistów, Deepak
+Singh, wiceprezes odpowiedzialny w niej za narzędzia dla programistów, tak
+opisał to, co widać dziś w cudzych repozytoriach:
+
+<Cytat
+  author="Deepak Singh (Amazon Web Services)"
+  source="GeekWire, rozmowa przy premierze narzędzia Kiro"
+  date="2025-11-17"
+  url="https://www.geekwire.com/2025/amazons-surprise-indie-hit-kiro-launches-broadly-in-bid-to-reshape-ai-powered-software-development/">
+
+Internet jest pełen prototypów zbudowanych z AI. Kiedy programista wraca do
+takiego projektu po dwóch miesiącach albo przekazuje go komuś z zespołu, ten
+ktoś nie ma najmniejszego pojęcia, jakie prompty do tego doprowadziły. Tego już
+nie ma.
+
+</Cytat>
+
+Singh mówi o programistach z wieloletnim doświadczeniem, a ich prototypy różnią
+się od twojego minutnika tylko rozmiarem. Mechanizm jest ten sam: rozmowa z
+agentem jest miejscem, w którym powstaje zamiar, a rozmowa nie jest częścią
+projektu. Zamknięcie wątku kasuje jedyny zapis tego, o co chodziło.
+
+Sprawdź to na sobie, zanim ruszysz dalej. Nie zaglądając do lekcji o minutniku,
+wypisz z pamięci siedem zasad, które dostał agent, i policz, ile udało się
+odtworzyć. Reszty nie da się odzyskać ani z kodu, ani z historii — a to były
+zasady podane przez ciebie, kilka tygodni temu.
+
+## Co model robi z tym, czego nie napiszesz
+
+Z lekcji o halucynacjach wiesz, że model nie zatrzymuje się, kiedy czegoś nie
+wie: [dopisuje najbardziej prawdopodobną
+kontynuację](/moduly/03-budujemy/halucynacje-i-weryfikacja) i robi to z pełnym
+przekonaniem. To samo dzieje się z tym, czego w prośbie po prostu nie ma. W
+[pierwszej rundzie notatnika](/moduly/03-budujemy/budowa-2-techniki-promptowania)
+prośba mówiła „do pliku” i na tym się kończyła, więc format pliku wybrał model —
+sensownie i nie po twojemu. Nie była to halucynacja. Była to luka, którą ktoś
+musiał wypełnić, i wypełnił ją jedyny uczestnik rozmowy, który nie wiedział,
+czego chcesz.
+
+Da się to zmierzyć. Zespół siedmiu badaczy wziął dwa standardowe zestawy zadań
+programistycznych i [celowo popsuł ich
+opisy](https://arxiv.org/abs/2507.20439) na trzy sposoby: coś z opisu usunięto,
+coś napisano wieloznacznie, do czegoś dopisano zdanie sprzeczne z resztą. Potem
+siedem modeli rozwiązywało te same zadania z opisów oryginalnych i popsutych
+(praca z 27 lipca 2025 roku). Co się stało, warto przeczytać w kolejności.
+
+Odsetek poprawnych rozwiązań spadł o 20–40%, zależnie od rodzaju usterki:
+najmniej przy opisach niepełnych, najbardziej przy sprzecznych. Dla jednego z
+większych modeli wyglądało to tak: 73,8% poprawnych rozwiązań przy opisach
+oryginalnych, 45,1% przy niepełnych, 34,8% przy wieloznacznych, 6,7% przy
+sprzecznych. Znaczy to tyle, że ten sam model z tym samym zadaniem rozwiązuje je
+albo nie w zależności od zdania, którego w opisie brakuje albo które jest w nim
+za dużo — nie od trudności zadania.
+
+Druga miara jest ważniejsza od pierwszej. Badacze liczyli osobno kod, który
+**uruchamia się bez błędu, ale robi co innego, niż trzeba**: przy oryginalnych
+opisach stanowił 24% wyników tego modelu, przy niepełnych 54%, przy
+wieloznacznych 65%, przy sprzecznych 89%. Im gorszy opis, tym więcej kodu, który
+wygląda na gotowy i nie jest — a to jest dokładnie ten rodzaj błędu, którego nie
+widać w edytorze. I trzecia rzecz: kiedy modele poproszono, żeby najpierw
+oceniły, czy opis jest jasny, robiły to słabo — i tak czy inaczej brały się za
+rozwiązanie.
+
+Uczciwie o granicach tego badania. Zadania były małe — pojedyncze funkcje, nie
+aplikacje — a modele pochodziły z 2025 roku, kilka z nich niewielkich. Autorzy
+spodziewają się, że na większych zadaniach jest gorzej, ale tego nie zmierzyli.
+To, co zostaje po odjęciu tych zastrzeżeń, jest jednak dokładnie tym, co
+było widać w rundzie 1: im mniej mówi opis, tym więcej dopowiada model, a to, co
+dopowie, wygląda tak samo jak kod, który ktoś zamówił.
+
+I jedno zastrzeżenie większe, żeby nie sprzedać ci tej lekcji za drogo. To
+badanie mierzy jakość opisu w prośbie, nie metodę pracy. Nikt dotąd nie zmierzył
+w kontrolowanym badaniu, czy program budowany od spisanej specyfikacji wychodzi
+lepiej niż ten sam program budowany z rozmowy — na prawdziwych aplikacjach, nie
+na pojedynczych funkcjach. To, co da się pokazać liczbami, to tyle: im mniej
+napiszesz, tym więcej zgadnie model. Reszta tego modułu jest praktyką, którą
+branża przyjęła w 2025 roku, z datą i z powodami — nie udowodnionym prawem.
+
+## Najtrudniejsza część była zawsze ta sama
+
+Można by pomyśleć, że to nowy problem, wywołany przez nowe narzędzia. Jest
+odwrotnie. W 1987 roku, kiedy programy pisało się ręcznie i wolno, Frederick
+Brooks — informatyk i autor książek o tym, jak powstają duże programy — napisał
+esej o tym, które trudności w tworzeniu oprogramowania
+są przypadkowe i kiedyś znikną, a które są istotą rzeczy i nie znikną nigdy. Do
+drugiej grupy zaliczył to:
+
+<Cytat
+  author="Frederick P. Brooks Jr."
+  source="„No Silver Bullet”, IEEE Computer, t. 20, nr 4"
+  date="1987-04"
+  url="https://www.cgl.ucsf.edu/Outreach/pc204/NoSilverBullet.html">
+
+Najtrudniejszą pojedynczą częścią budowania systemu oprogramowania jest
+zdecydowanie dokładnie, co zbudować. Żadna inna część pracy koncepcyjnej nie
+jest tak trudna jak ustalenie szczegółowych wymagań technicznych. Żadna inna
+część tak nie kaleczy powstałego systemu, gdy zostanie zrobiona źle.
+
+</Cytat>
+
+Brooks dodaje zdanie, które warto odnieść do siebie: klient nie wie, czego chce,
+i prawie nigdy nie przemyślał problemu w stopniu potrzebnym do specyfikacji.
+Przy minutniku klientem jesteś ty. Agenty zmieniły w tym równaniu jedną rzecz —
+pisanie kodu stało się tanie i szybkie — i przez to jedyna trudność, której nie
+da się zautomatyzować, została na wierzchu, sama.
+
+To jest też miejsce, w którym spełnia się obietnica z [lekcji o nowym warsztacie
+programisty](/moduly/01-jak-powstaje-oprogramowanie/nowy-warsztat-programisty).
+Padło tam ostrzeżenie: doświadczony programista może być niejasny, bo ma wyczucie,
+które w sekundę mówi mu, czy wynik jest dobry — ty tego wyczucia jeszcze nie masz,
+więc dokładne masz mieć nie *jak*, tylko *po czym poznasz, że działa*. Wróć do
+siedmiu zasad minutnika i spróbuj dopisać do każdej takie zdanie. Przy kilku
+pójdzie łatwo: „po skończonej pracy przerwa startuje sama” sprawdza się przez
+odczekanie. Przy kilku okaże się, że czegoś nikt nie zdecydował — co ma się
+stać z licznikiem cykli, kiedy naciśniesz reset w środku przerwy? Program coś w
+tej sytuacji robi. Wybrał to model.
+
+## Czym specyfikacja jest, a czym nie jest
+
+**Specyfikacja** to spisane — zanim powstanie kod — co program robi, dla kogo,
+czego nigdy nie robi i po czym poznasz, że działa. Leży w repozytorium, obok
+kodu, i jest tym, z czym porównujesz wynik. Słowo jest stare i w tym kursie
+będzie używane w tym jednym znaczeniu.
+
+Łatwiej je zrozumieć przez to, czym nie jest. Nie jest promptem: prompt to
+wiadomość w rozmowie, a rozmowa umiera z wątkiem; specyfikacja to plik, na który
+prompt może wskazać. Nie jest plikiem reguł: `AGENTS.md` mówi, *jak* ma być
+napisany kod, i [już w tamtej
+lekcji](/moduly/03-budujemy/budowa-3-reguly-projektu) padło, że reguły to jeszcze
+nie specyfikacja, bo nie mówią, *co* aplikacja ma robić. Nie jest też
+dokumentacją: dokumentacja opisuje program, który istnieje; specyfikacja opisuje
+program, którego jeszcze nie ma, i dlatego może być tym, co sprawdza wynik.
+
+| Plik | Na jakie pytanie odpowiada | Kiedy powstaje |
+| --- | --- | --- |
+| `README.md` | Jak to uruchomić? | po zbudowaniu |
+| `AGENTS.md` | Jak ma być napisany kod w tym projekcie? | gdy zasadę wypowiadasz drugi raz |
+| `dziennik.md` | Co zostało sprawdzone i z jakim wynikiem? | przy każdej przyjętej zmianie |
+| specyfikacja | Co ma powstać, dla kogo, czego nigdy nie robi, po czym poznam? | **przed kodem** |
+
+Połowę specyfikacji już znasz, choć nie pod tą nazwą. Prompt z pokazu w
+[lekcji o agencie budującym
+aplikację](/moduly/01-jak-powstaje-oprogramowanie/na-zywo-agent-buduje-aplikacje)
+miał ponumerowaną listę „Functional requirements” i zdanie „zadanie jest
+skończone, kiedy `dotnet build` przechodzi bez błędów”. To była specyfikacja
+wklejona do wiadomości — działała na pokazie i zniknęła razem z nim, bo nikt nie
+zapisał jej w repozytorium.
+
+Co to kosztuje i co daje, powiedzmy wprost. Kosztuje godzinę pisania, zanim
+cokolwiek zacznie się budować, i kosztuje kilka rzeczy, których nie da się
+zapisać, bo okaże się, że nikt ich nie zdecydował — te trafiają na listę pytań
+zamiast na listę niespodzianek. Daje trzy rzeczy. Agent dostaje to, czego nie
+umie zgadnąć, więc mniej dopowiada. Ty dostajesz listę, z którą porównujesz
+wynik, zamiast wrażenia, że „chyba działa”. A ty za dwa miesiące dostajesz
+odpowiedź na pytanie, które dziś padło pod adresem repozytorium minutnika i na
+które ono nie znało odpowiedzi.
+
+## Co spisujesz dzisiaj
+
+Zanim w następnych lekcjach napiszesz specyfikację dla programu, który dopiero
+powstanie, napisz jedną po fakcie — dla minutnika, z uruchomionej aplikacji. To
+najłatwiejszy możliwy przypadek: program istnieje, można go poklikać, a i tak
+zobaczysz, jak wiele zdań trudno napisać.
+
+Załóż w repozytorium minutnika plik `docs/co-mial-robic.md` z czterema
+częściami. **Co robi** — ponumerowane zdania, każde o jednej rzeczy, w formie
+„Program pozwala…” albo „Program pokazuje…”. **Czego nie robi** — to, co
+mógłby, a celowo nie robi: nie zapisuje historii, nie gra dźwięku. **Po czym
+poznam** — pięć zdań w formie „Kiedy …, to …”, każde do sprawdzenia przez
+uruchomienie: „Kiedy skończy się dwadzieścia pięć minut pracy, to przerwa
+zaczyna się bez klikania”. **Do ustalenia** — wszystko, czego nie umiesz
+napisać, bo trzeba by najpierw zdecydować.
+
+Do lekcji o minutniku zajrzyj dopiero po napisaniu. Porównaj z siedmioma
+zasadami: które udało się odtworzyć, których nie, i — to najciekawsze — co program robi
+w sytuacjach, o których żadna z siedmiu zasad nie mówiła. Zrób commit i
+wypchnij. Do tego pliku wrócisz za dwie lekcje, kiedy nauczysz się pisać go
+lepiej, i zobaczysz, jak bardzo zmieni się jego język.
+
+## Plik, którego brakowało
+
+Wróć do pytania z początku: po co spisywać, skoro działa? Odpowiedź nie brzmi
+„bo tak wypada” ani „bo tak robią w firmach”. Brzmi tak:
+
+- **Bo agent dopowiada wszystko, czego nie napiszesz** — a dopowiedziane wygląda
+  jak zamówione. Pomiar z tej lekcji mówi, ile tego jest.
+- **Bo bez spisanego „co miało być” nie ma czym sprawdzić „co jest”.** Dziennik
+  weryfikacji zapisuje wyniki sprawdzeń; specyfikacja mówi, co w ogóle
+  sprawdzać.
+- **Bo rozmowa nie jest częścią projektu.** Wszystko, co ma przeżyć zamknięcie
+  wątku, musi być plikiem w repozytorium.
+
+Masz teraz w minutniku plik, którego brakowało, spisany po fakcie i z listą pytań
+na końcu. Zanim jednak zaczniesz pisać specyfikacje dla programów, które dopiero
+powstaną, jest jeszcze jeden rodzaj zdań do rozdzielenia: takie, które są prawdą
+o projekcie niezależnie od tego, jaką funkcję do niego dopiszesz. Od tego zaczyna
+się następna lekcja.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: trzy rzeczy, które daje specyfikacja — komu i co. Do tego po jednym
+zdaniu o tym, czym specyfikacja różni się od pliku reguł i czym od dziennika
+weryfikacji.
+
+</Zadanie>
+
+<Zadanie title="Minutnik wstecz">
+
+Napisz `docs/co-mial-robic.md` dla minutnika z uruchomionej aplikacji, bez
+zaglądania do lekcji: co robi, czego nie robi, pięć zdań „Kiedy …, to …”, do
+ustalenia. Dopiero potem porównaj z siedmioma zasadami i dopisz na końcu, ile
+udało się odtworzyć i co program robi w sytuacji, o której żadna zasada nie mówiła.
+
+</Zadanie>
+
+<Zadanie>
+
+Zrób commit z tym plikiem i wypchnij. W `dziennik.md` minutnika dopisz jedno
+zdanie: ile z pięciu zdań „Kiedy …, to …” udało się od razu sprawdzić przez
+uruchomienie programu i które nie.
+
+</Zadanie>
+
+<Zadanie title="Połowa specyfikacji na pokazie">
+
+Otwórz prompt z pokazu w lekcji o agencie budującym aplikację. Przy każdej linii
+zaznacz: mówi *co* ma powstać, mówi *jak* (jaki język, jaka biblioteka, gdzie
+plik), czy mówi *po czym poznać, że skończone*. Policz każdy rodzaj i zapisz,
+którego jest najmniej.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-02">
+
+<Zrodlo title="Amazon's surprise indie hit: Kiro launches broadly in bid to reshape AI-powered software development" publisher="GeekWire (Todd Bishop)" date="2025-11-17" url="https://www.geekwire.com/2025/amazons-surprise-indie-hit-kiro-launches-broadly-in-bid-to-reshape-ai-powered-software-development/">wypowiedź Deepaka Singha o prototypach, do których po dwóch miesiącach nikt nie zna promptów; tłumaczenie własne</Zrodlo>
+
+<Zrodlo title="When Prompts Go Wrong: Evaluating Code Model Robustness to Ambiguous, Contradictory, and Incomplete Task Descriptions" publisher="arXiv (Larbi, Akli, Papadakis, Bouyousfi, Cordy, Sarro, Le Traon)" date="2025-07-27" url="https://arxiv.org/abs/2507.20439">spadek odsetka poprawnych rozwiązań o 20–40% przy niepełnych, wieloznacznych i sprzecznych opisach; dla GPT-4 na zestawie HumanEval 73,8% → 45,1 / 34,8 / 6,7; kod działający, lecz niepoprawny 24% → 54 / 65 / 89; modele słabo rozpoznają niejasny opis i mimo to rozwiązują zadanie; tabele 2 i 3</Zrodlo>
+
+<Zrodlo title="No Silver Bullet: Essence and Accidents of Software Engineering" publisher="IEEE Computer, t. 20, nr 4, s. 10–19 (Frederick P. Brooks Jr.)" date="1987-04" url="https://www.cgl.ucsf.edu/Outreach/pc204/NoSilverBullet.html">„The hardest single part of building a software system is deciding precisely what to build”; fragment o kliencie, który nie wie, czego chce; tłumaczenie własne</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="artykul" title="No Silver Bullet — pełny tekst eseju" url="https://www.cgl.ucsf.edu/Outreach/pc204/NoSilverBullet.html">czterdzieści lat później czyta się to jak komentarz do agentów: które trudności programowania są przypadkowe i znikają razem z narzędziem, a które zostają — wystarczą pierwsze trzy strony</Lektura>
+
+<Lektura kind="artykul" title="When Prompts Go Wrong — tabela 5 z przykładami popsutych opisów" url="https://arxiv.org/abs/2507.20439">na końcu pracy jest tabela z oryginalnymi opisami zadań i ich niepełnymi, wieloznacznymi i sprzecznymi wersjami; warto ją przejrzeć, żeby zobaczyć, jak niewiele trzeba popsuć</Lektura>
+
+</CzytajDalej>

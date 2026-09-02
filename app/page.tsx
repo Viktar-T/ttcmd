@@ -19,10 +19,9 @@ export default async function HomePage() {
   return (
     <>
       <section className="hero lane">
-        <h1 className="heroTitle">ttcmd</h1>
-        {/* The description that was already on this page, unchanged. Article V
-            is not relaxed by a redesign: what the course is officially called
-            is still a TO CONFIRM, and not this slice's to resolve. */}
+        <h1 className="heroTitle">Aplikacje desktopowe i mobilne</h1>
+        {/* The course name, confirmed by Viktar and no longer a TO CONFIRM.
+            The lede below is the description that was already on this page. */}
         <p className="heroLede">
           Materiały i zadania kursu aplikacji desktopowych i mobilnych.
         </p>

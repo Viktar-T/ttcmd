@@ -29,6 +29,25 @@ session has never seen the conversation that produced the spec, so it can only
 work from what is written down — which is the only honest test of whether the
 spec is any good.
 
+### Or run it autonomously
+
+The prompts in `docs/roadmap.md` collapse steps 1 to 5 into a single run: spec,
+plan, tasks, implementation and the closing review, with no approval between
+stages. You review afterwards.
+
+You give up the pauses, and with them the correction points. What you must not
+give up is the fresh-context test — so an autonomous run writes `plan.md` from a
+**subagent given nothing but the spec**. If that subagent cannot plan from the
+spec alone, the spec is incomplete, and the run says so. AGENTS.md §2 carries
+the rule.
+
+Autonomous does not mean unattended in the sense that anything goes: the run
+still stops for a genuine escalation (§4), still commits one task at a time, and
+still leaves unchecked any criterion needing your eyes.
+
+Everything below describes the supervised loop. In autonomous mode you do steps
+0 and 6 yourself and read the report in between.
+
 ## Where to sit
 
 | Tool to use                         | For                                                                                                                                                                            |

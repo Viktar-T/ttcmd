@@ -1,0 +1,301 @@
+---
+title: "Narzędzia SDD: jedna pętla, pięć opakowań"
+order: 4
+summary: "Między lipcem a grudniem 2025 roku pięć firm wypuściło narzędzia, których całą pracą jest wytwarzanie czterech plików, które właśnie powstały ręcznie. Lekcja o tym, że to ta sama pętla pod różnymi nazwami, o trzech poziomach jej używania i o jednym krytycznym głosie — oraz o połowie pętli, która już siedzi w twoim edytorze."
+publish: false
+---
+
+{/* Drafted 2026-09-02 from docs/content-briefs/04d-narzedzia-sdd.md,
+    autonomous run — brief unapproved. Every tool fact here is a vendor claim
+    dated 2026-09-02 (research-06 §3); re-check the week this is taught.
+    TO CONFIRM on a lab machine: whether Cursor's Plan Mode and Antigravity's
+    Implementation Plan artefact are available under the school's accounts —
+    the build exercise degrades to reading the feature's documentation if not.
+    The name density here is deliberate and above the checker's budget: the
+    lesson's job is the mapping table. */}
+
+W `notatnik-v2` leżą trzy pliki twojego autorstwa: konstytucja, decyzja i
+specyfikacja — napisane w zwykłym edytorze tekstu, bez żadnego narzędzia poza
+Gitem. Z poprzedniej lekcji znasz jeszcze dwa, plan i listę zadań, które
+powstają ze specyfikacji w świeżej sesji. Razem to cztery miejsca w pętli:
+konstytucja, specyfikacja, plan, zadania.
+
+Tymczasem między lipcem a grudniem 2025 roku pięć firm, w tym trzy z największych w
+tej branży, wypuściło narzędzia, których całą pracą jest wytwarzanie dokładnie
+tych plików: zadaje się im pytania, one piszą specyfikację, plan i listę zadań, a
+potem wykonują zadania jedno po drugim. Nazywa się to *spec-driven development*,
+w skrócie SDD — programowanie sterowane specyfikacją — i pod tym hasłem stoi
+dziś wiele produktów.
+
+Pytanie na dziś jest więc dwuczęściowe: **skoro pętla jest jedna, po co jest pięć
+narzędzi — i którego z nich będziesz używać?**
+
+## Pięć opakowań w pięć miesięcy
+
+Najpierw fakty, z datami, bo w tej dziedzinie data jest częścią faktu. Tabela
+jest z 2 września 2026 roku; każda komórka ma link, żebyś mógł sprawdzić, co się
+od tego czasu zmieniło.
+
+| Data | Narzędzie | Kto | Kształt |
+| --- | --- | --- | --- |
+| 14.07.2025 | [Kiro](https://kiro.dev/blog/introducing-kiro/), wersja próbna | Amazon | własny edytor, w którym specyfikacja jest trybem pracy obok trybu „vibe” |
+| 02.09.2025 | [Spec Kit](https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/) | GitHub | narzędzie wiersza poleceń, które instaluje pętlę jako polecenia w ponad trzydziestu agentach |
+| 06.09.2025 | [OpenSpec](https://www.npmjs.com/package/@fission-ai/openspec) | Fission AI | lekki zestaw poleceń: propozycja zmiany, wdrożenie, archiwum |
+| 23.09.2025 | [Tessl](https://tessl.io/blog/tessl-launches-spec-driven-framework-and-registry) | Tessl | specyfikacja jako źródło, z którego generuje się kod, plus rejestr ponad dziesięciu tysięcy gotowych specyfikacji bibliotek |
+| 17.11.2025 | [Kiro](https://www.geekwire.com/2025/amazons-surprise-indie-hit-kiro-launches-broadly-in-bid-to-reshape-ai-powered-software-development/), wersja pełna | Amazon | ponad 250 tysięcy programistów w trzymiesięcznej wersji próbnej |
+| 17.12.2025 | [Conductor](https://developers.googleblog.com/conductor-introducing-context-driven-development-for-gemini-cli/) | Google | rozszerzenie do agenta w terminalu, pod własną nazwą: *context-driven development* |
+
+Pięć zespołów doszło w pięć miesięcy do tego samego: cztery pliki, ta sama
+kolejność, sprawdzenie na końcu. Czy podpatrywały jeden drugiego, nie wiadomo i
+nie ma to znaczenia — kolejność i nazwy stopni powtarzają się na tyle dokładnie,
+że opłaca się uczyć stopni, nie produktów. To jest ten sam argument,
+który padł w [lekcji o niewypadaniu z
+obiegu](/moduly/01-jak-powstaje-oprogramowanie/jak-nie-wypasc-z-obiegu): kategoria
+jest stabilna, nazwy nie — więc uczysz się kategorii. Kategoria nazywa się tu
+„pętla z czterech plików” i już ją znasz.
+
+## Ta sama pętla, inne nazwy
+
+Połóż swoje cztery pliki obok tego, co generuje każde z narzędzi. Tabela czyta
+się wierszami: jeden wiersz to jedno miejsce w pętli, kolumny to nazwy, jakie mu
+nadano. Wszystkie nazwy są z dokumentacji narzędzi, sprawdzonej 2 września 2026
+roku; w źródłach na dole jest link do każdej.
+
+| Twój plik | Spec Kit | Kiro | OpenSpec | Conductor |
+| --- | --- | --- | --- | --- |
+| `konstytucja.md` | `/speckit.constitution` → `constitution.md` | pliki sterujące: `product.md`, `tech.md`, `structure.md` | `openspec/specs/` jako obowiązująca prawda o programie | `/conductor:setup` → `product.md`, `tech.md`, `workflow.md` |
+| `spec.md` | `/speckit.specify` → `spec.md` | `requirements.md` w zapisie EARS | `changes/nazwa-zmiany/` — propozycja i zmiany w specyfikacji | `/conductor:newTrack` → `spec.md` |
+| `plan.md` | `/speckit.plan` → `plan.md` | `design.md` | `design.md` | `plan.md` |
+| `tasks.md` | `/speckit.tasks` → `tasks.md` | `tasks.md` z przyciskiem **Start task** | `tasks.md` | `plan.md` — fazy, zadania, podzadania |
+| kod i sprawdzenie | `/speckit.implement`, `/speckit.analyze` | wykonanie zadań, odhaczane w edytorze | `/opsx:apply`, potem `/opsx:archive` | `/conductor:implement`, odhaczane w `plan.md` |
+
+Każde narzędzie dodaje do pętli jedną rzecz, której w twoich czterech plikach nie
+ma, i warto wiedzieć którą. Spec Kit dodaje osobny krok wyjaśniania — polecenie,
+które przed planem wypisuje pytania do specyfikacji, czyli twoje „Do ustalenia”
+jako czynność. Kiro dodaje przycisk: przy każdym zadaniu jest **Start task**, i
+to jest najbardziej czytelny obraz pętli, jaki da się pokazać na ekranie. OpenSpec
+dodaje archiwum: skończona zmiana jest wtapiana w główną specyfikację programu,
+więc `openspec/specs/` zawsze mówi, co program robi *teraz* — to jest odpowiedź na
+pytanie, co zrobić ze specyfikacją po zbudowaniu, do którego wrócimy za chwilę.
+Conductor dodaje nazwę, która mówi tezę tego modułu w dwóch słowach: Google
+nazywa problem wprost — kontekst pracy [ginie w nietrwałych zapisach
+rozmów](https://developers.googleblog.com/conductor-introducing-context-driven-development-for-gemini-cli/)
+i trzeba go przenieść do plików w repozytorium (wpis z 17 grudnia 2025 roku).
+
+Zwróć uwagę, że trzy narzędzia zapisują kryteria trzema notacjami z poprzedniej
+lekcji, a czwarte zostawia formę autorowi. Kształt zdania jest wspólny; różni się
+składnia. To jest dokładnie ta różnica, której nie warto się uczyć na pamięć.
+
+## Trzy poziomy, i na którym jesteś
+
+Kiedy trzy z tych narzędzi miały po kilka tygodni, Birgitta Böckeler — inżynierka
+z firmy doradczej Thoughtworks, która opisuje w cyklu artykułów, jak w praktyce
+działają narzędzia AI dla programistów — spróbowała każdego z nich i zapisała
+rozróżnienie, którego wcześniej brakowało. Warto je znać dokładnie, bo pod
+hasłem SDD kryją się trzy różne rzeczy:
+
+<Cytat
+  author="Birgitta Böckeler (Thoughtworks)"
+  source="martinfowler.com, „Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl”"
+  date="2025-10-15"
+  url="https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html">
+
+Spec-first: dobrze przemyślana specyfikacja jest pisana najpierw, a potem używana
+w pracy z asystentem AI nad danym zadaniem.
+
+Spec-anchored: specyfikacja jest zachowywana także po skończeniu zadania, żeby
+dalej służyć rozwijaniu i utrzymaniu danej funkcji.
+
+Spec-as-source: specyfikacja jest z czasem głównym plikiem źródłowym; człowiek
+edytuje wyłącznie ją i nigdy nie dotyka kodu.
+
+</Cytat>
+
+Twój notatnik jest na pierwszym poziomie, z jednym nawykiem z drugiego: `spec.md`
+zostaje w repozytorium, a kiedy notatnik będzie się zmieniał, najpierw zmieni się
+specyfikacja. Trzeci poziom jest zakładem, który robi dziś Tessl — jego narzędzie
+[oznacza wygenerowane pliki
+komentarzem](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html)
+„wygenerowane ze specyfikacji, nie edytować” — i Böckeler ostrzega przed nim,
+przypominając wcześniejszą próbę generowania programów z opisów, która skończyła
+się połączeniem sztywności z nieprzewidywalnością.
+
+Jej krytyka nie kończy się na trzecim poziomie i jest w tej lekcji z tego samego
+powodu, dla którego w lekcji o vibe codingu były głosy przeciw: żeby nie
+przyjmować metody na wiarę. Po wypróbowaniu narzędzi napisała, że [wolałaby
+przeglądać kod niż wszystkie te pliki
+Markdown](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html),
+że przy małych problemach narzędzia bywają „młotem na orzech”, i że mimo
+rozbudowanych specyfikacji agenty nadal ignorowały polecenia i dopisywały
+duplikaty zamiast użyć opisanych elementów. Jej wniosek jest dwuczęściowy: pisanie
+specyfikacji najpierw jest zdecydowanie wartościowe; narzędzia, które generują
+do tego dziesięć plików, mogą psuć rzecz, którą miały poprawić.
+
+Odpowiedź tego modułu na tę krytykę padła już w poprzedniej lekcji i jest miarą,
+nie obroną: specyfikacja jest na tydzień pracy, a jedno zdanie zmiany to za mało,
+żeby ją pisać. Böckeler nie spiera się z pętlą. Spiera się z jej rozmiarem — i
+tu ma rację. Warto też pamiętać, co padło w pierwszej lekcji tego modułu: nikt
+dotąd nie zmierzył samej metody na prawdziwych aplikacjach. Pięć firm w tabeli
+wyżej zrobiło zakład, nie dowód — i dlatego ta lekcja ma daty w każdym wierszu.
+
+## Połowa pętli jest już w twoim edytorze
+
+Obu edytorów z tego kursu nie ma w tabeli, a mimo to robią połowę pętli. Warto to
+zobaczyć na własnym projekcie.
+
+W Cursorze jest **Plan Mode**: zamiast od razu pisać kod, agent zadaje pytania
+doprecyzowujące, przegląda projekt i [pisze plan w pliku Markdown, który można
+poprawić przed budowaniem](https://cursor.com/docs/agent/planning) i zapisać w
+folderze projektu (dokumentacja sprawdzona 2 września 2026). Cursor zapisuje go na
+życzenie do folderu projektu, więc plan może zostać w repozytorium tak jak twój
+`plan.md`. W Antigravity agent przed kodem tworzy **Implementation Plan** —
+plan wdrożenia, [opisany w dokumentacji jako przeznaczony do przeczytania przez
+użytkownika](https://codelabs.developers.google.com/getting-started-google-antigravity)
+— oraz listę zadań, i czeka na przycisk **Proceed**, chyba że ustawienia każą mu
+iść dalej bez pytania (sprawdzone 2 września 2026). Antigravity pokazuje te
+artefakty w osobnym panelu obok rozmowy, więc plan i kod nie mieszają się w
+jednym oknie. Oba edytory wytwarzają więc twoje `plan.md` i `tasks.md`, wewnątrz
+rozmowy, na jeden przycisk.
+
+Czego oba nie wytwarzają: `spec.md` i `konstytucja.md`. Plan, który powstaje w
+edytorze, jest planem *czegoś* — i to coś dostaje z twojej wiadomości. Jeśli
+wiadomość brzmi „zrób notatnik”, plan będzie planem tego, co agent dopowiedział.
+Jeśli w projekcie leży specyfikacja z kryteriami i konstytucja, plan będzie
+planem tego, co jest napisane. Połowa pętli, którą robi edytor, jest dokładnie tą
+połową, którą w poprzedniej lekcji pisał za ciebie agent w świeżej sesji. Druga
+połowa — ta, którą trzeba napisać ręcznie — nie ma przycisku w żadnym z nich.
+
+Sprawdzisz to w ćwiczeniu: wkładasz swoją specyfikację do projektu, włączasz
+planowanie w edytorze i porównujesz plan, który wyjdzie, z tym, który powstał w
+poprzedniej lekcji. Różnice — co dodał, co pominął, czy wlazł na teren
+specyfikacji — trafiają do dziennika.
+
+## Dlaczego w tym module nic nie instalujemy
+
+Po tej tabeli nasuwa się pytanie, dlaczego notatnik nie powstaje w jednym z tych
+narzędzi. Powody są trzy i wszystkie praktyczne.
+
+Pierwszy: część pętli, której narzędzia nie dostarczają — specyfikacja i
+konstytucja — jest dokładnie tą, której masz się nauczyć. Narzędzie, które
+generuje plan z jednego zdania, uczy klikać, nie pisać. Drugi: koszt. Spec Kit
+wymaga [zainstalowania osobnego języka i jego menedżera
+pakietów](https://github.com/github/spec-kit), Kiro to trzeci edytor z własnym
+kontem, a serwer, który miał dodawać pętlę do dowolnego edytora, ma według
+własnej strony [autora na przerwie](https://github.com/Pimzino/spec-workflow-mcp)
+(oba sprawdzone 2 września 2026). Każda z tych rzeczy zjadłaby część tygodnia, w
+którym pętla ma być widoczna. Trzeci: przenośność. Pętla przećwiczona ręcznie na
+plikach Markdown przenosi się na każde z pięciu opakowań, bo w tabeli wyżej
+wszystkie kolumny mają te same wiersze. Pętla nauczona przez jeden produkt
+przenosi się gorzej — a produkty w tej tabeli będą za rok wyglądać inaczej.
+
+Kiedy opakowanie zaczyna się opłacać? Kiedy specyfikacji jest więcej niż jedna
+naraz, kiedy pisze je zespół, kiedy plik ma żyć miesiącami i być wtapiany w
+opis całego programu, jak w OpenSpec. Żaden z tych warunków nie zachodzi przy
+notatniku. Wszystkie mogą zajść przy projekcie, który wybierzesz na drugi
+semestr — i wtedy wybór opakowania będzie decyzją, którą zapiszesz.
+
+## Kategoria, nie produkt
+
+Pytanie z początku miało dwie części. Dlaczego narzędzi jest pięć, skoro pętla
+jest jedna: bo każda firma pakuje tę samą pętlę we własny produkt — opakowanie
+da się wbudować w edytor i sprzedać, cztery pliki Markdown nie. Którego będziesz
+używać: do planu i listy zadań — tego, które ma twój edytor, bo już tam jest; do
+specyfikacji i konstytucji — żadnego, bo te dwa pliki piszesz własnoręcznie, a umiejętność
+ich pisania przenosi się na każdą kolumnę tabeli.
+
+- **Cztery pliki to kategoria; nazwy w kolumnach to produkty.** Ucz się wierszy.
+- **Notacja kryterium jest szczegółem składni.** Kształt zdania — sytuacja,
+  działanie, sprawdzenie — jest wspólny.
+- **Twój edytor robi połowę pętli**: plan i zadania. Drugiej połowy nie zrobi za
+  ciebie żaden przycisk.
+- **Krytyka jest o rozmiarze, nie o pętli.** Specyfikacja na tydzień pracy — tak;
+  dziesięć plików do literówki — nie.
+
+Wszystko, co potrzebne do zbudowania notatnika od specyfikacji, leży w
+repozytorium. Następna lekcja jest tygodniem budowania.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: cztery pliki i ich nazwy w dwóch dowolnych narzędziach z tabeli; trzy
+poziomy Böckeler i ten, na którym jest twój notatnik — z uzasadnieniem w jednym
+zdaniu.
+
+</Zadanie>
+
+<Zadanie title="Szablon obok specyfikacji">
+
+Otwórz szablon specyfikacji ze Spec Kit (link w „Czytaj dalej” poprzedniej
+lekcji) i połóż go obok swojego `spec.md`. Wypisz dwie rzeczy, które szablon ma,
+a twoja specyfikacja nie, i przy każdej zdecyduj: dopisać czy nie — z powodem.
+Obie decyzje idą do `dziennik.md`.
+
+</Zadanie>
+
+<Zadanie>
+
+W `notatnik-v2`, z konstytucją i specyfikacją w folderze, włącz planowanie w
+swoim edytorze i poproś o plan budowy z tych dwóch plików. Porównaj wynik z
+planem wydrukowanym w poprzedniej lekcji: czy ma te same trzy części —
+sprawdzenie z konstytucją, pliki, kolejność z kryteriami — co dodał, co pominął,
+czy zszedł na teren specyfikacji lub konstytucji. Zapisz porównanie w `dziennik.md`. Jeśli funkcja
+planowania jest niedostępna na twoim koncie, przeczytaj jej dokumentację i
+zapisz, które z czterech plików wytwarza.
+
+</Zadanie>
+
+<Zadanie title="Poziom drugi">
+
+Przeczytaj część „Definition” z artykułu Böckeler (link w źródłach; kilka
+akapitów po angielsku — jeśli strona nie otwiera się w pracowni, to zadanie
+domowe) i napisz jedno zdanie: co musiałoby się zmienić w twoim projekcie, żeby
+był *spec-anchored*, a nie tylko *spec-first*.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-02">
+
+<Zrodlo title="Introducing Kiro" publisher="Kiro (blog)" date="2025-07-14" url="https://kiro.dev/blog/introducing-kiro/">zapowiedź wersji próbnej; trzy pliki specyfikacji — wymagania, projekt, zadania; hasło „from prototype to production”</Zrodlo>
+
+<Zrodlo title="Kiro is generally available: Build with your team in the IDE and terminal" publisher="Kiro (blog)" date="2025-11-17" url="https://kiro.dev/blog/general-availability/">wersja próbna od lipca 2025, pełna od 17 listopada 2025</Zrodlo>
+
+<Zrodlo title="Amazon's surprise indie hit: Kiro launches broadly in bid to reshape AI-powered software development" publisher="GeekWire (Todd Bishop)" date="2025-11-17" url="https://www.geekwire.com/2025/amazons-surprise-indie-hit-kiro-launches-broadly-in-bid-to-reshape-ai-powered-software-development/">„more than 250,000 developers” w trzymiesięcznej wersji próbnej; dwa tryby pracy — „vibe” i „spec”</Zrodlo>
+
+<Zrodlo title="Specs" publisher="Kiro (dokumentacja)" date="2026-09-02" url="https://kiro.dev/docs/specs/">trzy pliki specyfikacji — `requirements.md`, `design.md`, `tasks.md` — i wykonywanie zadań; strona bez daty — data to dzień sprawdzenia</Zrodlo>
+
+<Zrodlo title="Spec-driven development with AI: Get started with a new open source toolkit" publisher="GitHub Blog (Den Delimarsky)" date="2025-09-02" url="https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/">premiera Spec Kit; cztery fazy: specify, plan, tasks, implement</Zrodlo>
+
+<Zrodlo title="Spec Kit — README" publisher="GitHub" date="2026-09-02" url="https://github.com/github/spec-kit">polecenia `/speckit.constitution`, `.specify`, `.clarify`, `.plan`, `.tasks`, `.analyze`, `.implement`; obsługa ponad trzydziestu agentów; instalacja przez `uv`; plik bez własnej daty — data to dzień sprawdzenia</Zrodlo>
+
+<Zrodlo title="@fission-ai/openspec — historia wydań" publisher="npm" date="2026-09-02" url="https://www.npmjs.com/package/@fission-ai/openspec">pierwsza opublikowana wersja 0.1.0 z 6 września 2025; data to dzień sprawdzenia rejestru</Zrodlo>
+
+<Zrodlo title="OpenSpec — README" publisher="Fission AI (GitHub)" date="2026-09-02" url="https://github.com/Fission-AI/OpenSpec">struktura `openspec/specs`, `changes/`, `archive/`; polecenia `/opsx:explore`, `propose`, `apply`, `archive`; „30+ tools”; plik bez własnej daty — data to dzień sprawdzenia</Zrodlo>
+
+<Zrodlo title="Tessl launches spec-driven development tools for reliable AI coding agents" publisher="Tessl (blog)" date="2025-09-23" url="https://tessl.io/blog/tessl-launches-spec-driven-framework-and-registry">premiera frameworka i rejestru „more than 10,000 pre-built specs”</Zrodlo>
+
+<Zrodlo title="Conductor: Introducing context-driven development for Gemini CLI" publisher="Google Developers Blog (Ballinger, Kornder, Aitbayev)" date="2025-12-17" url="https://developers.googleblog.com/conductor-introducing-context-driven-development-for-gemini-cli/">trzy polecenia `setup`, `newTrack`, `implement`; „impermanent chat logs”; specyfikacje i plany w plikach Markdown obok kodu</Zrodlo>
+
+<Zrodlo title="Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl" publisher="martinfowler.com (Birgitta Böckeler)" date="2025-10-15" url="https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html">trzy definicje — spec-first, spec-anchored, spec-as-source; „I'd rather review code than all these markdown files”; „a sledgehammer to crack a nut”; oznaczenie „GENERATED FROM SPEC - DO NOT EDIT” w Tessl; „spec-first is definitely valuable”; tłumaczenie własne</Zrodlo>
+
+<Zrodlo title="Plan Mode" publisher="Cursor (dokumentacja)" date="2026-09-02" url="https://cursor.com/docs/agent/planning">Shift+Tab; pytania doprecyzowujące; plan jako edytowalny plik Markdown; „Save to workspace”; strona bez daty — data to dzień sprawdzenia</Zrodlo>
+
+<Zrodlo title="Getting Started with Google Antigravity" publisher="Google Codelabs" date="2026-09-02" url="https://codelabs.developers.google.com/getting-started-google-antigravity">artefakty Task List, Implementation Plan („meant to be reviewed by the user”), Walkthrough; przycisk **Proceed** i ustawienie „Always Proceed”; strona bez daty — data to dzień sprawdzenia</Zrodlo>
+
+<Zrodlo title="Spec Workflow MCP — README" publisher="Pimzino (GitHub)" date="2026-09-02" url="https://github.com/Pimzino/spec-workflow-mcp">serwer MCP z pętlą requirements → design → tasks → implementation; notka autora o przerwie w rozwoju; plik bez własnej daty — data to dzień sprawdzenia</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="artykul" title="Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl — Birgitta Böckeler" url="https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html">najlepszy pojedynczy tekst o tym, czym te narzędzia są i czym nie są, napisany przez kogoś, kto ich spróbował i nie sprzedaje żadnego; część „Definition” wystarczy na dziś, reszta na wieczór</Lektura>
+
+<Lektura kind="dokumentacja" title="Specs — Kiro" url="https://kiro.dev/docs/specs/">dokumentacja z obrazkami trzech plików i przycisku przy zadaniu; warto obejrzeć, żeby zobaczyć pętlę z tej lekcji jako interfejs, nie jako folder</Lektura>
+
+<Lektura kind="artykul" title="Conductor: Introducing context-driven development for Gemini CLI" url="https://developers.googleblog.com/conductor-introducing-context-driven-development-for-gemini-cli/">krótki wpis, w którym duża firma mówi tezę tego modułu własnymi słowami: kontekst pracy ma leżeć w repozytorium, nie w rozmowie</Lektura>
+
+</CzytajDalej>

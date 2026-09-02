@@ -1,0 +1,291 @@
+---
+title: "Pełna pętla: notatnik od nowa"
+order: 5
+summary: "Tydzień budowania: ten sam notatnik, tym razem od specyfikacji — poprawka po przeglądzie, plan ze świeżej sesji, zadania z własnym „gotowe, gdy”, jeden commit na zadanie, każde kryterium sprawdzone z dowodem. Na koniec dwa repozytoria obok siebie i uczciwe pytanie, czym się różnią."
+publish: false
+---
+
+{/* Drafted 2026-09-02 from docs/content-briefs/04e-pelna-petla.md, autonomous
+    run — brief unapproved. Procedure lesson with a narrative frame; trips the
+    one-sentence-paragraph count by design. The console variant (section
+    „Wariant awaryjny”) is the fallback for students behind by mid-week and
+    counts as finishing the loop. Assumes the class editors let a fresh session
+    attach exactly two files (both do, via @-references). Intra-module
+    references are plain text: a link to an unpublished lesson fails the build. */}
+
+Otwórz obok siebie dwa foldery: stary notatnik z Budowy 2 i `notatnik-v2`. W
+pierwszym wpisz `git log --oneline`. Zobaczysz wpisy od `runda 1` do `runda 5`
+i to, co przyszło po nich — commity nazwane tak, jak nazywa się je w pośpiechu.
+W drugim historia ma trzy wpisy i ani jednego pliku z kodem: konstytucja i
+decyzja, specyfikacja, specyfikacja po przeglądzie.
+
+W tym tygodniu drugi folder dogania pierwszy. Powstanie w nim ten sam program —
+pole na tytuł, pole na treść, plik `notatki.md` — tylko że każdy krok będzie
+miał swój plik, swoje sprawdzenie i swój commit. Pod koniec tygodnia oba
+notatniki będą działać i z zewnątrz mogą wyglądać identycznie.
+
+Dlatego pytanie na ten tydzień nie brzmi „czy się uda”, tylko: **czy program
+zbudowany od specyfikacji różni się od tego zbudowanego z rozmowy — i po czym to
+widać?**
+
+## Najpierw dokończenie specyfikacji
+
+Pętla nie zaczyna się od kodu. Zaczyna się od ponownego przeczytania własnej
+specyfikacji — tej po przeglądzie kolegi — z jednym pytaniem: czy w „Do
+ustalenia” coś jeszcze stoi. Zwykle stoi: pytanie, które w poprzedniej lekcji
+odłożono na później, bo odpowiedź wymagała decyzji. Każde takie pytanie zamykasz
+dziś decyzją wpisaną do `spec.md` — jeśli decyzja jest większa niż jedno zdanie,
+dostaje własny plik w `decyzje/`. Jeśli przy czytaniu wyjdzie jeszcze jakiś
+wyciek, przenosisz go do notatek na plan albo wykreślasz.
+
+Kiedy w „Do ustalenia” nie ma już nic, robisz commit z opisem `spec: gotowa do
+planu` — a jeśli nic się nie zmieniło, nie robisz żadnego, bo commit bez zmiany
+to szum w historii. Od tej chwili obowiązuje zasada, która trzyma przez cały
+tydzień i potem: **specyfikację zmienia się przed kodem, nigdy po cichu obok
+niego.** Jeśli w środku tygodnia okaże się, że K4 był źle napisany, najpierw
+poprawiasz K4 i robisz commit, dopiero potem wracasz do zadania.
+
+Częsty błąd: poprawić specyfikację „w głowie” i budować dalej. Za trzy dni plik
+mówi jedno, program drugie, a ty nie pamiętasz, które jest prawdą.
+
+## Plan ze świeżej sesji
+
+Otwórz nową rozmowę i dołącz do niej dokładnie dwa pliki: `konstytucja.md` i
+`specs/001-notatnik/spec.md`. Nic więcej — ani starego notatnika, ani dziennika,
+ani wcześniejszych rozmów. Poproś o plan w kształcie z poprzednich lekcji: jakie
+pliki powstaną, w jakiej kolejności, które kryteria zamyka każdy krok, co
+zostaje poza planem, i czy któryś punkt konstytucji jest zagrożony.
+
+Plan czytasz z trzema pytaniami. Czy nazywa każdy plik, który utworzy? Czy w
+którymś miejscu przekonuje cię, że notatnik jest potrzebny — jeśli tak, to zdanie
+wykreślasz, bo należy do specyfikacji? Czy sprawdził się z konstytucją i czy to
+sprawdzenie wygląda na przeczytane, a nie odklepane? Poprawiony plan zapisujesz
+jako `specs/001-notatnik/plan.md` i robisz commit `plan`.
+
+Jedna rzecz zdarza się często i jest cenna: agent w świeżej sesji zadaje
+pytanie. „Czy notatka z samym tytułem, bez treści, ma być zapisywana?” Kryteria
+z lekcji o pętli tego nie rozstrzygają. Jeśli odpowiedź nie jest w specyfikacji,
+nie odpowiadasz w rozmowie. Wpisujesz odpowiedź do `spec.md`, robisz commit i prosisz o plan
+jeszcze raz. Odpowiedź w rozmowie umiera z rozmową — to jest cała lekcja tego
+modułu w jednym odruchu.
+
+## Zadania i ich sprawdzenia
+
+W tej samej sesji prosisz o listę zadań z planu: każde na jeden commit, każde z
+własnym „gotowe, gdy”, każde wskazujące kryteria, które zamyka. Listę poprawiasz
+ręcznie — to ty będziesz ją odhaczać — i zapisujesz jako
+`specs/001-notatnik/tasks.md`. Pierwsze zadanie jest zawsze to samo:
+
+```markdown title="specs/001-notatnik/tasks.md — początek"
+- [ ] T01 Szablon `dotnet new avalonia.app -o Notatnik`, `.gitignore` na
+      `bin/` i `obj/`. Gotowe, gdy: `dotnet run` pokazuje puste okno.
+      Commit `T01: szablon`.
+```
+
+Zadanie, którego „gotowe, gdy” brzmi „działa poprawnie”, poprawiasz, zanim
+zaczniesz — z poprzedniej lekcji wiesz, że to nie jest zadanie. Zadanie, które
+zamyka pięć kryteriów naraz, dzielisz na dwa. Sześć do ośmiu zadań to zwykły
+rozmiar dla notatnika; dwadzieścia oznacza, że kroki są za drobne, trzy — że są
+za duże, żeby je sprawdzić.
+
+Trzy stałe elementy z poprzedniego modułu nie znikają — dostają rytm. Przy
+każdym zadaniu: dziesięć minut na przeczytanie zmian, zanim je przyjmiesz; jedna
+zmiana w tygodniu zrobiona ręką, bez agenta (dobrym miejscem jest T04, układ
+okna, gdzie najwięcej widać); jeden wpis w `dziennik.md` na zadanie, nie na
+tydzień.
+
+## Wykonanie: jedno zadanie, jeden commit
+
+Rytm pracy jest prosty i powtarza się sześć do ośmiu razy. Wklejasz do rozmowy
+treść jednego zadania — tylko jednego, razem z jego „gotowe, gdy” — i odsyłasz
+agenta do planu i specyfikacji w folderze zamiast opisywać je jeszcze raz. Kiedy
+skończy, czytasz diff. Uruchamiasz sprawdzenie z „gotowe, gdy”. Jeśli przechodzi,
+odhaczasz zadanie w `tasks.md` i robisz commit z jego numerem w opisie: `T03:
+zapis na początek pliku`. Jeśli nie przechodzi, nie odhaczasz i nie robisz
+commitu.
+
+Trzy rzeczy pójdą nie tak i przy każdej jest jedna właściwa reakcja.
+
+**Agent zrobił więcej, niż mówiło zadanie.** Poproszony o T03 dopisał też
+przycisk usuwania, bo „przyda się”. Nie przyjmujesz. Cofasz zmianę —
+[`restore` z lekcji o Gicie](/moduly/02-warsztat/git-w-pracy-z-agentem) jest od
+tego — i wysyłasz zadanie jeszcze raz, z dopisanym zdaniem: „tylko to, co w
+zadaniu; usuwanie jest w specyfikacji pod «Czego nie robi»”. Historia, w której
+`T03` zawiera trzy różne rzeczy, przestaje być planem do czytania.
+
+**Zadanie okazało się za duże.** W połowie T05 widzisz, że zapis i odświeżenie
+listy to dwie różne roboty. Dzielisz: T05 zostaje zapisem, a odświeżenie dostaje
+nowy numer i trafia na koniec listy jako `T05b` albo `T07`. Nie wpisujesz go
+cicho w środek — lista zadań to zapis tego, co postanowiono, i jej historia ma
+mówić, kiedy postanowienie się zmieniło.
+
+**Budowa pokazała, że specyfikacja się myli.** Przy T05 wychodzi, że K4 („po
+ponownym uruchomieniu lista pokazuje tyle notatek, ile wpisów w pliku”) nie
+mówi, co ma się stać z notatką bez tytułu w pliku poprawionym ręcznie w
+edytorze. To nie jest błąd kodu. Wracasz do `spec.md`, dopisujesz decyzję,
+robisz commit `spec: notatka bez tytułu`, i dopiero potem kończysz T05.
+Strzałka wsteczna na rysunku z lekcji o pętli jest właśnie tym ruchem.
+
+## Sprawdzenie: każde kryterium z dowodem
+
+Kiedy ostatnie zadanie jest odhaczone, program nie jest jeszcze gotowy. Gotowy
+będzie, kiedy każde kryterium ze specyfikacji zostanie sprawdzone tak, jak
+kryterium każe, a wynik zostanie zapisany. Otwierasz `dziennik.md` i dla każdego
+K piszesz jeden wpis: co zrobiono, co wyszło.
+
+```markdown title="dziennik.md — fragment"
+## rrrr-mm-dd — sprawdzenie 001-notatnik
+
+- K1: zapisano „Zakupy / mleko”; w notatki.md pierwszy wpis
+  `## rrrr-mm-dd 14:02 — Zakupy`, pod nim `mleko`. Przechodzi.
+- K2: pięć notatek; `##` w pliku: 5; pierwszy nagłówek to ostatnia notatka.
+  Przechodzi.
+- K3: tytuł „Żółć” — w pliku i na liście „Żółć”. Przechodzi.
+- K5: pusty tytuł, przycisk szary; data modyfikacji pliku bez zmian. Przechodzi.
+- K6: usunięto notatki.md, uruchomiono: pusta lista; po zapisie plik istnieje.
+  Przechodzi.
+- K7: `dotnet build` → 0 błędów, 1 ostrzeżenie (nieużywana zmienna). Przechodzi.
+- K4: po restarcie lista ma 5, plik ma 6 wpisów — notatka bez tytułu,
+  dopisana ręcznie w edytorze, nie trafiła na listę. NIE PRZECHODZI →
+  specyfikacja, decyzja, poprawka.
+```
+
+Dowód to nie zdanie „sprawdziłem”. Dowód to wynik polecenia albo fragment pliku,
+przepisany do dziennika. Producent jednego z agentów z pokazu ujmuje to w swoim
+przewodniku tak: [niech agent pokazuje dowody, zamiast ogłaszać
+sukces](https://code.claude.com/docs/en/best-practices) — wynik testu, polecenie
+i to, co zwróciło (dokumentacja sprawdzona 2 września 2026). Ta sama zasada
+obowiązuje ciebie, bo ty też ogłaszasz.
+
+Potem drugi przegląd, w świeżym kontekście. Ktoś z klasy — albo agent w nowej
+rozmowie — dostaje trzy rzeczy: specyfikację, konstytucję i diff całego tygodnia
+(`git diff` od commitu ze specyfikacją do dziś). Prośba brzmi zawsze tak samo:
+„sprawdź, czy każde kryterium jest spełnione i czy nie zmieniono niczego poza
+zakresem specyfikacji; zgłaszaj luki, które wpływają na kryteria, nie
+preferencje stylu”. Ostatnia część jest ważna i wynika z rzeczy, którą [ten sam
+przewodnik nazywa wprost](https://code.claude.com/docs/en/best-practices):
+recenzent poproszony o znalezienie luk zwykle jakieś znajdzie, nawet w
+poprawnej pracy, bo o to go poproszono. Luki, które dotyczą kryteriów,
+poprawiasz i zapisujesz. Resztę zapisujesz jako „do rozważenia” i nie poprawiasz
+dzisiaj.
+
+## Wariant awaryjny: ta sama specyfikacja, bez okna
+
+Jeśli w środku tygodnia notatnik z oknem nie chce się złożyć — szablon nie
+buduje się, układ okna zjada godziny — jest wyjście, które nie jest porażką.
+Zamykasz plan, zostawiasz specyfikację bez zmian i budujesz to samo bez okna:
+`dotnet new console`, program pyta w konsoli o tytuł i treść, zapisuje do tego
+samego `notatki.md` w tym samym formacie i wypisuje listę.
+
+Zwróć uwagę, co się zmienia i co nie. Plan i lista zadań zmieniają się całkowicie
+— inne pliki, inna kolejność. Specyfikacja nie zmienia się ani o słowo, poza K5,
+który mówi o przycisku i w konsoli brzmi „kiedy tytuł jest pusty, program pyta
+jeszcze raz”. Kryteria K1, K2, K3, K6 i K7 sprawdzasz dokładnie tak samo, bo
+sprawdzają plik, nie okno. To jest najlepszy dowód na regułę z lekcji o pętli:
+specyfikacja, która nie nazywa *jak*, przeżywa zmianę tego, czy program ma okno.
+Wariant konsolowy, z odhaczonymi zadaniami i dziennikiem, kończy ten tydzień
+tak samo, jak wariant z oknem.
+
+## Dwa notatniki obok siebie
+
+Pod koniec tygodnia wróć do dwóch folderów z początku. W obu wpisz `git log
+--oneline`. W obu otwórz `notatki.md` po zapisaniu tych samych trzech notatek. W
+obu poszukaj miejsca, które mówi, co program ma robić.
+
+Historia starego notatnika mówi, kiedy coś się zmieniło, ale nie mówi po co;
+historia nowego czyta się jak lista zadań, bo nią jest. Dwa pliki `notatki.md`
+mogą być identyczne — i to nie jest porażka nowego notatnika, tylko dowód, że w
+starym format dobrał się dopiero za czwartym podejściem, przez trzy przykłady w
+prompcie — a nie dlatego, że ktoś go zapisał. W starym
+repozytorium nie ma zdania o tym, co program ma robić; w nowym jest `spec.md`, a
+przy każdym kryterium wpis w dzienniku mówiący, czy jest prawdą.
+
+Powiedzmy uczciwie, czego nie widać. Z zewnątrz, po uruchomieniu, oba programy
+wyglądają tak samo, a nowy kosztował więcej czasu, zanim pojawiła się pierwsza
+linijka kodu. Różnica jest w trzech rzeczach, których nie widać na ekranie: w
+tym, co da się sprawdzić (tyle kryteriów, ile ma twoja specyfikacja, zamiast
+wrażenia), w tym, co przeżyje
+zamknięcie rozmowy (cztery pliki zamiast niczego), i w tym, gdzie specyfikacja
+okazała się błędna — bo okazała się, przynajmniej raz, i miejsce, w którym
+okazała się błędna, jest zapisane. Trzecia rzecz jest tą, po której poznasz, że
+pętla działała, a nie była odgrywana.
+
+## Co się zmieniło
+
+Pytanie z początku brzmiało, czy program od specyfikacji różni się od programu z
+rozmowy i po czym to widać. Widać to nie w oknie — w repozytorium.
+
+- **Specyfikacja zmienia się przed kodem.** Pytanie agenta, błąd znaleziony przy
+  budowie, uwaga recenzenta — wszystko najpierw trafia do `spec.md` i dostaje
+  commit.
+- **Plan powstaje ze świeżej sesji, z dwóch plików.** Jeśli agent musi pytać o
+  coś, czego nie ma w tych dwóch plikach, odpowiedź idzie do pliku, nie do
+  rozmowy.
+- **Jedno zadanie, jeden commit, jedno sprawdzenie.** Więcej niż zadanie —
+  cofasz. Za duże — dzielisz, na końcu listy. Odhaczasz po sprawdzeniu, nie po
+  napisaniu.
+- **Gotowe znaczy: każde kryterium z dowodem w dzienniku**, i drugi przegląd w
+  świeżym kontekście, który szuka luk w kryteriach, nie w stylu.
+- **Ta sama specyfikacja, inny program, te same kryteria.** Wariant konsolowy
+  nie jest gorszą wersją — jest dowodem, że specyfikacja mówiła *co*, nie *jak*.
+
+Masz notatnik, który wie, czym jest, i repozytorium, które umie powiedzieć,
+dlaczego wygląda tak, a nie inaczej. Ostatnia lekcja tego modułu pyta, co
+zbudować następne — i każe zapisać pomysły tak, jak ten moduł uczy zapisywać
+wszystko inne.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: kroki pętli — cztery pliki i sprawdzenie na końcu — a przy każdym
+to, co jest jego sprawdzeniem. Do
+tego jedno zdanie o tym, co znaczy „gotowe” dla zadania, a co dla całej
+specyfikacji.
+
+</Zadanie>
+
+<Zadanie title="Dowód na każde kryterium">
+
+Przejdź przez każde kryterium swojej specyfikacji i zapisz w `dziennik.md` jeden
+wpis na kryterium — polecenie albo fragment pliku, nie zdanie „działa”. Zaznacz
+te, które nie przechodzą, i przy każdym napisz, co poprawiasz najpierw:
+specyfikację czy kod.
+
+</Zadanie>
+
+<Zadanie>
+
+Skończ `notatnik-v2`: wszystkie zadania odhaczone, jeden commit na zadanie z
+numerem w opisie, specyfikacja poprawiona wszędzie tam, gdzie budowa pokazała
+błąd, luki z drugiego przeglądu poprawione. Wypchnij. Wariant konsolowy liczy
+się tak samo. Jeśli skończysz wcześniej — napisz `specs/002-…/spec.md` dla
+jednej funkcji katalogu, na przykład wyszukiwania, i przejdź pętlę jeszcze raz.
+
+</Zadanie>
+
+<Zadanie title="Gdzie specyfikacja się pomyliła">
+
+Jeden akapit w `dziennik.md`: w którym miejscu twoja specyfikacja okazała się
+błędna albo niepełna, jak to wyszło na jaw — pytanie agenta, sprawdzenie, uwaga
+recenzenta — i co napiszesz inaczej następnym razem. Potem runda w klasie:
+przeczytaj cudzą specyfikację i cudzy `notatki.md` i powiedz, czy plik spełnia
+kryteria.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-02">
+
+<Zrodlo title="Best practices for Claude Code" publisher="Anthropic (dokumentacja)" date="2026-09-02" url="https://code.claude.com/docs/en/best-practices">„Have Claude show evidence rather than asserting success”; przegląd diffu w świeżym kontekście „sees only the diff and the criteria you give it”; „A reviewer prompted to find gaps will usually report some, even when the work is sound … Tell the reviewer to flag only gaps that affect correctness or the stated requirements”; strona bez daty — data to dzień sprawdzenia</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="dokumentacja" title="Best practices for Claude Code — części „Give Claude a way to verify its work” i „Add an adversarial review step”" url="https://code.claude.com/docs/en/best-practices">dwa krótkie rozdziały o tym samym, co ten tydzień: sprawdzenie, które da się uruchomić, i recenzent, który widzi tylko diff i kryteria; napisane dla jednego narzędzia, ale bez trudu przełożysz to na swoje</Lektura>
+
+</CzytajDalej>

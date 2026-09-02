@@ -1,0 +1,180 @@
+---
+title: "Zbieramy pomysły: co zbudujemy"
+order: 6
+summary: "Notatnik ma jednego użytkownika i jest nim autor. Krótka lekcja o tym, jaki program warto zbudować — miarą jest ktoś prawdziwy, kto go otworzy, a ty się liczysz — i o tym, jak zapisać pomysł w czterech zdaniach, żeby za kilka miesięcy dało się go ocenić, a nie tylko pamiętać."
+publish: false
+---
+
+{/* Drafted 2026-09-02 from docs/content-briefs/04f-zbieramy-pomysly.md,
+    autonomous run — brief unapproved. No evidence claims, hence no Źródła
+    (ADR-0008). The worked example is a small, domestic idea that says nothing
+    about any real person — no invented student ideas, no teacher biography. pomysly.md may live in a small notes
+    repository or in notatnik-v2/docs/ — Viktar's call, both offered. The peer
+    round is a classroom arrangement. Intra-module references are plain text. */}
+
+Notatnik z tego modułu ma dokładnie jednego użytkownika i jest nim osoba, która
+go napisała. Na tydzień budowania to wystarczyło: dało się napisać, dla kogo
+jest, i dało się sprawdzić, czy robi to, co miał.
+
+Program, który będziesz budować przez kilka miesięcy w module o projekcie, ma
+inną miarę. Musi być ktoś, kto go otworzy nie dlatego, że jest zadaniem, tylko
+dlatego, że jest mu potrzebny. Dziś nie wybieramy tego programu — na wybór jest
+za wcześnie i zaraz powiem dlaczego. Dziś zbieramy pomysły i zapisujemy je tak,
+żeby za kilka miesięcy dało się je ocenić.
+
+Pytanie tej lekcji ma dwie części: **jaki program warto zbudować — i jak zapisać
+pomysł tak, żeby po trzech miesiącach dało się go osądzić, a nie tylko z
+sympatią pamiętać?**
+
+## Ktoś prawdziwy
+
+Miara jest jedna i brzmi: **ktoś prawdziwy ma tego używać — i ty się liczysz.**
+Obie połowy tego zdania wymagają wyjaśnienia, bo żadna z twoich dotychczasowych
+aplikacji nie miała użytkownika, który nie byłby jej autorem, i nie ma skąd
+wziąć wyobrażenia, co to znaczy.
+
+Użytkownik to osoba, której skargę trzeba przyjąć. Jeśli program zgubi jej
+notatkę, ona przyjdzie i powie, że zgubił — a ty musisz coś z tym zrobić.
+Program, na który nikt się nie poskarży, bo nikt go nie otwiera, jest
+ćwiczeniem. Nie ma w tym nic złego: masz za sobą cztery ćwiczenia i każde czegoś
+nauczyło. Ale ćwiczenie nie potrzebuje specyfikacji, konstytucji ani dziennika,
+bo nikogo nie zawiedzie. Cały ten moduł ma sens dopiero wtedy, kiedy ktoś czeka
+na wynik.
+
+Druga połowa jest równie ważna. Ty się liczysz — pod jednym warunkiem: że
+program, o którym myślisz, naprawdę otworzysz za miesiąc, w zwykły wtorek,
+kiedy nikt nie każe. Notatnik, którego używasz codziennie, ma prawdziwego
+użytkownika. Notatnik, który otworzysz raz, żeby pokazać, że działa, nie ma
+żadnego. Różnica nie jest w programie, jest w tym, czy istnieje czynność, którą
+ten program zastępuje.
+
+## Pomysł zapisany jak specyfikacja
+
+Pomysł zapisuje się w czterech zdaniach, i to nie są przypadkowe cztery zdania —
+to skrót specyfikacji z lekcji o pętli, w rozmiarze, który da się ocenić bez
+budowania.
+
+1. **Co robi** — jedno zdanie, w którym pada czynność, jaką program zastępuje.
+2. **Kto go otworzy** — konkretny rodzaj osoby, nigdy „każdy”. „Ktoś z domu, kto
+   prowadzi treningi” jest odpowiedzią. „Ludzie, którzy trenują” nie jest.
+3. **Po czym poznam, że działa** — jedno zdanie w formie „Kiedy …, to …”, do
+   sprawdzenia bez zaglądania w kod.
+4. **Czego nie robi** — jedna rzecz, którą program mógłby robić, a celowo nie
+   będzie.
+
+Oto przykład, celowo mały i celowo domowy, żeby było widać kształt, a nie żeby
+ktoś go budował:
+
+```markdown title="pomysly.md — jeden wpis"
+## Lista zakupów z tego, co się kończy
+
+Co robi: pozwala odhaczyć w telefonie, że coś w kuchni się kończy, i w sobotę
+pokazuje z tego listę zakupów, żeby nie pisać jej od nowa w sklepie.
+Kto go otworzy: ja, w każdą sobotę przed wyjściem do sklepu; druga osoba
+z domu, kiedy zaznacza, że skończyło się mleko.
+Po czym poznam: kiedy w tygodniu zaznaczymy cztery rzeczy, to w sobotę lista
+ma cztery pozycje i nic więcej.
+Czego nie robi: nie liczy cen i nie przypomina — to robi kalendarz.
+```
+
+Czwarte zdanie jest tym, które utrzymuje pomysł w rozmiarze do zbudowania.
+Pomysł bez „czego nie robi” rośnie za każdym razem, kiedy o nim opowiadasz, a po
+trzech miesiącach jest już programem na dwa lata. Miarą rozmiaru jest notatnik:
+jeśli specyfikacja pomysłu zajęłaby więcej niż jedną stronę, tak jak jego,
+pomysł jest na dwa programy, a ty wybierasz jeden.
+
+Napisz dziś trzy takie wpisy. Różne: jeden dla siebie, jeden dla kogoś, kogo
+znasz z imienia, jeden, który zastępuje coś, co robisz w szkole. Nie muszą być
+dobre. Muszą mieć cztery zdania i osobę w drugim.
+
+## Zebrane, nie wybrane
+
+Dlaczego dziś tylko zbieramy? Bo wybór zrobiony teraz byłby wyborem w ciemno.
+Zanim będziesz budować program na kilka miesięcy, nauczysz się jeszcze, jak
+naprawdę zbudowane jest okno i gdzie w nim trzymane są dane, czym jest test,
+który wykonuje się sam, i czy stack, na którym budujesz od pierwszego okna,
+zostaje z tobą do końca kursu. Każda z tych rzeczy zmienia, które z twoich trzech
+pomysłów są wykonalne w czasie, jaki będzie na projekt, a które nie. Pomysł wybrany dziś musiałby te
+odpowiedzi zgadywać.
+
+Dlatego plik `pomysly.md` jest miejscem, do którego się wraca, a nie decyzją.
+Trafia do repozytorium — do małego repozytorium na notatki z kursu albo do
+`notatnik-v2/docs/`, jak wolisz — z commitem i push. Wrócisz do niego w module o
+projekcie, z wiedzą, której dziś nie masz, i wtedy część wpisów skreślisz
+bez żalu.
+
+Jedna rada na wypadek, który się zdarza: jeśli w któryś pomysł zdążysz się
+zakochać, dopisz mu piąte zdanie — **czego muszę się nauczyć, żeby to
+zbudować**. Nie po to, żeby go porzucić. Po to, żeby za trzy miesiące porównać to
+zdanie z tym, czego naprawdę udało się nauczyć.
+
+## Runda: cudze pomysły
+
+Zamień się plikiem z kimś z klasy. Przeczytaj trzy cudze wpisy i pod każdym dopisz
+jedno pytanie — takie, jakie zadałby użytkownik z drugiego zdania, nie
+programista. „A co, jeśli zaznaczę coś dwa razy?” jest pytaniem użytkownika.
+„W czym to zapiszesz?” nie jest.
+
+Potem zaznacz jeden z trzech: ten, po który sięgniesz jako użytkownik. To nie jest
+ocena pomysłu i nie jest głosowanie — to jedna informacja więcej dla autora, kto
+poza nim widzi tam użytkownika. Autor zapisuje ją w pliku obok wpisu i na tym
+runda się kończy. Jeśli pod żadnym z trzech wpisów nikt nie postawił znaku, to
+też jest informacja — wcześniejsza i tańsza niż ta sama wiadomość po trzech
+miesiącach budowania.
+
+## Trzy pomysły i jedna miara
+
+Moduł się kończy i warto zobaczyć, co się w nim zmieniło. Sześć lekcji temu
+trzy działające aplikacje nie miały nigdzie zapisanego, co mają robić. Dziś
+umiesz to zapisać, zanim program istnieje — i to samo stoi teraz w pliku dla
+trzech programów, których jeszcze nie ma i z których zbudujesz najwyżej jeden.
+
+- **Miara jest jedna**: ktoś prawdziwy ma tego używać, a ty się liczysz, jeśli
+  otworzysz to w zwykły wtorek.
+- **Pomysł to cztery zdania**: co robi, kto otworzy, po czym poznam, czego nie
+  robi. Piąte — czego trzeba się nauczyć — dla pomysłów, w które się wierzy.
+- **Zebrane, nie wybrane.** Wybór czeka na wiedzę, której dziś nie masz.
+
+Do modułu o projekcie zostaje jedno zadanie, które nie wymaga komputera: patrz,
+kto wokół ciebie robi co tydzień tę samą nudną rzecz ręcznie. To są użytkownicy
+z drugiego zdania, zanim ktoś napisał dla nich pierwsze.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: cztery zdania, z których składa się zapis pomysłu, i miara, według
+której pomysł warto rozważać — w jednym zdaniu.
+
+</Zadanie>
+
+<Zadanie title="Trzy wpisy">
+
+Napisz `pomysly.md` z trzema pomysłami po cztery zdania każdy, w dwadzieścia
+minut. W drugim zdaniu każdego wpisu ma być konkretna osoba albo konkretny
+rodzaj osoby — jeśli napisało się „każdy”, wpis jest do poprawy.
+
+</Zadanie>
+
+<Zadanie>
+
+Zrób commit z `pomysly.md` i wypchnij — do repozytorium na notatki z kursu albo
+do `notatnik-v2/docs/`. Ten plik zostaje otwarty w module o projekcie.
+
+</Zadanie>
+
+<Zadanie title="Czwarty pomysł, nie twój">
+
+Zapytaj jedną osobę spoza klasy, jaką drobną rzecz robi co tydzień ręcznie i
+chętnie oddałaby programowi. Zapisz to jako czwarty wpis, jej słowami w drugim
+zdaniu.
+
+</Zadanie>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="artykul" title="Getting Real — rozdział „What's Your Problem?”" url="https://basecamp.com/gettingreal/02.2-whats-your-problem">krótki rozdział z 2006 roku o budowaniu programu najpierw dla siebie — „you'll be the target audience and you'll know what's important and what's not”; najlepszy argument za drugą połową dzisiejszej miary, napisany przez ludzi, którzy tak zaczęli</Lektura>
+
+</CzytajDalej>

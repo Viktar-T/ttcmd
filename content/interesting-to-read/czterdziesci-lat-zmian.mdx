@@ -1,0 +1,405 @@
+---
+title: "Czterdzieści lat zmian"
+order: 1
+summary: "Zanim pojawił się agent: jak zmieniała się praca programisty aplikacji od pierwszych okienek do dziś — co każda epoka robiła tanim, co drogim, i dlaczego zmiana była regułą, a nie wyjątkiem."
+---
+
+Całe twoje doświadczenie z oprogramowaniem to telefon i przeglądarka. To nie
+zarzut — to punkt wyjścia. Nie dało się więc zobaczyć, jak często zmieniała się
+praca programisty. Ktoś, kto w 1990 roku znał swój warsztat od podszewki, sześć
+lat później znów musiał się uczyć. Programista z 2004 roku przechodził przez to
+samo w 2010.
+
+Nie chodzi o zapamiętanie wszystkich dat i nazw. Szukamy odpowiedzi na jedno
+pytanie: **co sprawiało, że programiści porzucali dotychczasowy sposób pracy?**
+
+Historia pokazuje powtarzalny wzór. Każda epoka obniżała koszt jednej części
+pracy, ale podnosiła koszt innej. Co więcej, o zmianie rzadko decydowała sama
+jakość technologii. Gdy zobaczysz ten wzór, łatwiej będzie ci ocenić zmianę
+związaną z AI: bez paniki i bez wiary w reklamę.
+
+## Dwie osie czasu
+
+<svg viewBox="0 0 760 320" role="img" aria-label="Dwie osie czasu: epoki budowania aplikacji desktopowych od 1984 roku i mobilnych od 1996 roku, z zaznaczonym okresem AI od 2022" style={{ width: "100%", height: "auto" }}>
+  <g fill="currentColor" fontSize="12" fontWeight="700">
+    <text x="8" y="58">PULPIT</text>
+    <text x="8" y="188">TELEFON</text>
+  </g>
+  <g stroke="currentColor" fill="none" strokeWidth="1.5">
+    <rect x="40" y="70" width="113" height="60" rx="3" />
+    <rect x="153" y="70" width="178" height="60" rx="3" />
+    <rect x="331" y="70" width="179" height="60" rx="3" />
+    <rect x="510" y="70" width="97" height="60" rx="3" />
+    <rect x="607" y="70" width="113" height="60" rx="3" />
+    <rect x="234" y="200" width="195" height="60" rx="3" />
+    <rect x="429" y="200" width="97" height="60" rx="3" />
+    <rect x="526" y="200" width="81" height="60" rx="3" />
+    <rect x="607" y="200" width="113" height="60" rx="3" />
+  </g>
+  <g fill="currentColor" fontSize="11" fontWeight="600">
+    <text x="46" y="88">C, Pascal</text>
+    <text x="46" y="102">+ API systemu</text>
+    <text x="159" y="88">RAD: Visual Basic,</text>
+    <text x="159" y="102">Delphi, potem C++/MFC</text>
+    <text x="337" y="88">.NET: WinForms,</text>
+    <text x="337" y="102">WPF i XAML; Java</text>
+    <text x="516" y="88">Electron:</text>
+    <text x="516" y="102">JS na pulpicie</text>
+    <text x="613" y="88">deklaratywnie;</text>
+    <text x="613" y="102">Rust, Flutter</text>
+    <text x="240" y="218">C, C++: Palm, Symbian;</text>
+    <text x="240" y="232">Java ME; C# na WinMobile</text>
+    <text x="435" y="218">Objective-C,</text>
+    <text x="435" y="232">Java: iPhone,</text>
+    <text x="435" y="246">Android</text>
+    <text x="532" y="218">Swift,</text>
+    <text x="532" y="232">Kotlin,</text>
+    <text x="532" y="246">C#/Xamarin</text>
+    <text x="613" y="218">SwiftUI, Compose,</text>
+    <text x="613" y="232">Flutter, MAUI</text>
+  </g>
+  <g fill="currentColor" fontSize="10.5" opacity="0.75">
+    <text x="46" y="122">wszystko ręcznie</text>
+    <text x="159" y="122">okno z klocków</text>
+    <text x="337" y="122">znaczniki + wiązanie danych</text>
+    <text x="516" y="122">jeden kod, 3 systemy</text>
+    <text x="613" y="122">UI jako funkcja stanu</text>
+    <text x="240" y="252">budżet: kilobajty</text>
+    <text x="613" y="252">to samo, co na pulpicie</text>
+  </g>
+  <line x1="40" y1="150" x2="720" y2="150" stroke="currentColor" strokeWidth="1" opacity="0.4" />
+  <g fill="currentColor" fontSize="10.5" opacity="0.75">
+    <text x="36" y="166">1984</text>
+    <text x="146" y="166">1991</text>
+    <text x="226" y="166">1996</text>
+    <text x="320" y="166">2002</text>
+    <text x="420" y="166">2008</text>
+    <text x="500" y="166">2013</text>
+    <text x="597" y="166">2019</text>
+    <text x="697" y="166">2026</text>
+  </g>
+  <g stroke="var(--accent-line, currentColor)" fill="none" strokeWidth="2.5" strokeDasharray="5 3">
+    <rect x="655" y="30" width="83" height="256" rx="3" />
+  </g>
+  <text x="661" y="46" fill="var(--accent-line, currentColor)" fontSize="11" fontWeight="700">2022 → AI</text>
+  <text x="40" y="304" fill="currentColor" fontSize="10.5" opacity="0.7">Każde pudełko to inna praca programisty — nie tylko inny język. Szczegóły i źródła niżej.</text>
+</svg>
+
+Dwie rzeczy widać od razu. Po pierwsze, zmian było dużo: pięć epok na pulpicie
+i cztery na telefonie. Po drugie, oba szeregi kończą się podobnie. Dzisiejszy
+interfejs opisuje się deklaratywnie zarówno na komputerze, jak i na telefonie.
+
+Nie próbuj jeszcze rozszyfrować wszystkich nazw z diagramu. Potraktuj go jak
+mapę. Najpierw przejdziemy przez górny rząd i zobaczymy, jak kolejne epoki
+przesuwały koszt pracy programisty. Potem sprawdzimy, dlaczego na telefonach
+ten sam proces przebiegał inaczej.
+
+## Pulpit: od asemblera do XAML-a
+
+### 1984–1991: wszystko ręcznie
+
+Wyobraź sobie najprostsze okno z przyciskiem. Dziś przeciągniesz przycisk z
+panelu albo opiszesz go kilkoma znacznikami. W 1984 roku programista musiał sam
+zarządzać pamięcią, obsłużyć każdy piksel i napisać pętlę zdarzeń — mechanizm,
+który czeka na kliknięcie lub ruch myszy i przekazuje je do właściwego okna.
+
+Pierwszy Macintosh i pierwsze wersje Windows powstawały w językach bliskich
+maszynie. W kodzie Apple Lisa **około 89% plików napisano w Pascalu, a 10% w
+asemblerze procesora 68000**. Windows wybrał C. Co ciekawe, pętla komunikatów z
+tamtej epoki nadal występuje w dokumentacji Microsoftu pod tymi samymi nazwami
+funkcji.
+
+Nic nie było jeszcze tanie. Nawet prosty interfejs wymagał wielu ręcznych
+czynności. Dobrze pokazuje to historia książki *Programming Windows* Charlesa
+Petzolda: miała sześć wydań, od C w 1988 roku po C# i XAML w 2012. Przez cały
+ten czas uczyła tworzenia tego samego rodzaju aplikacji, ale warsztat wokół
+niego zmieniał się całkowicie.
+
+### 1991–2002: okno z klocków
+
+Pierwsza odpowiedź brzmiała: nie każ programiście pisać wszystkiego od zera.
+Biblioteki OWL (1991) i MFC (1992) opakowały funkcje systemu w C++. Kod można
+było wykorzystywać ponownie, ale pojawił się nowy koszt: framework stawał się
+drugim językiem, którego trzeba było się nauczyć.
+
+Większy przełom przyniósł **RAD**, czyli szybkie tworzenie aplikacji za pomocą
+narzędzi wizualnych. Visual Basic 1.0 (1991) i Delphi 1.0 (1995) dały
+programiście projektant formularzy. Przeciągasz przycisk na okno, ustawiasz jego
+właściwości, klikasz i dopisujesz reakcję. To, co wcześniej zajmowało większość
+czasu, nagle stało się proste.
+
+Koszt nie zniknął — tylko zmienił miejsce. Kod reakcji trafiał bezpośrednio do
+przycisków i pól formularza. Gdy aplikacja rosła, jej logika rozpadała się na
+dziesiątki takich fragmentów. RAD uczynił budowę okna tanią, ale utrzymanie
+dużej aplikacji drogim. Kolejne narzędzia wizualne powtórzą ten sam układ
+korzyści i kosztów.
+
+### 2002–2013: środowisko zarządzane i znaczniki
+
+.NET Framework 1.0 (2002) przyniósł C# i Windows Forms jako następcę formularzy
+Visual Basica. Cztery lata później WPF rozdzielił wygląd okna od kodu. Interfejs
+można było opisać w XAML-u, czyli języku znaczników, a dane połączyć z widokiem
+przez mechanizm wiązania. Wokół tego sposobu pracy powstał wzorzec MVVM.
+
+Programista dostał bezpieczniejsze zarządzanie pamięcią i duże biblioteki.
+Zapłacił wolniejszym uruchamianiem, większym rozmiarem programu i czasem mniej
+„natywnym” wyglądem. Zanim jednak rynek rozstrzygnął, czy ten kompromis się
+opłaca, użytkownicy zaczęli wybierać coś wygodniejszego niż instalator: adres
+URL. Przeglądarka na około dekadę zepchnęła aplikacje pulpitowe na drugi plan.
+
+### 2013–2019: przeglądarka wraca na pulpit
+
+Programiści przenieśli się do przeglądarki i JavaScriptu, więc pojawił się
+pomysł: zapakujmy przeglądarkę w aplikację. Tak powstał Electron — początkowo
+„Atom Shell” GitHuba. Slack, Visual Studio Code, Discord i Figma pokazują, że
+ten pomysł nie pozostał eksperymentem.
+
+Electron uczynił tanią rzecz ważną dla firmy: jeden zespół mógł rozwijać jeden
+kod na trzy systemy. Koszt ponosił komputer użytkownika. W pomiarze z 2025 roku
+aplikacja w Electronie zajęła 409 MB pamięci, a ten sam program w Tauri 172 MB.
+Pomiar opublikował jednak producent korzystający na tym porównaniu, więc trzeba
+czytać go ostrożnie.
+
+**Koszt był techniczny, a korzyść organizacyjna.** Gdy 1Password uzasadniało
+wybór Electrona, mówiło o jednym kodzie, jednym zespole i jednym wydaniu. O
+decyzji nie przesądziły megabajty, tylko sposób organizacji pracy.
+
+### 2019–2026: deklaratywnie, i powrót do natywnego
+
+Dzisiejsza epoka odpowiada na dwa problemy poprzedniej. Pierwszy to ręczne
+aktualizowanie wielu elementów ekranu. SwiftUI, Jetpack Compose i Flutter
+opisują interfejs **deklaratywnie**: określasz, jak ekran ma wyglądać dla
+danego stanu, a framework sam wylicza potrzebne zmiany.
+
+Drugi problem to koszt pakowania całej przeglądarki z aplikacją. Tauri 2.0
+łączy kod w Ruście z przeglądarką już obecną w systemie. Próbuje więc zachować
+organizacyjną zaletę Electrona bez całego jego kosztu technicznego.
+
+A gdzie w tej historii znajduje się C#? Przechodzi przez kilka epok naraz.
+Można w nim napisać obsługę kliknięcia w stylu Windows Forms, połączyć dane z
+XAML-em w WPF lub Avalonii i skompilować program do kodu pośredniego albo
+natywnego. To cenna elastyczność, ale też źródło zamieszania: sam język nie
+mówi, z której epoki pochodzi dana konstrukcja. W module 5 zobaczysz
+`object sender, EventArgs e` — ślad sposobu pracy wywodzącego się z dawnych
+pętli komunikatów.
+
+## Telefon: gdy producent wybiera za ciebie
+
+Na pulpicie zmianę napędzały kolejne próby obniżenia kosztu pracy. Na telefonie
+dochodzi jeszcze jedna siła: właściciel platformy może zdecydować, jakich
+narzędzi wolno używać i jak aplikacja trafi do użytkownika.
+
+### 1996–2008: telefon jako ograniczenie
+
+Pierwsze urządzenia kieszonkowe miały tak mało pamięci, że programowano je w C
+i C++. Palm OS dawał aplikacji stertę liczoną najwyżej w setkach kilobajtów.
+Symbian stworzył nawet własny dialekt C++, z osobnymi mechanizmami tekstu,
+błędów i zwalniania pamięci. Każda z tych decyzji oszczędzała zasoby. Razem
+tworzyły jednak środowisko tak nietypowe, że trudno było znaleźć ludzi, którzy
+umieli w nim pracować.
+
+Java ME (2000) miała rozwiązać problem różnic między urządzeniami. Przenośna
+okazała się głównie składnia: ta sama aplikacja nadal zachowywała się inaczej
+na różnych telefonach. Do tego o dystrybucji decydował operator sieci, który
+wybierał programy dostępne w telefonicznym „portalu”.
+
+Jedna data ma tu znaczenie dla dalszej części kursu. **19 marca 2003** Microsoft
+wydał .NET Compact Framework. C# stał się językiem aplikacji mobilnych pięć lat
+przed pierwszym SDK iPhone'a. Nie jest więc na telefonach nowicjuszem.
+
+### 2007–2008: zawias
+
+W czerwcu 2007 Apple ogłosiło, że zewnętrzni programiści mają tworzyć na
+iPhone'a aplikacje webowe. Dziewięć miesięcy później wydało natywne SDK, czyli
+zestaw narzędzi do budowania zwykłych aplikacji na iPhone'a. Android zrobił to
+samo we wrześniu 2008.
+
+Ważniejsza od samych narzędzi okazała się dystrybucja. App Store i sklep
+Androida postawiły między programistą a użytkownikiem właściciela platformy.
+Od tej chwili firma tworząca system mogła nie tylko zalecać technologię, ale
+również decydować, jakie aplikacje dopuści do użytkowników.
+
+### 2010: pięć miesięcy, które dały nam C# na telefonie
+
+W kwietniu 2010 Apple wykorzystało tę władzę. Nowa klauzula umowy wymagała,
+aby aplikacje były „oryginalnie napisane w Objective-C, C, C++ lub
+JavaScripcie”. Zakazano warstw pośredniczących, więc nie można było legalnie
+wydać na iPhone'a aplikacji napisanej w C#.
+
+Po pięciu miesiącach publicznego sporu Apple wycofało zakaz, pozostawiając
+warunek, że aplikacja nie może pobierać kodu. W maju 2011 powstał Xamarin, z
+którego wywodzi się dzisiejsze .NET MAUI.
+
+**Możliwość pisania aplikacji mobilnych w C# zależała więc od zapisu w umowie,
+nie od technicznego przełomu.** To najczystszy przykład siły, której na
+pulpicie prawie nie było.
+
+### 2014–2019: producent wybiera język
+
+Ten mechanizm nie zniknął po 2010 roku. Apple w 2014 roku ogłosiło Swifta i
+zaczęło przesuwać swój ekosystem w stronę nowego języka. Google wybrało
+łagodniejszą drogę: w 2017 roku uznało Kotlina, a w 2019 zapowiedziało nowe API
+projektowane najpierw dla niego. Nie trzeba zakazywać starego języka. Wystarczy
+sprawić, by cała platforma coraz mocniej zachęcała do nowego.
+
+### 2019–2026: to samo, co na pulpicie
+
+Na końcu obie osie czasu znów się spotykają. SwiftUI, Compose, Flutter i MAUI
+opisują interfejsy deklaratywnie. Wciąż jednak pozostaje pytanie: budować
+osobno dla każdej platformy czy utrzymywać jeden wspólny kod?
+
+Nie ma odpowiedzi dobrej dla wszystkich. Airbnb porzuciło React Native w 2018
+roku, choć 63% jego inżynierów wybrałoby ten framework ponownie. Shopify po
+pięciu latach zrobiło ruch przeciwny i w 2025 roku w pełni przeszło na React
+Native. Obie decyzje mogły być rozsądne, bo o wyniku przesądza nie tylko
+technologia, lecz także **kształt zespołu**.
+
+## Dlaczego następowała zmiana
+
+Przeszliśmy przez wiele nazw, ale sama chronologia nie odpowiada jeszcze na
+pytanie z początku lekcji. Spójrz teraz na każde przejście i zapytaj:
+*co sprawiło, że dotychczasowy sposób pracy przestał wystarczać?*
+
+| Przejście | Co zdecydowało |
+| --- | --- |
+| asembler → Pascal i C | **Sprzęt, potem ekonomia.** Gdy komputer udźwignął kompilator, czas programisty stał się droższy niż cykle procesora. Proporcje w kodzie Lisy — dziewięć części Pascala na jedną asemblera — to nie moda, tylko rachunek kosztów. Ten sam rachunek powtórzył się potem na telefonach, gdy tylko sprzęt udźwignął maszynę wirtualną Javy. |
+| C + API → C++ i frameworki | **Projekt języka** i rozmiar API, którego nie dało się wołać ręcznie. Win32 rozrósł się do tysięcy funkcji, a MFC i OWL powstały po to, żeby wywoływać je za programistę. Cena: framework stał się drugim językiem, którego też trzeba było się nauczyć. |
+| frameworki → RAD | **Ekonomia czasu pracy.** Projektant formularzy usunął największy pojedynczy koszt — ułożenie okna — i zamienił go w przeciąganie myszą. Rynek odpowiedział natychmiast: przez całe lata 90. aplikacje biznesowe pisało się w Visual Basicu, Delphi i PowerBuilderze. |
+| RAD → .NET | **Strategia jednego producenta.** VB6 nie przegrał — został wycofany: następca nie czytał starego kodu, a protesty użytkowników nic nie zmieniły. To nie był werdykt rynku, tylko decyzja firmy, która zmieniała całą platformę. |
+| pulpit → przeglądarka | **Kanał dystrybucji.** URL pokonał instalator: aplikacji w przeglądarce nie trzeba instalować, aktualizować ani odinstalowywać, i działa na każdym systemie. Spolsky opisał ten mechanizm w 2004 roku, na dekadę przed tym, zanim stał się oczywisty. |
+| przeglądarka → Electron | **Ekonomia zatrudnienia.** Jeden kod, jeden zespół i jedno wydanie na trzy systemy to argument o ludziach, nie o technice. Koszt w pamięci i rozmiarze był znany od początku — firmy takie jak 1Password policzyły go i zapłaciły świadomie. |
+| UI imperatywne → deklaratywne | **Projekt języka**, po tym, jak ręcznie aktualizowane drzewa kontrolek przestały się skalować. Przy dużej aplikacji nikt już nie panował nad tym, żeby po każdej zmianie stanu poprawić każdą kontrolkę z osobna. Wzorzec przyszedł z webu — najpierw React (2013), dopiero po nim SwiftUI, Compose i Flutter. |
+| Objective-C → Swift | **Producent zdecydował.** Bez innego powodu: nie zmienił się sprzęt, nie było presji ekonomicznej ani buntu programistów — Apple zaprojektowało nowy język i ogłosiło go na konferencji. Na własnej platformie właściciel nie musi nikogo pytać o zdanie. |
+| zakaz C# na iOS → Xamarin | **Polityka platformy**, cofnięta pod presją. Apple wpisało zakaz do umowy licencyjnej w kwietniu 2010 i wycofało go po pięciu miesiącach publicznego sporu. W szczelinie, którą otworzył ten odwrót, zmieściły się Xamarin, a po nim React Native i Flutter. |
+
+Powód czysto techniczny pojawia się w mniej niż połowie wierszy. Równie często
+decydowały pieniądze, dystrybucja albo producent platformy. Dwie historie
+pokazują to wyraźniej niż ranking popularności.
+
+**Visual Basic 6** miał miliony użytkowników. Gdy Microsoft kończył jego
+rozwój, ponad stu wyróżnionych ekspertów poprosiło firmę o zmianę decyzji.
+Microsoft odmówił. Technologia nie zniknęła dlatego, że użytkownicy uznali ją
+za gorszą; właściciel wybrał inną przyszłość.
+
+**Delphi** stworzyło model komponentów, który później naśladowali inni.
+Przegrało jednak na rynku, gdy Borland odchodził od narzędzi programistycznych,
+a cena środowiska rosła. Kiedy więc usłyszysz, że technologia „wygrała, bo była
+lepsza”, sprawdź również cenę, licencję, kanał dystrybucji i właściciela.
+
+## Co się nie zmieniło od 1984
+
+Zmiana nie usunęła jednak wszystkich dawnych problemów. Pod nowymi językami i
+frameworkami wciąż znajdziesz kilka mechanizmów obecnych od pierwszych
+graficznych aplikacji. Na razie wystarczy rozpoznać ich kształt; wrócimy do
+nich praktycznie w module 4.
+
+- **Pętla zdarzeń.** Program nie „działa” — jest wywoływany, kiedy użytkownik
+  coś zrobi. Na Alto w 1979, w Windows dziś, na Androidzie też.
+- **Jeden wątek interfejsu.** Trzech producentów, ta sama zasada.
+- **Zamrożone okno** — i pięć sekund, po których Windows dopisuje do tytułu
+  „Nie odpowiada”. Ta liczba jest zapisana w dokumentacji. Na telefonie te same
+  pięć sekund oznacza, że system **zabija twój proces**.
+- **Stan nie mieszka w kontrolkach.** MVC (1979) → MVP (1996) → MVVM (2005) →
+  MVU: czterdzieści siedem lat mądrych ludzi wymyślających na nowo tę samą
+  regułę.
+- **Instalacja, aktualizacja i odinstalowanie są problemem użytkownika** — a
+  istnienie sklepów, podpisów cyfrowych i czterech formatów pakietów na Linuksie
+  jest dowodem, że nikt go nie rozwiązał.
+
+To jest lista rzeczy, które przeżyją każdy framework — także ten, którego
+nauczysz się na tym kursie.
+
+## Obietnica wraca po raz kolejny
+
+Została jeszcze jedna stała — najważniejsza dla reszty modułu. Przez
+czterdzieści lat regularnie ogłaszano, że zwykły człowiek będzie mógł po prostu
+powiedzieć komputerowi, czego chce, a programiści przestaną być potrzebni.
+
+W latach 80. tak reklamowano języki czwartej generacji. Visual Basic miał
+pozwolić zacząć od okna, położyć na nim przyciski i połączyć je bez całego
+dawnego warsztatu. Apple w 2007 roku przekonywało, że aplikacjom na iPhone'a
+wystarczy przeglądarka. Każda z tych idei przyniosła użyteczne narzędzia:
+bazy w Accessie, makra w Excelu, formularze w Visual Basicu. Żadna nie
+zakończyła zawodu programisty.
+
+Dlatego nowa obietnica związana z AI zasługuje na sceptycyzm. David Heinemeier
+Hansson, twórca Ruby on Rails, przypomniał w 2026 roku wcześniejsze próby
+„programowania przez mówienie”. Tym razem dodał jednak coś nowego: po
+dwudziestu pięciu latach w zawodzie sam wysyła użytkownikom kod napisany przez
+agenta.
+
+Nie musisz przyjmować jego słów na wiarę. Historia daje ci dobry powód, by je
+sprawdzić. I właśnie to zrobimy dalej: następna lekcja pokaże daty i narzędzia,
+a kolejna — wyniki badań. Sceptycyzm nie oznacza automatycznego odrzucenia.
+Oznacza sprawdzanie.
+
+## Jak czytać następną zmianę
+
+1. **Nie przywiązuj zawodu do jednego języka.** Programiści przechodzili od C
+   do projektantów formularzy, a potem do XAML-a. Ty również nie skończysz
+   kariery w narzędziu, w którym ją zaczniesz.
+2. **Przy każdym nowym narzędziu pytaj o kompromis.** Co staje się tańsze, a
+   co droższe? Kto oszczędza czas i kto ponosi koszt?
+3. **Sprawdzaj siły spoza kodu.** Cena, licencja, dystrybucja, właściciel
+   platformy i kształt zespołu często decydują bardziej niż cechy języka.
+4. **Porównaj AI z poprzednimi epokami.** Wszystkie wcześniejsze zmieniały to,
+   *jak* człowiek pisze kod. Epoka rozpoczęta w 2022 roku stawia inne pytanie:
+   czy człowiek musi pisać go sam? Następna lekcja pokaże, jak doszliśmy od
+   podpowiadania jednej linii do wykonywania całych zadań.
+
+## Ćwiczenia
+
+{/* Numery zadań celowo nieprzypisane — ADR-0003, numeracja ciągła przez moduł. */}
+
+1. Z pamięci, bez zaglądania do tekstu: pięć epok pulpitu i cztery epoki
+   telefonu — przybliżony rok, język i jedno zdanie o tym, co stało się tanie.
+   Dopiero potem porównaj z osią czasu.
+2. Wybierz jedno przejście z tabeli w sekcji „Dlaczego następowała zmiana” i
+   znajdź **jedno własne źródło** — spoza tej lekcji — które potwierdza albo
+   podważa podaną przyczynę. Zapisz link i jedno zdanie: potwierdza czy podważa,
+   i po czym to poznajesz.
+3. Znajdź jedną wypowiedź sprzed 2020 roku, która obiecywała, że „każdy będzie
+   programować” albo „programiści nie będą potrzebni” — reklama języka 4GL,
+   narzędzia no-code, czegokolwiek. Trzy zdania: kto, kiedy, i co z tego
+   wyszło.
+4. Zapytaj kogoś, kto programuje zawodowo od co najmniej dziesięciu lat, w
+   jakim narzędziu zaczynał i czego z tamtego warsztatu dziś już nie używa.
+   Zapisz odpowiedź. Jeśli nie masz kogo zapytać — znajdź w sieci wspomnienie
+   programisty o Delphi albo Visual Basicu 6 i zrób z nim to samo.
+
+## Źródła
+
+Stan na **2026-08-29**. Daty i liczby w tej lekcji pochodzą z poniższych
+źródeł; szczegółowe omówienie każdej epoki jest w notatkach badawczych kursu.
+
+- [Analiza kodu źródłowego Lisy](https://github.com/rochus-keller/LisaPascal) na podstawie [publikacji Computer History Museum, 19.01.2023](https://computerhistory.org/press-releases/chm-makes-apple-lisa-source-code-available-to-the-public-as-a-part-of-its-art-of-code-series/) — proporcje Pascala i asemblera
+- [About Messages and Message Queues](https://learn.microsoft.com/windows/win32/winmsg/about-messages-and-message-queues#message-handling) — Microsoft Learn; pętla komunikatów Windows
+- [Historia wydań *Programming Windows*](https://www.charlespetzold.com/pw5/ProgWinEditions.html) — Charles Petzold
+- [Happy 25th Birthday MFC](https://devblogs.microsoft.com/cppblog/happy-25th-birthday-mfc/) — Microsoft; data wydania MFC
+- [Alan Cooper, wywiad o początkach Visual Basica](https://yourstory.com/2017/06/techie-tuesdays-alan-cooper) — YourStory, 2017; oraz [profil CHM](https://computerhistory.org/blog/2017-chm-fellow-alan-cooper-father-of-visual-basic/)
+- [Delphi and Turbo Pascal: 43 years of continuous innovation](https://blogs.embarcadero.com/delphi-and-turbo-pascal-43-years-of-continuous-innovation/) — Embarcadero; data Delphi 1.0
+- [Windows Forms dla programistów VB, styczeń 2002](https://learn.microsoft.com/en-us/previous-versions/dotnet/articles/ms973856(v=msdn.10)) — Microsoft
+- [Microsoft .NET Framework 3.0 released](https://devblogs.microsoft.com/setup/microsoft-net-framework-3-0-released/) — 7.11.2006; premiera WPF
+- [Introduction to Model/View/ViewModel pattern](https://learn.microsoft.com/en-us/archive/blogs/johngossman/introduction-to-modelviewviewmodel-pattern-for-building-wpf-apps) — John Gossman, 8.10.2005
+- [How Microsoft Lost the API War](https://www.joelonsoftware.com/2004/06/13/how-microsoft-lost-the-api-war/) — Joel Spolsky, 13.06.2004
+- [Electron: rename](https://www.electronjs.org/blog/electron) (23.04.2015) i [10 Years of Electron](https://electronjs.org/blog/10-years-of-electron)
+- [Tauri vs Electron: performance, bundle size…](https://www.gethopp.app/blog/tauri-vs-electron) — pomiar z 9.04.2025; opublikowany przez producenta aplikacji w Tauri
+- [1Password 8: The Story So Far](https://1password.com/blog/1password-8-the-story-so-far) — 12.08.2021; dlaczego Electron z rdzeniem w Ruście
+- [What's new in Flutter 3](https://flutter.dev/blog/whats-new-in-flutter-3) — 11.05.2022; pulpit stabilny
+- [Tauri 2.0 Stable Release](https://v2.tauri.app/blog/tauri-20/) — 2.10.2024
+- [Palm OS Programmer's Companion](https://stuff.mit.edu/afs/sipb/project/pilot/doc/Companion.pdf) i [rozdział o pamięci (kopia)](https://www.fuw.edu.pl/~michalj/palmos/Memory.html) — rozmiary sterty
+- [Symbian: two-phase construction](https://katastrophos.net/symbian-dev/GUID-48AD5B98-DBA8-4601-A158-12559985BCEB.html) — kopia dokumentacji Nokii
+- [The K Virtual Machine](https://www.oracle.com/a/tech/docs/java/kvmwp.pdf) — Sun, 2000; ograniczenia Java ME
+- [Microsoft Launches Mobile Developer Solution Featuring .NET Compact Framework](https://news.microsoft.com/source/2003/03/19/microsoft-launches-mobile-developer-solution-featuring-net-compact-framework) — 19.03.2003
+- [iPhone to Support Third-Party Web 2.0 Applications](https://www.apple.com/newsroom/2007/06/11iPhone-to-Support-Third-Party-Web-2-0-Applications/) — Apple, 11.06.2007; [iPhone 2.0 Software Beta](https://www.apple.com/newsroom/2008/03/06Apple-Announces-iPhone-2-0-Software-Beta/) — 6.03.2008
+- [Announcing the Android 1.0 SDK](https://android-developers.googleblog.com/2008/09/announcing-android-10-sdk-release-1.html) — 23.09.2008
+- [Section 3.3.1 of iPhone SDK license](https://blog.rakeshpai.me/2010/04/section-331-of-iphone-sdk-license.html) — kopia treści klauzuli, 11.04.2010; [Statement by Apple on App Store Review Guidelines](https://www.apple.com/newsroom/2010/09/09Statement-by-Apple-on-App-Store-Review-Guidelines/) — 9.09.2010
+- [Apple Releases Swift as Open Source](https://www.apple.com/newsroom/2015/12/03Apple-Releases-Swift-as-Open-Source/) — Apple; historia Swifta od ogłoszenia 2.06.2014
+- [Android announces support for Kotlin](https://android-developers.googleblog.com/2017/05/android-announces-support-for-kotlin.html) (2017) i [Kotlin-first](https://developer.android.com/kotlin/first) — Google
+- [Sunsetting React Native](https://medium.com/airbnb-engineering/sunsetting-react-native-1868ba28e30a) — Airbnb, 19.06.2018; [Five years of React Native at Shopify](https://shopify.engineering/five-years-of-react-native-at-shopify) — 13.01.2025
+- [Microsoft MVPs Say They Want Old VB Back](https://www.eweek.com/development/microsoft-mvps-say-they-want-old-vb-back/) — eWeek, 9.03.2005; [Visual Basic support planned for .NET 5.0](https://devblogs.microsoft.com/vbteam/visual-basic-support-planned-for-net-5-0/) — Microsoft, 11.03.2020
+- [Borland becomes Inprise](https://www.techmonitor.ai/technology/borland_becomes_inprise_as_it_shifts_to_the_enterprise/) — 1998; [cennik RAD Studio](https://www.embarcadero.com/app-development-tools-store/rad-studio) — Embarcadero, sprawdzony 2026-08-29
+- [Preventing Hangs in Windows Applications](https://learn.microsoft.com/en-us/previous-versions/windows/win32/win7appqual/preventing-hangs-in-windows-applications) — Microsoft; pięć sekund; [ANRs](https://developer.android.com/topic/performance/vitals/anr) — Android
+- [Fourth-generation programming language](https://en.wikipedia.org/wiki/Fourth-generation_programming_language) — Wikipedia; hasło „application development without programmers” (źródło wtórne)
+- [Zuckerberg: betting on HTML5 was our biggest mistake](https://venturebeat.com/mobile/facebooks-zuckerberg-the-biggest-mistake-weve-made-as-a-company-is-betting-on-html5-over-native) — VentureBeat, 11.09.2012
+- [DHH: Future of Programming, AI, Agentic Engineering, Vibe Coding & Linux](https://www.youtube.com/watch?v=NYFGCESmikA) — Lex Fridman Podcast #501, sierpień 2026; o obietnicach z czterdziestu lat od 46:12. Pełny zapis: [lexfridman.com/dhh-2-transcript](https://lexfridman.com/dhh-2-transcript/)

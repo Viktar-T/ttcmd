@@ -1,0 +1,439 @@
+---
+title: "Pętla: specyfikacja → plan → zadania → kod"
+order: 3
+summary: "Cztery pliki, cztery pytania — i specyfikacja notatnika napisana w całości, od celu do kryteriów akceptacji. Lekcja o zdaniu, które da się sprawdzić, o dwóch sposobach, na jakie specyfikacja psuje się najczęściej, i o teście, który zdaje tylko dobra: ktoś, kto nie widział twojej rozmowy, umie z niej zaplanować budowę."
+publish: false
+---
+
+{/* Drafted 2026-09-02 from docs/content-briefs/04c-petla-spec-plan-zadania.md,
+    autonomous run — brief unapproved. The worked spec assumes the student's
+    notatnik from Budowa 2 saved Markdown newest-first; a student whose format
+    differed writes their own criteria (said in the build exercise). The peer
+    swap is a classroom arrangement; the fallback (a fresh agent session as the
+    reviewer) is in the exercise text. Intra-module references are plain text:
+    a link to an unpublished lesson fails the build. */}
+
+Wróć do pliku napisanego wstecz dla minutnika. Niektóre zdania w nim dało
+się sprawdzić od razu: „czas pokazywany jako `mm:ss`” — uruchamiasz i patrzysz.
+Inne nie: „ma być wygodny w obsłudze”, „reset działa poprawnie”. Nie dlatego, że
+są fałszywe. Dlatego, że nie wiadomo, co trzeba by zrobić, żeby je obalić.
+
+W `notatnik-v2` leży już konstytucja i jedna decyzja, a kodu nie ma. Między
+tym, co jest zawsze prawdą, a pierwszą linijką kodu jest kilka kroków, i w każdym
+powstaje inny plik. Ta lekcja pisze je wszystkie — dla notatnika, w całości — i
+odpowiada na pytanie: **jak zapisać to, co ma powstać, tak, żeby ktoś, kto nie
+widział twojej rozmowy, umiał to zbudować — i żeby dało się sprawdzić, że
+zbudował to, a nie coś podobnego?**
+
+## Cztery pliki, cztery pytania
+
+Zanim zaczniemy pisać, spójrz na całość. Od konstytucji do sprawdzonego kodu
+prowadzi pętla z czterech plików i jednej czynności na końcu; strzałka z
+powrotem oznacza, że sprawdzenie może wysłać cię do specyfikacji, nie do kodu.
+
+<Rysunek caption="Pętla: konstytucja jest czytana przy pisaniu specyfikacji i planu; sprawdzenie porównuje wynik z kryteriami ze specyfikacji, a nie z wrażeniem.">
+
+<svg viewBox="0 0 760 210" role="img" aria-label="Schemat pętli: konstytucja u góry, pod nią pięć pudełek połączonych strzałkami — spec, plan, zadania, kod, sprawdzenie — i przerywana strzałka od sprawdzenia z powrotem do specyfikacji" style={{ width: "100%", height: "auto" }}>
+  <g stroke="currentColor" fill="none" stroke-width="1.5">
+    <rect x="300" y="14" width="160" height="44" rx="3" stroke="var(--accent-line, currentColor)" stroke-width="2.5" />
+    <rect x="20" y="104" width="120" height="50" rx="3" stroke="var(--accent-line, currentColor)" stroke-width="2.5" />
+    <rect x="165" y="104" width="120" height="50" rx="3" />
+    <rect x="310" y="104" width="120" height="50" rx="3" />
+    <rect x="455" y="104" width="120" height="50" rx="3" />
+    <rect x="600" y="104" width="140" height="50" rx="3" />
+    <path d="M140 129 L165 129" />
+    <path d="M285 129 L310 129" />
+    <path d="M430 129 L455 129" />
+    <path d="M575 129 L600 129" />
+    <path d="M160 125 L165 129 L160 133" />
+    <path d="M305 125 L310 129 L305 133" />
+    <path d="M450 125 L455 129 L450 133" />
+    <path d="M595 125 L600 129 L595 133" />
+    <path d="M340 58 L80 104" stroke-dasharray="5 3" />
+    <path d="M380 58 L225 104" stroke-dasharray="5 3" />
+    <path d="M670 154 L670 186 L80 186 L80 154" stroke-dasharray="5 3" />
+    <path d="M76 160 L80 154 L84 160" />
+  </g>
+  <g fill="currentColor" font-size="15" font-weight="700" text-anchor="middle">
+    <text x="380" y="42" fill="var(--accent-line, currentColor)">konstytucja</text>
+    <text x="80" y="134" fill="var(--accent-line, currentColor)">spec.md</text>
+    <text x="225" y="134">plan.md</text>
+    <text x="370" y="134">tasks.md</text>
+    <text x="515" y="134">kod</text>
+    <text x="670" y="134">sprawdzenie</text>
+  </g>
+  <g fill="currentColor" font-size="12" opacity="0.8" text-anchor="middle">
+    <text x="80" y="170">co i po czym poznam</text>
+    <text x="225" y="170">jak</text>
+    <text x="370" y="170">w jakich krokach</text>
+    <text x="515" y="170">jedno zadanie, jeden commit</text>
+    <text x="670" y="170">każde kryterium z dowodem</text>
+    <text x="375" y="202">jeśli sprawdzenie zawodzi, poprawia się specyfikację — nie tylko kod</text>
+  </g>
+</svg>
+
+</Rysunek>
+
+Każdy plik odpowiada na jedno pytanie i — to ważniejsze — na żadne inne. Folder,
+w którym leżą, nazywa się `specs/`, po angielsku, bo tak nazywają go narzędzia,
+które robią to samo automatycznie; treść plików jest po polsku.
+Jedna funkcja to jeden podfolder z numerem: `specs/001-notatnik/`.
+
+| Plik | Na jakie pytanie odpowiada | Czego w nim nie ma |
+| --- | --- | --- |
+| `konstytucja.md` | Co jest zawsze prawdą o tym programie? | nic o pojedynczej funkcji |
+| `spec.md` | Co ma powstać, dla kogo, czego nigdy nie robi, po czym poznam? | nazwy plików, klas, bibliotek — nic o *jak* |
+| `plan.md` | Jak to zbudować: jakie pliki, w jakiej kolejności? | uzasadnienia, *dlaczego* funkcja jest potrzebna |
+| `tasks.md` | W jakich krokach, i po czym poznać, że krok jest skończony? | krok, którego skończenie jest kwestią opinii |
+
+Ostatnia kolumna jest ważniejsza od środkowej. Pliki psują się nie przez to,
+czego w nich brakuje, tylko przez to, co do nich wpada z sąsiedniego. Zobaczysz
+to dwa razy, na dwóch przykładach.
+
+## Specyfikacja: co, dla kogo, czego nigdy, po czym poznam
+
+Oto specyfikacja notatnika, w całości. Przeczytaj ją, zanim przeczytasz, co o
+niej piszę.
+
+```markdown title="specs/001-notatnik/spec.md"
+# 001 — Notatnik: zapis i przegląd notatek
+
+## Cel
+Jedna osoba zapisuje krótkie notatki i wraca do nich później. Program ma być
+szybszy niż otwieranie pliku w edytorze i nie może zrobić z tym plikiem nic,
+czego edytor by nie zrobił.
+
+## Dla kogo
+Dla użytkownika, który pisze kilka notatek dziennie, po polsku, na jednym
+komputerze.
+
+## Co robi
+1. Program pokazuje pole na tytuł, pole na treść i przycisk zapisu.
+2. Program pokazuje listę zapisanych notatek, najnowszą na górze.
+3. Po zapisie notatka trafia do pliku `notatki.md` w folderze programu,
+   w formacie z decyzji 0001, najnowsza na górze.
+4. Po ponownym uruchomieniu program pokazuje wszystkie notatki z pliku.
+5. Kliknięcie notatki na liście pokazuje jej treść.
+
+## Czego nie robi
+- Nie wyszukuje i nie filtruje.
+- Nie edytuje ani nie usuwa zapisanych notatek — to robi się w edytorze.
+- Nie ma ustawień, motywów ani synchronizacji.
+
+## Kryteria akceptacji
+K1. Kiedy zapiszę notatkę z tytułem „Zakupy” i treścią „mleko”, to w
+    `notatki.md` pojawia się wpis `## <data> <godzina> — Zakupy` z linią
+    `mleko` pod nim. Sprawdzenie: otworzyć plik w edytorze.
+K2. Kiedy zapiszę pięć notatek, to plik ma pięć wpisów i pierwszy od góry
+    jest najnowszy. Sprawdzenie: policzyć nagłówki `##`.
+K3. Kiedy zapiszę notatkę z tytułem „Żółć”, to w pliku i na liście widać
+    „Żółć”, nie krzaczki. Sprawdzenie: otworzyć plik, spojrzeć na listę.
+K4. Kiedy zamknę i uruchomię program ponownie, to lista pokazuje tyle samo
+    notatek, ile jest wpisów w pliku. Sprawdzenie: policzyć jedno i drugie.
+K5. Kiedy tytuł jest pusty, to przycisk zapisu jest nieaktywny i plik się
+    nie zmienia. Sprawdzenie: kliknąć; sprawdzić datę modyfikacji pliku.
+K6. Kiedy `notatki.md` nie istnieje, to program uruchamia się z pustą listą
+    i tworzy plik przy pierwszym zapisie. Sprawdzenie: usunąć plik, uruchomić.
+K7. `dotnet build` kończy się bez błędów. Sprawdzenie: wynik polecenia.
+
+## Do ustalenia
+- [DO USTALENIA] Co ma się stać, gdy `notatki.md` jest w chwili zapisu
+  otwarty w innym programie? (pytanie z dziennika Budowy 2)
+```
+
+Zwróć uwagę na trzy rzeczy. Po pierwsze, w całym pliku nie ma ani jednej nazwy
+pliku z kodem, klasy ani biblioteki — `notatki.md` to plik użytkownika, nie
+programu, i dlatego może tu być. Po drugie, każde kryterium da się sprawdzić
+jedną z dwóch czynności: otwarciem `notatki.md` w edytorze albo uruchomieniem
+polecenia. Nie trzeba do tego żadnego narzędzia, którego nie masz. Po trzecie,
+część „Czego nie robi” jest równie ważna jak „Co robi”: to ona powstrzymuje
+agenta przed dopisaniem wyszukiwarki, o którą nikt nie prosił, i ciebie przed
+tygodniem, który zamienia się w dwa.
+
+Ostatnia część, „Do ustalenia”, jest tą samą, która była w opisie minutnika, i
+jest tu celowo. Specyfikacji wolno zawierać pytania — nie wolno jej ich ukrywać.
+Znacznik `[DO USTALENIA]` to to samo, co w prompcie z pokazu robiło polecenie
+zapisywania decyzji w `DECISIONS.md`, tylko przeniesione tam, gdzie powinno być:
+pytanie stoi w pliku, dopóki ktoś nie odpowie, a plan nie powstaje, zanim nie
+zniknie. Spec Kit, narzędzie GitHuba, o którym będzie mowa w następnej lekcji,
+[wymaga w swoim szablonie dokładnie
+tego](https://github.com/github/spec-kit/blob/main/spec-driven.md) — zaznaczyć
+niejasność zamiast przyjąć prawdopodobne założenie (opis metody sprawdzony
+2 września 2026).
+
+## Kryterium akceptacji: zdanie, które da się sprawdzić
+
+Część, która robi ze spisu życzeń specyfikację, to kryteria. **Kryterium
+akceptacji** to zdanie o programie, które ma trzy części — sytuację, działanie i
+sprawdzalny wynik — i przy którym wiadomo, co trzeba zrobić, żeby przekonać się,
+czy jest prawdziwe. W tym kursie piszemy je w formie „Kiedy …, to …” i dopisujemy
+„Sprawdzenie: …”, żeby druga połowa nie była życzeniem.
+
+Ta forma nie jest wymysłem tego kursu ani nowością. Trzy różne narzędzia zapisują
+ją na trzy sposoby i kształt jest za każdym razem ten sam:
+
+| Zapis | Przykład | Skąd pochodzi |
+| --- | --- | --- |
+| *Given* stan, *When* działanie, *Then* wynik | „**Given** pusty plik, **When** zapiszę notatkę, **Then** plik ma jeden wpis” | Dan North, 2006 — opisał tę formę, ucząc programistów, od czego zaczynać pisanie sprawdzeń ([tekst z marca 2006](https://dannorth.net/blog/introducing-bdd/)); tak zapisuje kryteria Spec Kit |
+| *When* zdarzenie, *the system shall* reakcja | „**When** a user submits a form with invalid data **the system shall** display validation errors” | Alistair Mavin i zespół w Rolls-Royce, 2009 — pisząc wymagania dla oprogramowania sterującego silnikami lotniczymi ([sześć wzorców zdań](https://alistairmavin.com/ears/)); tak zapisuje kryteria Kiro, edytor Amazona |
+| *The app shall* …, *scenario:* *when* …, *then* … | „**When** the user clicks the theme toggle **then** the app switches to dark mode” | połączenie obu poprzednich w [OpenSpec](https://github.com/Fission-AI/OpenSpec), otwartym narzędziu z 2025 roku |
+
+Zapis Mavina — nazywa się EARS i [Kiro używa go we wszystkich swoich
+specyfikacjach](https://kiro.dev/docs/specs/concepts/) — jest wart jednego
+zdania więcej, bo odpowiada na pytanie „czy
+to nie moda”. Ten sam kształt zdania zaprojektowano dla oprogramowania, w którym
+niejasne wymaganie jest problemem bezpieczeństwa lotu, szesnaście lat przed
+pierwszym agentem kodującym. Zdanie o notatniku i zdanie o silniku różnią się
+tylko treścią.
+
+Przyłóż to do zdań, które nie przechodzą. „Zapis działa” nie ma sytuacji ani
+sprawdzenia — cokolwiek się stanie, ktoś może powiedzieć, że działa. „Najnowsza
+notatka na górze” ma wynik, ale nie ma sytuacji, a to właśnie w sytuacji jest
+pułapka: przy jednej notatce zawsze jest na górze. K2 mówi „kiedy zapiszę pięć”,
+bo dopiero wtedy [widać błąd, na którym notatnik wyłożył się w poprzednim
+module](/moduly/03-budujemy/budowa-2-techniki-promptowania) — gubienie ostatniej
+notatki przy przepisywaniu pliku. Dobre kryterium jest napisane tam, gdzie
+program ma szansę zawieść.
+
+Dlaczego plik na dysku? Bo jest najtańszym sprawdzeniem, jakie masz. Nie trzeba
+niczego wiedzieć o kodzie, żeby otworzyć `notatki.md` i policzyć nagłówki. W
+module o testach i jakości zobaczysz, jak takie sprawdzenia zapisać, żeby
+wykonywały się same; dziś liczy się to, że w ogóle da się je wykonać.
+
+## Wyciek do planu
+
+Pierwszy z dwóch sposobów, na jakie specyfikacja psuje się najczęściej, wygląda
+niewinnie. Ktoś, kto już wie, jak to zbuduje, pisze:
+
+```markdown
+3. Po zapisie klasa NoteFile dopisuje notatkę na początek notatki.md,
+   a MainWindow.axaml.cs odświeża ListBox.
+K5. Kiedy tytuł jest pusty, to IsEnabled przycisku jest false.
+```
+
+To są zdania z planu, które wyciekły do specyfikacji. Nie są fałszywe — po
+prostu odpowiadają na pytanie *jak*, a nie *co*. Kosztują dwie rzeczy. Po
+pierwsze, specyfikacja przestaje pasować do innego sposobu zbudowania tego
+samego: ten sam notatnik da się napisać bez okna, w konsoli, i wtedy nie ma
+żadnego `ListBox` — a K5 przestaje mieć sens, choć wymaganie jest identyczne.
+Po drugie, taka specyfikacja nie daje agentowi w świeżej sesji nic do
+zaplanowania, bo plan już w niej jest, napisany w pośpiechu i bez sprawdzenia z
+konstytucją.
+
+Trzeba tu powiedzieć uczciwie, że nie wszyscy stawiają tę granicę w tym samym
+miejscu. Anthropic, producent jednego z agentów z pokazu, [radzi w swoim
+przewodniku](https://code.claude.com/docs/en/best-practices), żeby specyfikacja
+dla agenta „nazywała pliki i interfejsy, których dotyczy” (dokumentacja
+sprawdzona 2 września 2026) — bo pisze o specyfikacji dla jednego agenta w jednej
+sesji. W tym kursie granica biegnie tam, gdzie stawia ją konstytucja: **zdanie,
+które nazywa plik z kodem, należy do planu**. Powód jest praktyczny i da się go
+sprawdzić: specyfikacja ma przeżyć zmianę narzędzia, a nawet zmianę tego, czy
+program ma okno.
+
+Stąd test, który zdaje tylko dobra specyfikacja. Daj ją komuś, kto nie widział
+twojej rozmowy — koledze z klasy albo agentowi w świeżej sesji, z dołączoną tylko
+konstytucją — i poproś o plan. Jeśli potrafi wypisać pliki, które utworzy, i nie
+musi zadać pytania, na które odpowiedź jest tylko w twojej głowie, specyfikacja
+jest gotowa. Jeśli zadaje pytania — każde z nich to brakująca linia w „Do
+ustalenia”. Jeśli nie ma czego planować, bo plan już tam jest — to wyciek.
+
+## Plan: jak, i tylko jak
+
+Planu nie piszesz własnoręcznie. Otwierasz **świeżą sesję** — tę samą, [której używasz do
+sprawdzania pliku reguł](/moduly/03-budujemy/budowa-3-reguly-projektu) — i
+dołączasz do niej dwa pliki: `konstytucja.md` i `spec.md`. Nic więcej. Prosisz o
+plan: jakie pliki powstaną, w jakiej kolejności, co zostaje poza planem, i czy
+którykolwiek punkt konstytucji jest zagrożony. Świeża sesja jest tu testem z
+poprzedniej części, wykonanym przy okazji: jeśli agent umie zaplanować z dwóch
+plików, to specyfikacja jest kompletna.
+
+Tak wygląda plan, który wraca:
+
+```markdown title="specs/001-notatnik/plan.md"
+# Plan — 001 Notatnik
+
+Wejście: konstytucja.md, specs/001-notatnik/spec.md. Nic więcej.
+
+## Sprawdzenie z konstytucją
+- pkt 2 (zwykły plik tekstowy): spełnia — Markdown, decyzja 0001.
+- pkt 3 (nic poza komputer): spełnia — program nie używa sieci.
+- pkt 5 (bez bibliotek): spełnia — tylko szablon avalonia.app.
+
+## Pliki
+- `Notatnik.csproj`, `Program.cs`, `App.axaml(.cs)` — z szablonu, bez zmian.
+- `MainWindow.axaml` — układ: dwa pola, przycisk, lista, podgląd treści.
+- `MainWindow.axaml.cs` — obsługa przycisku i wyboru na liście.
+- `NoteFile.cs` — odczyt i zapis `notatki.md`: wczytać całość, wstawić nową
+  notatkę na początek, zapisać całość w UTF-8.
+- `Note.cs` — tytuł, data i godzina, treść.
+
+## Kolejność
+1. Szablon i pierwszy commit projektu.
+2. `Note.cs` i `NoteFile.cs` — odczyt i zapis (K1, K2, K3, K6).
+3. Okno: pola, przycisk, lista (K5).
+4. Połączenie okna z plikiem: zapis i odświeżenie listy (K1–K4).
+5. Podgląd treści po kliknięciu.
+
+## Poza planem
+Edycja i usuwanie notatek — specyfikacja, „Czego nie robi”.
+```
+
+Czytasz plan z trzema pytaniami w ręku. Czy nazywa każdy plik, który utworzy —
+tak, i to jest jego zadanie; tu nazwy plików są na miejscu. Czy każdy krok
+kolejności wskazuje kryteria, które zamyka — tak, w nawiasach; bez tego nie
+wiadomo, po co krok istnieje. Czy sprawdził się z konstytucją — tak, i ten
+punkt jest pierwszy, bo tanio jest odrzucić plan, zanim powstanie kod.
+
+I jedno zdanie, które w planach pojawia się często i które należy skreślić:
+„Uzasadnienie: notatnik jest potrzebny, bo użytkownik chce szybko zapisywać
+myśli”. To jest zdanie ze specyfikacji, z części „Cel”, które wyciekło w drugą
+stronę. Plan nie argumentuje, dlaczego funkcja jest potrzebna — to zostało
+rozstrzygnięte plik wcześniej. Plan, który na nowo przekonuje do funkcji, nie ma
+stałego celu, w który miałby trafić.
+
+## Zadania: małe i sprawdzalne
+
+Z planu powstaje lista zadań. Każde zadanie ma rozmiar jednego commitu i — to
+jest cała różnica między zadaniem a punktem planu — własne zdanie „gotowe,
+gdy”. Prosisz o nią w tej samej sesji, w której powstał plan, i poprawiasz
+ręcznie, bo to ty będziesz odhaczać.
+
+```markdown title="specs/001-notatnik/tasks.md"
+# Zadania — 001 Notatnik
+
+- [ ] T01 Szablon `dotnet new avalonia.app`, `.gitignore` na `bin/` i `obj/`.
+      Gotowe, gdy: `dotnet run` pokazuje puste okno. Commit `T01: szablon`.
+- [ ] T02 `Note.cs` i `NoteFile.cs`: odczyt pliku do listy notatek.
+      Gotowe, gdy: plik z trzema wpisami wczytuje się jako trzy notatki
+      (tymczasowe wypisanie w konsoli); `dotnet build` bez błędów.
+- [ ] T03 `NoteFile.cs`: zapis nowej notatki na początek pliku, UTF-8.
+      Gotowe, gdy: K1, K2, K3 i K6 przechodzą z tymczasowego wywołania.
+- [ ] T04 `MainWindow.axaml`: pola, przycisk, lista, podgląd.
+      Gotowe, gdy: przycisk nieaktywny przy pustym tytule (K5).
+- [ ] T05 Zapis z przycisku i odświeżenie listy.
+      Gotowe, gdy: K1, K2 i K4 przechodzą w działającym programie.
+- [ ] T06 Podgląd treści po kliknięciu na liście.
+      Gotowe, gdy: „Co robi” pkt 5; wpis w `dziennik.md` ze wszystkimi K.
+```
+
+Drugi sposób, na jaki psuje się ten proces, mieszka tutaj. „T03 Ulepsz
+zapisywanie” nie jest zadaniem, bo nie da się powiedzieć, kiedy jest skończone —
+zawsze można ulepszyć bardziej. „T03 Zapis na początek pliku; gotowe, gdy K1, K2,
+K3 i K6 przechodzą” jest zadaniem, bo zamyka się na sprawdzeniu, a nie na
+opinii. Ta zasada jest [starsza niż
+agenty](https://xp123.com/invest-in-good-stories-and-smart-tasks/): w 2003 roku
+zapisano ją tak, że zadanie jest dobrze postawione, kiedy zespół zgadza się co do
+tego, co znaczy „gotowe”.
+
+Zadanie to jeden commit i w opisie commitu jest jego numer — [nawyk z lekcji o
+Gicie w pracy z agentem](/moduly/02-warsztat/git-w-pracy-z-agentem), który tutaj
+dostaje powód: historia `T01`, `T02`, `T03` czyta się jak wykonany plan, a każdy
+krok da się cofnąć osobno.
+
+Na koniec miara, bez której cały ten moduł wyglądałby na biurokrację. Ten sam
+przewodnik Anthropic, który cytowałem wyżej, mówi wprost: [jeśli zmianę da się
+opisać jednym zdaniem, pomiń
+planowanie](https://code.claude.com/docs/en/best-practices). Specyfikacja jest
+na tydzień pracy. Do poprawienia literówki w etykiecie przycisku nie pisze się
+`spec.md`; pisze się commit. Cztery pliki są odpowiedzią na pytanie „co ma
+powstać w tym tygodniu”, nie na każde pytanie.
+
+## Cztery pliki zamiast jednej rozmowy
+
+Pytanie z początku miało dwie połowy i obie mają teraz odpowiedź. Ktoś, kto nie
+widział twojej rozmowy, zbuduje to, bo specyfikacja mówi *co* bez *jak*, a plan
+powstaje z niej w świeżej sesji — jeśli nie powstaje, specyfikacja nie jest
+gotowa. Da się sprawdzić, że zbudował *to*, bo każde kryterium ma sytuację,
+wynik i sposób sprawdzenia, a każde zadanie ma swoje „gotowe, gdy”.
+
+- **Specyfikacja mówi co, dla kogo, czego nigdy, po czym poznam.** Nazwa pliku
+  z kodem w specyfikacji to wyciek — przenieś ją do planu.
+- **Kryterium ma sytuację, działanie i sprawdzenie.** Pisz je tam, gdzie program
+  ma szansę zawieść, nie tam, gdzie na pewno zadziała.
+- **Pytania stoją w pliku, nie w głowie.** `[DO USTALENIA]` zostaje, dopóki ktoś
+  nie odpowie; plan nie powstaje wcześniej.
+- **Plan piszesz ze świeżej sesji, z dwóch plików.** To jest jednocześnie plan i
+  test specyfikacji.
+- **Zadanie kończy się na sprawdzeniu.** Jeden commit, numer w opisie, „gotowe,
+  gdy” — i miara: jedno zdanie zmiany to za mało na specyfikację.
+
+Twoja specyfikacja notatnika powstaje w ćwiczeniach — i zanim zostanie zbudowana,
+przeczyta ją ktoś, kto nie zna twojej rozmowy. Następna lekcja kładzie te cztery
+pliki obok narzędzi, które w 2025 roku wbudowały tę samą pętlę w edytory, a
+lekcja po niej buduje notatnik.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: cztery pliki i pytanie, na które odpowiada każdy z nich; dwa sposoby,
+na jakie ten proces psuje się najczęściej, po jednym przykładzie.
+
+</Zadanie>
+
+<Zadanie title="Pięć zdań do przepisania">
+
+Przepisz każde z poniższych na kryterium akceptacji w formie „Kiedy …, to …”,
+z dopisanym „Sprawdzenie: …”. Jeśli zdanie nie da się przepisać bez podjęcia
+decyzji, napisz, jakiej.
+
+1. Program obsługuje polskie znaki.
+2. Lista notatek jest zawsze aktualna.
+3. Zapis jest bezpieczny.
+4. Pusta notatka nie jest zapisywana.
+5. Program działa po ponownym uruchomieniu.
+
+</Zadanie>
+
+<Zadanie>
+
+Napisz własny `specs/001-notatnik/spec.md` w `notatnik-v2` — z twoim formatem z
+Budowy 2 i twoimi kryteriami, nie przepisany z lekcji — i zrób commit. Potem
+zamień się z kimś z klasy: druga osoba, czytając tylko twoją konstytucję i
+specyfikację, wypisuje pliki, które by utworzyła, i zaznacza każdy wyciek i każde
+pytanie, na które nie ma odpowiedzi w pliku. Popraw, zrób drugi commit. Jeśli
+nie ma z kim się zamienić, tę samą rolę odgrywa agent w świeżej sesji z dwoma
+dołączonymi plikami. Ta specyfikacja jest budowana za dwie lekcje.
+
+</Zadanie>
+
+<Zadanie title="Pokaz, jeszcze raz">
+
+Wróć do promptu z pokazu z pierwszego modułu i rozsortuj jego linie do czterech
+plików: konstytucja, spec, plan, zadania. Napisz, którego pliku prompt nie miał
+wcale — i co to kosztowało na pokazie, sądząc po plikach `DECISIONS.md` trzech
+agentów.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-02">
+
+<Zrodlo title="Specification-Driven Development (spec-driven.md)" publisher="GitHub Spec Kit" date="2026-09-02" url="https://github.com/github/spec-kit/blob/main/spec-driven.md">szablony metody wymagają zaznaczania niejasności znacznikiem „[NEEDS CLARIFICATION]” zamiast przyjmowania prawdopodobnych założeń; rozdział specyfikacji („WHAT i WHY”) od planu („HOW”); dokument bez własnej daty — data to dzień sprawdzenia</Zrodlo>
+
+<Zrodlo title="Introducing BDD" publisher="Dan North, Better Software" date="2006-03" url="https://dannorth.net/blog/introducing-bdd/">„Given some initial context (the givens), When an event occurs, Then ensure some outcomes” oraz forma „As a [X] I want [Y] so that [Z]”; data pierwszej publikacji w czasopiśmie</Zrodlo>
+
+<Zrodlo title="EARS — Easy Approach to Requirements Syntax" publisher="Alistair Mavin" date="2026-09-02" url="https://alistairmavin.com/ears/">sześć wzorców zdań, w tym „When [trigger], the [system name] shall [system response]”; opracowane w Rolls-Royce przy analizie przepisów dla układów sterowania silnikami, opublikowane po raz pierwszy w 2009 roku; strona bez daty — data to dzień sprawdzenia</Zrodlo>
+
+<Zrodlo title="Specs — Concepts" publisher="Kiro (dokumentacja)" date="2026-09-02" url="https://kiro.dev/docs/specs/concepts/">narzędzie zapisuje kryteria akceptacji w notacji EARS; przykład „WHEN a user submits a form with invalid data THE SYSTEM SHALL display validation errors next to the relevant fields”; strona bez daty — data to dzień sprawdzenia</Zrodlo>
+
+<Zrodlo title="OpenSpec — README" publisher="Fission AI (GitHub)" date="2026-09-02" url="https://github.com/Fission-AI/OpenSpec">format wymagań „The app SHALL …” ze scenariuszami „WHEN … THEN …”; plik bez własnej daty — data to dzień sprawdzenia</Zrodlo>
+
+<Zrodlo title="Best practices for Claude Code" publisher="Anthropic (dokumentacja)" date="2026-09-02" url="https://code.claude.com/docs/en/best-practices">„The most useful specs are self-contained: they name the files and interfaces involved…”; „If you could describe the diff in one sentence, skip the plan”; strona bez daty — data to dzień sprawdzenia</Zrodlo>
+
+<Zrodlo title="INVEST in Good Stories, and SMART Tasks" publisher="Bill Wake, XP123" date="2003-08" url="https://xp123.com/invest-in-good-stories-and-smart-tasks/">zadanie ma być „Measurable”: zespół zgadza się co do tego, co znaczy „gotowe”; historia ma być „Testable”: rozumiem, czego chcę, na tyle, żeby móc napisać do tego test</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="dokumentacja" title="Szablon specyfikacji z GitHub Spec Kit" url="https://raw.githubusercontent.com/github/spec-kit/main/templates/spec-template.md">tak wygląda specyfikacja, kiedy pisze ją zespół, nie jedna osoba: historie użytkownika z priorytetami, wymagania numerowane FR-001, kryteria sukcesu „technology-agnostic and measurable” — porównaj z czterdziestoma linijkami z tej lekcji i zobacz, co jest wspólne</Lektura>
+
+<Lektura kind="artykul" title="INVEST in Good Stories, and SMART Tasks — Bill Wake" url="https://xp123.com/invest-in-good-stories-and-smart-tasks/">dwie strony z 2003 roku o tym, jak duże ma być zadanie i po czym poznać, że jest dobrze postawione; zasada „gotowe, gdy” jest tu postawiona wprost</Lektura>
+
+<Lektura kind="artykul" title="Introducing BDD — Dan North" url="https://dannorth.net/blog/introducing-bdd/">skąd wzięło się „Given / When / Then”: krótki, osobisty tekst o tym, jak trudno było nauczyć ludzi, od czego zaczynać sprawdzanie programu, i jak jedno zdanie to załatwiło</Lektura>
+
+</CzytajDalej>

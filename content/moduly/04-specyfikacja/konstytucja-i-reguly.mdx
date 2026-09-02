@@ -1,0 +1,288 @@
+---
+title: "Konstytucja projektu i reguły"
+order: 2
+summary: "Plik reguł mówi, jak pisać kod, a specyfikacja — co ma robić dana funkcja. Jest jeszcze trzeci rodzaj zdań: to, co ma zostać prawdą niezależnie od tego, co dopiszesz. Lekcja o krótkiej konstytucji projektu, o zapisywaniu decyzji razem z odrzuconymi możliwościami — i o repozytorium, którego pierwszy commit nie zawiera kodu."
+publish: false
+---
+
+{/* Drafted 2026-09-02 from docs/content-briefs/04b-konstytucja-i-reguly.md,
+    autonomous run — brief unapproved. The lesson creates a NEW repository
+    notatnik-v2 (04-index brief, Decision 3); if Viktar prefers a branch in the
+    old one, section „Pierwszy commit bez kodu” changes wording, not shape.
+    Assumes the katalog's AGENTS.md from Budowa 3 exists for most students. */}
+
+Otwórz `AGENTS.md` z katalogu — plik reguł, który powstał, kiedy te same zdania po raz
+trzeci szły do nowej rozmowy. Ma kilkanaście linijek i każda
+mówi, jak ma być napisany kod: nazwy po angielsku, jeden ekran w jednym pliku,
+żadnych dodatkowych bibliotek.
+
+Spróbuj teraz odpowiedzieć na podstawie tego pliku na proste pytanie: czy ta
+aplikacja może kiedykolwiek wysłać twoje dane do internetu? Plik reguł tego nie
+mówi. Nie mówi tego też kod — dziś nie wysyła, ale nic nie stoi na przeszkodzie,
+żeby jutro agent, poproszony o „synchronizację między komputerami”, dopisał
+wysyłanie. Nikt tego nie zabronił, bo nikt tego nie zapisał.
+
+Ta lekcja jest o zdaniach tego rodzaju: **co w projekcie ma zostać prawdą
+niezależnie od tego, jaką funkcję dopiszesz — i gdzie to zapisać, żeby żadna
+specyfikacja nie mogła tego złamać?**
+
+## Trzy rodzaje zdań o projekcie
+
+Zanim powstanie nowy plik, warto rozdzielić zdania, które do tej pory lądowały w
+jednym miejscu. Weź kilka z pliku reguł katalogu i kilka, które padłyby o
+notatniku, i przyłóż do każdego jedno pytanie: **o czym to zdanie jest?**
+
+| Zdanie | O czym jest | Gdzie mieszka |
+| --- | --- | --- |
+| Nazwy plików, klas i metod po angielsku. | o tym, *jak pisać kod* | plik reguł |
+| Jeden ekran to jeden plik `.axaml` i jeden `.axaml.cs`. | o tym, *jak pisać kod* | plik reguł |
+| Formularz dodawania ma pole na rok wydania. | o tym, *co robi ta funkcja* | specyfikacja |
+| Kiedy zapiszę piątą notatkę, w pliku jest pięć wpisów. | o tym, *co robi ta funkcja* | specyfikacja |
+| Notatnik nigdy nie wysyła danych poza komputer użytkownika. | o tym, *co jest zawsze prawdą* | ? |
+| Notatki są zwykłym plikiem tekstowym, który da się otworzyć w każdym edytorze. | o tym, *co jest zawsze prawdą* | ? |
+
+Pierwsze dwa rodzaje znasz. Zdania o tym, jak pisać kod, jadą do modelu z każdym
+zapytaniem w pliku reguł i [muszą być
+krótkie](/moduly/03-budujemy/budowa-3-reguly-projektu), bo każda linijka kosztuje
+przy każdej wiadomości. Zdania o tym, co robi funkcja, to specyfikacja z
+poprzedniej lekcji — powstaje przed kodem tej funkcji i jest tym, z czym
+porównujesz wynik.
+
+Trzeci rodzaj nie pasuje do żadnego z tych dwóch miejsc. „Nigdy nie wysyła
+danych” nie jest regułą pisania kodu — można je napisać czysto i po angielsku, i
+złamać to zdanie. Nie jest też opisem funkcji, bo dotyczy każdej funkcji, także
+tych, które jeszcze nie istnieją. To zdanie jest o tym, czym ten program *jest*,
+i potrzebuje własnego pliku.
+
+## Konstytucja: to, czego żadna funkcja nie zmieni
+
+Ten plik nazywa się **konstytucją projektu** i jest krótki: kilka zdań, które
+mają pozostać prawdą przez cały czas życia programu, oraz jedna zasada o tym,
+jak się mają do wszystkiego innego — specyfikacja nie może im zaprzeczyć. Jeśli
+specyfikacja jakiejś funkcji wymaga złamania konstytucji, to nie konstytucja
+jest do poprawy, tylko specyfikacja; a jeśli naprawdę trzeba zmienić
+konstytucję, robi się to osobną, zapisaną decyzją, nigdy przy okazji.
+
+Zaczynasz dziś nowe repozytorium. Notatnik z poprzedniego modułu zostaje, jak
+jest — będzie potrzebny do porównania — a obok niego powstaje `notatnik-v2`,
+w którym ten sam program zbudujesz jeszcze raz, tym razem od specyfikacji. Pierwszym
+plikiem w nowym repozytorium nie jest szablon projektu. Jest to:
+
+```markdown title="konstytucja.md"
+# Notatnik — konstytucja
+
+1. Notatnik to program do zapisywania krótkich notatek na jednym komputerze,
+   dla jednej osoby.
+2. Notatki są zwykłym plikiem tekstowym, który da się otworzyć i poprawić
+   w każdym edytorze bez tego programu.
+3. Program nigdy nie wysyła niczego poza komputer użytkownika.
+4. Interfejs po polsku, z poprawnymi polskimi znakami.
+5. Bez dodatkowych bibliotek — tylko to, co daje szablon projektu.
+6. Specyfikacja żadnej funkcji nie może zaprzeczyć tym punktom. Zmiana
+   konstytucji to osobna, zapisana decyzja.
+```
+
+Zwróć uwagę, czego w tym pliku nie ma. Nie ma nic o tym, jak wygląda okno, jak
+nazywa się plik z notatkami ani w jakiej kolejności są wpisy — to wszystko są
+sprawy specyfikacji i będą się zmieniać. Nie ma też nic o nazwach klas i
+długości metod — to plik reguł. Zostało sześć zdań, które mają być prawdą tak
+samo dla pierwszej funkcji, jak dla dziesiątej.
+
+Pomysł nie jest wymysłem tego kursu. Jedno z narzędzi, o których będzie mowa za
+dwie lekcje, [zaczyna każdy projekt od
+konstytucji](https://github.com/github/spec-kit/blob/main/spec-driven.md) i
+traktuje ją jako zbiór zasad, których żadna funkcja nie zmienia — u niego ma ona
+dziewięć artykułów, bo jest pisana dla zespołów budujących duże systemy, a jej ostatnia część mówi to samo,
+co twój punkt szósty: [konstytucja jest ponad wszystkimi innymi
+praktykami](https://raw.githubusercontent.com/github/spec-kit/main/templates/constitution-template.md)
+(szablon sprawdzony 2 września 2026). Dla notatnika sześć zdań to właściwy
+rozmiar. Konstytucja dziewięcioartykułowa dla programu, który zapisuje notatki,
+byłaby teatrem.
+
+## Dlaczego działa na agenta, choć nie jedzie z każdym zapytaniem
+
+Plik reguł działa, bo narzędzie dokłada go do każdej wiadomości. Konstytucja
+działa inaczej i warto rozumieć dlaczego, bo inaczej pokusa, żeby wkleić ją do
+`AGENTS.md`, jest duża.
+
+Konstytucji nie czyta się przy każdym zapytaniu. Czyta się ją w dwóch momentach:
+kiedy powstaje specyfikacja i kiedy powstaje plan. W tym samym narzędziu, które
+zaczyna od konstytucji, [plan ma osobny punkt „sprawdzenie z
+konstytucją”](https://raw.githubusercontent.com/github/spec-kit/main/templates/plan-template.md),
+przez który trzeba przejść, zanim powstanie kod — to bramka, nie tło. Mechanizm
+jest więc tani: sześć zdań przeczytanych dwa razy na funkcję, zamiast sześciu
+zdań doklejanych do każdej z pięćdziesięciu wiadomości.
+
+Przyłóż to do zdania, które specyfikacja mogłaby kiedyś przynieść: „notatki
+synchronizują się z telefonem”. Sprawdzenie z konstytucją trwa sekundę — punkt
+trzeci mówi, że program nie wysyła niczego poza komputer. Są dwie uczciwe drogi:
+zrezygnować z funkcji albo zmienić konstytucję osobną decyzją, z zapisanym
+powodem. Nie ma trzeciej, w której funkcja powstaje, a punkt trzeci cicho
+przestaje być prawdą. Tyle kosztuje ten plik: trzeba go czytać w dwóch
+momentach i trzeba go trzymać w prawdzie.
+
+## Zapis decyzji: dlaczego, nie tylko co
+
+Konstytucja mówi, co jest prawdą. Nie mówi, dlaczego — a to „dlaczego” ginie w
+projektach najszybciej ze wszystkiego. Michael Nygard, który w 2011 roku opisał
+krótki sposób na zapisywanie decyzji w projekcie, zaczął od tego, [że
+najtrudniej jest zachować motywację stojącą za
+decyzją](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions).
+Ktoś, kto trafia na decyzję bez jej powodów, ma dwa wyjścia i oba złe: przyjąć
+ją w ciemno albo w ciemno odwrócić.
+
+Jego zapis decyzji — po angielsku *architecture decision record*, w skrócie
+ADR — to jedna lub dwie strony w pięciu punktach: tytuł, kontekst, decyzja,
+status, skutki. Nygard dodaje dwie zasady, które są ważniejsze od formatu:
+zapisy są numerowane i nigdy nie kasowane — decyzja, która przestała
+obowiązywać, dostaje nowszy zapis, a stary zostaje jako historia — i są krótkie,
+bo [„dużych dokumentów nikt nie aktualizuje; małe mają na to przynajmniej
+szansę”](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions).
+
+Znasz już wersję jednolinijkową. Prompt z pokazu w pierwszym module kazał
+agentowi [zapisywać każdą decyzję w
+`DECISIONS.md`](/moduly/01-jak-powstaje-oprogramowanie/na-zywo-agent-buduje-aplikacje),
+po jednej linii, z odrzuconą alternatywą. Tutaj linia rośnie do akapitu, a
+akapit ma cztery części. Pierwszą decyzję w notatniku podejmujesz dziś —
+dotyczy formatu pliku, na którym oparta będzie cała specyfikacja:
+
+```markdown title="decyzje/0001-format-pliku-notatek.md"
+# 0001 — Format pliku z notatkami
+
+Kontekst: notatki muszą dać się otworzyć w każdym edytorze (konstytucja,
+pkt 2). W Budowie 2 porównano pięć wariantów tej samej prośby; najlepiej
+czytelny okazał się Markdown z nagłówkiem na każdą notatkę.
+
+Decyzja: jeden plik `notatki.md`, każda notatka jako nagłówek `##` z datą,
+godziną i tytułem, treść pod nagłówkiem, najnowsza notatka na górze.
+
+Odrzucone: JSON — czytelny dla programu, nie dla człowieka w edytorze;
+jeden plik na notatkę — folder zamienia się w bałagan po tygodniu.
+
+Skutki: format da się sprawdzić gołym okiem; „najnowsza na górze” wymaga
+przepisania całego pliku przy każdym zapisie, co trzeba wpisać do kryteriów.
+```
+
+Trzy części Nygarda zostają — kontekst, decyzja, skutki; jego tytuł jest nazwą
+pliku, a status wynika z numeru: jeśli kiedyś zmienisz format, powstanie
+`0002-…`, które powie „zastępuje 0001”, a 0001 zostanie. Czwarta część,
+odrzucone możliwości, u Nygarda nie występuje osobno — pochodzi z promptu z
+pokazu i zostaje, bo to ona najczęściej ratuje przed odwróceniem decyzji w
+ciemno. Zwróć uwagę na ostatnią część: skutki nie są reklamą decyzji. To
+miejsce na to, co decyzja utrudnia — i „najnowsza na górze” utrudnia rzecz, o
+którą [rozbił się notatnik w poprzednim
+module](/moduly/03-budujemy/budowa-2-techniki-promptowania). Zapisane tutaj,
+trafi do kryteriów specyfikacji, zamiast czekać, aż znów zgubi notatkę.
+
+## Pierwszy commit bez kodu
+
+Załóż repozytorium `notatnik-v2` tak jak poprzednie: pusty folder, `git init`,
+pusty projekt na GitHubie. Nie uruchamiaj jeszcze `dotnet new`. Dodaj dwa pliki —
+`konstytucja.md` i `decyzje/0001-format-pliku-notatek.md` — zrób commit z opisem
+`konstytucja i pierwsza decyzja` i wypchnij.
+
+Otwórz to repozytorium w przeglądarce i popatrz na nie oczami kogoś, kto widzi je
+pierwszy raz. Nie ma kodu. Są dwa pliki, z których jeden mówi, czym ten program
+jest i czego nigdy nie zrobi, a drugi — dlaczego jego dane wyglądają tak, a nie
+inaczej. Ktoś, kto zaczyna tak projekt, wie o nim więcej, niż o minutniku
+było wiadomo po tygodniu budowania. To nie jest ceremonia. To jest pierwsze
+repozytorium w tym kursie, w którym powód istnieje wcześniej niż kod.
+
+## Zanim powstanie linijka
+
+Pytanie z początku brzmiało, gdzie zapisać to, co ma zostać prawdą niezależnie od
+funkcji — i tak, żeby specyfikacja nie mogła tego złamać. Odpowiedź ma dwa pliki
+i cztery zasady:
+
+- **Trzy rodzaje zdań, trzy miejsca.** Jak pisać kod — plik reguł, z każdym
+  zapytaniem. Co robi funkcja — specyfikacja, przed kodem funkcji. Co jest zawsze
+  prawdą — konstytucja, czytana przy specyfikacji i planie.
+- **Konstytucja jest krótka i stoi wyżej.** Kilka zdań; specyfikacja nie może
+  im zaprzeczyć; zmiana tylko osobną decyzją.
+- **Decyzję zapisuj z odrzuconymi możliwościami i ze skutkami.** Kontekst,
+  decyzja, odrzucone, skutki — akapit, numer, nigdy nie kasować.
+- **Powód przed kodem.** Repozytorium, które zaczyna się od konstytucji i
+  decyzji, wie o sobie więcej niż to, które zaczyna się od szablonu.
+
+W `notatnik-v2` jest teraz wszystko, z czym specyfikacja będzie się musiała
+zgadzać, i nie ma jeszcze ani jednego zdania o tym, co program robi. Te zdania —
+i sposób, żeby dało się je sprawdzić — to następna lekcja.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: trzy rodzaje zdań o projekcie i miejsce każdego z nich; cztery części
+zapisu decyzji. Do tego jedno zdanie o tym, dlaczego konstytucji nie wkleja się
+do pliku reguł.
+
+</Zadanie>
+
+<Zadanie title="Dwanaście zdań">
+
+Rozsortuj poniższe zdania do czterech miejsc: plik reguł, specyfikacja,
+konstytucja, zapis decyzji. Dwa z nich są celowo dwuznaczne — przy nich napisz,
+od czego zależy odpowiedź.
+
+1. Metoda nie może być dłuższa niż dwadzieścia linii.
+2. Program nie wymaga połączenia z internetem.
+3. Kiedy tytuł notatki jest pusty, przycisk zapisu jest nieaktywny.
+4. Wybraliśmy Markdown zamiast JSON, bo plik ma być czytelny w edytorze.
+5. Program jest dla jednej osoby na jednym komputerze.
+6. Komunikaty o błędach są po polsku.
+7. Notatki sortujemy od najnowszej.
+8. Nie zmieniaj plików, o które nie było prośby.
+9. Dane nigdy nie opuszczają komputera użytkownika.
+10. Wszystkie pliki w UTF-8.
+11. Program uruchamia się w mniej niż dwie sekundy.
+12. Zrezygnowaliśmy z wyszukiwania w tej wersji, bo wydłużyłoby tydzień o drugi.
+
+</Zadanie>
+
+<Zadanie>
+
+Załóż `notatnik-v2` z `konstytucja.md` i `decyzje/0001-….md` — własnymi, nie
+przepisanymi z lekcji: konstytucja może mieć od pięciu do ośmiu punktów, decyzja
+o formacie ma odpowiadać temu, jak *twój* notatnik zapisywał w Budowie 2. Commit,
+push, żadnego `dotnet new`. To repozytorium jest używane w każdej następnej
+lekcji modułu.
+
+</Zadanie>
+
+<Zadanie title="Konstytucja na miarę">
+
+Szablon konstytucji z narzędzia wspomnianego w lekcji ma pięć zasad z przykładami
+— **Library-First** (każda funkcja zaczyna się jako osobna biblioteka),
+**CLI Interface** (każda biblioteka ma interfejs tekstowy), **Test-First**
+(najpierw testy, potem kod), **Integration Testing**, **Observability** — oraz
+część o ograniczeniach, o sposobie pracy i o tym, że konstytucja stoi ponad
+wszystkim innym. Wybierz jedną z tych zasad i napisz jedno zdanie, dlaczego dla
+notatnika byłaby bez sensu — chodzi o to, żeby zobaczyć, że konstytucja ma
+rozmiar projektu, nie szablonu. Sam szablon jest po angielsku, link w źródłach;
+zaglądanie do niego jest dla chętnych, nie warunkiem zadania.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-02">
+
+<Zrodlo title="Documenting Architecture Decisions" publisher="Cognitect (Michael Nygard)" date="2011-11-15" url="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions">pięć części zapisu decyzji — tytuł, kontekst, decyzja, status, skutki; „one or two pages long”; „Large documents are never kept up to date. Small, modular documents have at least a chance at being updated”; numeracja, brak kasowania, zastępowanie nowszym zapisem; tłumaczenie własne</Zrodlo>
+
+<Zrodlo title="Specification-Driven Development (spec-driven.md)" publisher="GitHub Spec Kit" date="2026-09-02" url="https://github.com/github/spec-kit/blob/main/spec-driven.md">konstytucja z dziewięciu artykułów jako „architectural DNA” projektu; opis metody, bez własnej daty publikacji — data to dzień sprawdzenia</Zrodlo>
+
+<Zrodlo title="Szablon konstytucji (constitution-template.md)" publisher="GitHub Spec Kit" date="2026-09-02" url="https://raw.githubusercontent.com/github/spec-kit/main/templates/constitution-template.md">część „Governance” z przykładem „Constitution supersedes all other practices”; przykładowe zasady w komentarzach szablonu; plik bez własnej daty — data to dzień sprawdzenia</Zrodlo>
+
+<Zrodlo title="Szablon planu (plan-template.md)" publisher="GitHub Spec Kit" date="2026-09-02" url="https://raw.githubusercontent.com/github/spec-kit/main/templates/plan-template.md">sekcja „Constitution Check” opisana jako bramka, przez którą plan musi przejść przed badaniami i po projekcie; plik bez własnej daty — data to dzień sprawdzenia</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="artykul" title="Documenting Architecture Decisions — Michael Nygard" url="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions">oryginalny tekst ma mniej niż dwie strony i jest najlepszym argumentem za własnym formatem: pokazuje, że zapis decyzji ma być tak krótki, żeby ktoś go naprawdę napisał</Lektura>
+
+<Lektura kind="dokumentacja" title="Architectural Decision Records — zbiór formatów i przykładów" url="https://adr.github.io/">strona zbiera kilkanaście wariantów zapisu decyzji i prawdziwe przykłady z otwartych projektów; przydatna, żeby zobaczyć, że cztery części z tej lekcji to jeden z wielu równie dobrych kształtów</Lektura>
+
+</CzytajDalej>

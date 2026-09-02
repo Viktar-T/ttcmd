@@ -20,11 +20,42 @@ If no slice is active, there is no work to do. Ask for one.
 spec  →  (Viktar approves)  →  plan  →  tasks  →  execute, one commit per task
 ```
 
-- **Propose the spec, then stop.** Do not write `plan.md` in the same turn as `spec.md`, and do not write code before the plan is approved. The pause is the method, not friction.
+- **In supervised mode, propose the spec then stop.** Do not write `plan.md` in the same turn as `spec.md`, and do not write code before the plan is approved. The pause is the method, not friction. In autonomous mode see "Two modes" below.
 - **`spec.md` answers what and why**, ends with **acceptance criteria**, and carries a `## Decisions taken` section (§4). If a filename, a library or a component name appears in the *what*, it has leaked into the plan. Remove it.
 - **`plan.md` answers how.** File map, libraries, order of work. It does not re-argue why the feature is wanted.
 - **`tasks.md` is ordered and commit-sized.** Each task is objectively checkable — "the build fails on a lesson missing `title`" is a task; "improve the content pipeline" is not.
 - **Execute one task at a time**, in order. Check the box when it is done *and verified*, never when it is merely written.
+
+### Two modes
+
+The loop above is the same either way. What differs is whether a human stands
+between the stages. **The prompt that starts a slice says which mode it is in.**
+
+**Supervised** — the default. Write `spec.md` and stop. Viktar reads and edits
+it, then starts a new session for the plan, and again for the tasks. Each pause
+is a correction point, and the fresh session is a test: a plan written by a
+session that never saw the spec being drafted can only work from what the spec
+actually says.
+
+**Autonomous** — spec, plan, tasks and implementation in one run, no approval
+between stages. Faster, and it gives up that test. Two things buy most of it
+back, and an autonomous run must do both:
+
+1. **Write `plan.md` from a subagent whose only inputs are `constitution.md`,
+   `AGENTS.md` and this slice's `spec.md`.** That reproduces the fresh-context
+   test without the pause. If the subagent cannot produce a plan from the spec
+   alone, the spec is incomplete — fix the spec, say so, and note it in the
+   final report.
+2. **Review the closing diff from a second subagent**, as §3 already requires.
+
+In autonomous mode the artifacts are still written in order and committed
+separately. Skipping straight to code because nobody is watching is not
+autonomy, it is the thing this repo exists to avoid.
+
+**Neither mode invents approval.** Do not write "approved by Viktar" against
+something he has not read. An autonomous run is unapproved by construction; the
+`## Decisions taken` section and the final report are how he reviews it
+afterwards.
 
 ## 3. Verification
 
@@ -34,6 +65,7 @@ A task closes on a check, never on an opinion.
 - The default check is `npm run build`. It fails on frontmatter that breaks the Zod schema, so bad content and bad code surface the same way.
 - **Before closing a slice**, review the diff against `spec.md` in a **fresh subagent context**: every acceptance criterion met, nothing outside the slice's scope touched. Report gaps that affect correctness or the criteria — not style preferences.
 - If you cannot verify it, say so and stop. Do not check the box.
+- **If a criterion needs a human eye** — a colour judged in rendered prose, a flash of the wrong theme on a slow reload — you cannot close it. Leave the box unchecked, and name the criterion and what to look at in your final report.
 
 ## 4. Deciding, and when to ask
 

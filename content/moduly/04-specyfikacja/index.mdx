@@ -1,0 +1,54 @@
+---
+title: "Specyfikacja zamiast wibracji"
+---
+
+{/* Drafted 2026-09-02 from docs/content-briefs/04-index.md, autonomous run —
+    the brief is a proposal, not an approved spec. The module rebuilds the
+    notatnik from Budowa 2 in a new repository (notatnik-v2); the katalog is the
+    extension, the console notatnik the fallback. Reasons in the brief's
+    Decisions. */}
+
+Masz trzy aplikacje, które działają, i trzy repozytoria, w których leży ich kod.
+Otwórz dowolne z nich i poszukaj miejsca, w którym jest napisane, co ta
+aplikacja ma robić. Plik reguł mówi, jak ma być napisany kod. Dziennik mówi, co
+zostało sprawdzone. README, jeśli jest, mówi, jak to uruchomić. Nic nie mówi,
+co miało powstać — to zostało w rozmowie z agentem, a rozmowa się skończyła.
+
+Ten moduł dopisuje plik, którego brakuje, i pokazuje, że wszystko inne na nim
+wisi. Pytanie modułu jest praktyczne: co spisać, zanim zaczniesz budować, żeby
+agent dostał to, czego nie umie zgadnąć, żeby było czym sprawdzić wynik, i
+żeby ten zapis przeżył rozmowę, w której powstał. Odpowiedzią nie jest lepszy
+prompt, bo prompt umiera razem z wątkiem. Odpowiedzią jest kilka krótkich
+plików w repozytorium — i pętla, która się wokół nich układa: co ma być,
+potem jak, potem w jakich krokach, potem kod, potem sprawdzenie. Tę samą
+pętlę w 2025 roku wbudowało w swoje narzędzia pięć firm, w tym trzy z
+największych w branży; tutaj przejdziesz ją raz własnymi rękami, na aplikacji, której bałagan już znasz, i
+dopiero potem obejrzysz narzędzia.
+
+Kolejność lekcji wynika z tego, że brak trzeba najpierw zobaczyć. Pierwsza
+lekcja otwiera repozytorium minutnika i szuka w nim siedmiu zasad, które
+dostał agent — nie ma ich tam, a lekcja pokazuje liczbami, co model robi z tym,
+czego nikt nie napisał. Druga rozdziela trzy rodzaje zdań o projekcie — jak
+pisać kod, co robi ta funkcja, co jest zawsze prawdą — i to trzecie dostaje
+własny krótki plik, którego żadna specyfikacja nie może złamać; nowe
+repozytorium notatnika zaczyna się od commitu bez kodu. Trzecia jest lekcją o
+metodzie: cztery pliki, cztery pytania, specyfikacja notatnika napisana w
+całości, kryterium akceptacji jako zdanie, które da się sprawdzić, i dwa
+sposoby, na jakie specyfikacja psuje się najczęściej. Czwarta kładzie twoje
+cztery pliki obok pięciu narzędzi z 2025 roku i pokazuje, że to ta sama pętla
+pod różnymi nazwami — oraz że połowa z niej jest już w twoim edytorze. Piąta to
+tydzień budowania: notatnik od nowa, od specyfikacji do działającego programu,
+jedno zadanie na jeden commit, każde kryterium sprawdzone z dowodem. Szósta
+zbiera pomysły na program, którego ktoś prawdziwy będzie używał — zapisane tak,
+jak uczy ten moduł, i odłożone do czasu, gdy będziesz je umieć ocenić.
+
+Kilka rzeczy o tym, jak ten moduł jest prowadzony. Budujemy notatnik, nie
+katalog — bo jest najmniejszy, a jego wynikiem jest plik na dysku, więc każde
+kryterium da się sprawdzić bez żadnego dodatkowego narzędzia. Nie instalujemy
+niczego nowego: pętla powstaje z plików Markdown w repozytorium, bo ta jej
+część, której narzędzia nie dostarczają, jest dokładnie tą, której masz się
+nauczyć. Obowiązuje miara: specyfikacja jest na tydzień pracy — jeśli zmianę da
+się opisać jednym zdaniem, nie pisze się do niej specyfikacji. I jedna rzecz
+uczciwa na początek: przebudowany notatnik może z zewnątrz wyglądać tak samo jak
+stary. Różnica jest w tym, co da się o nim sprawdzić i co z niego zostanie, kiedy
+zamkniesz okno rozmowy.
