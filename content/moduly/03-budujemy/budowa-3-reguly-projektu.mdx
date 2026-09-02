@@ -182,7 +182,62 @@ i poprawiona, jest warte więcej niż regulamin napisany z wyobraźni.
 Ten plik jest też pierwszą rzeczą w tym kursie napisaną **dla maszyny, a
 czytaną przez człowieka**. Reguły projektu to jeszcze nie specyfikacja — nie
 mówią, co aplikacja ma robić, tylko jak ma być zrobiona. Od pisania tego
-pierwszego zaczyna się moduł o specyfikacjach, następny w kolejności.
+pierwszego zaczyna się moduł o specyfikacjach, następny w kolejności. Zanim
+katalog będzie skończony, zostaje jeszcze pół godziny bez agenta.
+
+## Własną ręką: zdarzenie
+
+Pół godziny dla twojej klawiatury, ostatnie w tym module. Dzisiejsza
+konstrukcja jest tą, na której stoi każde okno z przyciskiem: **zdarzenie** i
+jego **obsługa**. Program z oknem nie wykonuje się od góry do dołu jak program
+w konsoli — czeka, a kiedy użytkownik coś zrobi, system wywołuje metodę, którą
+program wskazał na tę okazję. Kliknięcie jest zdarzeniem; metoda jest jego
+obsługą.
+
+W katalogu jest już kilka przycisków i agent podpiął do każdego jakąś metodę.
+Dziś dodasz jeden własny, od początku do końca, bez agenta: przycisk
+**Policz**, który liczy pozycje w pliku `dane/pozycje.txt` i pokazuje wynik.
+Najpierw czytanie: otwórz plik ekranu listy (u większości `MainWindow.axaml`)
+i znajdź dowolny istniejący `<Button`. Zobacz, jak agent podpiął do niego
+metodę — atrybut `Click` z nazwą — i jak ta metoda wygląda w pliku `.cs` obok.
+Twoja będzie miała ten sam kształt.
+
+Dwie zmiany. W pliku `.axaml`, pod istniejącymi przyciskami:
+
+```xml title="MainWindow.axaml — fragment"
+<Button Click="OnCountClick">Policz</Button>
+<TextBlock Name="CountText" />
+```
+
+I w pliku `.axaml.cs`, w klasie okna, obok metod, które napisał agent:
+
+```csharp title="MainWindow.axaml.cs — nowa metoda"
+private void OnCountClick(object? sender, RoutedEventArgs e)
+{
+    var lines = File.ReadAllLines("dane/pozycje.txt");
+    CountText.Text = $"Pozycji w pliku: {lines.Length}";
+}
+```
+
+Jeśli edytor podkreśla `RoutedEventArgs` albo `File` na czerwono, na górze
+pliku brakuje `using Avalonia.Interactivity;` albo `using System.IO;`. Uruchom
+i kliknij — pod przyciskiem pojawia się liczba. Dopisz w pliku jedną pozycję,
+kliknij jeszcze raz — liczba rośnie, bo metoda czyta plik na nowo przy każdym
+kliknięciu, a nie raz na start.
+
+Dwa parametry tej metody warto zapamiętać z wyglądu, bo zobaczysz je w każdym
+programie z oknem: `sender` to kontrolka, która zdarzenie wywołała, `e` to
+szczegóły zdarzenia. Ich nazwy i kolejność pochodzą z lat osiemdziesiątych i
+nie zmieniły się od tamtej pory — skąd dokładnie, jest jednym z tematów
+Modułu 5. Dziś wystarczy wiedzieć, że nazwa w atrybucie `Click` i nazwa
+metody muszą być identyczne, i że w środku metody wolno napisać wszystko, co
+umiesz.
+
+Commit z opisem `wlasna reka: przycisk policz` i linijka na karcie — ile
+minut, co było najtrudniejsze. Trzy tygodnie, trzy konstrukcje: lista, obsługa
+błędu, zdarzenie. Jeśli na karcie masz przy nich trzy liczby minut, to jest
+twoja pierwsza miara tego, ile kosztuje zrobienie czegoś samemu — i ta miara
+będzie w tym kursie jeszcze potrzebna.
 
 ## Trzy ekrany i kilkanaście linijek
 
@@ -229,8 +284,9 @@ pierwszym razem, a ile teraz.
 Skończ katalog do trzech działających ekranów, z plikiem `AGENTS.md` w
 repozytorium, w którym każda linijka została wcześniej wypowiedziana co
 najmniej dwa razy. Każdą zmianę agenta przeczytaj, zanim ją przyjmiesz —
-dziesięć minut na czytanie zmian należy do każdego tygodnia tego modułu. Jedną
-zmianę zrób własną ręką, bez agenta. Wypchnij wszystko.
+dziesięć minut na czytanie zmian należy do każdego tygodnia tego modułu. Blok
+„Własną ręką: zdarzenie” jest częścią tego zadania — przycisk Policz ma być w
+aplikacji. Wypchnij wszystko.
 
 </Zadanie>
 

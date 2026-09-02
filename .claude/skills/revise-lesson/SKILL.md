@@ -24,7 +24,7 @@ If the request is for a lesson that does not exist yet, stop and use
 ## 2. Load — in this order, nothing more
 
 1. `constitution.md` Articles III, IV, V, IX; `AGENTS.md` §4 and §9.
-2. `docs/content-reader.md` in full.
+2. `docs/surveys/content-reader.md` in full.
 3. `docs/content-style.md` in full, including the appendix.
 4. `docs/content-briefs/NNx-slug.md` if it exists. If it does not, you will
    reconstruct one (step 3).

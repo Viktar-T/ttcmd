@@ -57,7 +57,7 @@ sequence of short sessions, not one long one.
    The skill enforces this itself: its research gate stops at the brief and
    proposes a research prompt instead of drafting when neither a research
    file nor at-keyboard sourcing can carry the lesson's claims.
-4. **Check the reader.** `docs/content-reader.md` should reflect what you
+4. **Check the reader.** `docs/surveys/content-reader.md` should reflect what you
    currently know about the class — after the questionnaire, update it
    before writing, because every brief's first line is derived from it.
 
@@ -142,7 +142,9 @@ ADR-0004), never a workaround in the content lane.
    purpose, the brief is updated in the same change, so the two never
    disagree silently.
 
-Module 1 has no briefs except `01e-teraz-ty-pierwszy-agent.md`: the module
-was written before this folder existed and is read in class as it stands. A
-Module 1 lesson gets a brief the first time it is revised, reconstructed by
-`revise-lesson`.
+Module 1 has no briefs: the module was written before this folder existed
+and is read in the student's own time as it stands (course-structure v2.5).
+A Module 1 lesson gets a brief the first time it is revised, reconstructed by
+`revise-lesson`. „Teraz ty” moved to Moduł 2 on 2026-09-02 and got a
+reconstructed brief then, `02a-teraz-ty-pierwszy-agent.md`; the former
+`02a`–`02d` briefs were renamed `02b`–`02e` in the same change.

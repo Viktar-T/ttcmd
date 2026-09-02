@@ -2,11 +2,11 @@
 
 | | |
 | --- | --- |
-| Audience | The reader described in `docs/content-reader.md`: 4th-year *technik programista* students, 17–19, with two to three years of school programming and no industry experience. Read that file first; this one assumes it |
+| Audience | The reader described in `docs/surveys/content-reader.md`: 4th-year *technik programista* students, 17–19, with two to three years of school programming and no industry experience. Read that file first; this one assumes it |
 | Applies to | Module introductions, lessons and lesson summaries under `content/moduly/` |
 | Language | Student-facing prose in Polish; this guide in English (Article III); identifiers and slugs in ASCII English |
 | Basis | Reader audit of modules 00 and 01, 2026-08-29 (`docs/content-research/content-style-audit.md`), the flow rewrite that followed it the same day, and the reader revision of 2026-08-30 — the reader test, the anchor, the opening recipe, the name budget, the hands-on shape and sources at the point of use |
-| Loaded by | `.claude/skills/write-lesson` and `.claude/skills/revise-lesson`, in full, after `docs/content-reader.md` and before any content is drafted, revised or checked |
+| Loaded by | `.claude/skills/write-lesson` and `.claude/skills/revise-lesson`, in full, after `docs/surveys/content-reader.md` and before any content is drafted, revised or checked |
 | Checked by | `npm run check:content` — reports the smells in “Budgets”, cohesion and comprehension alike; never blocks the build |
 | Status | Working guide. Recalibrate through `docs/_prompts/analyze-course-writing-style.md` as the corpus grows |
 
@@ -32,7 +32,7 @@ question-first opening of 1f, the operational reading of advice in 1g.
 
 ## Who is reading, and the reader test
 
-`docs/content-reader.md` says who the student is, what they have done with
+`docs/surveys/content-reader.md` says who the student is, what they have done with
 their own hands, what they have not, what they believe on day one and what
 they want. This guide does not repeat it. It applies one rule from it:
 
@@ -160,6 +160,21 @@ thing:
 A hands-on lesson still has one carrying question and one anchor — the
 running example is the anchor — and its sections still make one move each.
 What changes is that every section ends with something the student can run.
+
+A **by-hand block or lesson** (the „Własną ręką” sections of Moduł 3; every
+lesson of Moduł 5, course-structure v2.5) is a hands-on shape with the agent
+switched off, and three things are different about it. The code the student
+types is the anchor, so it is short, complete, and was built and run before
+it was written down (`write-lesson` §5). The student's own program differs
+from everyone else's, because an agent built it: the block therefore starts
+with **reading** — what to search for in the agent's code and what shape to
+expect — and names the line to find, never a line number. And it ends with
+the same two things every time: a commit in the student's own words and a
+line on the card saying how many minutes it took, because those minutes are
+the first honest measure of what doing it yourself costs. The block states
+its *tryb pracy* in one plain sentence; „bez agenta” is a fact about the
+work, not a moral about the tool, and the prose does not editorialise about
+AI in either direction.
 
 ## The brief
 
@@ -535,7 +550,7 @@ this reader as before — which is why the second six exist.
 Revise the reader before the structure, and the structure before sentences:
 
 1. Write the reader position: which lessons this reader has read, what they
-   can do, from `docs/content-reader.md`. Read the brief, or reconstruct one.
+   can do, from `docs/surveys/content-reader.md`. Read the brief, or reconstruct one.
 2. Write the lesson's carrying question in one sentence.
 3. Name the anchor. If the lesson has none, that is the first finding.
 4. Write one sentence describing the job of each section.
@@ -713,9 +728,15 @@ Mirrored, as patterns, in `scripts/check-content-style.mjs`; update both when
 a row changes. Lesson letters follow the `order` in the frontmatter.
 
 **Letters shifted on 2026-08-30.** The lesson *Teraz ty: twój pierwszy
-agent* (`teraz-ty-pierwszy-agent`) was inserted at `order: 5`; the former 1e/1f/1g are now 1f/1g/1h. The
-tables below use the new letters. The audit of 2026-08-29 predates the shift
-and keeps the old ones.
+agent* (`teraz-ty-pierwszy-agent`) was inserted at `order: 5`; the former 1e/1f/1g became 1f/1g/1h. The
+audit of 2026-08-29 predates both shifts and keeps the original letters, and
+so does the body of this guide (there 1d is the demo, 1e DHH's day, 1f vibe
+coding, 1g *jak nie wypaść*).
+
+**Letters shifted again on 2026-09-02** (course-structure v2.5): *Teraz ty*
+moved to Moduł 2 as **2a** (the former 2a–2d are 2b–2e); the demo
+*Na żywo* moved to the end of Moduł 1 as **1g**; the former 1f/1g/1h are
+now 1d/1e/1f. The tables below use the 2026-09-02 letters.
 
 **1a is outside the module.** `czterdziesci-lat-zmian.mdx` was moved to
 `content/interesting-to-read/` on 2026-08-30 and is not part of the content
@@ -729,26 +750,26 @@ introduction and 1b's opening stop relying on it.
 | Story / number | Home | Elsewhere |
 | --- | --- | --- |
 | The forty-year promise of “programming by talking” (4GL, Visual Basic, iPhone web apps) | 1a | 1b opens by recalling it in one sentence |
-| The constants since 1984 (event loop, one UI thread, five seconds, state outside controls, installation) | 1a | Moduł 4, when it exists |
+| The constants since 1984 (event loop, one UI thread, five seconds, state outside controls, installation) | 1a | Moduł 5 (Pod maską), when it exists — 5a names them, 5d–5g build them |
 | The causes table; Visual Basic 6 and Delphi; Airbnb and Shopify | 1a | — |
 | The five layers and the dated timeline (Copilot 21.06.2022 → Fable 5 09.06.2026); sub-agents in spring 2026 | 1b | later lessons refer to layers by number |
-| “Jednostka pracy” (linijka → zadanie) | 1b | 1c, 1e, 1f as a term |
-| METR 2025 (19% / 20% / 39 pp) and its 2026 correction (40 pp; 3× vs 1,4–2×) | 1c | 1e recalls the gap without its numbers; 1h, one clause |
-| The Stanford matrix (+30–40% … 0–10%) | 1c | 1d, 1f, 1g as “komórka macierzy”, one clause, link on first recall |
+| “Jednostka pracy” (linijka → zadanie) | 1b | 1c, 2a, 1d as a term |
+| METR 2025 (19% / 20% / 39 pp) and its 2026 correction (40 pp; 3× vs 1,4–2×) | 1c | 2a recalls the gap without its numbers; 1f, one clause |
+| The Stanford matrix (+30–40% … 0–10%) | 1c | 1g, 1d, 1e as “komórka macierzy”, one clause, link on first recall |
 | Microsoft: junior +40%, senior +7% | 1c | — |
 | Anthropic RCT of 29.01.2026 (67% vs 50%; debugging; two ways of using the assistant) | 1c | later modules, when “bez AI” segments are introduced |
-| Osmani's 70% | 1c | 1d, in the post-demo questions |
+| Osmani's 70% | 1c | 1g, in the post-demo questions |
 | Anthropic 2026 report: 60% / 0–20% / 27% | 1c | 1b quotes a different sentence of the same report |
-| Stack Overflow 2025 (84 / 51 / 33 / 46 / 66 / 14 / 38) | 1c | 1f, one clause and at most one figure |
-| “Środek stawki” and “front” | 1c | 1f, one clause |
-| “30–100 godzin” | 1c | 1h, one clause |
-| Torvalds, “90% marketing” | 1c | 1h, one clause |
-| The demo prompt, the three tools and models, the loop diagram, the comparison table; “Nie patrz na to, jak szybko powstaje kod” | 1d | 1e (the loop, one clause), 1f, 1g, 1h by link |
-| DHH: the three moments; 24.11.2025 as the dividing line; the harness (term and diagram); “seven updates a day”; 16 threads, terminal, Linux; the Rust port and 550 USD; “opcjonalny w części, która wytwarza kod”; mechanical coding vs building | 1f | 1b: one sentence in layer 4, pointing forward, without the word *harness*; 1h: “seven times a day”, one clause |
-| Basecamp, February 2026; the black-box C++ editor; “kto poniesie koszt” | 1g | 1f: one sentence in “Uczciwe granice”, pointing forward |
-| Karpathy's definition and its last sentence; Willison's two definitions and the twelve practices; Kent Beck's 90/10; Ronacher's two points | 1g | 1h lists Willison and Ronacher as sources to follow |
-| “Dogoni front w dwa tygodnie”; “nie próbuj niczego przewidywać” | 1h | 1g keeps its one Beck-anchored sentence about no ten-year head start; 1f none |
-| The six questions, the three questions, the four rankings, IEEE Spectrum's 2025 note | 1h | — |
+| Stack Overflow 2025 (84 / 51 / 33 / 46 / 66 / 14 / 38) | 1c | 1d, one clause and at most one figure |
+| “Środek stawki” and “front” | 1c | 1d, one clause |
+| “30–100 godzin” | 1c | 1f, one clause |
+| Torvalds, “90% marketing” | 1c | 1f, one clause |
+| The demo prompt, the three tools and models, the loop diagram, the comparison table; “Nie patrz na to, jak szybko powstaje kod” | 1g | 2a (the loop, one clause), 1d, 1e, 1f by link |
+| DHH: the three moments; 24.11.2025 as the dividing line; the harness (term and diagram); “seven updates a day”; 16 threads, terminal, Linux; the Rust port and 550 USD; “opcjonalny w części, która wytwarza kod”; mechanical coding vs building | 1d | 1b: one sentence in layer 4, pointing forward, without the word *harness*; 1f: “seven times a day”, one clause |
+| Basecamp, February 2026; the black-box C++ editor; “kto poniesie koszt” | 1e | 1d: one sentence in “Uczciwe granice”, pointing forward |
+| Karpathy's definition and its last sentence; Willison's two definitions and the twelve practices; Kent Beck's 90/10; Ronacher's two points | 1e | 1f lists Willison and Ronacher as sources to follow |
+| “Dogoni front w dwa tygodnie”; “nie próbuj niczego przewidywać” | 1f | 1e keeps its one Beck-anchored sentence about no ten-year head start; 1d none |
+| The six questions, the three questions, the four rankings, IEEE Spectrum's 2025 note | 1f | — |
 | Singh (AWS), „it's gone” — prototypes whose prompts nobody can recover two months later | 4a | 4d, one clause (the 250 000 developers of Kiro's preview) |
 | Larbi et al. 2025 (Pass@1 −20–40%; runnable-but-wrong 24 → 54 / 65 / 89) and the stated limit: no controlled study of the *method* on real applications exists | 4a | 4d recalls the limit in one sentence, in the Böckeler section |
 | Brooks 1987, „deciding precisely what to build” | 4a | — |
@@ -759,7 +780,7 @@ introduction and 1b's opening stop relying on it.
 | The 2025 SDD timeline (Kiro 14.07 → Spec Kit 02.09 → OpenSpec 06.09 → Tessl 23.09 → Kiro GA 17.11 → Conductor 17.12) and the your-file ↔ tool mapping table | 4d | — |
 | Böckeler's three levels and her critique („I'd rather review code than all these markdown files”; „a sledgehammer to crack a nut”) | 4d | — |
 | Cursor Plan Mode / Antigravity Implementation Plan as the plan-and-tasks half of the loop | 4d | 4e uses the feature without naming the products |
-| „Ktoś prawdziwy ma tego używać — i ty się liczysz” | 4f | Moduł 8, when the project is chosen |
+| „Ktoś prawdziwy ma tego używać — i ty się liczysz” | 4f | Moduł 9 (the project; v2.5 numbering), when the project is chosen |
 
 ### Terms
 
@@ -769,14 +790,15 @@ introduction and 1b's opening stop relying on it.
 | pętla zdarzeń, framework, RAD, XAML / język znaczników, wiązanie danych, MVVM, deklaratywnie, SDK, sklep jako bramka | 1a |
 | podpowiedzi kodu, autouzupełnianie, IDE, czat w IDE, next edit, agent, pętla agenta, orkiestracja, podagent, MCP, jednostka pracy, refaktoryzacja | 1b |
 | randomizowane badanie z grupą kontrolną, open source, junior i senior, boilerplate, debugowanie, CRUD, mediana, punkt procentowy | 1c |
-| prompt, diff, build, tokeny, niedeterministyczny, zgody / tryb zatwierdzania, `DECISIONS.md` | 1d |
-| harness, przegląd kodu przez agenta, ocena różnicowa, „programowanie po angielsku” | 1f |
-| vibe coding, vibe engineering, AI-assisted, CI, lintowanie, formatowanie, środowisko podglądowe | 1g |
-| benchmark, ranking, klucz API, pay-as-you-go, notatki o wydaniach | 1h |
+| prompt, diff, build, tokeny, niedeterministyczny, zgody / tryb zatwierdzania, `DECISIONS.md` | 1g |
+| harness, przegląd kodu przez agenta, ocena różnicowa, „programowanie po angielsku” | 1d |
+| vibe coding, vibe engineering, AI-assisted, CI, lintowanie, formatowanie, środowisko podglądowe | 1e |
+| benchmark, ranking, klucz API, pay-as-you-go, notatki o wydaniach | 1f |
 | okno kontekstu, tokenizacja / tokenizer, bezstanowość modelu, wątek (sesja), zapytanie do modelu, limit odpowiedzi, kompaktowanie wątku | 3a |
 | format odpowiedzi, zero-shot / one-shot / few-shot, łańcuch myśli (chain-of-thought), meta-prompt, kodowanie pliku | 3b |
 | plik reguł (`AGENTS.md`), kontekst projektu, indeksowanie, RAG, świeża sesja | 3c |
 | halucynacja, dziennik weryfikacji, `Rozbierz to`, „biegłość to nie poprawność” | 3d |
+| first contact, by hand, with `List<T>` (3a), `try`/`catch` (3b), an event handler and `sender`/`e` (3c) — the „Własną ręką” blocks; the *home* of each construct is Moduł 5, which explains what these blocks only use | 3a–3c |
 | specyfikacja (the term and its definition), „Do ustalenia”, the checkable sentence „Kiedy …, to …” (not yet named), opis spisany po fakcie | 4a |
 | konstytucja projektu, zapis decyzji / ADR (kontekst, decyzja, odrzucone, skutki), „trzy rodzaje zdań o projekcie” (jak pisać kod / co robi funkcja / co jest zawsze prawdą), `decyzje/NNNN-…` | 4b |
 | kryterium akceptacji, pętla specyfikacja → plan → zadania → kod → sprawdzenie, plan, lista zadań, „gotowe, gdy”, wyciek do planu, `[DO USTALENIA]`, świeży kontekst jako test specyfikacji, `specs/NNN-…/`, EARS, Given/When/Then | 4c |
@@ -786,7 +808,7 @@ introduction and 1b's opening stop relying on it.
 
 **Moduł 4's rows were added on 2026-09-02** from drafts that are still `publish: false`; if a lesson changes before publication, its rows change with it. `scripts/check-content-style.mjs` was not touched: its story patterns are for stories re-told across lessons, and no Moduł 4 story is told outside its home.
 
-**Moduł 2's rows are missing.** The Warsztat lessons (2a–2d) own at least
+**Moduł 2's rows are missing.** The Warsztat lessons (2b–2e; 2a is „Teraz ty”) own at least
 *stack*, *szablon projektu*, *diff* (working level), `restore`, `revert`,
 *gałąź jako poligon*, *panel kontroli wersji* — and none of them is recorded
 here yet. Added when that module is next revised; until then a Moduł 3 lesson

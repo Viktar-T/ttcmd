@@ -2,12 +2,43 @@
 
 | | |
 | --- | --- |
-| Written | 2026-09-02, from the discussion of the same day |
-| Status | **Proposal for Viktar to cut, reorder and reject.** Nothing here is implemented; stage 1 of two (discuss → approve → implement) |
+| Written | 2026-09-02, from the discussion of the same day; **updated the same evening** after the survey (`docs/surveys/ankieta-start-2026-09-aggregate.md`) and Viktar's decisions — see „Decisions taken on 2026-09-02” below |
+| Status | **Stage 2 done for the plan and the existing content; Moduł 5 itself not started.** `course-structure-v2.md` is at v2.5 and carries the module; the reorder of Moduł 1–2, the new Krok 2 in „Teraz ty”, the Moduł 3 by-hand blocks and the reader file are written. No lesson of Moduł 5 and no 2f draft exist — brief first |
 | Scope | The curriculum plan and the repo files that hang off it. No app change (Article IX), no constitution change |
 | Language | English (Article III). Polish only for proposed student-facing titles |
 
 ---
+
+## 0. Decisions taken on 2026-09-02 — Viktar, after the survey
+
+What was accepted, what was changed against the proposal below, and what was
+added; the sections after this one are the original proposal and are left as
+written.
+
+- **Moduł 1 is not cut — it leaves the class hours.** The five reading
+  lessons stay for students who want them; in class only the demo, which
+  becomes the **last** lesson of the module (1d → 1g) so that it leads into
+  Moduł 2. Class hours 16 → 4. (Proposal §4/B said „cut 16 → 12”; overruled.)
+- **„Teraz ty” opens Moduł 2 as 2a**, straight after the demo; the former
+  2a–2d are 2b–2e. Its new **Krok 2** installs both class editors (the survey
+  showed nobody has them); the former Krok 2–3 became its first exercise,
+  numbered 2.1 by the build.
+- **2f „C# na pierwszy rzut oka, dla kogoś po Javie i C++”** at the end of
+  Moduł 2 — accepted; brief first, per `write-lesson`. It lands at `order: 6`,
+  not 5, because of the 2a insertion.
+- **Moduł 3's „one change by hand” grows into a thirty-minute block owning
+  one construct** — list (3a), `try`/`catch` (3b), an event handler (3c) —
+  accepted and written the same day.
+- **Moduł 5 „Pod maską”: 28 h, not 24.** The survey says the module starts
+  lower than §3 assumed — collections, exceptions, events and files are owned
+  there, not recalled. The four hours come from Moduł 1's freed twelve; four
+  more go to Moduł 2 (2a, 2f) and four are slack. 140 + 4 = 144.
+- **Not decided yet** (open decisions #10–#13 in `course-structure-v2.md`):
+  the renumbering versus keeping v2.4's Moduł 5; the stack inside Moduł 5
+  (Avalonia without a designer, or WinForms); whether the Moduł 1 readings
+  get any class time beyond the demo.
+- **Versioning:** in place as v2.5 of `course-structure-v2.md`, not a new
+  v3 file — Viktar's call; §4/A and §6 below proposed otherwise.
 
 ## 1. What the repo already says — the findings the proposal rests on
 

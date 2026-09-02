@@ -56,11 +56,16 @@ potem 5 minut przerwy, i liczyć skończone cykle. Obie długości mają być do
 zmiany w oknie. Jeden przycisk start/pauza, drugi reset. Czas widoczny jako
 mm:ss, licznik cykli widoczny obok. Po skończonej pracy przerwa ma ruszyć
 sama. Interfejs po polsku, nazwy w kodzie po angielsku, bez dodatkowych
-bibliotek.
+bibliotek. Cała logika wprost w pliku MainWindow.axaml.cs, bez osobnych
+klas pośredniczących.
 ```
 
-Przepisz tę wiadomość na kartę obserwacji, zanim ją wyślesz. Za czterdzieści
-minut będzie ci potrzebna dokładnie w tym brzmieniu.
+Ostatnie zdanie nie jest ósmą zasadą, tylko decyzją techniczną, tą samą w
+każdej budowie tego modułu: kod ma mieszkać w jednym pliku okna, żeby za pół
+godziny dało się w nim znaleźć miejsce na coś dopisanego własną ręką.
+Porządniejszy sposób układania okna jest tematem Modułu 5. Przepisz całą
+wiadomość na kartę obserwacji, zanim ją wyślesz. Za czterdzieści minut będzie
+ci potrzebna dokładnie w tym brzmieniu.
 
 Kiedy agent skończy pierwszą rundę, zrób to, co w poprzednim module:
 przeczytaj zmianę, zanim się na nią zgodzisz, i dopiero potem uruchom. Jedna
@@ -186,7 +191,62 @@ odruchowo:
   którą znasz z pracy z Gitem.
 
 Na razie zasady przepisujesz ręcznie do kolejnych wiadomości i tak ma być: to
-jest ta niewygoda, z której w trzeciej budowie zrobimy plik.
+jest ta niewygoda, z której w trzeciej budowie zrobimy plik. Zanim jednak
+wrócimy do wątku, na pół godziny odłóż agenta na bok.
+
+## Własną ręką: lista
+
+Pół godziny tego tygodnia należy do twojej klawiatury, nie do agenta — tak
+będzie w każdej budowie tego modułu, za każdym razem z jedną konstrukcją
+języka. Dziś jest nią **lista**: rzecz, która pamięta wiele wartości naraz i
+rośnie, kiedy coś do niej dopisać. Minutnik dostanie historię skończonych
+cykli, każdy z godziną, widoczną w oknie.
+
+Najpierw czytanie. Otwórz `MainWindow.axaml.cs` i znajdź miejsce, w którym
+licznik cykli rośnie: szukaj nazwy, jaką agent dał licznikowi (Ctrl+F w
+edytorze). To jedna linijka, zwykle w środku metody, która uruchamia się, gdy
+minie czas pracy. Jeśli agent mimo prośby rozdzielił program na kilka klas i
+tej linijki nie ma w pliku okna, to jest obserwacja na kartę — a jedyna rzecz,
+którą w tym bloku wolno zlecić, brzmi: „przenieś zwiększanie licznika cykli do
+`MainWindow.axaml.cs`”.
+
+Teraz trzy zmiany, w tej kolejności. W `MainWindow.axaml`, obok kontrolki,
+która pokazuje licznik, dopisz pustą listę:
+
+```xml title="MainWindow.axaml — fragment"
+<ListBox Name="HistoryList" />
+```
+
+W `MainWindow.axaml.cs`, wśród pól klasy — nad pierwszą metodą — załóż listę
+napisów. `List<string>` czyta się „lista napisów”, a `new()` tworzy ją pustą:
+
+```csharp title="MainWindow.axaml.cs — pole klasy"
+private readonly List<string> _history = new();
+```
+
+I tuż za linijką, która zwiększa licznik:
+
+```csharp title="MainWindow.axaml.cs — za linijką zwiększającą licznik"
+_history.Add($"{DateTime.Now:HH:mm} — cykl {_cycles}");
+HistoryList.ItemsSource = _history.ToArray();
+```
+
+Nazwę `_cycles` zamień na tę, którą licznik ma w twoim kodzie. Jeśli edytor
+podkreśla `List` albo `DateTime` na czerwono, na górze pliku brakuje dwóch
+linijek: `using System;` i `using System.Collections.Generic;` — dopisz je.
+
+Uruchom i skończ jeden cykl; na czas próby ustaw pracę na jedną minutę. W
+liście pojawia się wpis z godziną, po drugim cyklu — drugi. Dwie dopisane
+linijki robią dwie różne rzeczy i warto je rozdzielić w głowie: `Add` dokłada
+napis na koniec listy, a druga linijka daje oknu **świeżą kopię** listy do
+pokazania. Kopia jest tu nie bez powodu: zwykła lista nie mówi oknu, że się
+zmieniła, więc okno dostaje ją całą od nowa po każdym cyklu. Przy kilkunastu
+wpisach to nic nie kosztuje; sposób, w którym okno samo zauważa zmianę, jest
+jednym z tematów Modułu 5.
+
+Na koniec commit z opisem `wlasna reka: historia cykli` i linijka na karcie:
+ile minut zajął ten blok i co w nim było najtrudniejsze — szukanie miejsca,
+składnia czy czerwone podkreślenia.
 
 ## Minutnik, który działa, i wątek, który rozumiesz
 
@@ -233,8 +293,9 @@ za pół roku będziesz je porównywać z nowymi.
 Skończ minutnik tak, żeby wszystkie siedem zasad było spełnionych **naraz** —
 to jest trudniejsze niż spełnienie każdej z osobna. Każdą zmianę agenta
 przeczytaj, zanim ją przyjmiesz; przy dłuższych zmianach zaplanuj na to
-dziesięć minut, bo tyle to naprawdę zajmuje. Jedną widoczną zmianę zrób własną
-ręką, bez agenta. Każdą prośbę zapisz osobnym commitem, żeby historia mówiła,
+dziesięć minut, bo tyle to naprawdę zajmuje. Blok „Własną ręką: lista” jest
+częścią tego zadania — historia cykli ma być w aplikacji, wpisana twoją ręką.
+Każdą prośbę zapisz osobnym commitem, żeby historia mówiła,
 ile podejść zajęła która zasada. Na koniec sprawdź jedno: wpisz w pole długości
 `25,5`, a potem `25.5`, i zapisz, co się stało w każdym z tych przypadków.
 Wypchnij wszystko.

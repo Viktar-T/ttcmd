@@ -10,7 +10,7 @@
 
 ## Reader position
 
-Has read: 0a–0c, 1b–1g, 2a. Can: … (from `docs/content-reader.md` and the
+Has read: 0a–0c, 1b–1g, 2a. Can: … (from `docs/surveys/content-reader.md` and the
 previous lessons' exercises). Has never: … (the "not done" items this lesson
 touches — each one is built in the lesson before it is relied on).
 

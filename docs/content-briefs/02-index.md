@@ -100,3 +100,10 @@ None here — the module's single open question (sign-in wording) lives in
   poleceniem”.
 - **„W Module 5” appears once**, as the brief asked, and is the introduction's
   only forward reference.
+- **2026-09-02, after course-structure v2.5:** the introduction was rewritten
+  in place (not from this brief) when „Teraz ty” became 2a — the opening now
+  starts from the demo and the module's first act is the student's own
+  experiment; the lesson-by-lesson paragraph gained a first sentence for 2a.
+  A 2f reading lesson on C# is planned (`02f-csharp-na-pierwszy-rzut-oka.md`,
+  unapproved) and is deliberately not announced in the introduction until it
+  exists. This brief describes the v2.3 shape and is kept as the record.

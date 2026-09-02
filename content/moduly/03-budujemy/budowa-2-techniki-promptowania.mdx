@@ -192,6 +192,59 @@ gorszy, spójrz dlaczego: zwykle model dopisał wymagania, których nikt nie
 zamawiał, a które przeszły bez skreślenia, bo przyszły w ładnie wyglądającej
 liście.
 
+Zanim porównamy wszystkie kopie, pół godziny bez agenta — na jedną rzecz,
+której w żadnej rundzie nikt nie zamówił.
+
+## Własną ręką: obsługa błędu
+
+Pół godziny dla twojej klawiatury, jak w każdym tygodniu tego modułu. Dzisiejsza
+konstrukcja to **`try` i `catch`** — sposób, w jaki program mówi: spróbuj to
+zrobić, a jeśli się nie uda, zrób zamiast tego tamto. Miejsce, w którym notatnik
+jej potrzebuje, jest jedno: zapis do pliku.
+
+Zapis może się nie udać z powodów, na które program nie ma wpływu: plik jest
+tylko do odczytu, folder zniknął, dysk jest pełny. Bez obsługi takiego błędu
+aplikacja **znika** — okno zamyka się bez słowa, a notatka razem z nim. Zobacz
+to, zanim cokolwiek zmienisz: zamknij notatnik, ustaw plikowi, do którego pisze
+(po rundzie 2 to `notatki.md` w folderze projektu), atrybut „tylko do odczytu”
+— prawy przycisk i **Właściwości** na Windows, `chmod a-w notatki.md` na
+Linuksie i macOS — uruchom i spróbuj zapisać. Zapisz na karcie, co się stało.
+
+Teraz czytanie: znajdź w projekcie linijkę, która pisze do pliku. Szukaj w
+całym projekcie (Ctrl+Shift+F) frazy `File.` — będzie to `File.WriteAllText`,
+`File.AppendAllText` albo coś podobnego, w metodzie o nazwie w rodzaju `Save`.
+Tę jedną linijkę bierzesz w klamry `try` i dopisujesz `catch`:
+
+```csharp title="MainWindow.axaml.cs — wokół linijki, która pisze do pliku"
+try
+{
+    File.WriteAllText(path, content);
+    StatusText.Text = "Zapisano";
+}
+catch (Exception ex)
+{
+    StatusText.Text = $"Nie udało się zapisać: {ex.Message}";
+}
+```
+
+Linijka w środku `try` zostaje dokładnie taka, jaką napisał agent — u ciebie
+zmienne nazywają się inaczej niż `path` i `content`. `StatusText` to kontrolka,
+której prawdopodobnie jeszcze nie masz: dopisz w `MainWindow.axaml`, pod
+przyciskiem zapisu, `<TextBlock Name="StatusText" />`. Jeśli edytor podkreśla
+`Exception` na czerwono, na górze pliku brakuje `using System;`.
+
+Uruchom i powtórz próbę z plikiem tylko do odczytu. Aplikacja nie znika: pod
+przyciskiem pojawia się zdanie, a w nim powód. Zdejmij atrybut, zapisz jeszcze
+raz — „Zapisano”. To, co jest w `catch`, uruchamia się **tylko** wtedy, gdy to,
+co w `try`, się nie powiodło, a `ex.Message` to opis powodu, który program
+dostaje od systemu.
+
+`catch (Exception ex)` łapie każdy rodzaj błędu naraz. To najprostsza wersja i
+na dziś wystarczy; dlaczego bywa za szeroka i jak ją zawęzić, jest tematem
+Modułu 5, kiedy zapis do pliku zbudujesz od podstaw. Commit z opisem `wlasna
+reka: obsluga bledu zapisu` i linijka na karcie — ile minut, co było
+najtrudniejsze.
+
 ## Cztery pliki obok siebie
 
 Otwórz teraz wszystkie pliki z folderu `rundy/` naraz. To jest odpowiedź na
@@ -240,8 +293,8 @@ różnicy między rundami 1–4 mogło wziąć się z tego samego zjawiska.
 Skończ notatnik: format z rundy 4 działa, polskie znaki są polskimi znakami,
 najnowsza notatka jest na górze i nic nie ginie po piątym zapisie. Każdą
 zmianę agenta przeczytaj, zanim ją przyjmiesz — dziesięć minut na czytanie
-zmian jest częścią każdego tygodnia tego modułu. Jedną zmianę zrób własną
-ręką, bez agenta. Każda runda ma swój commit, a jej kopia zostaje w `rundy/`
+zmian jest częścią każdego tygodnia tego modułu. Blok „Własną ręką: obsługa
+błędu” jest częścią tego zadania. Każda runda ma swój commit, a jej kopia zostaje w `rundy/`
 jako dowód. Wypchnij wszystko.
 
 </Zadanie>

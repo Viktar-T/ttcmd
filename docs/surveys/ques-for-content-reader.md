@@ -1,10 +1,10 @@
-# Questionnaire for `docs/content-reader.md`
+# Questionnaire for `docs/surveys/content-reader.md`
 
 | | |
 | --- | --- |
 | Written | 2026-08-30 |
-| Purpose | Collect, on the first lesson, the facts about the class that `docs/content-reader.md` needs — what the students have done with their own hands, what they have not, what they believe about AI, what they want from the course, and the constraints they work under |
-| Feeds | `docs/content-reader.md` (aggregate only), the open decisions in `docs/content-research/course-structure-v1.md` (#1 lab OS, #3 class AI tool, #4 accounts and age), lesson 0b |
+| Purpose | Collect, on the first lesson, the facts about the class that `docs/surveys/content-reader.md` needs — what the students have done with their own hands, what they have not, what they believe about AI, what they want from the course, and the constraints they work under |
+| Feeds | `docs/surveys/content-reader.md` (aggregate only), the open decisions in `docs/content-research/course-structure-v1.md` (#1 lab OS, #3 class AI tool, #4 accounts and age), lesson 0b |
 | Language | Framing in English (Article III); the questionnaire itself is student-facing, so it is Polish and goes into the form verbatim |
 | Status | **Proposal.** Cut, reorder, reword. Institutional facts marked TO CONFIRM are not the repo's to assert (Article V) |
 | Build | **Google Forms**, generated from this file by `scripts/build-ankieta-form.gs` (Apps Script). The script is the executable copy of the questionnaire below; change this file first, then the script |

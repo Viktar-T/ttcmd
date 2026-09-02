@@ -51,7 +51,13 @@ Slice 001 was correctly sized. Keep that size.
 **Content** — the lane that matters (ADR-0004)
 
 - **Moduł 0 — Start**
-- **Moduł 1 — Jak dziś powstaje oprogramowanie**, now eight lessons
+- **Moduł 1 — Jak dziś powstaje oprogramowanie** — six lessons; free-time
+  reading with the demo last, since course-structure v2.5 (2026-09-02)
+- **Moduł 2 — Warsztat** — 2a–2e published; 2f (C# reading) brief first
+- **Moduł 3 — Budujemy** — 3a–3d published, with the by-hand blocks of v2.5
+- **Moduł 4 — Specyfikacja** — 4a–4f drafted, `publish: false`
+- Moduł 5 „Pod maską” planned in `docs/content-research/course-structure-v2.md`
+  (v2.5); no lesson yet
 
 The remaining queue is 007 through 016, and everything in it is a proposal.
 
@@ -1040,7 +1046,7 @@ Ordered by when the pain arrives, not by number.
   have. Both are cheap the day either has something to say.
 - ~~**An authoring skill**~~ — done 2026-08-30 as two: `.claude/skills/write-lesson`
   (brief → approve → draft) and `.claude/skills/revise-lesson` (diagnose →
-  fix what is named), reading `docs/content-reader.md` and `docs/content-style.md`.
+  fix what is named), reading `docs/surveys/content-reader.md` and `docs/content-style.md`.
   The first Module 2 lesson is the test of them.
 - **A syllabus page**, derived from lesson metadata rather than maintained by
   hand, so it cannot drift.

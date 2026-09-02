@@ -1,0 +1,232 @@
+---
+title: "Teraz ty: twój pierwszy agent"
+order: 1
+summary: "Pierwsza samodzielna rozmowa z agentem: instalujesz edytor, w którym takie rzeczy się dzieją, dajesz agentowi jedno małe zadanie i przez dwadzieścia pięć minut prowadzisz kartę obserwacji. Nie oceniamy, czy aplikacja działa — zbieramy zapis tego, co naprawdę się stało."
+publish: true
+---
+
+{/* Published 2026-08-30 on Viktar's request as 1e; moved to 2a on 2026-09-02
+    (course-structure-v2.5): the demo now closes Moduł 1 and this lesson opens
+    the workshop module. „Krok 2” (what an editor with an agent is, and
+    installing both class tools) was added the same day, because the survey of
+    2026-09-02 showed the class does not have the tools; the former Krok 2 and
+    Krok 3 became the first exercise. Still TO CONFIRM before this lesson is
+    taught — course-structure open decisions #2–#3: the account rules for both
+    class tools settled with the school. The lesson names no sign-in rules;
+    those are set in class. Vendor facts in Krok 2 checked 2026-09-02. */}
+
+Trzy agenty zbudowały na twoich oczach trzy aplikacje z jednego promptu.
+Oglądanie ma jednak tę samą wadę, co oglądanie pokazu iluzjonisty: po wyjściu
+z sali nadal nie umiesz sztuczki i nie wiesz, ile było w niej przygotowania.
+
+Dziś sprawdzisz to na własnym koncie, przy zwykłym szkolnym komputerze.
+Zainstalujesz program, w którym takie rzeczy się dzieją, dasz agentowi jedno
+małe zadanie i zapiszesz, co się stanie. Nie uczymy się dziś programować —
+zbieramy obserwacje.
+
+Jedno od razu: **nie ma tu wyniku do zaliczenia**. Aplikacja może powstać,
+powstać w połowie albo nie powstać wcale — każdy z tych wyników jest tak samo
+cenny, pod warunkiem że zostanie rzetelnie zapisany. Karta obserwacji, którą
+dziś wypełnisz, wróci jeszcze w tym kursie; za kilka miesięcy przeczytasz ją
+z niedowierzaniem.
+
+## Zasady eksperymentu
+
+- **Dwadzieścia pięć minut** budowania, mierzone. Po nich kończysz notatkę,
+  nawet jeśli aplikacja jest w połowie.
+- **Jedno zadanie, twoje własne.** Nie bierz promptu od nikogo — porównanie
+  trzydziestu różnych przebiegów jest częścią planu.
+- **Notujesz w trakcie, nie z pamięci.** Pamięć wygładza; karta ma zostać
+  szorstka.
+- **Agent robi wszystko sam.** Dziś nie poprawiasz kodu ręcznie — mierzymy,
+  co narzędzie potrafi bez ciebie. Na poprawianie przyjdzie czas.
+
+## Krok 1: wybierz zadanie
+
+Wybierz coś, co da się opisać w dwóch–trzech zdaniach i co pokazuje wynik na
+ekranie. Sprawdzone rozmiary:
+
+- stoper z przyciskami start i stop,
+- licznik kliknięć z przyciskiem zerowania,
+- quiz z trzema pytaniami i wynikiem na końcu,
+- generator haseł z wyborem długości.
+
+Poproś o aplikację z oknem. Jeśli po dwóch próbach nic się nie uruchamia,
+pozwól agentowi wybrać najprostszą formę, która zadziała — nawet w konsoli
+albo w przeglądarce. Celem dzisiejszej lekcji jest obserwacja, nie okno.
+
+## Krok 2: zainstaluj edytor z agentem
+
+Dwa z trzech programów z pokazu wyglądały jak zwykłe edytory kodu i nimi nie
+były. To edytory, w których najważniejszym miejscem nie jest plik, tylko
+rozmowa: piszesz, co ma się stać, a program sam otwiera pliki, zmienia je i
+uruchamia polecenia. Co
+dokładnie ma w środku i czym różni się od edytora, w którym piszesz kod w
+szkole, tłumaczy następna lekcja; dziś wystarczy, żeby stał na twoim
+komputerze i działał.
+
+Na kursie używamy dwóch takich programów, na zmianę: **Antigravity** od Google
+i **Cursor**. Zainstaluj oba — drugi przyda się jeszcze dziś, w sekcji o tym,
+co robić, kiedy narzędzie odmawia. Instalacja wygląda jak instalacja każdego
+innego programu. Niżej jest to, co widziałem 2 września 2026; jeśli u ciebie
+ekran wygląda inaczej, zapisz to na karcie i idź dalej — to jest obserwacja,
+nie błąd.
+
+1. **Antigravity.** Wejdź na
+   [antigravity.google/download](https://antigravity.google/download) i
+   pobierz wersję dla swojego systemu — jest dla Windows, macOS i Linuksa.
+   Uruchom instalator. Zaraz po instalacji program prosi o zalogowanie
+   kontem Google, a przy pierwszym uruchomieniu — o zgodę na zasady
+   bezpieczeństwa i użycia danych, o wybór motywu i o dodatki, które możesz
+   pominąć. Na końcu zobaczysz ekran wyboru projektu.
+2. **Cursor.** Wejdź na [cursor.com/downloads](https://cursor.com/downloads)
+   i pobierz instalator dla swojego systemu; na Windows wybierz wersję
+   oznaczoną **User**, jeśli nie masz uprawnień administratora. Po
+   instalacji program prosi o zalogowanie własnym kontem Cursora. Darmowy
+   plan nazywa się **Hobby** i według
+   [cennika](https://cursor.com/pricing) nie wymaga karty.
+3. **Konto.** Oba programy chcą konta i nie chcą tego samego rodzaju konta.
+   Warunki, jakie stawiają obie firmy — w tym warunek wieku — omawia
+   następna lekcja, z datą i linkiem do każdego. Czyje konto i za czyją
+   zgodą, ustalamy na zajęciach, nie w tym tekście. Jeśli logowanie się nie
+   udaje, zapisz to na karcie i usiądź w parze z kimś, u kogo działa —
+   plan na tę sytuację jest niżej.
+4. **Folder.** Utwórz na dysku pusty folder na dzisiejszy eksperyment i
+   otwórz go w edytorze (**Open Folder** w Cursorze, **Select Project** w
+   Antigravity). Agent będzie pisał tylko tam. Zapisz na karcie pełną ścieżkę
+   do tego folderu — za dwie lekcje będzie ci potrzebna.
+
+Pierwszy rzut oka na okno: gdzieś jest panel rozmowy z agentem, gdzieś lista
+plików z folderu, gdzieś terminal. W obu programach te trzy rzeczy są, choć w
+innych miejscach — szukanie ich jest częścią następnej lekcji. Na dziś
+wystarczy panel rozmowy.
+
+<Zadanie title="Pierwsza wiadomość i karta obserwacji">
+
+Zanim wyślesz pierwszą wiadomość, przepisz ją na kartę — dokładnie, co do
+znaku. Dwa do czterech zdań: co ma powstać, co ma być widoczne na ekranie i po
+czym poznasz, że działa. To ostatnie zdanie jest najważniejszą częścią
+wiadomości i będzie wracać przez cały kurs.
+
+Kartę załóż jako plik w folderze eksperymentu i uzupełniaj ją w trakcie pracy
+agenta, nie po niej:
+
+```text title="obserwacje/pierwszy-agent.md"
+# Mój pierwszy agent — karta obserwacji
+
+- Narzędzie i model: …
+- Moje zadanie (2–3 zdania): …
+- Pierwsza wiadomość (wklejona co do znaku): …
+- Co agent zrobił najpierw: …
+- O co pytał — i co zostało zatwierdzone bez czytania: …
+- Pierwszy błąd i co agent z nim zrobił: …
+- Stan po 25 minutach: działa / częściowo / nie działa / nie wiem
+- Skąd wiem, że działa (co zostało sprawdzone): …
+- Jedna rzecz, którą agent zrobił, a której nie rozumiem: …
+- Jak mi się wydawało, że poszło (jedno zdanie): …
+```
+
+Ostatni punkt nie jest żartem. W lekcji
+[Co model naprawdę potrafi](/moduly/01-jak-powstaje-oprogramowanie/co-model-naprawde-potrafi)
+największą liczbą była różnica między tym, co się stało, a tym, co ludzie
+czuli, że się stało — dziś wytwarzasz własną parę takich zapisów: pomiar
+obok wrażenia.
+
+Na koniec zajęć plik trafia do twojego repozytorium z lekcji
+Git i GitHub — minimum, które wystarczy:
+`git add`, `git commit`, `git push`. To pierwszy commit tego kursu, który
+zostaje z tobą na dłużej — niech wiadomość commita mówi, co to jest.
+
+</Zadanie>
+
+## Kiedy narzędzie odmawia
+
+Darmowe limity są prawdziwe i skończone, a przy trzydziestu osobach w jednej
+pracowni któryś wyczerpie się w trakcie. Aktualne zasady sprawdzaj u źródła —
+na stronach [Antigravity](https://antigravity.google) i
+[Cursor](https://cursor.com) — bo zmieniają się szybciej niż ta lekcja. Plan na
+tę sytuację jest częścią lekcji, nie awarią:
+
+1. Przełącz się na drugi edytor — po to krok 2 kazał zainstalować oba.
+   Zadanie i pierwsza wiadomość zostają te same; zanotuj na karcie moment
+   zmiany — porównanie dwóch narzędzi na tym samym zadaniu to dodatkowa
+   obserwacja, nie strata.
+2. Jeśli odmawiają oba — albo nie udało się zalogować do żadnego — usiądźcie
+   w parze: jedna osoba buduje na swoim koncie, druga prowadzi jej kartę.
+   Obserwator regularnie widzi rzeczy, których budujący nie zauważa. Przy
+   następnej okazji zamiana ról.
+
+## Na co patrzeć, kiedy patrzysz
+
+Trzy rzeczy są warte szczególnej uwagi, bo wrócą w następnych lekcjach.
+
+Pierwsza to **jednostka pracy** z lekcji
+[Od podpowiedzi do agenta](/moduly/01-jak-powstaje-oprogramowanie/od-podpowiedzi-do-agenta):
+policz na koniec, ile linijek kodu napisała dziś twoja klawiatura. Jeśli
+zero, a aplikacja istnieje — zdanie o zlecaniu i sprawdzaniu właśnie
+sprawdziło się na tobie.
+
+Druga to momenty zgody. Agent pyta, człowiek klika. Każde kliknięcie bez
+przeczytania jest pożyczką — dziś wolno ci ją brać, ale licz na karcie,
+ile razy ją bierzesz. O tym, kiedy ta pożyczka jest w porządku, a kiedy
+przestaje być, jest lekcja
+[Vibe coding kontra inżynieria](/moduly/01-jak-powstaje-oprogramowanie/vibe-coding-kontra-inzynieria)
+z poprzedniego modułu.
+
+Trzecia to błędy. Agent czyta komunikat, poprawia i próbuje znowu — pętla,
+którą na pokazie oglądała cała klasa, teraz kręci się na twoim ekranie.
+Zanotuj, ile prób zajęła pierwsza naprawa i czy któraś próba cokolwiek
+pogorszyła.
+
+## Co z tego zostaje
+
+Wynik dzisiejszego dnia nie mieszka w aplikacji — mieszka w karcie. Następna
+lekcja zaczyna się od jej pierwszej rubryki, *narzędzie i model*, i od pytania,
+czym właściwie jest program, w którym to wszystko się działo. Dzień pracy
+człowieka, u którego ta sama pętla działa zawodowo, od lat i na dużym
+systemie, opisuje lekcja
+[Nowy warsztat programisty](/moduly/01-jak-powstaje-oprogramowanie/nowy-warsztat-programisty)
+z poprzedniego modułu; czytając ją, porównuj jego dzień ze swoim kwadransem z
+hakiem. Karty nie poprawiaj i nie wygładzaj: jej wartość rośnie z czasem
+dokładnie dlatego, że jest z dziś.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Następnego dnia — nie tego samego — przeczytaj swoją kartę i dopisz na końcu
+jedno zdanie: co widzisz dziś, czego przy komputerze nie było widać. Zrób
+commit z tą zmianą.
+
+</Zadanie>
+
+<Zadanie>
+
+Wymień się kartą z kimś z klasy. W cudzej karcie znajdź jedną rzecz
+zatwierdzoną bez czytania i jedno miejsce, w którym zapis jest zbyt ogólny,
+żeby się z niego czegokolwiek dowiedzieć. Powiedz o obu autorowi karty —
+to jest przysługa, nie krytyka.
+
+</Zadanie>
+
+<Zadanie>
+
+Z punktu „jedna rzecz, której nie rozumiem” zrób pytanie — jedno zdanie,
+zakończone znakiem zapytania — i przynieś je na następne zajęcia. Zaczniemy
+od tych pytań.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-02">
+
+<Zrodlo title="Download" publisher="Google Antigravity" date="2026" url="https://antigravity.google/download">strona pobierania: wersje dla macOS, Windows i Linuksa; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="Getting Started with Google Antigravity" publisher="Google Codelabs" date="2026" url="https://codelabs.developers.google.com/getting-started-google-antigravity">logowanie kontem Google zaraz po instalacji, zgoda na zasady bezpieczeństwa i użycia danych, wybór motywu, ekran wyboru projektu; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="Downloads" publisher="Cursor" date="2026" url="https://cursor.com/downloads">instalatory dla Windows (System i User, x64 i ARM64), macOS i Linuksa (.deb, RPM, AppImage); strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="Pricing" publisher="Cursor" date="2026" url="https://cursor.com/pricing">plan Hobby: „No credit card required”, „Limited Agent requests”; strona bez własnej daty</Zrodlo>
+
+</Zrodla>

@@ -12,7 +12,8 @@ Nothing in Polish is written before it is approved.
 ## 1. Which lesson
 
 Say which lesson you are writing: module folder, `order`, slug and Polish
-title, from `docs/content-research/course-structure-v1.md`. If the module
+title, from the current `docs/content-research/course-structure-v*.md` (v2.5 on
+2026-09-02). If the module
 folder does not exist, the module introduction (`index.mdx`) is written first,
 with its own brief (`NN-index.md`): the module's one argument and one sentence
 per lesson.
@@ -23,10 +24,10 @@ If the request is to change a lesson that already exists, stop and use
 ## 2. Load — in this order, nothing more
 
 1. `constitution.md` Articles III, IV, V, IX; `AGENTS.md` §4 and §9.
-2. `docs/content-reader.md` — who is reading. In full.
+2. `docs/surveys/content-reader.md` — who is reading. In full.
 3. `docs/content-style.md` — how it is written. In full, including the
    appendix. Do not copy its rules into your notes; apply them.
-4. The lesson's row in `course-structure-v1.md`, and the module's paragraph
+4. The lesson's row in the current `course-structure-v*.md`, and the module's paragraph
    above the table.
 5. The research file(s) the row names under `docs/content-research/`. Facts,
    numbers, dates and links come from there or from a source you find and
@@ -66,8 +67,8 @@ research file.
 
 ## 4. The brief — then stop
 
-Write `docs/content-briefs/NNx-slug.md` from the template (`02a-prompt-token-kontekst.md`;
-`02-index.md` for a module introduction). English. Every field filled; a
+Write `docs/content-briefs/NNx-slug.md` from the template (`02b-narzedzia-dwa-edytory.md`
+is a finished example; `03-index.md` for a module introduction). English. Every field filled; a
 field you cannot fill is a finding, not a blank:
 
 - **Reader position** — from the reader file plus the lessons already read,
@@ -128,6 +129,20 @@ all; code fences with `title="…"` where the student creates a file.
 If the lesson cannot be written without an application change — a component
 that does not exist, a schema field — stop and say so. That is a slice
 (Article IX), not a workaround.
+
+**By-hand lessons and blocks** (course-structure v2.5: the „Własną ręką”
+blocks of Moduł 3, every lesson of Moduł 5): the code a student is asked to
+type *is* the content. Every such code block was built and run while
+drafting — in a real project of the training stack when the tooling is
+available, otherwise compiled against the framework's reference assemblies
+with the framework-specific lines cited to their documentation page — and the
+command with its output goes in the brief's *Deviations*. Code written from
+memory is never shipped in a by-hand block: a lesson whose typed code does
+not compile is the most expensive lesson this course can publish. Such a
+block also states, in one plain sentence, its **tryb pracy** (bez AI / tylko
+podpowiadanie / agent), and says what the student searches for in the
+agent's code before typing — the agent's code differs per student, so the
+block names the shape to find, not a line number.
 
 ## 6. Check
 

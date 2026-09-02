@@ -51,3 +51,6 @@ Thumbs.db
 
 # word/excel lock files
 ~$*
+
+# survey exports — personal data of students, never committed (Article IV)
+docs/surveys/*.csv

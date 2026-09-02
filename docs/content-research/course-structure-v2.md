@@ -2,12 +2,12 @@
 
 | | |
 | --- | --- |
-| Version | **2.4 — proposal** (supersedes v1.1 as the working proposal; v1 stays in the tree, per this folder's rules) |
+| Version | **2.5 — proposal** (supersedes v1.1 as the working proposal; v1 stays in the tree, per this folder's rules; v2.5 revised in place on 2026-09-02) |
 | Written | 2026-08-30 |
 | Status | **Not law.** For Viktar to cut, reorder and reject. Not a spec slice; nothing here authorises an app change (Article IX). Institutional facts stay TO CONFIRM (Article V) |
 | Course | 4th year, 8 h/week, two groups, from 2026-09-01 <!-- TO CONFIRM: official PL course title --> |
 | Language | This document: English (Article III). Titles: the Polish that would go into frontmatter |
-| Built on | [`course-structure-v1.md`](course-structure-v1.md) (v1.1) — the scheme, the mechanics table, Semester 2 and the INF.04 mapping are inherited from it, not repeated; the research files listed there; `docs/content-reader.md`; the discussion of 2026-08-30 |
+| Built on | [`course-structure-v1.md`](course-structure-v1.md) (v1.1) — the scheme, the mechanics table, Semester 2 and the INF.04 mapping are inherited from it, not repeated; the research files listed there; `docs/surveys/content-reader.md`; the discussions of 2026-08-30 and 2026-09-02; the survey aggregate `docs/surveys/ankieta-start-2026-09-aggregate.md` |
 
 ---
 
@@ -71,13 +71,81 @@ never one large deadline; Semester 2 as sketched in v1.
 
 ---
 
+## What v2.5 changes, and why
+
+**Revised 2026-09-02**, from three things that happened that day: the
+discussion of a by-hand fundamentals module (`change-proposal-2026-09-02-modul-5-pod-maska.md`),
+the first twelve answers to the start-of-course survey
+(`docs/surveys/ankieta-start-2026-09-aggregate.md`), and Viktar's decisions on
+both. Everything from v2.0–v2.4 that is not named below stands.
+
+1. **Moduł 1 becomes free-time reading, and the demo closes it.** The five
+   reading lessons are not cut — they stay for students who want them — but
+   they leave the class hours. The one lesson done in class is the demo
+   (`na-zywo-agent-buduje-aplikacje`), now the **last** lesson of the module,
+   so that it leads straight into the first lesson of Moduł 2. Class hours
+   16 → 4.
+2. **„Teraz ty” opens Moduł 2 as 2a.** Viktar's flow in class: the demo on
+   the teacher's screen, then straight to the student's own twenty-five
+   minutes. The former 2a–2d are now 2b–2e. The lesson gains a **Krok 2** —
+   what an editor with an agent is, and installing both class tools — because
+   the survey showed the class does not have them; the former Krok 2 and 3
+   (first message, observation card) became its first exercise.
+3. **A reading lesson on C# at the end of Moduł 2 (2f).** The survey: C# is
+   unknown to 11 of 12, and only 5 of 12 write simple programs in *any*
+   language, Java being the strongest. Every lesson from 2d on assumes a diff
+   in C# can be read. 2f is „C# na pierwszy rzut oka, dla kogoś po Javie i
+   C++”: the six constructs met in every generated diff, each beside its
+   Java/C++ shape. **Brief first, per `write-lesson`; not drafted in v2.5.**
+4. **Moduł 3's „one change by hand” becomes a thirty-minute block per week
+   that owns one construct** — a list in 3a, `try`/`catch` in 3b, an event
+   handler in 3c — added to the student's own agent-built app, with code
+   they type and a commit of their own. Written into the three lessons on
+   2026-09-02.
+5. **Moduł 5 is a by-hand fundamentals module, „Pod maską”.** The stack
+   decision and Visual Studio it already owned (old 5a–5c), then the
+   constants since 1984 built with the student's own hands, then one feature
+   of `notatnik-v2` rebuilt three ways (no AI / completion only / agent).
+   The shared application becomes **Moduł 6**, tests **Moduł 7**, Semester 2
+   shifts to 8–11. Details in the Moduł 5 section and in the change proposal.
+6. **A recorded principle is reversed on purpose.** v1.1's shape said: *„There
+   is no point where the course «switches back» to programming without AI.”*
+   v2.5 contradicts it, and the reason is the one 1f already gives students:
+   the editor role needs *wyczucie* that only hand-built things produce
+   („ty tego wyczucia jeszcze nie masz”). Hand-coding's purpose changed from
+   production to judgment; that is a reason to teach less of it than in 2019
+   and to teach it deliberately, not to teach none. Rejected alternatives:
+   folding it into the shared app as segments only (the contrast stays
+   invisible); placing it after the shared app (students would build the
+   shared app unable to read what they accept); making it optional reading.
+7. **Hours.** Moduł 1's twelve freed hours go to Moduł 2 (+4: 2a, 2f) and
+   Moduł 5 (+4 over the proposal's 24, because the survey says the module
+   starts lower than planned — collections, exceptions and events are owned
+   there, not recalled), and four hours become the first slack this plan has
+   ever had. Semester 1: **140 h + 4 h slack = 144**.
+
+The survey also moved the reader file. The three facts every brief from here
+on starts from: no one has taken INF.03 (so no PHP/SQL to lean on), half the
+room cannot explain one concept from the D1 list, and 11 of 12 use a terminal
+and Linux beyond lessons. `docs/surveys/content-reader.md` carries the counts.
+
+### The shape in one line, v2.5
+
+> **Build from week 3; explain each thing in the week that makes it hurt;
+> formalise the method (SDD) once the chaos has been felt; then open the hood
+> and build by hand what the agent has been building for you, so you can
+> judge it; decide the stack with students once they can judge it.** AI and
+> SDD remain the method; the by-hand module exists to make the student a
+> competent editor of the agent's work, not a faster typist.
+
+---
 ## Semester 1
 
 ### Moduł 0 — Start
 
 `content/moduly/00-start/` · est. **8 h** · unchanged from v1
 
-0a jak działa ten kurs (+ **the questionnaire**, `docs/ques-for-content-reader.md`,
+0a jak działa ten kurs (+ **the questionnaire**, `docs/surveys/ques-for-content-reader.md`,
 run in class); 0b konta, sprzęt i instalacja — now mostly a **verification**
 lesson, because the lab is prepared before week 1 (see „Lab preparation”
 below); each student proves their environment with commands that print
@@ -91,41 +159,46 @@ versions; 0c Git i GitHub (written).
 
 ### Moduł 1 — Jak dziś powstaje oprogramowanie
 
-`content/moduly/01-jak-powstaje-oprogramowanie/` · est. **16 h** (v1.1: 22)
-· seven written lessons + one new
+`content/moduly/01-jak-powstaje-oprogramowanie/` · in class **4 h** (v2.4: 16)
+· six lessons: five to read in the student's own time, one demo done in class
 
-A reading module, and preparation: the teacher's view of the profession,
-read by students and discussed in class. The 22 h of v1.1 shrink to 16
-because the reading moves partly to homework and the discussion is the class
-time; the texts are not cut. `czterdzieści lat zmian` stays outside the
-module in `content/interesting-to-read/` as optional reading.
+**v2.5:** a reading module in the literal sense. The five texts stay exactly
+as they are — the teacher's view of the profession, for students who want to
+read — and leave the class hours; the class time is the demo and the
+discussion it starts. The demo is now the **last** lesson of the module so
+that the site's order matches the classroom's: the demo on the teacher's
+screen, then the student's own twenty-five minutes, which is the first lesson
+of Moduł 2. `czterdzieści lat zmian` stays outside the module in
+`content/interesting-to-read/` as optional reading.
 
-|        | Polish title                      | slug                             | v2 change                                                                                                                                                                                                                                                                                                                                                                                        |
-| ------ | --------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **1b** | Od podpowiedzi do agenta          | `od-podpowiedzi-do-agenta`       | unchanged                                                                                                                                                                                                                                                                                                                                                                                        |
-| **1c** | Co model naprawdę potrafi         | `co-model-naprawde-potrafi`      | unchanged; the questionnaire's E5 aggregate („what we believed in September”) can open it                                                                                                                                                                                                                                                                                                        |
-| **1d** | Na żywo: agent buduje aplikację   | `na-zywo-agent-buduje-aplikacje` | unchanged; the fixed point again                                                                                                                                                                                                                                                                                                                                                                 |
-| **1e** | **Teraz ty: twój pierwszy agent** | `teraz-ty-pierwszy-agent`        | **NEW.** Students, in the prepared lab, give the class tool a small task of their own choosing and record what happens on the worksheet. No success criterion; the worksheet is graded for honesty of observation, not for a working app. Fallback plan written into the lesson: switch to the second class tool when one free tier throttles; half build / half observe, then swap, if both do. |
-| **1f** | Nowy warsztat programisty         | `nowy-warsztat-programisty`      | was 1e — students now read it one week after *being* the person in it                                                                                                                                                                                                                                                                                                                            |
-| **1g** | Vibe coding kontra inżynieria     | `vibe-coding-kontra-inzynieria`  | was 1f — „nikt nie czytał diffów” is now about their own Tuesday                                                                                                                                                                                                                                                                                                                                 |
-| **1h** | Jak nie wypaść z obiegu           | `jak-nie-wypasc-z-obiegu`        | was 1g                                                                                                                                                                                                                                                                                                                                                                                           |
+|        | Polish title                    | slug                             | v2.5 change                                                                                                                          |
+| ------ | ------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **1b** | Od podpowiedzi do agenta        | `od-podpowiedzi-do-agenta`       | unchanged; reading                                                                                                                   |
+| **1c** | Co model naprawdę potrafi       | `co-model-naprawde-potrafi`      | unchanged; reading. The survey's E5 aggregate can open it — and the argument's direction flips: this class already distrusts AI code (mean 2,2), what it has not seen is how much the tools do when driven well |
+| **1d** | Nowy warsztat programisty       | `nowy-warsztat-programisty`      | was 1f; reading. Opening no longer assumes „Teraz ty”; refers to the demo as seen in class, with a link                             |
+| **1e** | Vibe coding kontra inżynieria   | `vibe-coding-kontra-inzynieria`  | was 1g; reading                                                                                                                      |
+| **1f** | Jak nie wypaść z obiegu         | `jak-nie-wypasc-z-obiegu`        | was 1h; reading                                                                                                                      |
+| **1g** | Na żywo: agent buduje aplikację | `na-zywo-agent-buduje-aplikacje` | was 1d; **the one class lesson**, last in the module; its ending hands over to 2a and points at 1d as free-time reading             |
 
+„Teraz ty: twój pierwszy agent” → **2a** (below).
 ### Moduł 2 — Warsztat: środowisko pracy
 
-`content/moduly/02-warsztat/` · est. **10 h** · new; absorbs old 4d and the
-tool half of old 0b
+`content/moduly/02-warsztat/` · est. **14 h** (v2.4: 10) · absorbs „Teraz
+ty” from Moduł 1 and gains a reading lesson on C#
 
 The lesson the discussion asked for: „how a student organises their
 programming environment before programming with agents”. Everything here is
-verified by a command, and it ends with a window on the screen.
+verified by a command, and it ends with a window on the screen — and, from
+v2.5, with a first reading of the language the window is written in.
 
-|        | Polish title                     | slug                    | What it does                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| ------ | -------------------------------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **2a** | Narzędzia: dwa edytory z agentem | `narzedzia-dwa-edytory` | The two class tools — Antigravity and Cursor — as *categories* first (1b's layers made flesh): both agent-first editors, both VS Code forks, so one set of habits serves both. Sign-ins under the school's account rules; where the agent's output lands in each; when to reach for which. Why two, said to students plainly: a spare when one free tier throttles, more combined free usage, and 1h made practical — the category is stable, the names are not.                                                                                                                                                                                                                                                                                                                                               |
-| **2b** | Projekt, folder, repozytorium    | `projekt-folder-repo`   | The conventions that survive the whole course: one folder per project, a repo from day one (0c applied), what never enters a repo; the SDK verified (`dotnet --list-sdks`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| **2c** | Pierwsze okno                    | `pierwsze-okno`         | The training stack declared, honestly provisional: „C# + Avalonia na czas nauki; wybór potwierdzimy w Module 5”. `dotnet new`, a window runs, the agent changes one visible thing, the student reads the diff.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| **2d** | Git i GitHub w pracy z agentem   | `git-w-pracy-z-agentem` | **New in v2.3.** The working level of Git, on the project from 2c — 0c stays the minimum (clone, add, commit, push) and keeps every term it owns; this lesson does not re-explain, it puts the tools to work where agents make them necessary: reading a diff before accepting it (in the terminal and in the editor's diff view); one task, one commit, so the history says what the agent did and when; undoing an agent's change (`restore`, `revert`) as a cheap, boring operation; a branch as a place to let the agent experiment without risk; `.gitignore` for what the build generates (`bin/`, `obj/`); the GitHub repo as the course's working portfolio, where every build from Moduł 3 will land. Prepares the history-as-control habit that Moduł 4's one-commit-per-task discipline formalises. |
-
+|        | Polish title                                           | slug                       | What it does                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ------ | ------------------------------------------------------ | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **2a** | **Teraz ty: twój pierwszy agent**                      | `teraz-ty-pierwszy-agent`  | **Moved from 1e in v2.5.** Straight after the demo: the student installs both class editors (**Krok 2**, new — what an editor with an agent is, download, first launch, sign-in deferred to the class rules, one empty folder), gives the agent a small task of their own choosing and records what happens on the observation card — now the lesson's first exercise, numbered by the build. No success criterion; the card is graded for honesty of observation. Fallback plan kept: switch to the second editor, then pairs. Vendor facts dated 2026-09-02. |
+| **2b** | Narzędzia: dwa edytory z agentem                       | `narzedzia-dwa-edytory`    | was 2a. The two class tools — Antigravity and Cursor — as *categories* first (1b's layers made flesh): both agent-first editors, both VS Code forks, so one set of habits serves both. Sign-ins under the school's account rules; where the agent's output lands in each; when to reach for which. Why two, said to students plainly: a spare when one free tier throttles, more combined free usage, and 1f made practical — the category is stable, the names are not.                                                                                                                                                                                                                                                                                                                                       |
+| **2c** | Projekt, folder, repozytorium                          | `projekt-folder-repo`      | was 2b. The conventions that survive the whole course: one folder per project, a repo from day one (0c applied), what never enters a repo; the SDK verified (`dotnet --list-sdks`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| **2d** | Pierwsze okno                                          | `pierwsze-okno`            | was 2c. The training stack declared, honestly provisional: „C# + Avalonia na czas nauki; wybór potwierdzimy w Module 5”. `dotnet new`, a window runs, the agent changes one visible thing, the student reads the diff.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| **2e** | Git i GitHub w pracy z agentem                         | `git-w-pracy-z-agentem`    | was 2d. The working level of Git, on the project from 2d — 0c stays the minimum and keeps every term it owns; this lesson puts the tools to work where agents make them necessary: reading a diff before accepting it; one task, one commit; undoing an agent's change (`restore`, `revert`); a branch as a place to let the agent experiment; `.gitignore` for build output; the GitHub repo as the course's working portfolio.                                                                                                                                                                                                                                                                                                                                                                              |
+| **2f** | **C# na pierwszy rzut oka, dla kogoś po Javie i C++** | `csharp-na-pierwszy-rzut-oka` | **New in v2.5; brief first, not drafted.** A reading lesson, no build: the six constructs the student will meet in every generated diff — a class with properties, `List<T>`, `try`/`catch`, an event handler with its two parameters, `async`, and the file/namespace shape of a project — each shown beside the Java or C++ form the reader knows, on the `pierwsze-okno` project they already have. Owns the *reading* of C#; the by-hand Moduł 3 blocks and Moduł 5 own the *writing*. Reader position from the survey: Java strongest (5 write simple programs), C# 11 of 12 „nie znam”. |
 ### Moduł 3 — Budujemy: pierwsze aplikacje
 
 `content/moduly/03-budujemy/` · est. **26 h** · new doing time; absorbs old
@@ -134,8 +207,11 @@ the three builds rather than a build week of its own)
 
 One small desktop application per week, in the training stack, each small
 enough to finish and each chosen to force one concept. Every build week
-contains, as fixed segments: ten minutes of diff-reading, one change made by
-hand without the agent, and a verification-journal entry. The app names
+contains, as fixed segments: ten minutes of diff-reading, **a thirty-minute
+block by hand, without the agent, that owns one language construct** (v2.5:
+a list in 3a, `try`/`catch` in 3b, an event handler in 3c — typed into the
+student's own agent-built app, committed as their own), and a
+verification-journal entry. The app names
 below are placeholders sized for one week, not decisions.
 
 | | Polish title | slug | Build | The concept it forces (old home) |
@@ -183,31 +259,76 @@ hand, a journal entry) continue in 4e per task; 4a–4d each end with a file
 committed, so `notatnik-v2` grows for three lessons before its first line of
 code. Hours, indicative only: 2 / 2 / 4 / 2 / 8 / 2 = 20.
 
-### Moduł 5 — Stack na serio i wspólna aplikacja
+### Moduł 5 — Pod maską: aplikacja własną ręką
 
-`content/moduly/05-wspolna-aplikacja/` · est. **40 h** · absorbs old 4a/4b/4c
-(~12 h) and old Moduł 5, which shrinks because Moduł 3 already taught the
-basics of okno/układ/zdarzenia in practice
+`content/moduly/05-pod-maska/` · est. **28 h** · new in v2.5; absorbs old
+5a–5c (stack, decision, Visual Studio) and old 5f–5g (architecture,
+persistence); the shared application moves to Moduł 6
 
-| | Polish title | What it does |
-| --- | --- | --- |
-| **5a** | Co system naprawdę daje aplikacji | old 4a: native vs cross-platform vs web-wrapped — now with three of their own builds as evidence |
-| **5b** | Ekosystem .NET i nasza decyzja | old 4b + 4c merged: the honest table, the constraints, the decision **ratified or overturned with students**, recorded as their first ADR („czy zostajemy przy stacku treningowym?”) |
-| **5c** | Visual Studio: pełne IDE | **New in v2.2.** First contact with the full IDE — not another VS Code fork: solution and project, the visual designer, the debugger with breakpoints and variable inspection, where the agent editors end and this begins. Matters twice: it is the professional desktop toolchain, and public sources describe the INF.04 practical stations as Visual Studio on Windows — **TO CONFIRM against the school's actual exam stations** (`research-02` §3; Article V — nothing asserted on the site until checked). **From this lesson on, Visual Studio is the main environment for building the desktop apps**: the shared app is created in it and every later desktop module (5–6, and Semester 2's 7–9) presumes it. The agent editors stay in the workflow for agent-driven work — same repo, two doors: Visual Studio for hand work, designer and debugging; Antigravity/Cursor for the agent. |
-| **5d** | Od pomysłu do spec.md | the shared app: what it does, what it never does, acceptance criteria |
-| **5e** | Plan i lista zadań | commit-sized tasks; how big „small enough” is |
-| **5f** | Architektura okna: układ, zdarzenia, stan | the formal pass over what Moduł 3 did by feel; why state does not live in controls — with the debugger from 5c as the way to *watch* state live |
-| **5g** | Zapis do pliku i błędy, których nie widać | persistence, exceptions; **the first Bez AI segment of real weight**, done in Visual Studio, where nothing suggests anything |
-| **5h** | Przegląd: czy kod robi to, co obiecuje spec | diff vs criteria; peer review round |
+The by-hand fundamentals module, placed directly after the specification
+module and before the shared app. The number was already spoken: 2-index, 2d,
+3a, 3c and the history reading all point at „Moduł 5” for the stack decision
+and for „budowa okna od podstaw”, so nothing published changes its reference.
+The spine is `research-03-desktop-app-history.md` §3, „What has not changed
+since 1984”: the event loop, one UI thread, the frozen window and its five
+seconds, state outside the widget tree, install/update as the user's burden.
+The stack inside the module is the training stack and no third framework
+(open decision #12).
 
-### Moduł 6 — Testy, jakość i przegląd kodu
+Framing rule for every lesson, from the discussion of 2026-09-02: the module
+is **not** „how we used to do it”. It is what you must know to be the editor
+1d describes — to say *za skomplikowane* and be right. Any draft that reads as
+nostalgia is cut. Each lesson states its **tryb pracy** (bez AI / tylko
+podpowiadanie / agent) in one plain sentence near the top — no component until
+content asks (ADR-0004). After the survey the module starts lower than the
+proposal assumed: collections, exceptions, events and files are **owned** here
+(the Moduł 3 blocks give a first contact, not a home), which is why 28 h and
+not 24.
 
-`content/moduly/06-testy-i-jakosc/` · est. **24 h** · unchanged from v1
-(6a–6e). Still after the shared app, still the quality floor; the difference
-is that its habits (journal, diff-reading, Rozbierz to) have been practiced
-weekly since Moduł 3, so this module names and systematises rather than
-introduces.
+|        | Polish title (proposed)                                        | slug                          | What it does                                                                                                                                                                                                                                                                                              | h |
+| ------ | -------------------------------------------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | - |
+| **5a** | Co system naprawdę daje aplikacji                              | `co-system-daje-aplikacji`    | old 5a: native / cross-platform / web-wrapped, with three own builds as evidence — and the five constants since 1984 named as the module's map                                                                                                                                                              | 2 |
+| **5b** | Ekosystem .NET i nasza decyzja                                 | `ekosystem-dotnet-i-decyzja`  | old 5b unchanged: the honest table, the decision ratified or overturned *with* students, their first real ADR in 4b's format                                                                                                                                                                                 | 2 |
+| **5c** | Visual Studio: pełne IDE                                       | `visual-studio-pelne-ide`     | old 5c: solution, debugger; the designer only if open decision #12 lands on WinForms. From here the hand work happens here; the agent editors keep their door                                                                                                                                                | 2 |
+| **5d** | Pętla zdarzeń: program, który jest wywoływany                  | `petla-zdarzen`               | **new.** A window, a button, a handler typed by hand — the 3c block's shape, now explained; `Thread.Sleep` in the handler, the frozen window, the five seconds; one UI thread; the async fix. `object sender, EventArgs e` as the 1984 message loop. Opens from the survey's fact: one of twelve can explain a click handler | 4 |
+| **5e** | Układ i kontrolki własną ręką                                  | `uklad-i-kontrolki`           | **new.** The markup the agent generated in Moduł 3, now typed line by line; layout containers; what the tooling writes and what it hides                                                                                                                                                                     | 4 |
+| **5f** | Stan poza kontrolkami                                          | `stan-poza-kontrolkami`       | **new; the load-bearing lesson** (`research-03-history`): model + binding by hand; the 3a block's „świeża kopia” finally replaced by a collection the window notices; MVC → MVVM as one rule re-derived for 47 years; the debugger from 5c used to *watch* state. Sets up Moduł 8 (mobile = change the shell) | 4 |
+| **5g** | Zapis do pliku i błędy, których nie widać                      | `zapis-i-bledy`               | old 5g: persistence, exceptions beyond the 3b block's `catch (Exception)`, the failures the happy path hides. The first **Bez AI** segment of real weight, in Visual Studio                                                                                                                                  | 4 |
+| **5h** | Trzy tryby: ta sama funkcja bez AI, z podpowiadaniem, z agentem | `trzy-tryby`                  | **new; the contrast lesson and the module's ending.** One feature of the student's own `notatnik-v2` rebuilt three ways, timed and journaled — the three minute-counts from the Moduł 3 blocks are the baseline; then the agent-built version re-read with 5d–5g's eyes (*Rozbierz to* at feature scale). Maps onto 1b's layers and the 2021 → 2023 → 2025 timeline the class did not live through | 4 |
+| —      | *(reserve)*                                                    |                               | two hours unassigned inside the module for the lesson that runs long; 5d and 5f are the candidates                                                                                                                                                                                                          | 2 |
 
+Fixed segments from Moduł 3 stay (diff reading, journal entry); „by hand” is
+the default here and the agent is the named exception. Lessons and briefs are
+written one session each after the plan is settled and after the survey's
+second run; 5d's opening depends on a fact the second run must confirm
+(block D: who has ever typed a click handler).
+
+### Moduł 6 — Wspólna aplikacja
+
+`content/moduly/06-wspolna-aplikacja/` · est. **20 h** (v2.4 Moduł 5: 40 h
+including the material now in Moduł 5)
+
+One shared app, everyone the same, built by the loop — shorter than in v2.4
+because okno / układ / stan are no longer taught inside it: its students now
+know what a window is and can read what they accept.
+
+|        | Polish title                                 | What it does                                                                                     |
+| ------ | -------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| **6a** | Od pomysłu do specyfikacji                   | old 5d: the shared app — what it does, what it never does, acceptance criteria                   |
+| **6b** | Plan i lista zadań                           | old 5e: commit-sized tasks; how big „small enough” is                                            |
+| **6c** | Budowa: tydzień pierwszy                     | procedure with a narrative frame — one task, one commit, evidence in the journal                 |
+| **6d** | Budowa: tydzień drugi                        | the same, on the second half of the spec; the first *Rozbierz to* on the shared code            |
+| **6e** | Przegląd: czy kod robi to, co obiecuje spec  | old 5h: diff vs criteria; peer review round                                                       |
+
+### Moduł 7 — Testy, jakość i przegląd kodu
+
+`content/moduly/07-testy-i-jakosc/` · est. **20 h** (v2.4 Moduł 6: 24) ·
+lessons 7a–7e as v1's 6a–6e
+
+Still after the shared app, still the quality floor. 24 → 20 is defensible
+because v2 already said this module „names and systematises rather than
+introduces”: its habits (journal, diff-reading, *Rozbierz to*, the by-hand
+blocks) have been practiced weekly since Moduł 3.
 ### Where every old lesson went
 
 | v1.1 | v2 |
@@ -228,34 +349,58 @@ introduces.
 | 5a–5f wspólna aplikacja | 5c–5g |
 | 6a–6e | unchanged |
 
+**v2.4 → v2.5**
+
+| v2.4 | v2.5 |
+| --- | --- |
+| 1b, 1c | unchanged |
+| 1d Na żywo | 1g — last in the module, the one class lesson |
+| 1e Teraz ty | **2a**, with the new Krok 2 (install) |
+| 1f, 1g, 1h | 1d, 1e, 1f — reading, free time |
+| 2a–2d | 2b–2e |
+| — | 2f C# na pierwszy rzut oka (brief first) |
+| 3a–3d | unchanged; by-hand blocks inside 3a–3c |
+| 4a–4f | unchanged |
+| 5a, 5b, 5c | 5a, 5b, 5c (Pod maską) |
+| 5d spec, 5e plan, 5h review | 6a, 6b, 6e |
+| 5f architektura okna | 5d, 5e, 5f (three lessons) |
+| 5g zapis i błędy | 5g |
+| 6a–6e testy | 7a–7e |
+| S2: 7, 8, 9, 10 | 8, 9, 10, 11 |
 ## Semester 2
 
-Unchanged from v1 (Moduł 7 mobile, 8 project, 9 release, 10 dalej; gates and
-the standing rule „if Moduł 8 is behind, Moduł 10 is what gets cut”). One
-delta: students arrive with five months of desktop building instead of one
-shared app, so Moduł 7's „same logic, different shell” argument has more to
-stand on.
+Unchanged in content from v1, **renumbered in v2.5**: Moduł 8 mobile (was 7),
+Moduł 9 project (was 8), Moduł 10 release (was 9), Moduł 11 dalej (was 10);
+the standing rule „if the project module is behind, «Dalej» is what gets cut”
+holds. Two deltas: students arrive with five months of desktop building
+*and* a by-hand module, so Moduł 8's „same logic, different shell” argument
+stands on 5f rather than on a claim; and the survey says half the phones are
+iPhones, so Moduł 8 plans emulator-first, the student's own phone as a bonus.
 
+**Sketch, not a decision — decide in January with five months of data:** the
+project module (9) as the place where the student is explicitly the engineer
+of a small agent team — spec and tasks by them, tasks executed by an agent,
+the diff reviewed by a second agent from another vendor, CI as the gate, a
+release a real person installs — with subagents / agent review / CI promoted
+from „Dalej” into it, and MCP, memory and local models staying optional.
+Recorded here so the intention exists; nothing is committed.
 ## Volume check
 
-| | Module | v1.1 h | v2 h |
-| --- | --- | --- | --- |
-| S1 | 0 Start | 8 | 8 |
-| S1 | 1 Jak powstaje oprogramowanie | 22 | 16 |
-| S1 | 2 Warsztat *(new)* | — | 10 |
-| S1 | 3 Budujemy *(new; absorbs old 2)* | 16 | 26 |
-| S1 | 4 Specyfikacja *(old 3)* | 24 | 20 |
-| S1 | 5 Stack + wspólna aplikacja *(absorbs old 4)* | 16 + 40 | 40 |
-| S1 | 6 Testy i jakość | 24 | 24 |
-| | **Semester 1** | **150** | **144** |
+| | Module | v1.1 h | v2.4 h | v2.5 h |
+| --- | --- | --- | --- | --- |
+| S1 | 0 Start | 8 | 8 | 8 |
+| S1 | 1 Jak powstaje oprogramowanie | 22 | 16 | **4** (reading leaves the class hours) |
+| S1 | 2 Warsztat | — | 10 | **14** (+2a, +2f) |
+| S1 | 3 Budujemy | 16 | 26 | 26 (by-hand blocks inside) |
+| S1 | 4 Specyfikacja | 24 | 20 | 20 |
+| S1 | 5 Pod maską *(new)* | — | — | **28** |
+| S1 | 6 Wspólna aplikacja *(v2.4: 5)* | 16 + 40 | 40 | **20** |
+| S1 | 7 Testy i jakość *(v2.4: 6)* | 24 | 24 | **20** |
+| | slack | — | 0 | **4** |
+| | **Semester 1** | **150** | **144** | **144** |
 
-The v1.1 overrun (open decision #8) is resolved: Moduł 1's reading moves
-partly out of class hours, and the shared app shrinks because its basics are
-practiced in Moduł 3. 144 h = the 18-week estimate with zero slack — still a
-ceiling, not a plan.
-
----
-
+144 h = the 18-week estimate. For the first time the plan carries slack — four
+hours — and it is still a ceiling, not a plan.
 ## Lab preparation — installed on every computer before 1 September
 
 Repo-facing checklist for Viktar and the school administrator. **Stan na
@@ -433,9 +578,27 @@ projector and network — not at home.
 | 7 | The v1-scoped briefs `docs/content-briefs/02-index.md` and `02a-prompt-token-kontekst.md` are superseded — re-derive for 2a–2c and 3a once v2 is approved | after approval | write-lesson runs |
 | 8 | Whether the INF.04 mapping of v1 still holds against this order (indicative only until checked against CKE) | semester 1 | nothing on the site |
 | 9 | What environment the school's INF.04 practical stations actually run, and — if the lab is Ubuntu — where students get Visual Studio hours (exam stations? a Windows room?) | before Moduł 5 | 5c; exam preparation |
+| 10 | The v2.5 renumbering: Moduł 5 = Pod maską, shared app → 6, tests → 7, Semester 2 → 8–11 — versus keeping v2.4's Moduł 5 and sharpening 5f–5g into by-hand lessons inside it | before the Moduł 5 briefs | 5–7; the docs that already say „Moduł 8” for the project |
+| 11 | Hours: 4 / 14 / 26 / 20 / 28 / 20 / 20 + 4 slack — or take the slack into Moduł 5 | with #10 | the volume table |
+| 12 | The stack inside Moduł 5: the training stack (Avalonia, no designer in Visual Studio — TO CONFIRM) versus WinForms on Windows-only labs (decision #4); the module must not introduce a third framework | before the 5c brief | 5c, 5e |
+| 13 | Whether the reading lessons of Moduł 1 get any class time at all beyond the demo (the 4 h assume one discussion hour); and whether 1c is taught or only read | week 2 | 1c's opening from the E5 aggregate |
 
 ## Changelog
 
+- **v2.5 — 2026-09-02.** **Moduł 1 becomes free-time reading with the demo
+  last** (1d → 1g; 1f/1g/1h → 1d/1e/1f; class hours 16 → 4); **„Teraz ty”
+  moves to 2a** with a new Krok 2 on installing both class editors (former
+  2a–2d → 2b–2e); **2f „C# na pierwszy rzut oka”** planned, brief first;
+  **Moduł 3's by-hand segment becomes a thirty-minute block owning one
+  construct per week** (list, `try`/`catch`, event handler — written into
+  3a–3c the same day); **Moduł 5 „Pod maską”** — the by-hand fundamentals
+  module (28 h) — inserted before the shared app, which becomes Moduł 6
+  (20 h); tests → Moduł 7 (20 h); Semester 2 → 8–11. v1.1's „no switch back
+  to programming without AI” reversed on purpose, with the reason recorded
+  above. Volume 140 + 4 slack = 144. Open decisions #10–#13 added. Sources:
+  the discussion of 2026-09-02, the change proposal
+  `change-proposal-2026-09-02-modul-5-pod-maska.md`, and the survey aggregate
+  `docs/surveys/ankieta-start-2026-09-aggregate.md` (n = 12).
 - **v2.4 — 2026-09-02.** **Moduł 4 lesson table added** (4a–4f), recording the
   shape drafted that day from `research-06-spec-driven-development.md`: the
   full loop runs on a rebuild of the **notatnik** in a new repository
