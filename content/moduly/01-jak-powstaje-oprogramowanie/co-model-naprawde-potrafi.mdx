@@ -1,51 +1,92 @@
 ---
 title: "Co model naprawdę potrafi"
-order: 2
-summary: "Liczby zamiast wrażeń: gdzie AI pomaga bardzo, gdzie prawie wcale, i dlaczego własna ocena własnej wydajności jest zawodna."
+order: 3
+summary: "Czy AI przyspiesza programowanie? Zależy od projektu, od człowieka i od celu — a żeby wiedzieć, jak jest u ciebie, trzeba mierzyć, bo własne wrażenie nie jest dowodem."
 ---
 
-Na pytanie „czy AI przyspiesza programowanie" istnieje uczciwa odpowiedź i jest
-nią: **zależy, i wiadomo od czego.** Ta lekcja jest o tych zależnościach, bo
-bez nich każda dyskusja o narzędziach jest wymianą wrażeń.
+W lekcji [Od podpowiedzi do agenta](/moduly/01-jak-powstaje-oprogramowanie/od-podpowiedzi-do-agenta)
+zmieniła się jednostka pracy: na warstwach 4 i 5 nie piszesz kodu, tylko
+zlecasz zadanie i sprawdzasz wynik. Nasuwa się więc pytanie, czy programowanie
+idzie dzięki temu szybciej.
+
+Na pytanie „czy AI przyspiesza programowanie” istnieje uczciwa odpowiedź i jest
+nią: **zależy, i wiadomo od czego.** Zależy od projektu, od człowieka i od celu,
+a obowiązuje jedna zasada: żeby wiedzieć, jak jest u ciebie, trzeba zmierzyć, bo
+wrażenie kłamie. Ta lekcja jest o tych trzech zależnościach i o tej jednej
+zasadzie, bo bez nich każda dyskusja o narzędziach jest wymianą wrażeń.
 
 Zaczniemy od liczby, która powinna zaboleć.
 
 ## Badanie, które wyszło odwrotnie, niż wszyscy zakładali
 
-Organizacja METR przeprowadziła w 2025 roku **randomizowane badanie z grupą
-kontrolną** — czyli najmocniejszy rodzaj dowodu, jaki w ogóle da się tu zebrać.
-Szesnastu doświadczonych programistów open source wykonywało prawdziwe zadania
+Organizacja METR przeprowadziła w 2025 roku
+[randomizowane badanie z grupą kontrolną](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)
+— czyli takie, w którym o tym, gdzie wolno użyć AI, a gdzie nie, rozstrzyga
+losowanie, a nie wybór uczestników. To najmocniejszy rodzaj dowodu, jaki w
+ogóle da się tu zebrać. Szesnastu doświadczonych programistów open source —
+czyli z projektów o publicznie dostępnym kodzie — wykonywało prawdziwe zadania
 we własnych, dobrze znanych sobie projektach. Część zadań mogli robić z
 narzędziami AI, część bez.
 
-Wynik: z AI byli **o 19% wolniejsi**.
+Wynik: z narzędziami AI byli
+[o 19% wolniejsi](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/).
+Zapytani po wszystkim, jak im poszło, odpowiedzieli, że AI przyspieszyło ich o
+20%.
 
-Po wszystkim zapytano ich, jak im poszło. Odpowiedzieli, że AI przyspieszyło ich
-**o 20%**.
-
-Trzydzieści dziewięć punktów procentowych różnicy między tym, co się stało, a
-tym, co ludzie czuli, że się stało. **To jest najważniejsza liczba w tej
-lekcji** — nie te 19%. Bo mówi ona coś, czego nie da się obejść lepszym
-narzędziem: **własne poczucie, że praca idzie szybciej, nie jest dowodem, że
+Między tym, co się stało, a tym, co ludzie czuli, jest więc trzydzieści dziewięć
+punktów procentowych: od minus 19 do plus 20. To ta różnica, nie samo 19%, jest
+najważniejszą liczbą w tej lekcji. Mówi bowiem o czymś, czego nie naprawi lepsze
+narzędzie: **własne poczucie, że praca idzie szybciej, nie jest dowodem, że
 idzie szybciej.**
 
-Zanim jednak uznasz, że AI nie działa — przeczytaj następny akapit, bo to
-badanie nie mówi tego, co ludzie z niego cytują.
+Zanim jednak uznasz, że AI nie działa, spójrz na warunki, bo to badanie nie mówi
+tego, co ludzie z niego cytują. Warunki były bardzo konkretne: doświadczeni
+programiści, w dużych, dojrzałych projektach, które znali na pamięć, przy użyciu
+narzędzi z początku 2025 roku, bez dużego wcześniejszego doświadczenia z
+agentami. To jest dokładnie przeciwny róg tabeli niż ten, w którym siedzisz ty.
 
-## Dlaczego to badanie nie dotyczy ciebie (jeszcze)
+## Co zostało po korekcie
 
-Warunki były bardzo konkretne: **doświadczeni** programiści, w **dużych,
-dojrzałych** projektach, które znali na pamięć, przy użyciu narzędzi z
-**początku 2025 roku**, bez dużego wcześniejszego doświadczenia z agentami.
+Do tej tabeli zaraz dojdziemy, ale liczba METR ma ciąg dalszy, i uczy on
+czegoś, czego sama liczba nie uczy. W lutym 2026 roku METR opublikował
+[tekst o własnym badaniu](https://metr.org/blog/2026-02-24-uplift-update/) i
+napisał w nim, że jego konstrukcja nie pozwala wyciągać wniosku, który wszyscy
+z niego wyciągali.
 
-To jest dokładnie przeciwny róg tabeli niż ten, w którym siedzisz ty. I ta
-tabela naprawdę istnieje.
+Powody były konkretne: programiści coraz częściej odmawiali udziału, bo nie
+chcieli pracować bez AI, więc z próby znikali ci najbardziej przekonani; od 30
+do 50% uczestników przyznało, że celowo nie zgłaszało do badania zadań, przy
+których AI by im najbardziej pomogło; a gdy ktoś prowadził kilku agentów naraz,
+pomiar czasu przestawał mieć sens. Nowsze pomiary z końca 2025 roku wskazują
+raczej na przyspieszenie — ale METR sam pisze, że to
+[„bardzo słaby dowód”](https://metr.org/blog/2026-02-24-uplift-update/), i
+zmienił konstrukcję eksperymentu.
 
-## Gdzie AI pomaga, a gdzie nie
+Pierwszy wniosek jest prosty: jeśli ktoś w 2026 roku cytuje ci „19% wolniej”
+jako aktualny wynik, cytuje liczbę, którą wycofali jej autorzy. Tak wygląda
+nauka, kiedy działa: badanie, które wyszło niewygodnie, zostało sprawdzone przez
+tych samych ludzi i poprawione publicznie.
 
-Analiza Uniwersytetu Stanforda na dużej próbce projektów pokazuje, że zysk z AI
-zależy od dwóch rzeczy jednocześnie: czy projekt jest **nowy czy stary**, i czy
-zadanie jest **proste czy złożone**.
+Drugi wniosek jest ważniejszy, bo luka między pomiarem a wrażeniem przetrwała
+korektę. W
+[ankiecie z wiosny 2026](https://metr.org/blog/2026-05-11-ai-usage-survey/)
+METR przypomina, że jego uczestnicy z 2025 roku przeszacowali wpływ AI na
+własny czas pracy średnio o 40 punktów procentowych. Ta sama ankieta dodaje
+drugi pomiar. Typowy respondent — mediana, czyli wartość, od której połowa
+odpowiedzi jest niższa, a połowa wyższa — twierdzi, że z AI pracuje trzy razy
+szybciej; ale kiedy zapytać osobno o *wartość* tej pracy, mediana rośnie tylko
+1,4–2 razy. Ludzie mierzą więc tempo, nie wynik. Zapamiętaj to zdanie:
+**wrażenie nie jest dowodem** — to jest ta część lekcji, która nie została
+wycofana.
+
+## Pierwsza zależność: jaki projekt
+
+Skoro wrażenie odpada, zostaje pomiar — tym razem nie na szesnastu osobach, ale
+na dużej próbce projektów.
+[Analiza Uniwersytetu Stanforda](https://ingoeichhorst.medium.com/state-of-ai-coding-efficiency-2026-1abfa0ab7434)
+pokazuje, że zysk z AI zależy od dwóch rzeczy jednocześnie: czy projekt jest
+nowy czy stary, i czy zadanie jest proste czy złożone. Na rysunku patrz na dwie
+komórki po przekątnej: lewą górną i prawą dolną.
 
 <svg viewBox="0 0 660 320" role="img" aria-label="Macierz: zysk z AI zależnie od wieku projektu i złożoności zadania" style={{ width: "100%", height: "auto" }}>
   <g stroke="currentColor" fill="none" strokeWidth="1.5">
@@ -87,93 +128,171 @@ Zwróć uwagę na to, co ta macierz robi z twoją sytuacją. **Wszystko, co zbud
 na tym kursie, jest nowe i małe.** Siedzisz w najbardziej sprzyjającej komórce
 tabeli. Za trzy lata, przy pierwszym prawdziwym projekcie, będziesz w komórce
 przeciwnej — i jeśli nikt ci tego wcześniej nie powie, uznasz, że narzędzia
-przestały działać.
-
-Cytat z tej analizy warto zapamiętać dosłownie:
+przestały działać. Między tymi komórkami jest różnica od +30–40% do 0–10% przy
+tych samych narzędziach — i to w tym przeciwnym rogu pracowali programiści z
+badania METR. Cytat z tej analizy warto zapamiętać dosłownie, bo opisuje właśnie
+tę komórkę:
 
 > Duże, zabałaganione systemy to dokładnie te miejsca, w których narzędzia AI
 > wyglądają najbardziej atrakcyjnie — i te same, w których ryzyko jest
 > największe.
+>
+> — analiza Stanforda (Denisov-Blanch i in.), [2025](https://ingoeichhorst.medium.com/state-of-ai-coding-efficiency-2026-1abfa0ab7434)
 
-## Junior i senior dostają co innego
+Największa pokusa i najmniejszy zysk siedzą więc w tej samej komórce. Projekt to
+jednak tylko pierwsza z trzech zależności, bo ten sam projekt daje różnym ludziom
+różny zysk.
 
-Badanie Microsoftu (Demirer i in., 2026) porównało wzrost wydajności mierzony
-liczbą pull requestów:
+## Druga zależność: kto pracuje
 
-- **junior: około +40%**
-- **senior: około +7%**
+[Badanie Microsoftu](https://ingoeichhorst.medium.com/state-of-ai-coding-efficiency-2026-1abfa0ab7434)
+(Demirer i in., 2026) porównało wzrost wydajności mierzony liczbą pull
+requestów u juniorów i seniorów, czyli u programistów początkujących i
+doświadczonych: junior zyskał około +40%, senior około +7%. To nie znaczy „AI
+jest dla początkujących” — znaczy, że każdy dostaje co innego. Junior zyskuje
+na podpowiedziach, wyjaśnieniach i boilerplate — powtarzalnym
+kodzie-szkielecie, który trzeba napisać, zanim zacznie się właściwa praca —
+czyli na warstwach 1–3. Senior zyskuje na warstwach 4–5, bo tam liczy się
+ocena, kierowanie i decyzje architektoniczne — czyli dokładnie to, czego junior
+jeszcze nie ma, a co ten kurs ma mu dać. **Dlatego ten kurs nie uczy szybszego
+pisania — uczy oceniania.**
 
-To nie znaczy „AI jest dla początkujących". Znaczy, że **każdy dostaje co
-innego**. Junior zyskuje na podpowiedziach, wyjaśnieniach i boilerplate — czyli
-na warstwach 1–3. Senior zyskuje na warstwach 4–5, bo tam liczy się ocena,
-kierowanie i decyzje architektoniczne — czyli dokładnie to, czego junior jeszcze
-nie ma.
+## Trzecia zależność: co jest celem
 
-**Dlatego ten kurs nie uczy szybszego pisania. Uczy oceniania.**
+Zysk juniora i seniora, jak wszystkie liczby do tej pory, mierzy, ile pracy
+wychodzi. Dla ciebie ważniejsze jest inne pytanie: **ile się przy tym uczysz**
+— bo w szkole celem zadania rzadko jest sam program, tylko to, co po nim
+zostaje w głowie. I na to pytanie istnieje odpowiedź z badania o najmocniejszej
+konstrukcji — znowu randomizowanego, z grupą kontrolną —
+[opublikowanego 29 stycznia 2026 roku przez Anthropic](https://www.anthropic.com/research/AI-assistance-coding-skills),
+czyli producenta jednego z modeli, których będziesz używać.
 
-## Problem 70%
+Pięćdziesięciu dwóch programistów, w większości początkujących, uczyło się
+nowej dla nich biblioteki Pythona. Połowa z pomocą asystenta AI, połowa bez.
+Potem wszyscy pisali test ze zrozumienia: grupa bez AI uzyskała średnio 67%,
+grupa z AI — średnio 50%. Siedemnaście punktów procentowych to, jak piszą
+autorzy,
+[„niemal dwie oceny szkolne”](https://www.anthropic.com/research/AI-assistance-coding-skills).
+Największa różnica wypadła w pytaniach o debugowanie, czyli o szukanie i
+naprawianie błędów. A czas? Grupa z AI skończyła około dwóch minut szybciej, co
+nie było statystycznie istotne. Asystent nie dał więc czasu, a zabrał
+zrozumienie.
 
-Addy Osmani, inżynier w Google, opisał to w sposób, który stał się w branży
-skrótem myślowym:
+Najciekawsze jest to, co różniło ludzi *wewnątrz* grupy z AI. Ci z najniższymi
+wynikami oddawali AI pisanie kodu i debugowanie. Ci z najwyższymi pytali o
+wyjaśnienia i pojęcia, a błędy naprawiali sami. Ten sam asystent, dwa sposoby
+użycia, dwa przeciwne skutki — więc o wyniku nie zdecydował asystent, tylko cel,
+z jakim ktoś do niego przyszedł.
+
+Zdanie, które z tego wynika, jest tezą całego kursu — obok jednego zdania
+Osmaniego, do którego zaraz dojdziemy: **AI obniża koszt dostarczenia. Nie
+obniża — a może podnosić — koszt zrozumienia.** To jest powód, dla którego w tym
+kursie będą odcinki „bez AI”, ćwiczenia typu „rozbierz to” i dziennik
+weryfikacji. Nie są karą, tylko odpowiedzią na te siedemnaście punktów.
+
+## Ile pracy naprawdę da się oddać
+
+Kiedy celem jest dostarczenie, zostaje pytanie praktyczne: jak dużą część pracy
+da się oddać narzędziu? Addy Osmani, inżynier w Google, odpowiedział na nie w
+[tekście, który stał się w branży skrótem myślowym](https://addyosmani.com/agentic-engineering/the-70-percent-problem/):
 
 > AI dowozi cię w 70% drogi, i to szybko. Pozostałe 30% to miejsce, w którym
 > doświadczeni inżynierowie zarabiają na swoje utrzymanie.
+>
+> — Addy Osmani, [The 70% Problem](https://addyosmani.com/agentic-engineering/the-70-percent-problem/)
 
 Te pierwsze 70% to, jego słowami, „struktura, boilerplate, ścieżka szczęśliwa,
-standardowe wzorce, CRUD, podstawowe komponenty UI".
-
+standardowe wzorce, CRUD, podstawowe komponenty UI” — CRUD to skrót od czterech
+podstawowych operacji na danych: tworzenia, odczytu, zmiany i usuwania.
 Pozostałe 30% to „obsługa błędów, przypadki brzegowe, wydajność, bezpieczeństwo,
-dostępność, testy integracyjne, wdrożenie".
+dostępność, testy integracyjne, wdrożenie” — czyli wszystko to, czego nie widać,
+kiedy program działa na pokazie.
 
-I zdanie, które jest właściwie tezą całego kursu:
+Osmani mówi o jednym zadaniu;
+[raport Anthropic z 2026 roku](https://resources.anthropic.com/2026-agentic-coding-trends-report)
+patrzy na całą pracę programistów i podaje dwie liczby, które trzeba czytać
+razem: programiści używają AI przy około 60% swojej pracy, ale w pełni oddać
+potrafią tylko 0–20% zadań. **Wszędzie obecne, prawie nigdzie samodzielne** —
+to jest realny stan na dziś, i pasuje do 70% Osmaniego: dużo pomocy, mało
+samodzielności.
+
+Ciekawostka
+[z tego samego raportu](https://resources.anthropic.com/2026-agentic-coding-trends-report):
+około 27% pracy wykonanej z AI to praca, która inaczej w ogóle by nie powstała
+— testy, których nikt by nie napisał, skrypty, którym nikt by nie poświęcił
+godziny. Zysk pojawia się więc częściowo jako więcej zrobionych rzeczy, a nie
+tylko szybciej zrobione te same. Do wszystkich tych liczb pasuje jedno zdanie
+Osmaniego, które jest właściwie tezą całego kursu:
 
 > Trudną częścią inżynierii oprogramowania nigdy nie było wpisywanie kodu.
+>
+> — Addy Osmani, [The 70% Problem](https://addyosmani.com/agentic-engineering/the-70-percent-problem/)
 
-## Ile z pracy da się oddać
+## Dlaczego ta lekcja jest zbudowana z liczb
 
-Raport Anthropic z 2026 roku podaje dwie liczby, które trzeba czytać razem:
+Wszystko do tej pory pochodziło z eksperymentów albo pomiarów. Ostatnie źródło
+to nie eksperyment, tylko ankieta — największa w branży,
+[Stack Overflow, z 2025 roku](https://survey.stackoverflow.co/2025/ai), prawie
+49 tysięcy odpowiedzi. Ankieta nie mierzy wydajności, mierzy nastroje — i
+nastroje są rozdwojone. Prawie wszyscy używają narzędzi AI albo zamierzają
+(84%), a wśród zawodowców co drugi (51%) używa ich codziennie. Zaufanie idzie
+jednak w drugą stronę: poprawności odpowiedzi ufa jedna trzecia (33%), a niemal
+połowa (46%) nie ufa. Najczęstsza frustracja, wskazana przez dwie trzecie
+(66%), to odpowiedzi „prawie dobre, ale nie do końca”. Agentów, czyli warstwy
+4, używa codziennie 14%, a 38% nie zamierza ich używać wcale.
 
-- programiści używają AI przy około **60%** swojej pracy,
-- ale **w pełni** oddać potrafią tylko **0–20%** zadań.
+Postaw te liczby obok tego, co usłyszysz w lekcji [Nowy warsztat programisty](/moduly/01-jak-powstaje-oprogramowanie/nowy-warsztat-programisty):
+człowiek, u którego sto procent kodu piszą agenty. Obie rzeczy są prawdziwe
+naraz, bo opisują dwa różne miejsca. Ankieta opisuje **środek stawki**, tamten
+człowiek — **front**. Kiedy czytasz o AI w programowaniu, zawsze pytaj, o którym
+z tych dwóch miejsc jest mowa.
 
-Wszędzie obecne, prawie nigdzie samodzielne. To jest realny stan na dziś.
-
-Ciekawostka z tego samego raportu: około **27% pracy wykonanej z AI to praca,
-która inaczej w ogóle by nie powstała** — testy, których nikt by nie napisał,
-skrypty, którym nikt by nie poświęcił godziny. Zysk pojawia się więc częściowo
-jako **więcej zrobionych rzeczy**, a nie tylko szybciej zrobione te same.
-
-## Ile trzeba, żeby to zaczęło działać
-
-Około **30–100 godzin** praktyki, zanim efekt stanie się wyraźnie dodatni.
-
-Przy ośmiu godzinach tygodniowo to **od miesiąca do trzech miesięcy tego
-kursu**. Jeśli w listopadzie będziesz miał wrażenie, że to wszystko ci
-przeszkadza — to nie jest dowód, że narzędzia są złe. To jest dokładnie ten
-przedział.
-
-## Głos z drugiej strony
-
-Warto usłyszeć kogoś, kto nie sprzedaje żadnego narzędzia. **Linus Torvalds**,
-twórca Linuksa, powiedział na Open Source Summit w Wiedniu w październiku 2024
-roku, że branża AI to „w 90% marketing i w 10% rzeczywistość". W tej samej
-rozmowie dodał jednak:
+To samo pytanie warto zadawać obietnicom, i dlatego na koniec głos kogoś, kto
+nie sprzedaje żadnego narzędzia. Linus Torvalds, twórca Linuksa, powiedział
+[na Open Source Summit w Wiedniu w październiku 2024 roku](https://www.tomshardware.com/tech-industry/artificial-intelligence/linus-torvalds-reckons-ai-is-90-percent-marketing-and-10-percent-reality),
+że branża AI to „w 90% marketing i w 10% rzeczywistość”. W tej samej rozmowie
+dodał jednak:
 
 > Uważam, że AI jest naprawdę interesujące i że zmieni świat. A jednocześnie tak
 > bardzo nie znoszę tego cyklu szumu, że naprawdę nie chcę się w to angażować.
+>
+> — Linus Torvalds, Open Source Summit, Wiedeń, [październik 2024](https://www.tomshardware.com/tech-industry/artificial-intelligence/linus-torvalds-reckons-ai-is-90-percent-marketing-and-10-percent-reality)
 
-To nie jest głos przeciwko technologii. To jest głos przeciwko **sposobowi, w
-jaki się o niej mówi** — i dokładnie dlatego cała ta lekcja jest zbudowana z
-liczb i źródeł, a nie z obietnic.
+To nie jest głos przeciwko technologii, lecz przeciwko sposobowi, w jaki się o
+niej mówi — i dokładnie dlatego cała ta lekcja jest zbudowana z liczb i źródeł,
+a nie z obietnic. Liczby też potrafią zmylić, jak pokazało badanie METR, ale
+liczbę da się sprawdzić i poprawić publicznie; obietnicy nie.
 
-## Co z tego wynika dla ciebie
+## Trzy zależności i jedna zasada
 
-1. AI pomaga najbardziej tam, gdzie jesteś teraz: nowy, mały projekt,
-   popularny język, proste zadanie.
-2. Pomaga najmniej tam, gdzie będziesz za kilka lat.
-3. Umiejętność, która przenosi się między tymi dwoma miejscami, to nie
-   promptowanie. To **ocenianie, czy to, co przed chwilą powstało, jest dobre**.
-4. Twoje własne wrażenie, że idzie ci szybciej, nie jest dowodem.
+Wróćmy do pytania z początku. Czy AI przyspiesza programowanie? Zależy od
+projektu, od człowieka i od celu — a żeby wiedzieć, jak jest u ciebie, trzeba
+mierzyć, a nie czuć.
+
+Jedna rzecz jeszcze, bo dotyczy najbliższych tygodni: ile trzeba, żeby to w
+ogóle zaczęło działać. Około **30–100 godzin** praktyki, zanim efekt stanie się
+wyraźnie dodatni. Przy ośmiu godzinach tygodniowo to **od miesiąca do trzech
+miesięcy tego kursu**. Jeśli w listopadzie będzie ci się wydawać, że to wszystko
+ci przeszkadza — to nie jest dowód, że narzędzia są złe. To jest dokładnie ten
+przedział.
+
+To była lekcja z liczb, ale liczby są po to, żeby coś z nimi zrobić. Z tej
+lekcji zostaje pięć rzeczy. Każda jest czynnością, nie faktem:
+
+1. Zapamiętaj, gdzie jesteś: AI pomaga najbardziej w nowym, małym projekcie, w
+   popularnym języku, przy prostym zadaniu — i dokładnie w tej komórce zobaczysz
+   agenta na pokazie w lekcji [Na żywo: agent buduje aplikację](/moduly/01-jak-powstaje-oprogramowanie/na-zywo-agent-buduje-aplikacje).
+2. Spodziewaj się, że pomaga najmniej tam, gdzie będziesz za kilka lat — i nie
+   uznaj wtedy, że narzędzia przestały działać.
+3. Ćwicz umiejętność, która przenosi się między tymi dwoma miejscami: nie
+   sprawne pisanie poleceń dla modelu, tylko ocenianie, czy to, co przed chwilą
+   powstało, jest dobre.
+4. Nie ufaj własnemu wrażeniu, że idzie ci szybciej — mierz. To zdanie
+   przetrwało nawet korektę badania, z którego pochodzi.
+5. Przy każdym zadaniu pytaj, co jest celem. Tam, gdzie celem jest
+   **zrozumienie**, AI może ci je zabrać; tam, gdzie celem jest
+   **dostarczenie**, może je przyspieszyć. Ten kurs będzie przełączał między
+   tymi trybami celowo i będzie mówił, w którym jesteś.
 
 ## Ćwiczenia
 
@@ -183,19 +302,33 @@ liczb i źródeł, a nie z obietnic.
    Zaznacz, gdzie jesteś dziś, a gdzie będziesz w pierwszej pracy.
 2. Wyjaśnij koledze lub koleżance w dwóch zdaniach, dlaczego badanie METR **nie**
    dowodzi, że AI nie działa. Jeśli nie potrafisz — przeczytaj sekcję jeszcze raz.
-3. Wejdź na stronę badania METR i znajdź, ilu programistów brało w nim udział.
-   Zastanów się w trzech zdaniach, co ta liczba mówi o ostrożności, z jaką
-   należy cytować wynik.
-4. Przez tydzień zapisuj po każdych zajęciach jedno zdanie: *czy AI mi dziś
+3. Wejdź na
+   [stronę badania METR](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)
+   i znajdź, ilu programistów brało w nim udział. Potem otwórz
+   [tekst METR z lutego 2026](https://metr.org/blog/2026-02-24-uplift-update/)
+   i wypisz **jeden** powód, dla którego autorzy nie chcą, żeby cytować ich
+   wynik jako aktualny. Trzy zdania o tym, co obie rzeczy razem mówią o
+   ostrożności, z jaką należy cytować liczby.
+4. Przeczytaj w
+   [badaniu Anthropic](https://www.anthropic.com/research/AI-assistance-coding-skills)
+   opis dwóch sposobów używania asystenta — tych, którzy wypadli najgorzej, i
+   tych, którzy wypadli najlepiej. Napisz
+   szczerze, który z nich rozpoznajesz u siebie z ostatniego miesiąca. Nikt tego
+   nie oceni; to jest notatka dla ciebie, do której wrócimy w grudniu.
+5. Przez tydzień zapisuj po każdych zajęciach jedno zdanie: *czy AI mi dziś
    pomogło, czy przeszkodziło, i skąd to wiem*. Ostatnie trzy słowa są
    najważniejsze.
 
 ## Źródła
 
-Stan na **2026-08-28**. Wszystkie liczby w tej lekcji pochodzą z poniższych
+Stan na **2026-08-29**. Wszystkie liczby w tej lekcji pochodzą z poniższych
 źródeł — jeśli czytasz to później, sprawdź, czy nie pojawiły się nowsze.
 
 - [Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/) — METR, 10.07.2025; badanie o 19% i 20%
+- [We are Changing our Developer Productivity Experiment Design](https://metr.org/blog/2026-02-24-uplift-update/) — METR, 24.02.2026; ograniczenia badania i nowsze oszacowania
+- [Measuring the Self-Reported Impact of Early-2026 AI on Technical Worker Productivity](https://metr.org/blog/2026-05-11-ai-usage-survey/) — METR, 11.05.2026; ankieta, przeszacowanie o 40 punktów, mediana 3× i 1,4–2×
+- [How AI assistance impacts the formation of coding skills](https://www.anthropic.com/research/AI-assistance-coding-skills) — Anthropic, 29.01.2026; 52 osoby, 50% wobec 67%
+- [2025 Stack Overflow Developer Survey: AI](https://survey.stackoverflow.co/2025/ai) — Stack Overflow, lipiec 2025; 84%, 51%, 33%, 46%, 66%, 14%
 - [State of AI Coding Efficiency (2026)](https://ingoeichhorst.medium.com/state-of-ai-coding-efficiency-2026-1abfa0ab7434) — zestawienie danych Stanford (Denisov-Blanch, 2025) i Microsoftu (Demirer i in., 2026)
 - [The 70% Problem](https://addyosmani.com/agentic-engineering/the-70-percent-problem/) — Addy Osmani (Google)
 - [2026 Agentic Coding Trends Report](https://resources.anthropic.com/2026-agentic-coding-trends-report) — Anthropic; liczby 60%, 0–20% i 27%

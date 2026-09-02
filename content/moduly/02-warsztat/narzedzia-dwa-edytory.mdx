@@ -1,0 +1,262 @@
+---
+title: "Narzędzia: dwa edytory z agentem"
+order: 1
+summary: "Program, w którym pracował twój pierwszy agent, ma nazwę kategorii — i bliźniaka. Co w obu edytorach jest takie samo, czego każdy z nich chce od ciebie i po co nam na kursie dwa."
+publish: true
+---
+
+{/* Drafted 2026-09-01 from docs/content-briefs/02a-narzedzia-dwa-edytory.md.
+    TO CONFIRM before this lesson is taught — course-structure-v2 open
+    decisions #2 and #3: the tool pair, and the account rules settled with the
+    school. Per Viktar's decision of 2026-09-01 the Konta section keeps 1e's
+    stance: it names what each vendor requires, dated and linked, and leaves
+    whose account and whose consent to the classroom (Article V). Both age
+    requirements below are sourced vendor facts, not institutional ones. */}
+
+Na karcie obserwacji z twojego pierwszego eksperymentu z agentem pierwsza
+rubryka brzmi: *narzędzie i model*. Wpisana jest w nią nazwa — i to prawie
+wszystko, co o tym programie na razie wiadomo.
+
+Nazwa nie mówi, jakiego rodzaju jest ten program ani co w nim jest nowe, a co
+ma dokładnie tak samo jak edytor, w którym piszesz kod w szkole. Nie mówi też,
+dlaczego takich programów mamy na kursie dwa, a nie jeden — dwie nazwy, dwa
+konta do założenia, dwa miejsca, w których coś może nie zadziałać.
+
+Dziś zrobisz to samo zadanie drugi raz. Ten sam pomysł, ta sama pierwsza
+wiadomość, drugie narzędzie. Dwa przebiegi tego samego obok siebie pokazują
+to, czego jeden przebieg pokazać nie mógł: co było właściwością narzędzia, a
+co właściwością kategorii, do której oba należą. Czym więc jest ten program —
+i po co nam dwa?
+
+## Kategoria, nie nazwa
+
+Lekcja [Jak nie wypaść z obiegu](/moduly/01-jak-powstaje-oprogramowanie/jak-nie-wypasc-z-obiegu)
+skończyła się zasadą: **ucz się kategorii, sprawdzaj nazwy**. Dziś ta zasada
+przestaje być radą na przyszłość, bo kategoria, o którą w niej chodziło, stoi
+otwarta na twoim ekranie.
+
+Nazywa się **edytor z agentem**; spotkasz też określenie *AI-first*. To edytor
+kodu, w którym najważniejszym miejscem nie jest plik, tylko rozmowa: piszesz,
+co ma się stać, a program po drugiej stronie sam otwiera pliki, zmienia je,
+uruchamia polecenia i czyta wyniki. To warstwa czwarta z mapy w lekcji
+[Od podpowiedzi do agenta](/moduly/01-jak-powstaje-oprogramowanie/od-podpowiedzi-do-agenta)
+— agent — tyle że zamieszkała w edytorze, a nie w terminalu.
+
+Przykłady tej kategorii mamy na kursie dwa: Antigravity i Cursor. Kolejność
+jest alfabetyczna i nic nie znaczy. Nie są przy tym tym samym programem w
+dwóch kolorach, i to jest pierwsza rzecz warta zauważenia — bo pokazuje, gdzie
+przebiega granica między kategorią a narzędziem.
+
+Dokumentacja Cursora mówi o nim wprost, że jest „based upon the VS Code
+codebase” — powstał z kodu VS Code i od tamtego miejsca jest prowadzony
+osobno. Taki zabieg nazywa się **fork**: bierzesz cudzy projekt w punkcie, w
+którym akurat jest, i dalej prowadzisz własny. Stąd praktyczny skutek, który
+możesz sprawdzić w pół minuty: rozszerzenia, motywy, ustawienia i skróty
+klawiszowe [przenosi się do niego z VS Code jednym kreatorem](https://cursor.com/docs/configuration/migrations/vscode).
+
+Antigravity poszło inną drogą i w niecały rok zdążyło zmienić kształt.
+Zaczęło [w listopadzie 2025](https://antigravity.google/blog/introducing-google-antigravity)
+jako osobny program na pulpicie, którego środkiem jest prowadzenie agentów —
+producent nazywa go „agentic development platform”. W
+[sierpniu 2026](https://antigravity.google/blog/antigravity-ide-extensions)
+doszły do tego wtyczki: to samo narzędzie da się dziś włączyć w środku pięciu
+innych edytorów, VS Code włącznie. Jedna kategoria, dwie firmy, dwa pomysły na
+to, gdzie agent ma mieszkać.
+
+Nie pytaj więc, który z nich jest lepszy — to pytanie starzeje się szybciej,
+niż zdążysz na nie odpowiedzieć. Pytaj, co w obu jest takie samo, bo właśnie ta
+część przeżyje następną zmianę nazwy. Sprawdzić da się to tylko w jeden
+sposób: otworzyć oba i poszukać.
+
+## Trzy rzeczy, które znajdziesz w obu
+
+Otwórz oba narzędzia na tym samym folderze — najlepiej na tym, w którym
+powstało twoje zadanie z pierwszego eksperymentu. Szukasz trzech rzeczy. Nie
+podaję, gdzie dokładnie kliknąć, i nie jest to lenistwo: instrukcja z nazwami
+przycisków zestarzeje się przed końcem semestru, a umiejętność znalezienia
+tych trzech rzeczy w nieznanym edytorze — nie.
+
+- **Miejsce, w którym piszesz do agenta.** Panel z boku, osobna zakładka albo
+  okno rozmowy. Sprawdź przy okazji, czy da się w nim wybrać model i który
+  jest wybrany domyślnie — to ta sama informacja, którą wpisujesz w pierwszą
+  rubrykę karty obserwacji.
+- **Moment zgody.** Agent pyta, człowiek klika. W obu narzędziach jest miejsce,
+  w którym ustawia się, o co agent musi zapytać, zanim to zrobi: zapis pliku,
+  uruchomienie polecenia, sięgnięcie do sieci. Znajdź to ustawienie i zobacz,
+  na czym stoi teraz — na karcie z pierwszego eksperymentu jest rubryka o
+  rzeczach zatwierdzonych bez czytania, a to jest miejsce, z którego brała się
+  jej zawartość.
+- **Miejsce, w którym ląduje nowy plik.** Poproś agenta o coś drobnego — plik
+  `notatka.txt` z jednym zdaniem — i **zanim** się zgodzisz, przeczytaj, gdzie
+  chce go zapisać. Pełna ścieżka, nie sama nazwa pliku.
+
+Wynik zapisz od razu, w tym samym pliku, w którym leży karta z pierwszego
+eksperymentu:
+
+```text title="obserwacje/pierwszy-agent.md"
+## Drugi edytor
+
+- Narzędzie: …
+- Gdzie piszę do agenta: …
+- Gdzie ustawia się zgody i na czym stały: …
+- Gdzie wylądował nowy plik (pełna ścieżka): …
+- Jedna rzecz identyczna w obu: …
+- Jedna rzecz, która się różni: …
+```
+
+Jeśli którejś z trzech rzeczy w którymś narzędziu nie znajdziesz, zapisz to tak
+samo starannie jak znalezienie. Brak jest wynikiem — i częściej, niż się
+wydaje, znaczy tylko tyle, że rzecz nazywa się inaczej, niż jej szukasz.
+Jednego z tych trzech kroków nie zrobisz jednak do końca, dopóki narzędzie nie
+wie, kim jesteś.
+
+## Konta
+
+Oba narzędzia chcą konta i nie chcą tego samego rodzaju konta.
+
+Antigravity chce **osobistego konta Google**. Jego strona z odpowiedziami na
+częste pytania mówi, że narzędzie „is currently available for personal Google
+accounts in approved geographies” — konto szkolne albo firmowe może więc nie
+zadziałać, nawet jeśli technicznie jest kontem Google. Cursor chce **własnego
+konta Cursora**, zakładanego u siebie; jego
+[instrukcja instalacji](https://cursor.com/docs/get-started/installation)
+kwituje to jednym zdaniem: zainstaluj i zaloguj się.
+
+Obie firmy stawiają też warunek wieku i uczciwiej jest powiedzieć o tym wprost,
+niż przemilczeć. [FAQ Antigravity](https://antigravity.google/docs/faq): „At the
+moment, Antigravity is unavailable to under-18 users”. [Regulamin Cursora](https://cursor.com/terms-of-service),
+w wersji z 13 sierpnia 2026: użytkownik ma mieć ukończone osiemnaście lat albo
+być pełnoletni według prawa swojego kraju — z tych dwóch progów obowiązuje
+wyższy.
+
+Obie strony sprawdzałem 1 września 2026 i dlatego stoją w Źródłach z datą: to
+są dokładnie te rzeczy, które zmieniają się szybciej niż lekcja. Zanim
+cokolwiek założysz, otwórz je i zobacz, co mówią w dniu, w którym to czytasz.
+
+Reszta — czyje konto, z czyją zgodą i co robić, jeśli któryś z tych warunków
+akurat ciebie dotyczy — ustalamy na zajęciach, a nie w tym tekście. Ta lekcja
+mówi wyłącznie, czego chce narzędzie. Jeśli warunek wieku albo rodzaj konta
+jest przeszkodą, powiedz o tym na zajęciach: rozwiązaniem nie jest obejście
+regulaminu w pojedynkę.
+
+## Po co nam dwa
+
+Dwa narzędzia to dwa konta, dwa zestawy skrótów i dwa razy więcej miejsc, w
+których coś może się zepsuć. Powody, dla których i tak się to opłaca, są trzy.
+
+- **Limity są prawdziwe i skończone.** Darmowy próg wyczerpuje się w środku
+  zajęć, zwykle u kilku osób naraz. Plan na tę sytuację znasz już z
+  [pierwszego eksperymentu](/moduly/01-jak-powstaje-oprogramowanie/teraz-ty-pierwszy-agent):
+  przełącz się na drugie narzędzie, zadanie i pierwsza wiadomość zostają te
+  same. Od dziś to nie jest plan awaryjny, tylko zwykła procedura — a moment
+  przełączenia notujesz, bo to obserwacja, nie porażka.
+- **Dwa darmowe progi zamiast jednego.** Ile dokładnie ich starcza, nie piszę
+  tutaj, bo to liczba, która zdąży się zmienić między napisaniem tej lekcji a
+  twoim czytaniem. Aktualne warunki są u źródła i tylko tam:
+  [antigravity.google](https://antigravity.google) i
+  [cursor.com](https://cursor.com).
+- **Kategoria zostaje, nazwy się psują.** Masz na to dowód z ostatnich
+  dziesięciu miesięcy, i to na własnym przykładzie: jedno z dwóch narzędzi tego
+  kursu przestało w tym czasie być wyłącznie osobnym programem i stało się
+  także wtyczką do pięciu innych edytorów. Gdyby twoja wiedza była nazwą i
+  listą przycisków, ubyłoby jej pół. Skoro jest kategorią i trzema miejscami do
+  znalezienia, nie ubyło z niej nic.
+
+Jest jeszcze powód czwarty, mniej praktyczny i chyba ważniejszy. Dopóki znasz
+jedno narzędzie, nie masz jak odróżnić tego, co robi ono, od tego, co robi
+każdy agent — wszystko wygląda na właściwość programu, który akurat masz
+otwarty. Drugie narzędzie jest najtańszym sposobem zobaczenia tej różnicy i
+dlatego dzisiejsze zadanie polega na powtórzeniu czegoś, co już masz za sobą, a
+nie na czymś nowym.
+
+## Dwa okna, jeden warsztat
+
+Rubryka *narzędzie i model* na twojej karcie ma teraz nad sobą kategorię:
+edytor z agentem, czyli warstwa czwarta zamieszkała w edytorze. Nazwa w tej
+rubryce może za rok brzmieć inaczej, narzędzie może zostać kupione albo
+przenieść się do środka innego programu — kategoria zostanie, a razem z nią
+trzy miejsca, których szukasz w każdym nowym edytorze.
+
+- **Nowe narzędzie poznawaj od tych trzech miejsc**, nie od nazw przycisków:
+  gdzie piszesz, gdzie zatwierdzasz, gdzie ląduje plik.
+- **Kiedy jedno narzędzie odmawia, przełącz się i zanotuj moment.** Z
+  porównania dwóch przebiegów tego samego zadania dowiesz się więcej niż z
+  jednego udanego.
+- **Warunki konta, wieku i darmowego użycia sprawdzaj u źródła, z datą.** Ta
+  lekcja podaje adresy właśnie po to, żeby nie trzeba było wierzyć jej na słowo.
+- **Zanim zaczniesz kolejny projekt, wybierz mu miejsce sam.** Dziś pliki
+  wylądowały tam, gdzie zaproponowało narzędzie; to działa za pierwszym razem i
+  przestaje działać przy trzecim projekcie.
+
+Ostatni punkt jest tematem następnej lekcji: jeden folder na projekt,
+repozytorium od pierwszego dnia i sprawdzenie poleceniem — a nie założeniem —
+że wszystko, czym mamy budować, naprawdę jest na tym komputerze.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci, zanim zajrzysz do lekcji: zapisz nazwę kategorii, do której należą
+oba narzędzia kursu, obie nazwy własne i trzy miejsca, których szuka się w
+każdym takim edytorze. Dopiero potem sprawdź, co ci umknęło.
+
+</Zadanie>
+
+<Zadanie>
+
+Otwórz oba edytory na tym samym folderze i znajdź w każdym te trzy miejsca.
+Dopisz do karty obserwacji jedną rzecz, która w obu wygląda tak samo, i jedną,
+która się różni. Ścieżkę nowego pliku zapisz w całości, od początku do nazwy.
+
+</Zadanie>
+
+<Zadanie>
+
+Powtórz zadanie z pierwszego eksperymentu w tym z dwóch edytorów, którego nie
+ma na twojej karcie. Ten sam pomysł, ta sama pierwsza wiadomość co do znaku,
+świeży i pusty folder. Po dwudziestu pięciu minutach dopisz do karty akapit
+„to samo zadanie, drugi edytor”: co poszło inaczej i czy różnica brała się z
+narzędzia, czy z twojej wiadomości. Zrób commit.
+
+</Zadanie>
+
+<Zadanie title="Sprawdź datę.">
+
+Otwórz dziś strony obu narzędzi: warunki korzystania, wymagania konta i zasady
+darmowego użycia. Zapisz dzisiejszą datę i jedną rzecz, która różni się od
+tego, co podają Źródła tej lekcji. „Nic się nie zmieniło” też jest wynikiem —
+tylko musi być opatrzone datą.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-01">
+
+<Zrodlo title="VS Code Migration" publisher="Cursor Docs" date="2026" url="https://cursor.com/docs/configuration/migrations/vscode">stąd zdanie „based upon the VS Code codebase” i lista rzeczy, które przenosi kreator; strona dokumentacji bez własnej daty</Zrodlo>
+
+<Zrodlo title="Installation" publisher="Cursor Docs" date="2026" url="https://cursor.com/docs/get-started/installation">instalacja i logowanie; strona dokumentacji bez własnej daty</Zrodlo>
+
+<Zrodlo title="Terms of Service" publisher="Cursor" date="2026-08-13" url="https://cursor.com/terms-of-service">warunek wieku; data z nagłówka „Last Updated”</Zrodlo>
+
+<Zrodlo title="FAQ" publisher="Google Antigravity" date="2026" url="https://antigravity.google/docs/faq">konto Google, dostępność krajowa i warunek wieku; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="Antigravity IDE — Overview" publisher="Google Antigravity" date="2026" url="https://antigravity.google/docs/ide/overview/">opis kategorii: „an agentic development environment”; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="Introducing Google Antigravity, a New Era in AI-Assisted Software Development" publisher="Google Antigravity" date="2025-11-18" url="https://antigravity.google/blog/introducing-google-antigravity">ogłoszenie premiery, stąd „agentic development platform”</Zrodlo>
+
+<Zrodlo title="Introducing IDE Extensions" publisher="Google Antigravity" date="2026-08-20" url="https://antigravity.google/blog/antigravity-ide-extensions">wtyczki do pięciu innych edytorów — zmiana kształtu narzędzia w trakcie roku</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="dokumentacja" title="Google Antigravity Docs" url="https://antigravity.google/docs/home/">zacznij tu, a nie od filmiku — dokumentacja mówi, czego narzędzie wymaga i co obiecuje, i to ona jest aktualna</Lektura>
+
+<Lektura kind="dokumentacja" title="Cursor Docs" url="https://cursor.com/docs">to samo z drugiej strony; rozdział o przesiadce z VS Code pokazuje, ile z twoich nawyków przenosi się bez zmian</Lektura>
+
+<Lektura kind="kurs" title="Основы программирования с ИИ" url="https://learn.evocoders.ai/">rozdział o edytorach AI-first: ta sama kategoria opisana przez kogoś, kto używa innych narzędzi niż my</Lektura>
+
+</CzytajDalej>

@@ -1,19 +1,17 @@
 ---
 title: "Od podpowiedzi do agenta"
-order: 1
-summary: "Pięć warstw, przez które przeszło programowanie z AI w cztery lata — i dlaczego zmieniła się nie jakość kodu, tylko jednostka pracy."
+order: 2
+summary: "Jak w cztery lata z podpowiedzi jednej linijki zrobiło się wykonanie całego zadania: pięć warstw z datami — i dlaczego zmieniła się nie jakość kodu, tylko jednostka pracy."
 ---
 
-Programowanie z AI nie pojawiło się nagle. Narastało warstwami, a każda kolejna
-**nie zastąpiła poprzedniej, tylko ją wchłonęła**. Podpowiedzi kodu z 2022 roku
-nadal działają i nadal ich używasz — tyle że dziś siedzą wewnątrz czegoś
-większego.
-
-Ta lekcja jest mapą. Nie musisz jeszcze umieć żadnej z tych rzeczy. Musisz
-wiedzieć, że istnieją i czym się od siebie różnią, bo przez resztę kursu będziemy
-się po tej mapie poruszać.
+Ta lekcja jest mapą. Nie musisz jeszcze umieć żadnej z
+tych rzeczy. Musisz wiedzieć, że istnieją i czym się od siebie różnią, bo przez
+resztę kursu będziemy się po tej mapie poruszać.
 
 ## Pięć warstw
+
+Mapa ma pięć warstw, po jednej na rok. Na rysunku każda kolejna jest wyższa od
+poprzedniej i sięga dalej w prawo; przyjrzyj się też podpisom na dolnej osi.
 
 <svg viewBox="0 0 720 300" role="img" aria-label="Pięć warstw programowania z AI: podpowiedzi kodu, czat w IDE, next edit, agent, orkiestracja agentów" style={{ width: "100%", height: "auto" }}>
   <g stroke="currentColor" fill="none" strokeWidth="1.5">
@@ -52,13 +50,18 @@ się po tej mapie poruszać.
   <text x="600" y="286" fill="currentColor" fontSize="11" opacity="0.75">sprawdzasz kod</text>
 </svg>
 
+Dolna oś biegnie od „piszesz kod” do „sprawdzasz kod”. Przy każdej warstwie
+patrz więc nie na to, co potrafi narzędzie, tylko na to, co zostaje
+człowiekowi.
+
 ### 1. Podpowiedzi kodu (2022)
 
+Warstwę otwiera
+[GitHub Copilot, udostępniony wszystkim 21 czerwca 2022](https://github.blog/2022-06-21-github-copilot-is-generally-available-to-all-developers/).
 Zwykłe autouzupełnianie zna metody obiektu, bo analizuje kod statycznie. Model
 generatywny idzie dalej: **przewiduje, co najprawdopodobniej napiszesz za
-chwilę** — od nazwy zmiennej po całą funkcję. Akceptujesz klawiszem Tab.
-
-Sposób pracy dorobił się nawet nazwy: *tab programming*.
+chwilę** — od nazwy zmiennej po całą funkcję. Akceptujesz klawiszem Tab, a ten
+sposób pracy dorobił się nawet nazwy: *tab programming*.
 
 Praktyczna sztuczka, która działa do dziś: napisz nad pustym miejscem
 **komentarz po angielsku**, opisujący dokładnie, co ma powstać. Przy nowej
@@ -67,43 +70,90 @@ podpowiedź.
 
 ### 2. Czat w IDE (2023)
 
-To samo, co czat w przeglądarce, ale **w projekcie**. Różnica nie jest wygodą —
-jest kontekstem. Czat w IDE widzi twój plik, a często cały projekt, więc jego
-odpowiedzi dotyczą twojego kodu, a nie kodu w ogóle.
-
-Typowe zastosowania: wyjaśnij ten błąd, wyjaśnij ten fragment, wygeneruj testy,
+Na drugiej warstwie nie czekasz na podpowiedź, tylko pytasz. To samo, co czat w
+przeglądarce —
+[ChatGPT ruszył 30 listopada 2022](https://openai.com/index/chatgpt/) — ale **w
+projekcie**, wewnątrz IDE, czyli środowiska, w którym piszesz kod. Różnica nie
+jest wygodą — jest kontekstem. Czat w IDE widzi twój plik, a często cały
+projekt, więc jego odpowiedzi dotyczą twojego kodu, a nie kodu w ogóle. Typowe
+zastosowania: wyjaśnij ten błąd, wyjaśnij ten fragment, wygeneruj testy,
 przerób to, zaproponuj architekturę.
 
 ### 3. Next Edit Suggestions (2024)
 
-Podpowiedź przestaje być reaktywna, a staje się **proaktywna**. Zmieniasz nazwę
-klasy `User` na `Customer` — narzędzie samo proponuje poprawki w interfejsach,
+Trzecia warstwa wraca do klawisza Tab, ale odwraca kierunek: podpowiedź
+przestaje być reaktywna, a staje się **proaktywna**. Zmieniasz nazwę klasy
+`User` na `Customer` — narzędzie samo proponuje poprawki w interfejsach,
 testach i innych plikach, w odpowiedniej kolejności. Ty tylko naciskasz Tab i
-przechodzisz po łańcuchu zmian.
+przechodzisz po łańcuchu zmian. Producenci nazywają to różnie:
+[Next Edit Suggestions](https://code.visualstudio.com/docs/editing/ai-powered-suggestions)
+w VS Code, [Next Action Prediction](https://cursor.com/tab) w Cursorze.
 
-Różnica wobec refaktoryzacji z IDE: refaktoryzacja jest **komendą**, którą
-wydajesz. To jest **propozycją**, którą dostajesz.
+Różnica wobec refaktoryzacji z IDE, czyli wbudowanych przekształceń kodu w
+rodzaju zmiany nazwy w całym projekcie: refaktoryzacja jest *komendą*, którą
+wydajesz, a to jest *propozycją*, którą dostajesz. Na wszystkich trzech
+warstwach kod powstaje jednak pod twoimi palcami: ty piszesz, ty pytasz, ty
+naciskasz Tab. Czwarta warstwa zmienia właśnie to.
 
 ### 4. Agent (2025)
 
-Tu następuje przeskok, i to on jest treścią całego kursu. Agent nie odpowiada na
-pytanie — **wykonuje zadanie**. Tworzy pliki, edytuje istniejące, uruchamia
+Tu następuje przeskok, i to on jest treścią całego kursu. Agent nie odpowiada
+na pytanie — **wykonuje zadanie**. Tworzy pliki, edytuje istniejące, uruchamia
 komendy w terminalu, czyta błąd, poprawia i próbuje ponownie, aż się zbuduje.
+Pierwszym takim narzędziem w terminalu był
+[Claude Code, pokazany 24 lutego 2025 w wersji badawczej](https://www.anthropic.com/news/claude-3-7-sonnet).
 
 Pętla agenta wygląda tak samo w każdym narzędziu:
 
 > Zrozum zadanie → podziel na części → wybierz narzędzie → oceń wynik →
 > zdecyduj, co dalej.
 
-Wrócimy do niej dokładniej w lekcji [Na żywo: agent buduje aplikację](/moduly/01-jak-powstaje-oprogramowanie/na-zywo-agent-buduje-aplikacje).
+Wrócimy do niej dokładniej w lekcji
+[Na żywo: agent buduje aplikację](/moduly/01-jak-powstaje-oprogramowanie/na-zywo-agent-buduje-aplikacje).
+Już teraz warto jednak wiedzieć, że tego przeskoku nie zrobił sam model. Na
+przykład DHH — twórca Ruby on Rails — datuje moment, w którym agent stał się
+dla niego użyteczny, na
+[24 listopada 2025](https://www.anthropic.com/news/claude-opus-4-5), i
+[mówi wprost](https://www.youtube.com/watch?v=NYFGCESmikA&t=475s), że model nie
+był wtedy dużo mądrzejszy od poprzedniego; różnicę zrobiło to, co dobudowano
+*wokół* modelu, żeby mógł uruchamiać polecenia i sprawdzać własną pracę. Jak
+ten warsztat wygląda w całości, zobaczysz w lekcji
+[Nowy warsztat programisty](/moduly/01-jak-powstaje-oprogramowanie/nowy-warsztat-programisty).
 
 ### 5. Orkiestracja (2026)
 
-Warstwa, na której jesteśmy teraz. Agentów jest kilku, pracują równolegle,
+Skoro jeden agent wykonuje całe zadanie, następny krok narzuca się sam. To
+warstwa, na której jesteśmy teraz: agentów jest kilku, pracują równolegle,
 część z nich w tle i na zdalnej maszynie — dostajesz gotowy pull request, a nie
-kod na ekranie. Raport Anthropic z 2026 roku opisuje inżynierów, którzy
-„prowadzą kilka funkcjonalności przez proces jednocześnie", kierując agentami
-zamiast pisać kod.
+kod na ekranie. Wiosną 2026 do narzędzi weszli
+**[podagenci](https://code.claude.com/docs/en/sub-agents)**: narzędzie samo
+dzieli zadanie na części i rozdaje je kilku agentom naraz —
+[DHH opowiada o tym od 10:37](https://www.youtube.com/watch?v=NYFGCESmikA&t=637s).
+[Raport Anthropic z 2026 roku](https://resources.anthropic.com/2026-agentic-coding-trends-report)
+opisuje inżynierów, którzy „prowadzą kilka funkcjonalności przez proces
+jednocześnie”, kierując agentami zamiast pisać kod. Jak to wygląda w dniu pracy
+jednego konkretnego człowieka, zobaczysz w tej samej lekcji o nowym warsztacie.
+
+## Kiedy to się działo
+
+Pięć warstw w cztery lata — ale mapa bez dat jest opinią. Oto te, których będę
+używać przez cały moduł. Każda data jest linkiem do ogłoszenia: kliknij i
+sprawdź, że nie zmyślam. Ostatnia kolumna odsyła do warstw, które już znasz.
+
+| Data | Co się stało | Warstwa |
+| --- | --- | --- |
+| [21.06.2022](https://github.blog/2022-06-21-github-copilot-is-generally-available-to-all-developers/) | GitHub Copilot dostępny dla wszystkich, 10 dolarów miesięcznie, za darmo dla studentów | 1 — podpowiedzi |
+| [30.11.2022](https://openai.com/index/chatgpt/) | ChatGPT; czat z modelem staje się czymś, czego używa każdy | 2 — czat |
+| [25.11.2024](https://www.anthropic.com/news/model-context-protocol) | Model Context Protocol — otwarty standard podłączania narzędzi do modelu | fundament 4 |
+| [02.02.2025](https://x.com/karpathy/status/1886192184808149383) | Karpathy nazywa „vibe coding” — o tym w osobnej lekcji | — |
+| [24.02.2025](https://www.anthropic.com/news/claude-3-7-sonnet) | Claude Code: pierwszy agent działający w terminalu, w wersji badawczej | 4 — agent |
+| [24.11.2025](https://www.anthropic.com/news/claude-opus-4-5) | Claude Opus 4.5; DHH nazywa ten dzień „linią podziału” | 4 → 5 |
+| [wiosna 2026](https://code.claude.com/docs/en/sub-agents) | podagenci: narzędzie dzieli zadanie i rozdaje je równolegle | 5 — orkiestracja |
+| [09.06.2026](https://www.anthropic.com/news/claude-fable-5-mythos-5) | Claude Fable 5 i Mythos 5 — nowa klasa modeli | 5 |
+
+Zwróć uwagę na odstępy. Od pierwszej warstwy do agenta minęły niecałe trzy
+lata; od agenta do orkiestracji — rok. Zmiana **przyspiesza**. Druga jest
+ważniejsza — i nie widać jej w datach.
 
 ## Co się naprawdę zmieniło
 
@@ -116,14 +166,33 @@ Nie to, że model lepiej pisze funkcje. To, że **zmieniła się jednostka pracy
 
 Konsekwencja jest niewygodna i warto ją usłyszeć na początku, a nie w kwietniu:
 **kiedy agent potrafi pracować sam przez pół godziny, najdroższym błędem
-przestaje być zła linijka, a staje się zły kierunek, w którym poszedł przez tę
+przestaje być zła linijka, a staje się zły kierunek, w którym poszedł przez te
 pół godziny.** Cały moduł o specyfikacjach jest odpowiedzią na to jedno zdanie.
 
-## Czego ta mapa nie mówi
+Tu domyka się też porównanie. Każda zmiana w programowaniu przez ostatnie
+czterdzieści lat — od asemblera po deklaratywne UI — zmieniała to, *jak*
+piszesz kod: inny język, inne narzędzie, inne miejsce, w którym mieszka stan.
+Warstwy 4 i 5 zmieniają to, *czy* go piszesz. Formularz w Delphi nadal wymagał,
+żeby kod pod przyciskiem napisał człowiek. Agent — nie. Nie jest to więc
+kolejne pudełko na tamtej osi czasu, tylko pierwsze, które przesuwa człowieka z
+pozycji autora na pozycję zlecającego i sprawdzającego.
 
-Że każda warstwa jest lepsza od poprzedniej dla każdego zadania. Do zmiany
-nazwy zmiennej agent jest absurdalnie drogim narzędziem — Tab wystarczy.
-Dobór warstwy do zadania jest umiejętnością, a nie ustawieniem.
+## Mapa, nie ranking
+
+Po takim przeskoku łatwo uznać, że wyższa warstwa jest zawsze lepsza — a tego
+mapa nie mówi. Do zmiany nazwy zmiennej agent jest absurdalnie drogim
+narzędziem — Tab wystarczy. Dobór warstwy do zadania jest umiejętnością, a nie
+ustawieniem.
+
+Warstwy nie leżą więc na jednej drabinie. Każda kolejna wchłonęła poprzednią,
+dlatego podpowiedź z 2022 roku nie zniknęła — siedzi wewnątrz warsztatu, w
+którym pracuje agent, i to ty wybierasz, kiedy jej użyć. Z tego powodu ta
+lekcja jest mapą, a nie rankingiem: kiedy usłyszysz o nowym narzędziu, pytaj,
+na której warstwie działa, jaka jest jego jednostka pracy i co zostaje
+człowiekowi.
+
+Czy ten warsztat naprawdę przyspiesza pracę — i komu — to już pytanie o liczby,
+nie o mapę. Od nich zaczyna się następna lekcja.
 
 ## Ćwiczenia
 
@@ -137,12 +206,24 @@ Dobór warstwy do zadania jest umiejętnością, a nie ustawieniem.
 3. Do każdego z zadań dobierz warstwę i uzasadnij w jednym zdaniu: (a) zmiana
    nazwy pola w klasie, (b) napisanie testów do gotowej klasy, (c) wyjaśnienie
    cudzego błędu w konsoli, (d) dodanie nowego ekranu do aplikacji.
+4. Dorysuj pięć warstw do osi czasu z poprzedniej lekcji, w przerywanej ramce
+   po prawej. Zmieść je w skali: cztery lata tej lekcji na osi, która ma
+   czterdzieści. Jedno zdanie o tym, co widać.
 
 ## Źródła
 
-Stan na **2026-08-28**.
+Stan na **2026-08-29**.
 
+- [GitHub Copilot is generally available to all developers](https://github.blog/2022-06-21-github-copilot-is-generally-available-to-all-developers/) — GitHub, 21.06.2022
+- [Introducing ChatGPT](https://openai.com/index/chatgpt/) — OpenAI, 30.11.2022
+- [Introducing the Model Context Protocol](https://www.anthropic.com/news/model-context-protocol) — Anthropic, 25.11.2024
+- [Andrej Karpathy, wpis definiujący „vibe coding"](https://x.com/karpathy/status/1886192184808149383) — 2.02.2025
+- [Claude 3.7 Sonnet and Claude Code](https://www.anthropic.com/news/claude-3-7-sonnet) — Anthropic, 24.02.2025; Claude Code jako „pierwsze narzędzie agentowe", w wersji badawczej
+- [Introducing Claude Opus 4.5](https://www.anthropic.com/news/claude-opus-4-5) — Anthropic, 24.11.2025
+- [Claude Fable 5 and Claude Mythos 5](https://www.anthropic.com/news/claude-fable-5-mythos-5) — Anthropic, 9.06.2026
+- [DHH: Future of Programming, AI, Agentic Engineering, Vibe Coding & Linux](https://www.youtube.com/watch?v=NYFGCESmikA) — Lex Fridman Podcast #501, sierpień 2026; o „linii podziału" i harnessie od 7:55, o podagentach od 10:37. Pełny zapis: [lexfridman.com/dhh-2-transcript](https://lexfridman.com/dhh-2-transcript/)
 - [2026 Agentic Coding Trends Report](https://resources.anthropic.com/2026-agentic-coding-trends-report) — Anthropic; opis pracy przez orkiestrację agentów
+- [Create custom subagents](https://code.claude.com/docs/en/sub-agents) — dokumentacja Claude Code; podagenci, warstwa 5
 - [Cursor: Next Action Prediction](https://cursor.com/tab) i [VS Code: Next Edit Suggestions](https://code.visualstudio.com/docs/editing/ai-powered-suggestions) — dokumentacja warstwy 3
 - [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices) — jak wygląda praca z agentem w praktyce
 - *Основы программирования с ИИ* — [learn.evocoders.ai](https://learn.evocoders.ai/), rozdziały o podpowiedziach, next edit, czacie w IDE i agentach

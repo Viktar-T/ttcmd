@@ -1,0 +1,299 @@
+---
+title: "Git i GitHub w pracy z agentem"
+order: 4
+summary: "Skoro część kodu pisze agent, historia zmian przestaje być kroniką: czytanie zmiany przed zgodą, cofanie jako operacja nudna i tania, gałąź jako poligon i repozytorium jako portfolio kursu."
+publish: true
+---
+
+{/* Drafted 2026-09-01 from docs/content-briefs/02d-git-w-pracy-z-agentem.md.
+    Scope contract from course-structure-v2.3: 0c keeps every Git term it
+    owns and nothing here re-explains it; this lesson owns only `git diff`,
+    `git restore` and `git revert`. `git reset --hard` is deliberately not
+    taught. TO CONFIRM at install time: that both class editors show a diff
+    view, per 2a's tour. */}
+
+Na twojej karcie obserwacji jest rubryka, do której wpisana jest liczba: ile
+razy podczas pierwszego eksperymentu zgoda padła bez przeczytania. Wtedy
+nazwaliśmy to pożyczką i wolno ci było ją brać.
+
+Pierwsza rata została spłacona w lekcji o pierwszym oknie: jedna zmiana agenta,
+dwie linijki, przeczytane w całości przed przyjęciem. Dwie linijki czyta się
+łatwo. Pytanie brzmi, co robić, kiedy zmiana ma linijek czterdzieści, kiedy
+dotyczy pięciu plików naraz i kiedy okazuje się zła dopiero po commicie — bo
+wtedy odruch przestaje wystarczać i potrzebny jest sposób.
+
+Dziś zamieniamy odruch w system, i to na tym samym repozytorium `pierwsze-okno`.
+Przeczytasz zmianę w dwóch różnych miejscach, celowo poprosisz agenta o coś
+niemądrego i cofniesz to na dwa sposoby, dasz mu gałąź, na której może zepsuć,
+co chce, a na koniec uciszysz `git status`. Jeśli twoje repozytorium nie ma
+jeszcze historii z poprzedniej lekcji, zrób teraz dwa drobne commity — reszta
+działa na czymkolwiek, byle było co czytać.
+
+## Diff przed zgodą
+
+Zasada na resztę kursu mieści się w jednym zdaniu: **nic nie wchodzi do
+projektu nieprzeczytane**. Zdanie z lekcji
+[Git i GitHub](/moduly/00-start/git-i-github) o historii jako narzędziu
+kontroli zaczyna działać dokładnie tutaj — narzędzie kontroli jest bezużyteczne,
+dopóki nikt nie patrzy na to, co pokazuje.
+
+Ta sama zmiana ma dwoje drzwi i warto umieć jedne i drugie. W terminalu:
+
+```bash
+git diff
+```
+
+Wypisuje to, co zmienione, a jeszcze nie przygotowane do commita. Jeśli agent
+zdążył już dodać pliki poleceniem `git add`, ta sama treść siedzi obok:
+
+```bash
+git diff --staged
+```
+
+Drugie drzwi są w edytorze: panel kontroli wersji z listą zmienionych plików,
+a po kliknięciu w plik — dwie wersje obok siebie, stara po lewej, nowa po
+prawej. Oba narzędzia kursu to mają, choć w każdym nazywa się to trochę
+inaczej; znalezienie tego panelu jest ćwiczeniem z pierwszej lekcji modułu.
+Terminal wygląda tak samo na każdym komputerze świata i działa nawet wtedy, gdy
+edytor się zatnie. Widok w edytorze łatwiej się czyta przy dłuższych zmianach.
+Wybór między nimi to kwestia wygody, nie poprawności.
+
+Czytając, szukaj trzech rzeczy, zanim zaczniesz czytać treść:
+
+- **Ile plików** się zmieniło. Prośba o jedną rzecz, po której zmieniło się
+  siedem plików, jest sygnałem samym w sobie.
+- **Czy któryś plik nie miał być ruszany.** README, `.csproj`, plik konfiguracji
+  — jeśli o nich nie było mowy, zapytaj agenta dlaczego, zanim się zgodzisz.
+- **Czy rozmiar zmiany pasuje do rozmiaru prośby.** Czterdzieści linijek w
+  odpowiedzi na „zmień napis” znaczy, że agent zrozumiał coś innego, niż padło
+  w wiadomości.
+
+Poproś teraz agenta o jedną drobną zmianę w oknie i przeczytaj ją w obu
+widokach. Zwróć uwagę, ile to zajęło — najprawdopodobniej mniej, niż się
+spodziewasz, i to jest cała pointa tej sekcji.
+
+## Jedno zadanie, jeden commit
+
+Historia jest warta tyle, ile odpowiedź, jakiej udziela na pytanie „co się
+wtedy zmieniło i po co”. Zasady jej pisania znasz z lekcji o Gicie: opis w
+trybie rozkazującym, jedna skończona rzecz w jednym commicie, a słowo „oraz” w
+opisie jako znak, że powinny to być dwa.
+
+Nowe jest to, po co ci one teraz. Kiedy kod pisze agent, commit przestaje być
+notatką dla ciebie z przyszłości, a staje się **jedynym zapisem tego, co
+narzędzie zrobiło i co zostało na to zgody udzielone**. Trzy zmiany agenta
+wrzucone do jednego commita są nie do rozplątania tydzień później: widać, że
+coś się zmieniło, nie widać, która prośba za co odpowiada.
+
+Przeczytaj swoją dotychczasową historię:
+
+```bash
+git log --oneline
+```
+
+Każda linijka to skrót commita i jego opis. Jeśli po samych opisach da się
+opowiedzieć, co działo się na poprzedniej lekcji — historia jest dobra. Jeśli
+nie, to nie jest problem Gita. Moduł o specyfikacjach zamieni ten nawyk w
+formalną dyscyplinę, w której jedno zadanie z listy to jeden commit; na razie
+wystarczy sam nawyk.
+
+## Cofanie jest nudne: restore i revert
+
+Teraz zrób coś odwrotnego do wszystkiego, co dotąd: **poproś agenta o zmianę,
+której nie chcesz.** Na przykład o zapisanie wszystkich napisów w oknie
+wielkimi literami i dopisanie do tytułu dzisiejszej daty. Chodzi o to, żeby
+cofanie przećwiczyć na czymś, czego naprawdę nie żal.
+
+Kiedy zmiana jest już w plikach, ale jeszcze nie w commicie, cofa ją `restore`:
+
+```bash
+git restore MainWindow.axaml
+```
+
+Polecenie [przywraca plik do stanu z ostatniego zapisu](https://git-scm.com/docs/git-restore).
+Uwaga na jedno: robi to bezpowrotnie. Zmiana, której nie ma w żadnym commicie,
+po `restore` nie istnieje już nigdzie — dlatego zanim je wpiszesz, upewnij się,
+że nie kasujesz przy okazji czegoś swojego.
+
+Jeśli zmiana zdążyła już trafić do commita, sytuacja jest inna i lepsza. Znajdź
+skrót tego commita w `git log --oneline` i wpisz:
+
+```bash
+git revert skrot-commita
+```
+
+`revert` [nie kasuje historii — dopisuje do niej nowy commit](https://git-scm.com/docs/git-revert),
+który odwraca skutki starego. Historia po nim wygląda dziwnie: widać w niej i
+błąd, i jego naprawę. To zaleta, nie wada — zapis pozostaje prawdziwy, a nikt,
+kto pobrał już tę historię, nie zostaje z wersją, której nie da się pogodzić z
+twoją.
+
+Istnieje jeszcze polecenie, które „naprawia wszystko” i którego w tym kursie
+celowo nie ma. `git reset --hard` potrafi skasować także pracę niezapisaną w
+commitach, w tym twoją własną z ostatniej godziny.
+[Dokumentacja Gita ostrzega przed tym wprost](https://git-scm.com/docs/git-revert),
+a `restore` i `revert` wystarczają na wszystko, czego potrzebujemy.
+
+To jest cała pointa tej sekcji, i warto ją wypowiedzieć: **cofnięcie zmiany
+agenta ma być operacją nudną.** Nie dramatem, nie stratą wieczoru i nie
+powodem, żeby zostawić w projekcie coś, czego nie rozumiesz, „bo szkoda
+kasować”.
+
+## Gałąź: poligon agenta
+
+Gałąź znasz z lekcji o Gicie jako równoległą wersję projektu. Nowe jest to, do
+czego służy, kiedy pracujesz z agentem: **gałąź to miejsce, w którym agent może
+zepsuć wszystko bez konsekwencji.**
+
+```bash
+git switch -c eksperyment
+```
+
+Na tej gałęzi poproś go o coś większego niż dotąd — o rzecz, której szkoda ci
+ryzykować na projekcie, który działa. Drugie okno, przycisk, który
+coś liczy, zmiana wyglądu całości. Cokolwiek z tego wyjdzie, `main` jest
+nietknięty i wciąż się uruchamia.
+
+Kiedy skończysz, przeczytaj diff i wydaj wyrok. Jeśli zmiana jest dobra:
+
+```bash
+git switch main
+git merge eksperyment
+```
+
+Jeśli nie:
+
+```bash
+git switch main
+git branch -D eksperyment
+```
+
+Obie odpowiedzi są równie dobrym wynikiem. Skasowana gałąź nie jest porażką
+eksperymentu — jest jego wynikiem, uzyskanym za cenę jednego polecenia. To samo
+w projekcie bez gałęzi kosztowałoby wieczór odkręcania.
+
+## `.gitignore`: co wygenerował build
+
+Od chwili, w której program pierwszy raz się zbudował, `git status` przestał
+być pusty. Zajrzyj:
+
+```bash
+git status
+```
+
+W folderze projektu siedzą katalogi `bin/` i `obj/`. Nie napisał ich ani
+szablon, ani agent, ani ty — powstały przy **budowaniu**, czyli przy zamianie
+kodu w uruchamialny program, i powstają na nowo za każdym razem. Są duże,
+zmieniają się przy każdym uruchomieniu i nie ma w nich ani jednej decyzji
+człowieka. Dlatego stoją na liście rzeczy, które do repozytorium nie trafiają
+— tej samej, na której są hasła i klucze, choć z zupełnie innego powodu.
+
+Do wykluczania służy plik `.gitignore`, w folderze głównym repozytorium. Nasz
+ma dwie linijki:
+
+```text title=".gitignore"
+bin/
+obj/
+```
+
+Zapisz go i sprawdź, co się stało:
+
+```bash
+git status
+```
+
+Katalogi zniknęły z listy — nie z dysku, tylko z pola widzenia Gita. Od tej
+chwili `git status` znów mówi wyłącznie o rzeczach, które ktoś napisał, a to
+jest jedyny stan, w którym warto go czytać. Sam plik `.gitignore` do
+repozytorium trafia:
+
+```bash
+git add .gitignore
+git commit -m "ignoruj katalogi budowania"
+git push
+```
+
+## Repozytorium jako portfolio
+
+Historia twojego repozytorium mówi teraz cztery rzeczy naraz: co postawił
+szablon, co dopisał agent, co zostało zmienione ręcznie i co zostało odrzucone.
+To jest odpowiedź na pytanie z początku lekcji — skąd wiesz, co naprawdę się
+zmieniło. Wiesz stąd, że nic nie weszło bez przeczytania, a to, co weszło
+niepotrzebnie, dało się cofnąć jednym poleceniem.
+
+- **Czytaj przed zgodą, zawsze — a przy dużej zmianie najpierw policz pliki.**
+  Zgoda wydana na coś, czego się nie przeczytało, jest zgadywaniem, nawet jeśli
+  kończy się dobrze.
+- **Jedno zadanie, jeden commit, opis mówiący co, a nie który plik.** To jedyna
+  praca, którą wykonujesz dziś dla siebie sprzed miesiąca.
+- **Cofaj bez wahania.** `restore`, dopóki nie ma commita, `revert`, kiedy już
+  jest. Zmiana, której nie rozumiesz, kosztuje więcej niż jej cofnięcie.
+- **Duży eksperyment rób na gałęzi.** Nie dlatego, że agent jest niebezpieczny,
+  tylko dlatego, że dzięki temu wolno mu spróbować czegoś, co może się nie
+  udać.
+
+To repozytorium jest pierwszym wpisem do portfolio, które będziesz zbierać
+przez cały kurs: jeden projekt, jeden folder, jedno repozytorium — a każda
+aplikacja z najbliższych tygodni stanie obok, na tych samych zasadach. Warsztat
+z tego modułu jest kompletny: masz gdzie pisać, gdzie trzymać, czym budować i
+skąd wiedzieć, kto co zmienił. Od następnego modułu nic nowego w tym warsztacie
+już nie przybywa — zaczyna się budowanie.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: które polecenie cofa zmianę jeszcze niezapisaną w commicie, a które
+zmianę już zapisaną; jakie dwa katalogi nie trafiają do repozytorium i dlaczego;
+gdzie są dwa miejsca, w których można przeczytać ten sam diff.
+
+</Zadanie>
+
+<Zadanie>
+
+Poproś agenta o jedną zmianę. Przeczytaj ją w terminalu i w widoku edytora, a
+potem odrzuć poleceniem `git restore` — niezależnie od tego, czy była dobra.
+Zapisz na karcie, ile czasu zajęło czytanie. Ta liczba jest ceną nawyku z tej
+lekcji.
+
+</Zadanie>
+
+<Zadanie>
+
+Doprowadź `pierwsze-okno` do stanu, w jakim kończy moduł: `.gitignore` w
+commicie, jedna gałąź eksperymentalna scalona albo skasowana (z decyzją
+uzasadnioną w opisie commita lub na karcie), wszystko wypchnięte, a `git status`
+pusty również po `dotnet build`.
+
+</Zadanie>
+
+<Zadanie title="Wróć do karty.">
+
+Przeczytaj jeszcze raz swoją kartę z pierwszego eksperymentu i tę liczbę zgód
+wydanych bez czytania. Dopisz pod nią dwa zdania: co zrobisz dziś inaczej i
+jedna rzecz, którą nadal przyjmujesz bez sprawdzania. Drugie zdanie jest
+ważniejsze od pierwszego. Zrób commit z tą zmianą.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-01">
+
+<Zrodlo title="git-restore" publisher="Git Documentation" date="2026" url="https://git-scm.com/docs/git-restore">przywracanie plików w katalogu roboczym ze wskazanego źródła; strona dokumentacji bez własnej daty</Zrodlo>
+
+<Zrodlo title="git-revert" publisher="Git Documentation" date="2026" url="https://git-scm.com/docs/git-revert">„record some new commits to reverse the effect of some earlier commits”; tu również ostrzeżenie o `reset --hard` i o tym, że kasuje niezapisane zmiany; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="git — Reset, restore and revert" publisher="Git Documentation" date="2026" url="https://git-scm.com/docs/git">porównanie trzech poleceń w jednym miejscu; strona bez własnej daty</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="dokumentacja" title="Pro Git — Gałęzie w Gicie" url="https://git-scm.com/book/pl/v2">rozdział trzeci polskiego wydania darmowej książki o Gicie; rysunki tłumaczą gałęzie lepiej niż jakikolwiek opis słowny, łącznie z tym z tej lekcji</Lektura>
+
+<Lektura kind="artykul" title="Dangit, Git!?!" url="https://dangitgit.com/">krótka lista typowych „o nie, co ja zrobiłem” wraz z poleceniami, które to odkręcają; warto zajrzeć tu, zanim zaczniesz szukać rozwiązania w wyszukiwarce</Lektura>
+
+</CzytajDalej>

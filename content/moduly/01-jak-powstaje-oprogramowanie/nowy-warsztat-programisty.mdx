@@ -1,0 +1,317 @@
+---
+title: "Nowy warsztat programisty"
+order: 6
+summary: "Jak w 2026 roku pracuje się z agentami na co dzień, nie na pokazie: co się wymieniło w narzędziach, co w nawykach, ile to kosztuje i co zostaje człowiekowi."
+---
+
+Za tobą pokaz — jeden prompt, trzy agenty, trzy aplikacje — i twoja własna
+pierwsza rozmowa z agentem, z kartą obserwacji w repozytorium. Zostaje
+pytanie praktyczne: jak z czymś takim pracuje się na co dzień? Nie na pokazie — w zawodzie, przez osiem godzin, przez miesiące.
+To pytanie rozpada się na cztery mniejsze: co się wymieniło w narzędziach, co
+w nawykach, ile to kosztuje i co zostaje człowiekowi.
+
+Najlepszą odpowiedź, jaką znalazłem, dał David Heinemeier Hansson — DHH, twórca
+Ruby on Rails i współzałożyciel 37signals (Basecamp, HEY), w zawodzie od
+dwudziestu pięciu lat — w
+[rozmowie z Lexem Fridmanem w sierpniu 2026 roku](https://www.youtube.com/watch?v=NYFGCESmikA).
+Ta lekcja jest zbudowana wokół tej rozmowy z trzech powodów. Po pierwsze, DHH
+nie sprzedaje żadnego narzędzia AI. Po drugie, jeszcze rok wcześniej był
+sceptykiem — sam mówi, że dziewięć miesięcy wcześniej uznałby własne dzisiejsze
+zdania za „psychozę AI”. Po trzecie, jest precyzyjny: podaje daty, liczby i
+porażki.
+
+Jedno zastrzeżenie, zanim zaczniemy. To jest jeden człowiek na skrajnym końcu
+skali: doświadczony, z własnym projektem, z pieniędzmi na kilka subskrypcji.
+Jego dzień nie jest średnią. Średnią pokazuje lekcja
+[Co model naprawdę potrafi](/moduly/01-jak-powstaje-oprogramowanie/co-model-naprawde-potrafi)
+— i czytaj obie razem.
+
+## Trzy momenty
+
+Zacznijmy od tego, kiedy taki dzień pracy w ogóle stał się możliwy, bo DHH
+datuje zmianę z dokładnością do dnia i dzieli ją na trzy etapy.
+
+**24 listopada 2025.**
+[Premiera modelu Claude Opus 4.5](https://www.anthropic.com/news/claude-opus-4-5).
+DHH mówi o tym dniu jako o
+[„linii podziału”](https://www.youtube.com/watch?v=NYFGCESmikA&t=176s): po raz
+pierwszy kod, który dostawał od agenta, był niepokojąco bliski temu, co sam by
+napisał.
+
+Do tej daty dodaje obserwację, która jest kluczem do całej lekcji: różnica nie
+polegała na tym, że model był dużo mądrzejszy od poprzedniego. Polegała na
+tym, że **potrafił obsługiwać twój komputer, używać narzędzi i sprawdzać
+własną pracę**.
+
+**Wczesna wiosna 2026.**
+[Podagenci](https://code.claude.com/docs/en/sub-agents). Narzędzie dzieli
+zadanie na części i rozdaje je kilku agentom naraz; praca, która zajmowała
+dzień, zajmuje jedną piątą albo jedną dziesiątą tego czasu. Ale — jego słowa —
+nadal musiał „prowadzić”: wyznaczać kierunek i kontrolować.
+
+**Lato 2026.**
+[Nowa generacja modeli](https://www.anthropic.com/news/claude-fable-5-mythos-5).
+DHH mówi, że przestał wskazywać drogę: opisuje problem, a agent sam wybiera
+rozwiązanie. Jego zdanie z tej części rozmowy warto zapamiętać dosłownie, bo
+jest najmocniejszym streszczeniem całej zmiany:
+
+> Stałem się opcjonalny w tej części, która wytwarza kod.
+>
+> — DHH, [Lex Fridman Podcast #501, 11:11](https://www.youtube.com/watch?v=NYFGCESmikA&t=671s), sierpień 2026
+
+Konkret, który za tym zdaniem stoi: jego dystrybucja Linuksa,
+[Omarchy](https://omarchy.org/), w wersji z lata 2026 powstawała przez trzy
+miesiące. W ostatnich dwóch
+[sto procent kodu napisały agenty](https://www.youtube.com/watch?v=NYFGCESmikA&t=176s).
+DHH przejrzał *kształt* całości, linijka po linijce przeczytał tylko krytyczne
+fragmenty logiki, a części kodu interfejsu nie oglądał wcale.
+
+Z tych trzech momentów pierwszy wymaga słowa, którego jeszcze nie mamy:
+skoro różnicy nie zrobił mądrzejszy model, zrobiło ją to, co zbudowano
+dookoła niego. Zanim spojrzymy na warsztat, trzeba to coś nazwać.
+
+## Co to jest „harness”
+
+Model językowy sam z siebie umie jedno: zamienić tekst na tekst. Obsługa
+komputera, narzędzia i sprawdzanie własnej pracy — to, co według DHH zrobiło
+różnicę — nie siedzi w modelu, tylko dookoła niego. DHH ma na to słowo,
+którego używa na każdym kroku i którego nie da się dobrze przetłumaczyć:
+**harness** — uprząż, czyli wszystko, co producent narzędzia buduje dookoła
+modelu, żeby ten tekst stał się pracą. Na rysunku szukaj trzech rzeczy: co
+jest w środku, co dookoła i gdzie stoi człowiek.
+
+<svg viewBox="0 0 720 300" role="img" aria-label="Harness: model w środku, dookoła narzędzia, kontekst, sprawdzanie i podagenci, a nad wszystkim człowiek" style={{ width: "100%", height: "auto" }}>
+  <g stroke="var(--accent-line, currentColor)" fill="none" strokeWidth="2.5">
+    <rect x="290" y="120" width="140" height="60" rx="3" />
+  </g>
+  <text x="326" y="146" fill="var(--accent-line, currentColor)" fontSize="14" fontWeight="700">MODEL</text>
+  <text x="304" y="164" fill="var(--accent-line, currentColor)" fontSize="11">tekst → tekst</text>
+  <g stroke="currentColor" fill="none" strokeWidth="1.5" strokeDasharray="6 4">
+    <rect x="60" y="60" width="600" height="190" rx="6" />
+  </g>
+  <text x="72" y="80" fill="currentColor" fontSize="12" fontWeight="700">HARNESS</text>
+  <g stroke="currentColor" fill="none" strokeWidth="1.5">
+    <rect x="80" y="100" width="150" height="56" rx="3" />
+    <rect x="80" y="176" width="150" height="56" rx="3" />
+    <rect x="490" y="100" width="150" height="56" rx="3" />
+    <rect x="490" y="176" width="150" height="56" rx="3" />
+  </g>
+  <g fill="currentColor" fontSize="12" fontWeight="600">
+    <text x="90" y="120">Narzędzia</text>
+    <text x="90" y="196">Kontekst</text>
+    <text x="500" y="120">Sprawdzanie</text>
+    <text x="500" y="196">Podagenci</text>
+  </g>
+  <g fill="currentColor" fontSize="10.5" opacity="0.8">
+    <text x="90" y="136">terminal, pliki,</text>
+    <text x="90" y="149">przeglądarka, MCP</text>
+    <text x="90" y="212">projekt, reguły,</text>
+    <text x="90" y="225">pamięć sesji</text>
+    <text x="500" y="136">build, testy, lint,</text>
+    <text x="500" y="149">czytanie błędów</text>
+    <text x="500" y="212">podział zadania,</text>
+    <text x="500" y="225">praca równoległa</text>
+  </g>
+  <g stroke="currentColor" strokeWidth="1.2" opacity="0.6">
+    <line x1="230" y1="128" x2="290" y2="140" />
+    <line x1="230" y1="204" x2="290" y2="165" />
+    <line x1="430" y1="140" x2="490" y2="128" />
+    <line x1="430" y1="165" x2="490" y2="204" />
+  </g>
+  <g stroke="var(--accent-line, currentColor)" fill="none" strokeWidth="2">
+    <rect x="290" y="12" width="140" height="32" rx="3" />
+    <line x1="360" y1="44" x2="360" y2="60" />
+  </g>
+  <text x="308" y="33" fill="var(--accent-line, currentColor)" fontSize="12" fontWeight="700">CZŁOWIEK</text>
+  <text x="60" y="284" fill="currentColor" fontSize="10.5" opacity="0.7">Ten sam model w dwóch różnych harnessach daje dwa różne narzędzia — to było widać na pokazie.</text>
+</svg>
+
+Ramka CZŁOWIEK na górze to ta sama ramka, którą na pokazie celowo wyłączono —
+na jedno ćwiczenie, w pustym folderze. Tu jest z powrotem: wszystko poniżej
+niej pracuje, ale decyduje ona. Cztery pola dookoła modelu odpowiadają za
+cztery zdolności, których czat w przeglądarce nie ma: agent uruchamia komendy,
+widzi twój projekt, sprawdza własny wynik i dzieli pracę. DHH zauważa, że to
+harness, a nie sam model, zrobił z listopada 2025 „linię podziału” — i że
+producenci aktualizują swoje harnessy
+[„mniej więcej siedem razy dziennie”](https://www.youtube.com/watch?v=NYFGCESmikA&t=8714s).
+To drugie zdanie wyjaśnia, dlaczego nazwy w tej lekcji będą nieaktualne, zanim
+ją przeczytasz. Warto więc patrzeć nie na nazwy, tylko na to, co się w
+warsztacie wymieniło i dlaczego.
+
+## Co się zmieniło w narzędziach
+
+DHH przez prawie dwadzieścia lat pisał w jednym edytorze. Oto, co wymienił w
+ciągu jednego roku — i dlaczego; trzecia kolumna jest ważniejsza niż druga,
+bo zostanie, kiedy nazwy z drugiej się zmienią.
+
+| Było | Jest | Dlaczego |
+| --- | --- | --- |
+| Edytor tekstu jako miejsce pracy | **Terminal** jako miejsce pracy; edytor służy do przeglądania projektu | Agenty pojawiły się w terminalu i tam działają najlepiej |
+| Jeden problem naraz, w głowie | **Kilka agentów równolegle** — u niego [4–5 maszyn po ~3 agenty, około 16 wątków](https://www.youtube.com/watch?v=NYFGCESmikA&t=5506s) | Jeden agent jest „jednocześnie za wolny i za szybki”: czekanie na niego to strata, kilku wymaga tylko decyzji |
+| Kompilator i testy uruchamiane ręcznie | Harness uruchamia build i testy **sam** | Nie trzeba już mówić „nie rób błędów” — trzeba mówić [„zrób to prościej”](https://www.youtube.com/watch?v=NYFGCESmikA&t=7626s) |
+| Człowiek robi code review | **Agent innego producenta** robi [pierwszy przegląd](https://www.youtube.com/watch?v=NYFGCESmikA&t=9475s), potem drugi robi przegląd na GitHubie, a człowiek podejmuje decyzję | Nawet najlepszy model się myli; dwa różne modele mylą się w różnych miejscach |
+| Około 20–30 linii kodu na godzinę | [Setki linii na godzinę z szesnastu wątków](https://www.youtube.com/watch?v=NYFGCESmikA&t=5506s) — i od razu zastrzeżenie, że **liczba linii to głupia miara** | Wąskim gardłem przestała być ręka, a stała się głowa: DHH mówi, że „wyczerpał własną moc przetwarzania” |
+| Klikanie w ustawieniach | Linux, bo [„wszystko w nim jest plikiem konfiguracyjnym albo narzędziem w linii poleceń”](https://www.youtube.com/watch?v=NYFGCESmikA&t=5506s) | To, co było wadą Linuksa dla ludzi, jest zaletą dla agentów |
+
+Trzecia kolumna, czytana od góry, układa się w jeden argument: agent pracuje
+tam, gdzie ma pod ręką narzędzia (stąd terminal i Linux); jeden agent jest
+naraz za wolny i za szybki (stąd kilku); harness sam uruchamia build i testy,
+a każdy model się myli (stąd przegląd przez agenta innego producenta); i skoro
+kod wychodzi z szesnastu wątków, wąskim gardłem przestała być ręka, a stała
+się głowa.
+
+Przeczytaj tę tabelę jeszcze raz i zauważ, co się w niej *nie* zmieniło: Git,
+pull requesty, testy, przegląd kodu. Zmieniło się, *kto* je wykonuje. Sam DHH
+mówi, że w ciągu trzech miesięcy scalił
+[ponad tysiąc pull requestów](https://www.youtube.com/watch?v=NYFGCESmikA&t=1650s)
+do Omarchy, wiele od ludzi, którzy nie są programistami — i że nie czyta ich
+wszystkich: agenty odsiewają błędne i zdublowane, sprawdzają poprawki na
+maszynie wirtualnej, a jemu zostaje decyzja *scalić czy nie*.
+
+## Co się zmieniło w nawykach
+
+Narzędzia są łatwiejsze do wymiany niż nawyki, a ta ostatnia decyzja — scalić
+czy nie — jest już nawykiem, nie narzędziem. Cztery nawyki DHH wymienił
+świadomie; przy drugim zatrzymam cię na chwilę, bo dla ciebie znaczy co innego
+niż dla niego.
+
+**Językiem programowania stał się angielski.** DHH mówi, że od trzech miesięcy
+[„programuje po angielsku”](https://www.youtube.com/watch?v=NYFGCESmikA&t=14364s):
+czyta dużo kodu, pisze go rzadko. W dwa miesiące napisał — czyli zlecił i
+przejrzał — trzy aplikacje w C++, języku, którego nie znał: przez dwadzieścia
+lat był programistą Ruby. Biblioteka w Pythonie
+[została przeniesiona do Rusta w czterdzieści pięć minut](https://www.youtube.com/watch?v=NYFGCESmikA&t=8465s),
+bez znajomości Rusta i bez zaglądania do kodu, i działa dziewięć razy szybciej.
+Na pokazie z lekcji
+[Na żywo: agent buduje aplikację](/moduly/01-jak-powstaje-oprogramowanie/na-zywo-agent-buduje-aplikacje)
+nie było widać, ile taki przebieg kosztuje, ale **koszt istnieje** — ile
+wynosi, powiem niżej, w granicach.
+
+**Najpierw niejasno, potem reaguj.** DHH opisuje, jak przez jakiś czas jego
+wiedza była mu na przeszkodzie: zbyt dokładnie mówił agentom, *jak* mają coś
+zrobić, zamiast *co* ma powstać. Przytacza też, że twórca Claude Code
+[skrócił instrukcje systemowe nowego modelu o 80%](https://www.youtube.com/watch?v=NYFGCESmikA&t=2825s),
+bo zbyt szczegółowi ludzie psuli wynik. Jego rada: opisz cel możliwie krótko,
+zobacz wynik, popraw — bo i tak nikt nie wie, czego chce, dopóki tego nie
+zobaczy.
+
+Tu muszę cię zatrzymać, bo to zdanie łatwo zrozumieć źle. DHH może być
+niejasny, bo ma dwadzieścia pięć lat wyczucia, które mówi mu w sekundę, czy
+wynik jest dobry. **Ty tego wyczucia jeszcze nie masz** — i dokładnie dlatego w
+module o specyfikacjach nauczysz się pisać je razem z kryteriami akceptacji.
+Krótkie polecenie i dokładne kryterium końca to nie sprzeczność: krótkie ma być
+to, *jak*; dokładne — to, *po czym poznasz, że działa*. Zresztą sam DHH w swoim
+prompcie do przeniesienia biblioteki napisał jedno:
+[„nie przestawaj, dopóki nie skończysz — i ma być piksel w piksel to samo”](https://www.youtube.com/watch?v=NYFGCESmikA&t=8465s).
+To *jest* kryterium.
+
+**Ocena zamiast wytwarzania.** DHH nazywa to, w czym ludzie są naprawdę dobrzy,
+[„oceną różnicową”](https://www.youtube.com/watch?v=NYFGCESmikA&t=2825s): daj
+mi trzy warianty, wskażę lepszy w sekundę. Przy dwudziestu dwóch wariantach
+człowiek się gubi; przy trzech decyduje trafnie. Jego rola przy kodzie to
+[rola redaktora](https://www.youtube.com/watch?v=NYFGCESmikA&t=7626s): patrzy
+na kształt i proporcje, mówi „za skomplikowane” — i kod robi się o połowę
+krótszy.
+
+**[Oprogramowanie to zarządzanie
+produktem.](https://www.youtube.com/watch?v=NYFGCESmikA&t=2825s)** Co ma robić?
+Dla kogo? Co jest w pierwszej wersji, a co nie? DHH mówi wprost, że w tych
+umiejętnościach wielu programistów jest słabych, a niektórzy nie-programiści —
+lepsi, i że dla pewnych zadań nie-programista pracujący z agentem wygra z
+programistą. To jest dokładnie to, o co chodziło w ostatnim pytaniu po pokazie:
+która z trzech aplikacji jest „najlepsza” i co to słowo w ogóle znaczy.
+
+## Uczciwe granice
+
+Zdanie o nie-programiście, który wygra z programistą, łatwo wziąć za reklamę
+— i bez tej sekcji lekcja byłaby reklamą. Granice DHH podaje sam, a pierwsza
+z nich dotyczy właśnie nie-programistów.
+
+- **Duży, stary kod nadal wymaga programisty.** Kiedy
+  [w lutym 2026 projektanci w 37signals zaczęli wysyłać agentowe pull requesty
+  do Basecampa](https://www.youtube.com/watch?v=NYFGCESmikA&t=1004s) — dojrzałej aplikacji, z której korzystają firmy —
+  uszkodzili jej architekturę. To ta sama komórka macierzy z lekcji o danych: stary
+  projekt, złożone zadanie. Tę historię rozbierzemy w następnej lekcji,
+  [Vibe coding kontra inżynieria](/moduly/01-jak-powstaje-oprogramowanie/vibe-coding-kontra-inzynieria),
+  bo wyznacza granicę, o którą tam chodzi.
+- **To tempo nie jest do utrzymania.** Zapytany, czy da się tak pracować
+  długo, [odpowiada: „nie, nie, nie”](https://www.youtube.com/watch?v=NYFGCESmikA&t=9475s). Ostatnie trzy miesiące były
+  bardziej wyczerpujące niż jakikolwiek projekt od pięciu lat. Każdy buduje dziś własne
+  narzędzie do koordynowania agentów; to się ustabilizuje, jak kiedyś chaos
+  frameworków JavaScriptu — ale jeszcze się nie ustabilizowało.
+- **Tokeny kosztują.** Przeniesienie biblioteki do Rusta z sekcji o
+  nawykach: pojedynczy taki przebieg na najdroższym modelu kosztowałby,
+  [według jego wyliczenia, około 550 dolarów w tokenach](https://www.youtube.com/watch?v=NYFGCESmikA&t=8465s). Miał subskrypcję,
+  więc nie zapłacił tyle — ale drugi model do przeglądu to osobny abonament u
+  innego producenta, a tego samego ranka, po wyczerpaniu limitu, DHH dokupił
+  drugą subskrypcję głównego narzędzia.
+- **To jedna osoba.** W ankiecie Stack Overflow z 2025 roku, którą znasz z
+  lekcji [Co model naprawdę potrafi](/moduly/01-jak-powstaje-oprogramowanie/co-model-naprawde-potrafi),
+  poprawności narzędzi AI [ufa tylko 33% programistów](https://survey.stackoverflow.co/2025/ai). Obie rzeczy są
+  prawdziwe naraz: DHH opisuje front, ankieta — środek stawki. Ty zaczynasz w
+  środku.
+
+## Co zostaje człowiekowi
+
+Zostaje ostatnia część pytania z początku. Skoro w części, która wytwarza kod,
+człowiek stał się opcjonalny, to co mu zostaje — i czy programiści są
+zagrożeni? DHH ma na to
+[jedną odpowiedź, i jest ona warunkowa](https://www.youtube.com/watch?v=NYFGCESmikA&t=4224s).
+Jeśli w programowaniu kochasz mechaniczną część — układanie konstrukcji
+logicznych według cudzej specyfikacji — to ta część jest zagrożona, bo właśnie
+ją przejmują agenty. Jeśli kochasz budowanie rzeczy, nic ci nie grozi: potrzeba
+dużo więcej budujących niż kiedykolwiek.
+
+Jest w tym uczciwość, której warto się uczyć. DHH przytacza
+[dane, według których liczba ofert pracy dla programistów rośnie](https://www.youtube.com/watch?v=NYFGCESmikA&t=4224s),
+bo tańsze programy oznaczają popyt na więcej programów — i od razu dodaje, że w
+części miejsc tę samą pracę zrobi jedna dziesiąta ludzi, co dla konkretnej
+osoby jest tragedią. Obie rzeczy mówi w jednym oddechu. Ucz się mówić tak samo.
+
+Na koniec — nazwy. Terminal, tmux, konkretny model, konkretny harness: to
+wszystko zmieni się, zanim skończysz szkołę. Zapamiętaj **kształt**: agenty w
+terminalu, kilka naraz, jeden model pisze — drugi sprawdza, człowiek decyduje,
+a językiem jest angielski. To „decyduje” znaczy w tej lekcji trzy konkretne
+rzeczy, które pokazała: człowiek mówi, co ma powstać, wybiera lepszy
+z wariantów i rozstrzyga, czy scalić. Ten kształt zobaczysz jeszcze raz w
+ostatniej lekcji modułu.
+
+## Ćwiczenia
+
+{/* Numery zadań celowo nieprzypisane — ADR-0003, numeracja ciągła przez moduł. */}
+
+1. Narysuj z pamięci rysunek harnessa: co otacza model i po co. Do każdego z
+   czterech elementów dopisz, w którym momencie pokazu z lekcji o agencie budującym
+   aplikację było go widać.
+2. Weź tabelę „Było / Jest” i do każdego wiersza dopisz, której z pięciu
+   warstw z lekcji [Od podpowiedzi do agenta](/moduly/01-jak-powstaje-oprogramowanie/od-podpowiedzi-do-agenta)
+   odpowiada. Jeden wiersz nie pasuje do żadnej — który i dlaczego?
+3. **Eksperyment z długością polecenia.** Wybierz małe zadanie — funkcja, która
+   zwraca N pierwszych liczb pierwszych, wystarczy — i zleć je agentowi dwa
+   razy w dwóch świeżych sesjach: raz z bardzo szczegółowym opisem (jak ma się
+   nazywać, jak ma działać pętla, jakie zmienne), raz jednym zdaniem celu plus
+   jednym zdaniem o tym, po czym poznać, że działa. Porównaj oba wyniki i
+   napisz, który jest lepszy **i skąd to wiesz**. Ostatnie trzy słowa są
+   ważniejsze niż werdykt.
+4. **Ocena różnicowa.** Poproś agenta o trzy różne wersje jednej małej rzeczy
+   — na przykład ekranu logowania opisanego w trzech zdaniach. Wybierz jedną i
+   uzasadnij w dwóch zdaniach. Zmierz, ile trwał wybór, i oszacuj, ile trwałoby
+   napisanie tego samemu.
+5. DHH mówi, że oprogramowanie to zarządzanie produktem. Wróć do promptu z
+   pokazu i wypisz trzy decyzje o aplikacji do fiszek, które były decyzjami
+   **produktowymi**, a nie programistycznymi. Przy każdej: kto ją podjął —
+   prowadzący w prompcie czy agent w `DECISIONS.md`?
+
+## Źródła
+
+Stan na **2026-08-29**. Nazwy narzędzi i modeli w tej lekcji są aktualne na tę
+datę i zestarzeją się szybciej niż reszta tekstu.
+
+- [DHH: Future of Programming, AI, Agentic Engineering, Vibe Coding & Linux](https://www.youtube.com/watch?v=NYFGCESmikA) — Lex Fridman Podcast #501, sierpień 2026. Sekcje: *Programming with AI agents* od 2:56 (trzy momenty, 100% kodu Omarchy), *AI impact on open source* od 27:30 (tysiąc pull requestów), *Vibe coding vs agentic engineering* od 47:05 (ocena różnicowa, zarządzanie produktem, skrócone instrukcje), *Advice for programmers* od 1:10:24 (mechanika a budowanie), *Programming setup for AI Agents* od 1:31:46 (terminal, 16 wątków, Linux), *Voice prompting vs typing* od 2:07:06 (rola redaktora, „zrób prościej"), *Best AI coding models* od 2:21:05 (przeniesienie do Rusta, koszty), *Best AI coding harnesses* od 2:37:55 (jeden pisze, drugi sprawdza; tempo), *Future of programming* od 3:59:24 („językiem jest angielski"). Pełny zapis: [lexfridman.com/dhh-2-transcript](https://lexfridman.com/dhh-2-transcript/)
+- [Introducing Claude Opus 4.5](https://www.anthropic.com/news/claude-opus-4-5) — Anthropic, 24.11.2025; data „linii podziału"
+- [Claude Fable 5 and Claude Mythos 5](https://www.anthropic.com/news/claude-fable-5-mythos-5) — Anthropic, 9.06.2026; „nowa generacja modeli" z lata 2026
+- [Claude 3.7 Sonnet and Claude Code](https://www.anthropic.com/news/claude-3-7-sonnet) — Anthropic, 24.02.2025; pierwszy agent w terminalu, o którym mówi DHH
+- [Omarchy](https://omarchy.org/) — dystrybucja Linuksa DHH, o której mowa w lekcji
+- [2025 Stack Overflow Developer Survey: AI](https://survey.stackoverflow.co/2025/ai) — 84%, 33%, 66%
+- [2026 Agentic Coding Trends Report](https://resources.anthropic.com/2026-agentic-coding-trends-report) — Anthropic; opis pracy przez orkiestrację, cytowany w lekcji o warstwach
+- [Create custom subagents](https://code.claude.com/docs/en/sub-agents) — dokumentacja Claude Code; jak wygląda podział pracy między podagentów w jednym z harnessów

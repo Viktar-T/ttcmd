@@ -1,0 +1,283 @@
+---
+title: "Budowa 2: jak prosić, żeby dostać"
+order: 2
+summary: "Ta sama prośba wysłana cztery razy — bez formatu, z formatem, z jednym przykładem i z trzema — zostawia na dysku cztery różne pliki. Lekcja o tym, co w prośbie naprawdę robi robotę, i o tym, gdzie kończy się jej użyteczność."
+publish: true
+---
+
+{/* Drafted 2026-09-01 from docs/content-briefs/03b-budowa-2-techniki-promptowania.md,
+    autonomous run — brief unapproved. The four rounds assume the class tool
+    lets a student start a fresh thread cheaply; if it does not, each round is
+    a separate session (said in the lesson). The removed SaveFileDialog is
+    deliberately left unexplained here — its home is 3d. */}
+
+Kiedy w minutniku wynik nie był tym, o co chodziło, najprostszym wyjściem było
+dopisać do prośby jeszcze jedno zdanie i wysłać ją jeszcze raz. Czasem
+pomagało od razu, czasem po trzecim podejściu. Kłopot z takim poprawianiem
+jest jeden: zmienia się w nim kilka rzeczy naraz i nie wiadomo, która
+zadziałała.
+
+Dziś to rozdzielamy. Aplikacja jest jedna — notatnik, który zapisuje notatki
+do pliku — ale prośbę o zapis wyślesz cztery razy, w czterech wersjach, i za
+każdym razem obejrzysz nie odpowiedź w panelu, tylko **plik, który powstał na
+dysku**. Cztery pliki obok siebie odpowiadają na pytanie, którego nie da się
+rozstrzygnąć w rozmowie: co w prośbie naprawdę robi robotę?
+
+## Runda 1: sama prośba
+
+Zacznij od nowego projektu — `dotnet new avalonia.app -o notatnik`, własne
+repozytorium, pierwszy commit z samym szablonem. Potem, w świeżym wątku, jedno
+zdanie:
+
+```text
+Zrób notatnik: pole na tytuł, pole na treść, przycisk zapisu i lista
+zapisanych notatek. Notatki mają być zapisywane do pliku.
+```
+
+Kiedy aplikacja się uruchomi, zapisz dwie notatki i otwórz plik, który
+powstał. Nie w edytorze notatnika — w edytorze tekstu, tak jak go widzi
+system.
+
+Prawdopodobnie zobaczysz coś, czego nikt nie wybierał: może jeden plik na
+notatkę o nazwie z datą i godziną, może jeden plik ze wszystkim w formacie
+`JSON`, może zwykły tekst bez tytułów. Każda z tych możliwości jest sensowna i
+żadna nie była twoja. Prośba mówiła „do pliku” i na tym się kończyła, więc
+resztę ktoś musiał dopowiedzieć — i dopowiedział ją model.
+
+Zdarza się też, że runda 1 w ogóle się nie zbuduje, bo agent użyje do wyboru
+pliku okna, [którego w tej wersji biblioteki już nie
+ma](https://v11.docs.avaloniaui.net/docs/avalonia12-breaking-changes/)
+(dokumentacja z 5 marca 2026). Jeśli tak się stanie, zapisz to na karcie razem
+z nazwą klasy, której zabrakło. Ostatnia lekcja tego modułu jest w dużej
+części o tym jednym błędzie.
+
+Zanim ruszysz dalej, zachowaj wynik: skopiuj powstały plik do folderu `rundy/`
+pod nazwą `runda-1.md`. Tak samo zrobisz po każdej kolejnej rundzie i dlatego
+na końcu lekcji będzie co z czym porównywać — plik notatek jest cały czas ten
+sam, a kopie zostają. Zrób commit z opisem `runda 1`.
+
+## Zadanie, format i ograniczenia
+
+W każdej prośbie do modelu siedzą trzy różne rzeczy, a zwykle wypisana jest
+tylko pierwsza:
+
+- **zadanie** — co ma się stać („zapisuj notatki do pliku”);
+- **format** — jak ma wyglądać wynik (jeden plik czy wiele, jaka struktura
+  wpisu, w jakiej kolejności);
+- **ograniczenia** — czego nie wolno (bez dodatkowych bibliotek, bez zmiany
+  innych plików, nazwy w kodzie po angielsku).
+
+Format jest tą częścią, którą najłatwiej pominąć, bo autor prośby ma go w
+głowie. Model nie ma go skąd wziąć — dostaje tylko to, co pojechało w
+zapytaniu.
+
+Runda 2 to ta sama prośba z dopisanym formatem. Wszystko inne bez zmian:
+
+```text
+Notatki zapisuj do jednego pliku notatki.md w folderze projektu.
+Format wpisu:
+
+## 2026-09-08 14:32 — Tytuł notatki
+treść notatki, może mieć kilka linii
+
+Między wpisami pusta linia. Najnowsza notatka na górze pliku.
+Polskie znaki mają zostać polskimi znakami.
+```
+
+Uruchom, zapisz te same dwie notatki co poprzednio, skopiuj wynik do
+`rundy/runda-2.md` i zrób commit. Teraz otwórz obie kopie obok siebie. Różnica
+jest zwykle większa, niż się spodziewasz — i cała bierze się z sześciu linijek
+dopisanych do prośby, nie z lepszego modelu. Kodu też warto zajrzeć: `git
+diff` między dwoma commitami rund pokazuje, co się zmieniło w programie, kiedy
+zmieniła się prośba.
+
+Ostatnia linijka jest tam nie bez powodu. Polskie znaki potrafią wylądować w
+pliku jako krzaczki, jeśli program zapisuje je w innym **kodowaniu** — czyli
+innym sposobie zamiany znaków na bajty — niż to, którego oczekuje edytor.
+Sprawdzić da się to tylko przez otwarcie pliku. Notatka z „ą” w tytule jest
+najtańszym testem, jaki masz.
+
+## Przykład działa lepiej niż opis
+
+Format opisany słowami zostawia miejsce na interpretację: czy godzina ma być z
+sekundami, czy tytuł na pewno po myślniku, czy pusta linia jest jedna, czy
+dwie. Zamiast doprecyzowywać opis, **pokaż gotowy przykład.**
+
+W rundzie 3 dołącz do prośby jeden przykładowy plik — dokładnie taki, jaki
+chcesz dostać:
+
+```text
+Plik ma wyglądać dokładnie tak:
+
+## 2026-09-08 14:32 — Zakupy
+mleko
+chleb
+
+## 2026-09-07 09:15 — Pomysł na projekt
+minutnik z historią sesji
+```
+
+To jest **przykład w prompcie**, po angielsku *few-shot* — dosłownie „kilka
+strzałów”. Odmiany nazywają się po liczbie przykładów: bez przykładu to
+*zero-shot* (rundy 1 i 2), z jednym *one-shot*, z kilkoma *few-shot*. Producenci
+modeli opisują to jako
+[jeden z najpewniejszych sposobów sterowania formatem](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
+odpowiedzi i zalecają trzy do pięciu przykładów (sprawdzone 1 września 2026).
+Sam pomysł jest starszy niż dzisiejsze narzędzia: opisano go w
+[pracy o GPT-3 z 2020 roku](https://arxiv.org/abs/2005.14165), gdzie zadanie
+stawiano modelowi wyłącznie przez pokazanie kilku przykładów, bez żadnego
+douczania.
+
+Uruchom, zapisz, skopiuj wynik do `rundy/runda-3.md` i zrób commit — kopia z
+jednym przykładem jest tą, z którą za chwilę porównasz kopię z trzema.
+
+Runda 4 to trzy przykłady zamiast jednego, celowo różniące się między sobą:
+jeden wpis jednolinijkowy, jeden wielolinijkowy, jeden z polskimi znakami i
+myślnikiem w tytule. Przykłady, które są do siebie podobne, uczą modelu
+przypadku; przykłady różne pokazują, co jest w nich stałe.
+
+Uruchom, zapisz, skopiuj do `rundy/runda-4.md`, zrób commit i otwórz plik. To
+jest runda, po której zwykle nie ma już czego poprawiać w formacie — i warto
+zauważyć, że kosztowała trzy krótkie akapity tekstu, a nie mądrzejszą prośbę.
+
+## Kiedy prosić o rozumowanie, a kiedy nie
+
+Jedna rzecz w tym notatniku jest trudniejsza, niż wygląda: **najnowsza notatka
+na górze**. Dopisywanie do pliku dokłada na końcu, więc wpis na górze wymaga
+przeczytania całości, wstawienia i zapisania od nowa — i tu agenty często robią
+coś prawie dobrego, na przykład gubią ostatnią notatkę przy nadpisywaniu.
+
+Klasyczna rada na takie miejsca brzmi: **poproś o rozumowanie krok po kroku.**
+Technika nazywa się *chain-of-thought*, czyli łańcuch myśli, i została opisana
+w [pracy z 2022 roku](https://arxiv.org/abs/2201.11903): kiedy model wypisuje
+pośrednie kroki, wyraźnie poprawia się jego skuteczność w zadaniach
+wymagających rozumowania.
+
+Tyle że od tamtej pracy zmieniło się coś ważnego. Dzisiejsze modele „myślące”
+robią to samo z siebie, zanim odpowiedzą — Google opisuje to wprost dla
+swoich modeli
+([dokumentacja Gemini](https://ai.google.dev/gemini-api/docs/thinking), stan na
+26 sierpnia 2026) — a Anthropic w swoich zaleceniach idzie krok dalej i radzi
+raczej *nie* narzucać modelowi gotowej listy kroków, bo jego własne rozumowanie
+bywa lepsze od podpowiedzianego
+([zalecenia dotyczące promptów](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices),
+sprawdzone 1 września 2026).
+
+Praktyczny wniosek na dziś jest więc dwuczęściowy. Jeśli twoje narzędzie
+pokazuje, że model „myśli” przed odpowiedzią, opisz **cel i warunek
+poprawności** („po dopisaniu piątej notatki w pliku ma być pięć wpisów,
+najnowszy pierwszy”) zamiast dyktować kroki. Jeśli nie pokazuje — poproś o
+wypisanie planu przed kodem, przeczytaj plan i dopiero wtedy pozwól pisać.
+
+## Niech model poprawi twoją prośbę
+
+Została najtańsza rzecz w tej lekcji, a właściwie w całym module. Weź swoją
+wiadomość z rundy 1 — tę jednozdaniową — wklej ją do świeżego wątku i napisz:
+
+```text
+To jest moja prośba do agenta kodującego. Nie wykonuj jej.
+Wypisz, czego w niej brakuje, żeby wynik był jednoznaczny,
+i zaproponuj poprawioną wersję.
+```
+
+Dostaniesz listę pytań, których zwykle nikt sobie nie zadaje, i gotową prośbę.
+To się nazywa **meta-prompt**: prośba o prośbę. Uruchom tę poprawioną wersję w
+kolejnym świeżym wątku i porównaj wynik z rundą 2 — czyli z formatem
+wymyślonym ręcznie.
+
+Wynik bywa różny i oba warianty są pouczające. Skopiuj go jako
+`rundy/runda-5.md`. Jeśli poprawiona prośba dała lepszy plik, masz gotowy
+sposób na każdą sytuację, w której nie wiadomo, jak poprosić. Jeśli dała
+gorszy, spójrz dlaczego: zwykle model dopisał wymagania, których nikt nie
+zamawiał, a które przeszły bez skreślenia, bo przyszły w ładnie wyglądającej
+liście.
+
+## Cztery pliki obok siebie
+
+Otwórz teraz wszystkie pliki z folderu `rundy/` naraz. To jest odpowiedź na
+pytanie z początku lekcji, w postaci, której nie da się podważyć wrażeniem:
+prośba nie stała się „lepsza”, tylko **dostała format i przykład**, a wynik
+zmienił się z przypadkowego na dokładnie ten zamówiony.
+
+- **Pisz format, nie przymiotniki.** „Ładnie sformatowany plik” nie znaczy nic;
+  dwie linijki wzoru znaczą wszystko.
+- **Przykład jest tańszy niż opis.** Kiedy trzecie zdanie doprecyzowania
+  zaczyna brzmieć jak regulamin, pokaż gotowy wynik.
+- **Porównuj wyniki, nie odpowiedzi.** Plik na dysku jest dowodem; „wygląda
+  lepiej” w panelu nie jest.
+- **Pamiętaj, że jedno uruchomienie to nie pomiar.** Model jest
+  niedeterministyczny, więc różnica między dwiema rundami może w części brać
+  się stąd, a nie z twojej prośby.
+
+I jedna rzecz na koniec, wbrew temu, czego można się po takiej lekcji
+spodziewać. Umiejętność układania próśb ma niski sufit: po kilku tygodniach
+większość ludzi umie to wystarczająco i dalej nic z tego nie rośnie. Rzeczą,
+która naprawdę odróżnia kogoś, kto pracuje z agentem, od kogoś, kto tylko
+klika, jest **zdolność stwierdzenia, czy to, co przyszło, jest prawdziwe**.
+Ostatnia lekcja tego modułu jest właśnie o tym — a najbliższa o tym, gdzie
+trzymać zasady, których dziś przepisujesz do każdej wiadomości.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: trzy rzeczy, które siedzą w jednej prośbie do modelu; czym różni się
+*zero-shot* od *few-shot*; jedna sytuacja, w której proszenie o rozumowanie
+krok po kroku jest złym pomysłem.
+
+</Zadanie>
+
+<Zadanie title="To samo dwa razy">
+
+Wybierz jedną rundę i uruchom ją drugi raz, bez żadnej zmiany w prośbie.
+Porównaj oba pliki. Zapisz na karcie, co się różni, i jedno zdanie o tym, ile z
+różnicy między rundami 1–4 mogło wziąć się z tego samego zjawiska.
+
+</Zadanie>
+
+<Zadanie>
+
+Skończ notatnik: format z rundy 4 działa, polskie znaki są polskimi znakami,
+najnowsza notatka jest na górze i nic nie ginie po piątym zapisie. Każdą
+zmianę agenta przeczytaj, zanim ją przyjmiesz — dziesięć minut na czytanie
+zmian jest częścią każdego tygodnia tego modułu. Jedną zmianę zrób własną
+ręką, bez agenta. Każda runda ma swój commit, a jej kopia zostaje w `rundy/`
+jako dowód. Wypchnij wszystko.
+
+</Zadanie>
+
+<Zadanie title="Instrukcja od producenta">
+
+Znajdź stronę z zaleceniami dotyczącymi promptów wydaną przez producenta
+modelu, którego używasz. Zapisz link i datę odczytania, a potem jedną
+radę, której dziś na lekcji nie było — i sprawdź ją na swoim notatniku.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-01">
+
+<Zrodlo title="Claude prompting best practices" publisher="Anthropic" date="2026-09-01" url="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices">przykłady jako najpewniejszy sposób sterowania formatem i strukturą odpowiedzi, zalecane trzy do pięciu; oraz rada, by przedkładać ogólne polecenia nad narzucone kroki rozumowania; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="Language Models are Few-Shot Learners" publisher="arXiv (Brown i in.)" date="2020-05-28" url="https://arxiv.org/abs/2005.14165">praca, w której zadanie stawiano modelowi wyłącznie przez przykłady w tekście zapytania, bez douczania</Zrodlo>
+
+<Zrodlo title="Chain-of-Thought Prompting Elicits Reasoning in Large Language Models" publisher="arXiv (Wei i in.)" date="2022-01-28" url="https://arxiv.org/abs/2201.11903">wypisywanie pośrednich kroków poprawia wyniki w zadaniach wymagających rozumowania</Zrodlo>
+
+<Zrodlo title="Thinking" publisher="Google, Gemini API docs" date="2026-08-26" url="https://ai.google.dev/gemini-api/docs/thinking">„When you use a thinking model, Gemini reasons internally before responding”</Zrodlo>
+
+<Zrodlo title="Avalonia 12 — breaking changes" publisher="Avalonia Docs" date="2026-03-05" url="https://v11.docs.avaloniaui.net/docs/avalonia12-breaking-changes/">`SaveFileDialog` i `OpenFileDialog` usunięte w wersji 12 — stąd błąd budowania, jeśli agent sięgnie po nie w rundzie 1</Zrodlo>
+
+<Zrodlo title="File dialogs — saving a file" publisher="Avalonia Docs" date="2026-09-01" url="https://docs.avaloniaui.net/docs/services/file-dialogs">obecny sposób zapisu pliku w Avalonii: `StorageProvider.SaveFilePickerAsync` i `OpenWriteAsync`; strona bez własnej daty</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="dokumentacja" title="Prompt engineering — przewodnik Anthropic" url="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices">najkrótsza sensowna lista technik od producenta modelu; czyta się w kwadrans i połowa z niej działa też w innych narzędziach</Lektura>
+
+<Lektura kind="artykul" title="Prompt Engineering Guide" url="https://www.promptingguide.ai/">otwarty katalog technik promptowania z przykładami, po angielsku; przydatny wtedy, gdy trzeba szybko sprawdzić, jak nazywa się coś, co się właśnie samemu wymyśliło</Lektura>
+
+</CzytajDalej>

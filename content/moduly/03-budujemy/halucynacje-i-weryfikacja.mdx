@@ -1,0 +1,271 @@
+---
+title: "Halucynacje, weryfikacja i pierwszy Rozbierz to"
+order: 4
+summary: "Kod, który wygląda dobrze, i kod, który jest dobry, to nie to samo — a z zewnątrz wyglądają identycznie. Lekcja bez nowej aplikacji: skąd się biorą pewne siebie bzdury, jak wygląda tania weryfikacja i po co dziennik, w którym zapisujesz nie wrażenia, tylko sprawdzenia."
+publish: true
+---
+
+{/* Drafted 2026-09-01 from docs/content-briefs/03d-halucynacje-i-weryfikacja.md,
+    autonomous run — brief unapproved. The specimen is written, not captured
+    from the class: every one of its four faults is sourced in Źródła. If the
+    class did not actually hit the removed dialog class in Budowa 2, soften the
+    opening's „w każdym z tych tygodni” to match what happened.
+    Peer review in Zadanie 4 is a classroom arrangement, not the site's to
+    assume — see the brief's open question. */}
+
+Trzy aplikacje i trzy tygodnie budowania zostawiają po sobie nie tylko kod.
+Zostawiają też listę momentów, w których coś się nie zbudowało albo zrobiło co
+innego, niż mówił opis. W notatniku takim momentem bywa klasa, której w tej
+wersji biblioteki po prostu nie ma.
+
+Zwróć uwagę, czym ten błąd nie był. Nie literówką, nie bełkotem, nie
+przypadkowym ciągiem znaków. Kod był poprawnie zbudowany, wstawiony w dobre
+miejsce, nazwany dokładnie tak, jak człowiek by go nazwał — i nieprawdziwy.
+Gdyby model bełkotał, nie byłoby problemu: bełkot widać. Problem polega na tym,
+że to wygląda dokładnie tak samo jak kod, który działa.
+
+Dzisiaj nie budujemy nic nowego. Materiałem są trzy repozytoria, które już masz.
+Pytanie na dziś jest jedno i jest to pytanie, do którego zmierzał cały moduł:
+**jak odróżnić kod, który jest dobry, od kodu, który tylko dobrze wygląda?**
+
+## Kod, który wygląda dobrze
+
+Oto fragment w kształcie, w jakim agenty naprawdę go piszą. Przeczytaj go
+uważnie, zanim czytasz dalej.
+
+```csharp title="NotesWindow.axaml.cs — fragment wygenerowany przez agenta"
+private System.Timers.Timer autosaveTimer;
+
+public NotesWindow()
+{
+    InitializeComponent();
+    autosaveTimer = new System.Timers.Timer(60000);
+    autosaveTimer.Elapsed += (s, e) => StatusText.Text = "Zapisano";
+    autosaveTimer.Start();
+}
+
+// Zapisuje notatkę do pliku wybranego przez użytkownika.
+// Obsługa błędów zapisu jest w środku.
+private async void SaveButton_Click(object sender, RoutedEventArgs e)
+{
+    var dialog = new SaveFileDialog();
+    dialog.InitialFileName = "notatki.md";
+    var path = await dialog.ShowAsync(this);
+    File.WriteAllText(path, NoteBox.Text);
+}
+```
+
+Wygląda jak kod z podręcznika. Nazwy są sensowne, wcięcia równe, komentarz
+uprzejmie wyjaśnia, co się dzieje. Są w nim cztery różne błędy: jeden
+uniemożliwia zbudowanie projektu, jeden wywala aplikację w trakcie działania,
+jeden działa bez zarzutu i po cichu kasuje twoje dane, a jeden jest zdaniem
+nieprawdziwym, którego kompilator nigdy nie zauważy.
+
+Rozbierzmy razem pierwszy z nich, a resztą zajmiesz się w ćwiczeniu.
+
+`SaveFileDialog` to klasa, która w Avalonii istniała latami. W wersji 11 została
+oznaczona jako przestarzała, a w wersji 12
+[usunięta](https://v11.docs.avaloniaui.net/docs/avalonia12-breaking-changes/)
+(dokumentacja z 5 marca 2026); zastąpił ją zupełnie inny mechanizm —
+`IStorageProvider` i jego `SaveFilePickerAsync`. Kod powyżej nie zbuduje się na
+żadnej dzisiejszej wersji biblioteki.
+
+Dlaczego model go napisał? Bo przez wiele lat **to była poprawna odpowiedź**.
+Internet jest pełen kursów, odpowiedzi na forach i projektów, w których to
+działa; nowa wersja biblioteki ma kilka miesięcy i śladu po niej w tym materiale
+jest niewiele. Model kontynuuje wzorzec, który widział najczęściej — i akurat w
+tym miejscu najczęstszy przestał być prawdziwy.
+
+## Dlaczego model zgaduje zamiast powiedzieć „nie wiem”
+
+Można by oczekiwać, że w takiej sytuacji narzędzie powie „nie jestem pewien,
+sprawdź w dokumentacji”. Prawie nigdy tego nie robi, i to nie jest wada
+konkretnego produktu.
+
+Model generuje tekst, który ma być prawdopodobną kontynuacją tego, co dostał.
+**Poprawność i pewność siebie powstają w tym samym procesie**, a nie w dwóch
+osobnych: zdanie prawdziwe i zdanie fałszywe budowane są tak samo i wyglądają
+tak samo. W wyniku nie ma miejsca, w którym byłoby napisane „to akurat
+zmyśliłem”.
+
+Jest jeszcze drugi powód, ciekawszy, bo dotyczy tego, jak modele się ocenia.
+Jest jeszcze drugi powód, ciekawszy, bo dotyczy tego, jak modele się ocenia.
+Zespół badaczy, w większości z OpenAI, opisał to [we wrześniu 2025
+roku](https://arxiv.org/abs/2509.04664) mniej więcej tak: modele są
+optymalizowane pod egzaminy, a na egzaminie zgadywanie opłaca się bardziej niż
+przyznanie się do niewiedzy — odpowiedź „nie wiem” daje zero punktów na pewno,
+a strzał daje szansę. Jeśli tak wygląda ocena, to pewne siebie zgadywanie jest
+zachowaniem wyuczonym, nie usterką.
+
+Zjawisko nazywa się halucynacją: odpowiedź poprawna formalnie, wypowiedziana
+z pełnym przekonaniem i niezgodna z rzeczywistością. Nazwa jest trochę
+niefortunna, bo sugeruje coś rzadkiego i chorobliwego. To jest zwykły tryb pracy
+narzędzia, z którym trzeba umieć żyć.
+
+## Cztery kształty halucynacji
+
+W kodzie halucynacja przybiera kilka postaci i warto je rozróżniać, bo każda
+wykrywa się inaczej.
+
+- **Coś, czego nie ma.** Funkcja, klasa, parametr albo pakiet, który nigdy nie
+  istniał albo właśnie zniknął. Najłatwiejsza z całej czwórki: kompilator ją
+  znajdzie za ciebie.
+- **Coś, co istnieje, użyte źle.** Prawdziwa klasa w niewłaściwym miejscu —
+  zegar, który tyka poza wątkiem interfejsu, funkcja bez wymaganego parametru.
+  Buduje się bez słowa i wywala dopiero w działaniu.
+- **Zdanie o kodzie, które nie jest prawdą.** „Dodałem obsługę błędów”, „to
+  jest już zoptymalizowane”, „poprawiłem wszystkie wystąpienia”. Nie sprawdzi
+  tego żadne narzędzie — tylko przeczytanie kodu, którego dotyczy.
+- **Pewna odpowiedź o twoim projekcie.** Model, który nie przeczytał pliku,
+  potrafi opisać jego zawartość zupełnie przekonująco. Jeśli nie widzisz w
+  rozmowie, że plik został otwarty, przyjmij, że nie został.
+
+We fragmencie z początku lekcji są przykłady trzech pierwszych rodzajów.
+Czwarty spotkasz wtedy, gdy agent zacznie opowiadać o zawartości pliku,
+którego nie otworzył.
+
+## Dziennik weryfikacji
+
+Karta obserwacji z pierwszego eksperymentu miała rubrykę „skąd wiem, że
+działa”. Od dzisiaj ta rubryka przestaje być pytaniem z ankiety i staje się
+nawykiem z własnym plikiem — a sama karta kończy służbę: zostaje tam, gdzie
+leży, jako zapis jednego dnia, do przeczytania na koniec roku.
+
+**Dziennik weryfikacji** to plik `dziennik.md` w repozytorium projektu, w którym
+przed przyjęciem zmiany zapisujesz trzy rzeczy: co zostało sprawdzone, co z
+tego wyszło i czego nadal nie wiadomo. Nie wrażenia. Wynik.
+
+```markdown title="dziennik.md"
+## 2026-09-22 — automatyczny zapis w notatniku
+
+- Sprawdzone: `dotnet build` → 0 błędów, 2 ostrzeżenia (nieużywana zmienna).
+- Sprawdzone: 5 zapisanych notatek, plik ma 5 wpisów, najnowszy pierwszy.
+- Sprawdzone: notatka z „ż” w tytule otwiera się poprawnie w edytorze.
+- Nie wiadomo: co się stanie, gdy plik notatek jest otwarty w innym programie.
+```
+
+Trzy sprawdzenia kosztują sekundy i wyłapują większość tego, o czym była mowa
+wyżej: czy się buduje, czy się uruchamia, czy robi dokładnie tę rzecz z prośby
+— nie podobną, tę. Ostatnie jest najważniejsze i najczęściej pomijane, bo
+wymaga wrócenia do własnej prośby i przeczytania jej jeszcze raz. Wszystkie
+trzy robisz na razie ręcznie; w module o testach i jakości zobaczysz, jak się
+je zapisuje tak, żeby wykonywały się same.
+
+Po co to zapisywać, skoro i tak się pamięta? Bo nie pamięta się. Największa
+liczba w lekcji [Co model naprawdę
+potrafi](/moduly/01-jak-powstaje-oprogramowanie/co-model-naprawde-potrafi)
+była różnicą między tym, co się ludziom wydawało, a tym, co się naprawdę stało
+— i dotyczyła zawodowców, nie uczniów. Zapisane sprawdzenie jest jedyną
+rzeczą, która tej różnicy nie podlega.
+
+## Rozbierz to
+
+Od tej lekcji w kursie pojawia się nowy rodzaj zadania i będzie wracał do
+samego końca. Nazywa się **Rozbierz to** i wygląda zawsze tak samo: dostajesz
+gotowy kod wygenerowany przez model i masz znaleźć, co jest z nim nie tak.
+
+Nie jest to zabawa w tropienie cudzych błędów. To jedyne ćwiczenie, które
+trenuje dokładnie tę czynność, którą wykonujesz przy każdej zgodzie na zmianę
+agenta — z tą różnicą, że tutaj z góry wiadomo, że coś jest nie tak, więc
+czyta się uważnie. Przy własnym kodzie tej podpowiedzi nie ma.
+
+Zaczynasz od fragmentu z początku lekcji: jeden błąd został rozebrany, trzy
+zostały. Jeden z nich znajdziesz w źródłach na dole tej lekcji — jedna z
+pozycji opisuje dokładnie to miejsce. Dwóch pozostałych nie znajdziesz nigdzie
+poza samym kodem, bo nie łamią żadnej reguły biblioteki: robią dokładnie to,
+co napisano, tylko co innego, niż obiecuje opis notatnika z poprzedniej
+lekcji. Te dwa są ważniejsze.
+
+## Co sprawdzasz, zanim się zgodzisz
+
+Odpowiedź na pytanie z początku lekcji jest niewygodna: **z samego wyglądu kodu
+nie da się tego poznać.** Nie ma cechy tekstu, po której widać prawdę. Da się
+natomiast sprawdzić, i to tanio.
+
+- **Buduje się, uruchamia, robi tę rzecz.** Trzy sprawdzenia, kilkadziesiąt
+  sekund, wpis w dzienniku. Po nich wiadomo więcej niż po godzinie czytania.
+- **Nowa nazwa idzie do dokumentacji.** Klasa albo funkcja, której nie znasz,
+  jest warta trzydziestu sekund w wyszukiwarce dokumentacji — zwłaszcza gdy
+  brzmi zbyt wygodnie.
+- **Zdaniom o kodzie nie wierz na słowo.** „Dodałem obsługę błędów” sprawdza się
+  wyłącznie przez otwarcie pliku.
+- **Nie rozumiesz — nie przyjmuj.** Cofnięcie jest jednym poleceniem, a kod,
+  którego nikt nie rozumie, zostaje w projekcie na miesiące.
+
+Na koniec rzecz uczciwa, choć niewygodna. Weryfikacja jest najtrudniejsza
+dokładnie tam, gdzie umiesz najmniej — żeby sprawdzić kod, trzeba w pewnym
+stopniu rozumieć to, czego się dopiero uczysz. Badacze, którzy przyglądali się
+studentom pracującym z asystentami,
+[nazwali to wprost](https://link.springer.com/article/10.1186/s40594-025-00592-w)
+i pokazali, że różnica między nauką a jej pozorem bierze się nie z narzędzia,
+lecz z tego, czy student modyfikuje, testuje i umie wyjaśnić to, co dostał.
+Odpowiedzią nie jest „staraj się bardziej”, tylko trzy tanie sprawdzenia, zapis
+zamiast wrażenia i druga para oczu — czyli dokładnie to, co robiliśmy dzisiaj.
+
+Moduł się kończy. Masz trzy aplikacje, trzy repozytoria, plik reguł i dziennik.
+Wszystkie trzy powstały tak samo: prośba, wynik, poprawka, znowu prośba — i
+działają. Żadna nie ma nigdzie zapisanego, **co miała robić**, więc nie ma
+czym sprawdzić, czy robi to naprawdę. Od tego zaczyna się następny moduł.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: cztery kształty halucynacji, po jednym przykładzie do każdego. Do
+tego jedno zdanie o różnicy między „działa” a „sprawdziłem, że działa”.
+
+</Zadanie>
+
+<Zadanie title="Rozbierz to">
+
+Znajdź trzy pozostałe błędy we fragmencie z tej lekcji. Przy każdym napisz: na
+czym polega, kiedy się ujawni (przy budowaniu, przy uruchomieniu czy dopiero
+po kilku zapisach) i czym byś to sprawdził. Jeden jest do znalezienia w
+źródłach tej lekcji; dwóch pozostałych szukaj w samym kodzie i w opisie
+notatnika z poprzedniej lekcji.
+
+</Zadanie>
+
+<Zadanie>
+
+Załóż `dziennik.md` w każdym z trzech repozytoriów z tego modułu i napisz w
+każdym jeden uczciwy wpis wsteczny: co zostało wtedy przyjęte bez sprawdzenia i
+co sprawdzisz dzisiaj. Wpisy mają być krótkie i prawdziwe — nie ma tu dobrej
+odpowiedzi, jest tylko szczera i nieszczera. Zrób commit i wypchnij.
+
+</Zadanie>
+
+<Zadanie title="Czytamy cudzy kod">
+
+Wymień się z kimś z klasy jednym repozytorium. W cudzym projekcie znajdź jeden
+fragment, którego nie umiesz wytłumaczyć, i zapytaj autora, co robi. Zapisz w
+dzienniku tego projektu, czy odpowiedź była natychmiastowa, czy trzeba było jej poszukać
+w kodzie.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-01">
+
+<Zrodlo title="Avalonia 12 — breaking changes" publisher="Avalonia Docs" date="2026-03-05" url="https://v11.docs.avaloniaui.net/docs/avalonia12-breaking-changes/">`OpenFileDialog` i `SaveFileDialog` przestarzałe od wersji 11 i usunięte w 12; zamiennikiem jest `IStorageProvider` z metodami `OpenFilePickerAsync` i `SaveFilePickerAsync`</Zrodlo>
+
+<Zrodlo title="Why Language Models Hallucinate" publisher="arXiv (Kalai, Nachum, Vempala, Zhang — OpenAI)" date="2025-09-04" url="https://arxiv.org/abs/2509.04664">modele są optymalizowane pod egzaminy, a zgadywanie przy niepewności daje lepszy wynik punktowy niż przyznanie się do niewiedzy</Zrodlo>
+
+<Zrodlo title="Threading" publisher="Avalonia Docs" date="2026-06-03" url="https://docs.avaloniaui.net/docs/app-development/threading">każde dotknięcie interfejsu musi odbywać się na wątku interfejsu, inaczej aplikacja kończy się wyjątkiem „Call from invalid thread”; `DispatcherTimer` wywołuje swoją funkcję już na tym wątku</Zrodlo>
+
+<Zrodlo title="Avalonia — wydania pakietu" publisher="NuGet" date="2026-07-29" url="https://www.nuget.org/packages/Avalonia">lista wersji biblioteki wraz z datami; przydatna, żeby sprawdzić, którą wersję ma twój projekt i czy dotyczą go zmiany z wersji 12</Zrodlo>
+
+<Zrodlo title="Tool, tutor, or crutch? A grounded theory of cognitive scaffolding and offloading in AI-assisted programming education" publisher="International Journal of STEM Education" date="2026-03-13" url="https://link.springer.com/article/10.1186/s40594-025-00592-w">badanie 41 studentów przez semestr; dwie pętle korzystania z asystenta, z zewnątrz identyczne, o przeciwnych skutkach — oraz „dylemat nowicjusza”: weryfikacja wymaga wiedzy, której ćwiczenie miało dopiero nauczyć</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="dokumentacja" title="File dialogs — Avalonia" url="https://docs.avaloniaui.net/docs/services/file-dialogs">jak dziś wygląda zapis i odczyt pliku w Avalonii; strona, na której kończy się połowa dzisiejszego ćwiczenia</Lektura>
+
+<Lektura kind="artykul" title="Why Language Models Hallucinate" url="https://arxiv.org/abs/2509.04664">samo streszczenie i pierwsze dwie strony wystarczą; argument jest prostszy, niż sugeruje tytuł, i zmienia sposób patrzenia na pewność siebie modelu</Lektura>
+
+</CzytajDalej>

@@ -1,0 +1,285 @@
+---
+title: "Pierwsze okno"
+order: 3
+summary: "Okno pojawia się dwa razy: najpierw stawia je szablon, zupełnie bez AI, potem agent zmienia w nim jedną rzecz — a ty czytasz tę zmianę linijka po linijce, zanim się na nią zgodzisz."
+publish: true
+---
+
+{/* Drafted 2026-09-01 from docs/content-briefs/02c-pierwsze-okno.md.
+    TO CONFIRM before this lesson is taught — course-structure-v2 open
+    decisions #1 and #4: the training stack (C# + Avalonia) and the lab OS.
+    If the lab is confirmed Windows-only and WinForms is chosen instead,
+    sections 1–3 change files and commands; the arc survives. Also assumes
+    per-user traps 2–3 handled: Avalonia templates installed and the NuGet
+    cache warmed, or section 2 becomes thirty simultaneous downloads. */}
+
+Folder `pierwsze-okno` jest pusty: README, zapisana wersja SDK, dwa commity i
+nic więcej. Dziś stanie w nim okno.
+
+Podczas pierwszego eksperymentu okno — jeśli w ogóle powstało — pojawiło się z
+niczego. Agent robił wszystko, a twoim zadaniem było notować, więc nie było jak
+rozdzielić, która część wyniku jest zasługą modelu, która gotowego wzoru, a
+która przypadku. Dziś rozdzielamy to celowo.
+
+Okno pojawi się dwa razy. Najpierw postawi je gotowy wzór projektu, w
+kilkanaście sekund i bez udziału jakiegokolwiek modelu. Potem agent zmieni w
+nim jedną widoczną rzecz, a ty przeczytasz tę zmianę w całości, zanim się na
+nią zgodzisz. Na koniec zmienisz coś własną ręką. Pytanie na dziś brzmi: skąd
+właściwie bierze się okno na ekranie — i czy umiesz wskazać plik, który je
+opisuje?
+
+## Stack na czas nauki
+
+Zanim cokolwiek uruchomimy, jedna decyzja postawiona otwarcie, bo za tydzień
+i tak by o nią ktoś zapytał.
+
+**Stack** to zestaw technologii, z których zbudowana jest aplikacja: język,
+biblioteki, narzędzia do budowania. Nasz na najbliższe tygodnie to **C# i
+Avalonia**, i jest wybrany **na czas nauki**, a nie na zawsze. C#, bo w tę
+stronę idzie cały kurs i bo SDK, które sprawdzaliśmy w poprzedniej lekcji, jest
+właśnie zestawem do budowania programów w tym języku. Avalonia, bo to
+biblioteka .NET do budowania okien, która [działa tak samo na Windowsie, na
+Linuksie i na macOS](https://docs.avaloniaui.net/docs/welcome) — a to znaczy,
+że polecenia z tej lekcji zadziałają i w pracowni, i na tym, co masz w domu.
+
+Czy to najlepszy możliwy wybór, nie da się dziś rozstrzygnąć uczciwie, bo nie
+ma z czym porównywać. Prawdziwe porównanie — i decyzja podejmowana razem z
+wami, z pełnym prawem do odrzucenia tego, co wybrałem — czeka w Module 5, po
+kilku aplikacjach zbudowanych własnymi rękami. Do tego czasu ten stack jest
+narzędziem do nauki, nie deklaracją wiary, a rzeczy, których się na nim
+nauczysz — okno, układ, zdarzenia, stan — przenoszą się między technologiami
+prawie bez strat.
+
+## Szablon, nie magia
+
+**Szablon projektu** to gotowy wzór: komplet plików, które ktoś już napisał,
+żeby nikt nie musiał zaczynać od pustej kartki. W .NET rozpakowuje je polecenie
+`dotnet new`.
+
+Szablony Avalonii instaluje się raz na koncie:
+
+```bash
+dotnet new install Avalonia.Templates
+```
+
+Jeśli polecenie odpowie, że szablony już są — dobrze, tak ma być, na
+stanowiskach w pracowni zostały przygotowane wcześniej. Teraz, będąc w folderze
+`pierwsze-okno`, utwórz z nich projekt:
+
+```bash
+dotnet new avalonia.app -o okno
+```
+
+`avalonia.app` to nazwa szablonu — tego najprostszego, „podstawowa aplikacja z
+oknem”. `-o okno` mówi, że projekt ma powstać w podfolderze `okno`. Zanim
+cokolwiek uruchomisz, zajrzyj, co przybyło, i zapisz to w historii osobno — za
+chwilę będzie ważne, że ten commit zawiera wyłącznie to, co zrobił szablon:
+
+```bash
+git status
+git add .
+git commit -m "utworz projekt okna z szablonu Avalonia"
+```
+
+Teraz uruchom:
+
+```bash
+cd okno
+dotnet run
+```
+
+Za pierwszym razem potrwa to dłużej, niż się spodziewasz: budowanie musi
+pobrać biblioteki. Potem na ekranie stanie okno — puste, z paskiem tytułu, do
+zamknięcia myszą. **Nie zrobił tego żaden model.** Zrobił to wzór napisany
+przez ludzi i polecenie, które go rozpakowało. To jest podłoga, na której
+stanie wszystko, co zbuduje potem agent, i warto ją zobaczyć osobno, zanim
+cokolwiek na niej stanie.
+
+Zamknij okno i wpisz `git status` jeszcze raz. Nie jest już pusty: przybyły
+foldery, których nie tworzył ani szablon, ani ty. Zostaw je na razie w
+spokoju — porządek z nimi robi ostatnia lekcja tego modułu.
+
+## Plik, który jest oknem
+
+W folderze `okno` leży kilka plików i żaden z nich nie jest tajemniczy. Otwórz
+je w edytorze i przejrzyj; na tym etapie nie musisz rozumieć ani jednej
+linijki kodu C#, wystarczy wiedzieć, co jest gdzie.
+
+Interesuje nas jeden: **`MainWindow.axaml`**. To plik, który opisuje okno — nie
+jego działanie, tylko wygląd i zawartość. Zapisany jest w języku znaczników
+(*XAML*), który działa na tej samej zasadzie co HTML: znaczniki w nawiasach
+ostrych, atrybuty w cudzysłowach, jedno zagnieżdżone w drugim. Jeśli umiesz
+przeczytać stronę HTML, ten plik też przeczytasz, choć znaczniki nazywają się
+inaczej. [Prawie wszystko](https://docs.avaloniaui.net/docs/get-started/test-drive/)
+w tym pliku leży między znacznikami `<Window>` i `</Window>` — bo wszystko, co
+widać, jest w środku okna.
+
+Obok leży `MainWindow.axaml.cs` — plik z kodem C#, który należy do tego samego
+okna. Znaczniki opisują, co widać; kod obok opisuje, co się dzieje po
+kliknięciu. Dziś nie zaglądamy do niego głębiej.
+
+Znajdź teraz w `MainWindow.axaml` atrybut `Title`. Jego wartość to
+[tekst wypisany na pasku tytułu](https://docs.avaloniaui.net/docs/reference/controls/window)
+uruchomionego przed chwilą okna — pierwszy dowód, że między plikiem na dysku a
+tym, co widać na ekranie, nie ma żadnej magii, tylko dosłowne przełożenie.
+
+## Agent zmienia jedną rzecz
+
+Dopiero teraz otwierasz panel agenta — i to jest cała różnica między dzisiejszą
+lekcją a pierwszym eksperymentem. Wtedy agent budował od zera i nie było jak
+sprawdzić, co zrobił. Dziś wchodzi do projektu, który już działa, i ma zrobić
+jedną rzecz.
+
+Poproś go o zmianę widoczną gołym okiem i możliwie małą — na przykład o napis
+na środku okna. Jedno zdanie wystarczy:
+
+```text
+Dodaj na środku okna napis „Warsztat”. Zmień tylko plik MainWindow.axaml.
+```
+
+Kiedy agent skończy, **nie zgadzaj się od razu.** Poproś o pokazanie zmiany
+albo wpisz w terminalu:
+
+```bash
+git diff
+```
+
+To, co zobaczysz, nazywa się **diffem** — słowo padło na pokazie z
+[lekcji o agencie budującym aplikację](/moduly/01-jak-powstaje-oprogramowanie/na-zywo-agent-buduje-aplikacje),
+ale wtedy oglądała go cała sala na rzutniku. Teraz czytasz swój własny, i to
+jest umiejętność, nie formalność. Ma trzy rodzaje linijek:
+
+```diff
+ <Window ... Title="okno">
+-
++  <TextBlock Text="Warsztat" />
+ </Window>
+```
+
+Linijka z `-` została usunięta. Linijka z `+` — dopisana. Linijki bez znaku są
+tylko po to, żeby było widać, w którym miejscu pliku to się dzieje. Powyżej
+masz kształt, nie kopię: u ciebie pierwsza linijka będzie dłuższa, a dopisana
+może wyglądać inaczej.
+
+Przeczytaj całość — tu naprawdę jest to możliwe, bo zmiana ma dwie linijki.
+Zgódź się dopiero wtedy, i zapisz. Dodajemy do commita jeden konkretny plik, a
+nie wszystko naraz: w folderze leżą teraz także katalogi wygenerowane przez
+budowanie, których w repozytorium nie chcemy.
+
+```bash
+git add MainWindow.axaml
+git commit -m "dodaj napis na srodku okna"
+```
+
+Jeśli agent zmienił więcej plików, niż wynikało z prośby, albo dopisał trzydzieści
+linijek zamiast dwóch — to też jest wynik i wart zanotowania. Co z takim
+wynikiem zrobić, żeby nie kosztował nerwów, pokazuje ostatnia lekcja modułu.
+
+## Zmień coś sam
+
+Ostatnia zmiana dzisiaj jest twoja i bez agenta. Otwórz `MainWindow.axaml`,
+znajdź `Title` i wpisz w cudzysłowie coś innego — swoje imię, nazwę projektu,
+cokolwiek. Zapisz plik i uruchom:
+
+```bash
+dotnet run
+```
+
+Napis na pasku tytułu jest inny. Zmiana zajęła pięć sekund i nikt jej za ciebie
+nie zrobił — i o to w tym kroku chodzi. Plik jest twój: możesz go czytać,
+możesz go zmieniać i nie potrzebujesz do tego niczyjej zgody ani żadnego
+modelu. Każdy fragment tego kursu, który później będzie się nazywał *bez AI*,
+jest przedłużeniem tych pięciu sekund.
+
+```bash
+git add MainWindow.axaml
+git commit -m "zmien tytul okna"
+git push
+```
+
+## Okno, które rozumiesz
+
+Na pytanie z początku lekcji masz teraz odpowiedź, którą da się pokazać palcem.
+Okno bierze się z pliku, który je opisuje; plik wziął się z szablonu; szablon
+rozpakowało polecenie. Model nie brał w tym udziału aż do chwili, w której
+padła twoja prośba o jedną zmianę — a i ta trafiła do projektu dopiero po
+przeczytaniu.
+
+- **Uruchom, zanim poprosisz o zmianę.** Program, który działał przed zmianą,
+  zamienia pytanie „dlaczego to nie działa” w pytanie „co się właśnie zmieniło”.
+- **Żadna zmiana nie wchodzi nieprzeczytana.** Dwie linijki czyta się przez
+  chwilę; to jest cena, którą warto płacić od pierwszego dnia, dopóki jest tak
+  niska.
+- **Jedna prośba, jedna zmiana, jeden commit.** Historia, w której każdy wpis
+  odpowiada jednej rzeczy, jest jedyną, z której cokolwiek da się później
+  odczytać.
+- **Coś zmieniaj ręcznie w każdym projekcie.** Nie z zasady i nie na złość
+  narzędziu — po to, żeby nie stracić pewności, że umiesz.
+
+W repozytorium masz teraz co najmniej cztery commity i historię, która mówi, co
+zrobił szablon, co agent, a co ty. Ostatnia lekcja modułu bierze tę historię i
+robi z niej narzędzie: czytanie zmian w dwóch miejscach, cofanie tego, na co nie
+było zgody, i gałąź jako miejsce, w którym agent może popsuć wszystko bez
+konsekwencji.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: które polecenie utworzyło projekt, który plik opisuje okno, który
+atrybut ustawia napis na pasku tytułu i co znaczy, że stack jest wybrany „na
+czas nauki”.
+
+</Zadanie>
+
+<Zadanie>
+
+Zmień tytuł okna ręcznie, uruchom program i zobacz zmianę. Potem poproś agenta
+o jedną widoczną zmianę w innym miejscu i przeczytaj cały diff, zanim ją
+przyjmiesz. Zapisz, ile linijek miała ta zmiana i ile z nich rozumiesz.
+
+</Zadanie>
+
+<Zadanie>
+
+Doprowadź repozytorium do stanu, w którym historia opowiada dzisiejszą lekcję:
+osobny commit z szablonem, osobny ze zmianą agenta, osobny ze zmianą twoją, opisy
+w trybie rozkazującym, wszystko wypchnięte. Tę historię czyta następna lekcja.
+
+</Zadanie>
+
+<Zadanie title="Czy zadziała u ciebie w domu?">
+
+Na stronie Avalonii sprawdź listę wspieranych systemów i porównaj ją z tym, co
+masz na komputerze w domu. Zapisz odpowiedź razem z dzisiejszą datą. Jeśli
+odpowiedź brzmi „nie” albo „nie wiem”, zapisz to tak samo — pracownia wystarczy
+do końca modułu, ale lepiej wiedzieć o tym wcześniej niż w tygodniu, w którym
+coś trzeba dokończyć w domu.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-01">
+
+<Zrodlo title="Welcome to Avalonia" publisher="Avalonia Docs" date="2026-04-20" url="https://docs.avaloniaui.net/docs/welcome">Avalonia jako otwarta, wieloplatformowa biblioteka interfejsu dla .NET; lista wspieranych systemów, w tym Windows, macOS i desktopowy Linux</Zrodlo>
+
+<Zrodlo title="Install Avalonia" publisher="Avalonia Docs" date="2026-08-06" url="https://docs.avaloniaui.net/docs/get-started/install">polecenie `dotnet new install Avalonia.Templates`</Zrodlo>
+
+<Zrodlo title="Avalonia Templates for dotnet new" publisher="AvaloniaUI, GitHub" date="2026" url="https://github.com/AvaloniaUI/avalonia-dotnet-templates">lista nazw szablonów; `avalonia.app` opisany jako podstawowa aplikacja desktopowa; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="Window" publisher="Avalonia Docs" date="2026-04-03" url="https://docs.avaloniaui.net/docs/reference/controls/window">właściwość `Title`: „The text displayed in the title bar”</Zrodlo>
+
+<Zrodlo title="Test Drive" publisher="Avalonia Docs" date="2026-03-07" url="https://docs.avaloniaui.net/docs/get-started/test-drive/">o tym, że prawie cała zawartość `MainWindow.axaml` leży między znacznikami `<Window>`</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="dokumentacja" title="Avalonia Docs" url="https://docs.avaloniaui.net/docs/welcome">dokumentacja biblioteki, w której będziemy pracować przez najbliższe tygodnie; rozdział „Test Drive” prowadzi przez tę samą drogę co ta lekcja, tylko dalej</Lektura>
+
+<Lektura kind="dokumentacja" title="dotnet new" url="https://learn.microsoft.com/dotnet/core/tools/dotnet-new">pełny opis polecenia, którym dziś powstał projekt, i sposób na wypisanie wszystkich szablonów dostępnych na twoim komputerze</Lektura>
+
+</CzytajDalej>

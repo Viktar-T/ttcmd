@@ -1,0 +1,283 @@
+---
+title: "Budowa 1: co model naprawdę dostaje"
+order: 1
+summary: "Pierwsza aplikacja budowana w całości z agentem — i pierwsza długa rozmowa, w której agent gubi zasadę podaną na początku. Lekcja tłumaczy dlaczego: co dokładnie dostaje model przy piątej wiadomości, w czym się to liczy i w co musi się zmieścić."
+publish: true
+---
+
+{/* Drafted 2026-09-01 from docs/content-briefs/03a-budowa-1-prompt-token-okno.md,
+    autonomous run — brief unapproved. TO CONFIRM before this lesson is taught:
+    (1) the tokenizer page must be on the school's allowlist
+    (course-structure-v2.3, „Network allowlist” — the choice was left open);
+    (2) that an hour-long session on the lab tool actually degrades on a
+    project this small — Viktar should run the build once beforehand, because
+    section „Dwa różne psucia się sesji” rests on the student seeing it. */}
+
+Do tej pory każda rozmowa z agentem była krótka: prośba, zmiana, diff,
+commit. Nawet ta z gałęzią eksperymentalną zamykała się w kilku wymianach zdań.
+Dziś rozmowa potrwa godzinę i będzie miała kilkanaście wiadomości — a gdzieś w
+połowie stanie się rzecz, o której lepiej wiedzieć wcześniej: z aplikacji
+zniknie coś, o co prosiło twoje pierwsze zdanie. Zasada podana na starcie po
+prostu przestanie obowiązywać.
+
+„Agent się zmęczył” nie jest wyjaśnieniem, a „model jest głupi” tym bardziej.
+Wyjaśnienie jest prostsze i całkowicie mechaniczne, ale żeby je zobaczyć,
+trzeba wiedzieć, co właściwie dostaje model, kiedy piszesz do niego piątą
+wiadomość.
+
+Dziś zbudujesz minutnik — aplikację, która odmierza czas pracy i przerwy — a
+przy okazji zobaczysz, z czego składa się to, co trafia do modelu, w czym się
+to liczy i w co musi się zmieścić. Pytanie na dziś: **co dokładnie wysyła twoje
+narzędzie, kiedy naciskasz Enter?**
+
+## Minutnik: siedem zasad w jednej wiadomości
+
+Aplikacja jest mała i celowo ma dużo wymagań naraz. Odmierza dwadzieścia pięć
+minut pracy, potem pięć minut przerwy, i liczy, ile takich cykli udało się
+skończyć. Siedem zasad, wszystkie do podania od razu:
+
+1. praca 25 minut, przerwa 5 minut, obie wartości do zmiany w oknie;
+2. jeden przycisk start i pauza, drugi reset;
+3. widoczny licznik skończonych cykli;
+4. po skończonej pracy przerwa startuje sama;
+5. czas pokazywany jako `mm:ss`;
+6. interfejs po polsku, nazwy w kodzie po angielsku;
+7. żadnych dodatkowych bibliotek.
+
+Zacznij tak jak przy pierwszym eksperymencie: napisz, co ma powstać, co ma być
+widać na ekranie i po czym poznasz, że działa. Nowy projekt zakładasz sam,
+poleceniem z poprzedniego modułu — `dotnet new avalonia.app -o minutnik` w
+świeżym folderze z własnym repozytorium — i dopiero potem otwierasz panel
+agenta.
+
+```text
+Zbuduj minutnik w tym projekcie Avalonia. Ma odmierzać 25 minut pracy,
+potem 5 minut przerwy, i liczyć skończone cykle. Obie długości mają być do
+zmiany w oknie. Jeden przycisk start/pauza, drugi reset. Czas widoczny jako
+mm:ss, licznik cykli widoczny obok. Po skończonej pracy przerwa ma ruszyć
+sama. Interfejs po polsku, nazwy w kodzie po angielsku, bez dodatkowych
+bibliotek.
+```
+
+Przepisz tę wiadomość na kartę obserwacji, zanim ją wyślesz. Za czterdzieści
+minut będzie ci potrzebna dokładnie w tym brzmieniu.
+
+Kiedy agent skończy pierwszą rundę, zrób to, co w poprzednim module:
+przeczytaj zmianę, zanim się na nią zgodzisz, i dopiero potem uruchom. Jedna
+pułapka potrafi tu zjeść pół lekcji, więc lepiej wiedzieć o niej wcześniej.
+Jeśli aplikacja wywala się przy pierwszym tyknięciu z komunikatem
+`Call from invalid thread`, to znaczy, że agent wziął nie ten zegar co trzeba.
+Poproś wprost o `DispatcherTimer` — to
+[jedyny zegar, który wolno łączyć z tym, co widać na ekranie](https://docs.avaloniaui.net/docs/app-development/threading).
+Dlaczego akurat ten, jest tematem na Moduł 5, przy okazji budowy okna od
+środka; dziś wystarczy wiedzieć, że tak jest. Skąd model wziął ten drugi,
+wyjaśnia ostatnia lekcja tego modułu.
+
+## Co dostaje model, kiedy piszesz piątą wiadomość
+
+Rozmowa w panelu agenta wygląda jak rozmowa: ty piszesz, on odpowiada, ty
+dopisujesz „a teraz zrób jeszcze…”. To złudzenie interfejsu. Model nie pamięta
+poprzedniej wiadomości — nie ma czego pamiętać, bo każde **zapytanie**, czyli
+jedno wysłanie tekstu do modelu i odebranie odpowiedzi, jest osobne i
+niezależne od poprzednich.
+
+Żeby rozmowa mimo to trzymała się kupy, narzędzie **wysyła całą rozmowę od
+nowa przy każdej wiadomości.** Nie ostatnie zdanie: wszystko. Twoją pierwszą
+wiadomość, odpowiedź modelu, twoją drugą, jego drugą i tak dalej. Producenci
+piszą to w dokumentacji wprost — interfejs do rozmowy z modelem jest
+bezstanowy, więc przy każdym zapytaniu trzeba przesłać całą dotychczasową
+historię ([dokumentacja API modeli Claude](https://platform.claude.com/docs/en/build-with-claude/working-with-messages),
+sprawdzone 1 września 2026; [to samo u OpenAI](https://developers.openai.com/api/docs/guides/conversation-state)).
+
+W agencie dochodzi do tego druga rzecz. Kiedy agent czyta twoje pliki, żeby
+wiedzieć, co zmienić, ich treść też staje się częścią rozmowy — i też jedzie
+razem z resztą przy każdej następnej wiadomości.
+
+To zmienia znaczenie słowa, które znasz z pokazu. **Prompt to nie jest twoja
+ostatnia wiadomość.** Prompt to wszystko, co poleciało w tym jednym zapytaniu:
+twoje siedem zasad, dotychczasowe wymiany zdań, przeczytane pliki, treść
+wklejonego błędu i twoje ostatnie „popraw to”. Przy piątej wiadomości twojego
+świeżego tekstu jest w tym jedno zdanie, a leci znacznie więcej — ile
+dokładnie, zmierzysz za chwilę.
+
+## Token: jednostka, w której to się liczy
+
+Na pokazie padło, że token to jednostka, w której model liczy tekst — kawałek
+słowa. Teraz przyda się to dokładniej, bo cała reszta lekcji jest o rozmiarach.
+
+Model nie widzi liter ani słów. Zanim tekst do niego trafi, **tokenizer** dzieli
+go na kawałki ze swojej listy: częste słowo bywa jednym kawałkiem, rzadkie
+rozpada się na trzy, znaki interpunkcyjne zwykle są osobno. Podział nie jest
+tajemnicą — da się go zobaczyć. Wejdź na
+[Tokenizer Playground](https://huggingface.co/spaces/Xenova/the-tokenizer-playground),
+wklej swoją pierwszą wiadomość do agenta i popatrz, na ile kawałków się
+rozpadła.
+
+Z góry wiadomo tyle, że jeden token to średnio jakieś cztery znaki, czyli mniej
+więcej trzy czwarte krótkiego angielskiego słowa
+([pomoc OpenAI](https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them),
+sprawdzone 1 września 2026). Ta średnia zależy jednak od języka: producenci
+zaznaczają, że liczba znaków na token bywa różna w różnych językach
+([słownik Anthropic](https://platform.claude.com/docs/en/docs/resources/glossary)).
+Ile wychodzi po polsku, nie zgaduj — zmierz. Jest na to dzisiejsze ćwiczenie i
+zajmuje dwie minuty.
+
+Po co ci ta liczba? Bo w tokenach liczy się wszystko, co dalej: ile mieści się w
+jednym zapytaniu, ile kosztuje rozmowa i jak szybko przybywa tego, co i tak
+poleci jeszcze raz.
+
+## Okno kontekstu — i drugi limit
+
+**Okno kontekstu** to najprostsza rzecz pod niezrozumiałą nazwą: górna granica
+tego, ile tokenów mieści się w jednym zapytaniu. Cała rozmowa, wszystkie
+przeczytane pliki, twoje zasady i pytanie — razem muszą się w niej zmieścić.
+
+Warto powiedzieć od razu, czym okno **nie** jest, bo nazwa myli. Nie jest
+pamięcią modelu i nie jest miejscem, gdzie coś zostaje między wiadomościami.
+Nic tam nie zostaje. Okno mówi tylko, jak dużą paczkę wolno wysłać za jednym
+razem — a paczkę i tak trzeba składać od nowa przy każdej wiadomości.
+
+Liczby są dziś duże i za rok będą inne. Modele Gemini mają w dokumentacji
+[milion tokenów wejścia i 64 tysiące wyjścia](https://ai.google.dev/gemini-api/docs/gemini-3)
+(stan na 26 sierpnia 2026), modele Claude
+[milion tokenów okna i 128 tysięcy odpowiedzi](https://platform.claude.com/docs/en/about-claude/models/overview)
+(sprawdzone 1 września 2026). Zwróć uwagę, że to są dwie różne liczby, i to
+jest tu ważniejsze niż same wartości.
+
+Ten drugi limit to maksymalna długość **jednej odpowiedzi**, i łapie się na
+niego znacznie łatwiej niż na pierwszy. Prośba w rodzaju „przepisz mi cały ten
+plik od nowa” potrafi się urwać w połowie nie dlatego, że rozmowa jest za
+długa, tylko dlatego, że odpowiedź nie mieści się w limicie. Lekarstwo jest
+zwykle takie samo jak na wiele innych rzeczy w tym module: poproś o mniejszy
+kawałek.
+
+## Dwa różne psucia się sesji
+
+Wróćmy do tego, co miało się stać przy piątej prośbie. Sesja psuje się na dwa
+sposoby i warto ich nie mylić, bo mają różne przyczyny i różne lekarstwa.
+
+**Pierwszy: rozmowa przestaje się mieścić.** Kiedy paczka nie chce wejść w
+okno, coś musi z niej wypaść — i decyduje o tym twoje narzędzie, nie model.
+Zwykle nazywa się to **kompaktowaniem**: rozmowa zostaje streszczona, skrócona
+albo przeniesiona do nowego wątku z podsumowaniem starego. Które fragmenty
+przetrwają, zależy od narzędzia i warto to sprawdzić w jego dokumentacji;
+najbardziej narażona jest zawsze najstarsza część rozmowy — czyli twoja
+pierwsza wiadomość. Ta z siedmioma zasadami.
+
+**Drugi: rozmowa się rozwadnia.** To dzieje się dużo wcześniej i jest częstsze.
+Twoje siedem zasad zajmuje kilka zdań. Po czterdziestu minutach rozmowa jest od
+nich wielokrotnie dłuższa: wklejone błędy, wypisane pliki, trzy podejścia do
+jednego przycisku, twoje „nie, nie tak”. Wszystko to jedzie do modelu za każdym
+razem, a twoje zasady są w tym drobnym ułamkiem. Model niczego nie zapomniał w
+ludzkim sensie — dostał je razem z całą resztą i nic ich nie wyróżnia.
+„Rozwodnienie” nie jest terminem producenta; to najprostsze wytłumaczenie tego,
+co widać, i tak je tu nazywam.
+
+Stąd trzy rzeczy, które w praktyce działają, a które od dziś warto robić
+odruchowo:
+
+- **Zacznij nowy wątek, kiedy zmieniasz temat.** Nie ciągnij rozprawy o kolorze
+  przycisku w tym samym wątku, w którym powstawał zegar. Nowy wątek jest
+  darmowy, a stary ciągnie się za tobą w każdym zapytaniu.
+- **Powtórz zasady w prośbie, która na nich stoi.** Nie wszystkie i nie za
+  każdym razem — te, które mają być spełnione akurat teraz.
+- **Rób prośby małe.** Jedna rzecz w jednej prośbie mieści się w głowie, mieści
+  się w diffie i mieści się w jednym commicie — czyli w tej samej zasadzie,
+  którą znasz z pracy z Gitem.
+
+Na razie zasady przepisujesz ręcznie do kolejnych wiadomości i tak ma być: to
+jest ta niewygoda, z której w trzeciej budowie zrobimy plik.
+
+## Minutnik, który działa, i wątek, który rozumiesz
+
+Na pytanie z początku lekcji masz teraz odpowiedź, którą można policzyć: przy
+piątej wiadomości do modelu leci twoje jedno zdanie i cała reszta rozmowy razem
+z przeczytanymi plikami, pocięta na tokeny i zmieszczona w oknie, które nie jest
+pamięcią. Zniknięcie zasady nie było kaprysem narzędzia, tylko skutkiem
+rozmiarów.
+
+- **Traktuj wątek jak zasób, nie jak rozmowę.** Rośnie, kosztuje i przy każdej
+  wiadomości leci od nowa — a ty decydujesz, co w nim jest.
+- **Kiedy agent zaczyna gubić rzeczy, nie proś go usilniej.** Zacznij nowy
+  wątek i podaj w nim tylko to, co potrzebne.
+- **Sprawdzaj rozmiary u siebie, z datą.** Okno twojego modelu, limit
+  odpowiedzi i to, ile tokenów ma twoja polska wiadomość, to trzy liczby, które
+  za rok będą inne.
+- **Skończ aplikację, zanim ją ulepszysz.** Siedem zasad spełnionych naraz jest
+  celem tego tygodnia; ósma zasada to już następny tydzień.
+
+Minutnik działa i wiesz, co dostaje model. Czego jeszcze nie wiesz, to jak
+sformułować prośbę, żeby nie trzeba było jej powtarzać trzy razy — bo dziś
+szło to metodą prób i błędów. Następna budowa jest dokładnie o tym.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: co leci do modelu, kiedy wysyłasz piątą wiadomość w rozmowie; czym
+jest token; jakie dwa różne limity się tu liczą i czym się różnią.
+
+</Zadanie>
+
+<Zadanie title="Zmierz swoją wiadomość">
+
+Wklej do wybranego tokenizera swoją pierwszą wiadomość do agenta i zapisz, na
+ile tokenów się rozpadła. Potem wklej jej tłumaczenie na angielski i zapisz
+drugą liczbę. Obie zapisz na karcie razem z dzisiejszą datą i nazwą narzędzia —
+za pół roku będziesz je porównywać z nowymi.
+
+</Zadanie>
+
+<Zadanie>
+
+Skończ minutnik tak, żeby wszystkie siedem zasad było spełnionych **naraz** —
+to jest trudniejsze niż spełnienie każdej z osobna. Każdą zmianę agenta
+przeczytaj, zanim ją przyjmiesz; przy dłuższych zmianach zaplanuj na to
+dziesięć minut, bo tyle to naprawdę zajmuje. Jedną widoczną zmianę zrób własną
+ręką, bez agenta. Każdą prośbę zapisz osobnym commitem, żeby historia mówiła,
+ile podejść zajęła która zasada. Na koniec sprawdź jedno: wpisz w pole długości
+`25,5`, a potem `25.5`, i zapisz, co się stało w każdym z tych przypadków.
+Wypchnij wszystko.
+
+</Zadanie>
+
+<Zadanie title="Ile mieści twój model">
+
+Znajdź w dokumentacji swojego narzędzia albo producenta modelu, którego
+używasz, dwie liczby: rozmiar okna kontekstu i maksymalną długość odpowiedzi.
+Zapisz je razem z linkiem i datą sprawdzenia. Jeśli nie da się ich znaleźć,
+zapisz i to — brak liczby też jest wynikiem.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-01">
+
+<Zrodlo title="Working with the Messages API" publisher="Anthropic" date="2026-09-01" url="https://platform.claude.com/docs/en/build-with-claude/working-with-messages">„The Messages API is stateless, which means that you always send the full conversational history to the API”; strona bez własnej daty — podana data sprawdzenia</Zrodlo>
+
+<Zrodlo title="Conversation state" publisher="OpenAI" date="2026-09-01" url="https://developers.openai.com/api/docs/guides/conversation-state">to samo u drugiego producenta: każde zapytanie jest niezależne, a rozmowę buduje się, dołączając wcześniejsze wiadomości; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="What are tokens and how to count them?" publisher="OpenAI Help Center" date="2026-08-29" url="https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them">token to około czterech znaków, czyli mniej więcej trzy czwarte słowa; strona podaje tylko datę względną („updated 3 days ago”)</Zrodlo>
+
+<Zrodlo title="Glossary — token" publisher="Anthropic" date="2026-09-01" url="https://platform.claude.com/docs/en/docs/resources/glossary">około 3,5 znaku na token, „though the exact number can vary depending on the language used”; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="Gemini 3 — model overview" publisher="Google" date="2026-08-26" url="https://ai.google.dev/gemini-api/docs/gemini-3">tabela modeli z osobnymi kolumnami wejścia i wyjścia: 1M tokenów kontekstu, 64 tys. tokenów odpowiedzi</Zrodlo>
+
+<Zrodlo title="Models overview" publisher="Anthropic" date="2026-09-01" url="https://platform.claude.com/docs/en/about-claude/models/overview">osobne wiersze „Context window” i „Max output”: 1M i 128 tys. tokenów dla modeli klasy Opus, Sonnet i Fable; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="Threading" publisher="Avalonia Docs" date="2026-06-03" url="https://docs.avaloniaui.net/docs/app-development/threading">„All interactions with the UI […] must happen on the UI thread”; komunikat „Call from invalid thread” i `DispatcherTimer` jako zegar wywoływany na wątku interfejsu</Zrodlo>
+
+<Zrodlo title="The Tokenizer Playground" publisher="Hugging Face (Xenova)" date="2026-09-01" url="https://huggingface.co/spaces/Xenova/the-tokenizer-playground">publiczna strona pokazująca podział tekstu na tokeny, bez zakładania konta; sprawdzona tego dnia</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="dokumentacja" title="DispatcherTimer" url="https://docs.avaloniaui.net/api/avalonia/threading/dispatchertimer">opis zegara, którego użyjesz w minutniku — krótka strona, cztery właściwości, wszystkie potrzebne</Lektura>
+
+<Lektura kind="artykul" title="What are tokens and how to count them?" url="https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them">dwie strony o tokenach napisane dla ludzi, którzy nie budują modeli; przydaje się przy szacowaniu, ile zmieści się w oknie</Lektura>
+
+</CzytajDalej>

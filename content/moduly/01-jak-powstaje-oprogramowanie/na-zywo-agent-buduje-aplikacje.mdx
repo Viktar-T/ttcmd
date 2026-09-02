@@ -1,19 +1,27 @@
 ---
 title: "Na żywo: agent buduje aplikację"
 order: 4
-summary: "Pokaz pełnej pętli agenta na prawdziwym projekcie — i lista rzeczy, na które trzeba patrzeć, żeby zobaczyć coś więcej niż magię."
+summary: "Jeden prompt, trzy agenty, trzy aplikacje. Pokaz pełnej pętli agenta na prawdziwym projekcie — i lista rzeczy, na które trzeba patrzeć, żeby zobaczyć coś więcej niż magię."
 ---
 
-Ta lekcja odbywa się na ekranie, nie w tekście. Zobaczysz, jak agent dostaje
-zadanie i doprowadza je do działającego kodu: czyta projekt, pisze pliki,
-uruchamia komendy, czyta błąd, poprawia.
+Dwie poprzednie lekcje opisywały agentów z zewnątrz: jako warstwę na mapie
+narzędzi i jako liczby z badań. Ta lekcja odbywa się na ekranie, nie w tekście.
+Zobaczysz, jak agent dostaje zadanie i doprowadza je do działającego kodu: czyta
+zadanie, pisze pliki, uruchamia komendy, czyta błąd, poprawia.
 
-Tekst poniżej jest **instrukcją oglądania**. Bez niej pokaz wygląda jak magia, a
+Zobaczysz to trzy razy naraz. Ten sam prompt — tekst zadania, który dostaje
+agent — trafi do trzech różnych agentów, w trzech różnych narzędziach, z trzema
+różnymi modelami. Po kilkunastu minutach na laptopie będą trzy aplikacje, które
+miały być tą samą aplikacją. Różnice między nimi są całą treścią tej lekcji:
+skąd się biorą, skoro zadanie było jedno?
+
+Tekst poniżej jest instrukcją oglądania. Bez niej pokaz wygląda jak magia, a
 magia niczego nie uczy.
 
 ## Pętla, którą będziesz oglądać
 
-Każdy agent — niezależnie od producenta i nazwy — chodzi w tym samym kółku:
+Każdy agent — niezależnie od producenta i nazwy — chodzi w tym samym kółku.
+Patrząc na rysunek, zwróć uwagę, gdzie w tym kółku jest człowiek:
 
 <svg viewBox="0 0 720 260" role="img" aria-label="Pętla agenta: zrozum zadanie, podziel na kroki, wybierz narzędzie, oceń wynik, zdecyduj co dalej" style={{ width: "100%", height: "auto" }}>
   <defs>
@@ -57,63 +65,348 @@ Każdy agent — niezależnie od producenta i nazwy — chodzi w tym samym kół
 
 Ramka na górze jest najważniejszą częścią tego rysunku. **Agent nie jest
 autonomiczny — jest szybki.** Człowiek zostaje w pętli, tylko w innym miejscu
-niż wcześniej: nie pisze, lecz zatwierdza i ocenia.
+niż wcześniej: nie pisze, lecz zatwierdza komendy, czyta diff — zestawienie
+zmian, które agent właśnie wprowadził w plikach — i ocenia.
+
+Na dzisiejszym pokazie ta ramka będzie celowo wyłączona. Wszystkie trzy agenty
+dostaną prawo do uruchamiania komend bez pytania, bo inaczej nie da się
+prowadzić trzech naraz i jeszcze mówić do klasy. Zapamiętaj to zdanie — wrócimy
+do niego w sekcji „Na co patrzeć”.
+
+## Eksperyment: jeden prompt, trzy agenty
+
+Skoro pętla jest u wszystkich ta sama, skąd wezmą się trzy różne aplikacje?
+Pojedynczy pokaz by na to nie odpowiedział, bo nie wiadomo, co w wyniku jest
+*decyzją* agenta, a co przypadkiem. Trzy agenty z tym samym promptem tę słabość
+naprawiają: wszystko, co się między nimi różni, nie było w prompcie — więc ktoś
+to założył.
+
+Żeby porównanie miało sens, część rzeczy jest ustalona na sztywno i taka sama dla
+wszystkich trzech: język, framework, nazwa projektu, kryterium zakończenia.
+Reszta — sposób zapisu danych, algorytm powtórek, struktura kodu, wygląd — jest
+celowo zostawiona otwarta, bo to właśnie tam powstaną różnice.
+
+| Narzędzie | Producent narzędzia | Model | Folder wyniku |
+| --- | --- | --- | --- |
+| [Claude Code](https://code.claude.com/docs/en/quickstart) (terminal) | Anthropic | [Claude Fable 5](https://www.anthropic.com/news/claude-fable-5-mythos-5) | `fiszki-claude-code` |
+| [Cursor](https://cursor.com/docs/agent/overview) (IDE) | Anysphere | [Claude Opus 4.8](https://www.anthropic.com/news/claude-opus-4-8) | `fiszki-cursor` |
+| [Antigravity](https://antigravity.google/docs/getting-started/) (IDE) | Google | [Claude Opus 4.6](https://www.anthropic.com/news/claude-opus-4-6) | `fiszki-antigravity` |
+
+Zwróć uwagę na jedną rzecz, zanim zaczniemy: wszystkie trzy modele pochodzą od
+tego samego producenta, ale narzędzia są trzech różnych producentów. To, co
+zobaczysz, jest więc porównaniem *model + narzędzie*, a nie samych modeli, bo
+narzędzie decyduje, co model widzi, jakie ma polecenia do dyspozycji i jak
+wygląda jego pętla. Czystego porównania modeli ten pokaz nie daje i nie udaje,
+że daje.
+
+### Modele — krótko
+
+Stan na **2026-08-29**. Wersje modeli zmieniają się co kilka miesięcy; jeśli
+czytasz to później, sprawdź, co jest aktualne. Wszystkie trzy to modele
+Anthropic — trzy generacje jednej rodziny, od najstarszej do najnowszej:
+
+- [Claude Opus 4.6](https://www.anthropic.com/news/claude-opus-4-6) — wydany 5 lutego 2026, w momencie premiery najmocniejszy
+  model firmy. Wprowadził m.in. „zespoły agentów” (agent teams) w Claude Code i
+  okno kontekstu 1M tokenów (token to jednostka, w której model liczy tekst —
+  kawałek słowa). Na pokazie działa w Antigravity.
+- [Claude Opus 4.8](https://www.anthropic.com/news/claude-opus-4-8) — wydany 28 maja 2026. Ulepszona wersja Opusa w tej samej
+  cenie; producent podkreśla lepszą ocenę sytuacji w pracy agentowej. Na pokazie
+  działa w Cursorze.
+- [Claude Fable 5](https://www.anthropic.com/news/claude-fable-5-mythos-5) — ogłoszony 9 czerwca 2026 razem z Mythos 5 jako nowa, wyższa
+  klasa modelu („Mythos-class”); oba dzielą ten sam model bazowy, Fable 5 jest
+  wersją dostępną publicznie, z dodatkowymi zabezpieczeniami. Producent
+  twierdzi, że im dłuższe i bardziej złożone zadanie, tym większa jego przewaga.
+  Na pokazie działa w Claude Code.
+
+Jeśli między nimi będzie widać różnicę jakości, jedna z hipotez brzmi „nowszy
+model”. Ale nie jedyna, bo narzędzie wokół każdego z nich też jest inne.
+
+## Prompt
+
+Ten sam tekst, słowo w słowo, trafia do każdego z trzech agentów. Jest po
+angielsku, bo na tym języku modele są trenowane najintensywniej i najpewniej go
+rozumieją — a interfejs aplikacji i tak ma być po polsku, co jest jednym z
+testów.
+
+Dwa fragmenty promptu robią najwięcej roboty. **„Do not ask questions… record the
+decision in `DECISIONS.md`”** wymusza samodzielność i jednocześnie każe agentowi
+zostawić ślad każdego założenia — po pokazie mamy więc trzy listy założeń do
+porównania. **„The task is done when `dotnet build`… verify this yourself”** daje
+agentowi obiektywne kryterium końca zamiast „wydaje mi się, że działa”:
+`dotnet build` (build — sprawdzenie, czy projekt w ogóle się kompiluje) ma
+przejść bez błędów, a `dotnet run` — uruchomić aplikację.
+
+```text title="prompt.txt"
+Build a desktop flashcard application called "Fiszki" for learning vocabulary.
+
+Stack — fixed, do not change it:
+- C# on .NET 8, WPF, Windows.
+- Create the project in the current directory (it is already created and
+  empty). The project name is Fiszki.
+- No external NuGet packages unless you decide one is truly necessary. If you
+  add one, record why in DECISIONS.md.
+
+Functional requirements:
+1. The user can create decks (for example "Angielski — unit 3") and delete
+   them. In the Polish UI a deck is called "zestaw" (plural "zestawy") — do
+   not use the word "talia".
+2. Inside a deck the user can add, edit and delete cards. A card has a front
+   (question) and a back (answer).
+3. Review mode: the app shows the front of a card and a text box where the
+   user types the answer. Next to it is a "Sprawdź" button, which is disabled
+   until the user has typed something. After "Sprawdź" the app shows the
+   correct back and says whether the typed answer matched. How strict the
+   comparison is (letter case, spaces, diacritics) — you decide, and record it.
+   Then the user marks the card "Umiem" or "Nie umiem". Cards marked
+   "Nie umiem" must come back sooner than cards marked "Umiem". How much
+   sooner — you decide.
+4. Everything persists between runs of the application. Storage format and
+   location — you decide.
+5. The list of decks shows, for each deck, how many cards are due for review
+   today.
+6. On first run the app must not start empty: create three example decks,
+   each pre-filled with a few sample cards, so there is something to try
+   immediately. Seed them only when no saved data exists yet.
+7. The app has an "Instrukcja" button. It shows, in Polish, a short guide:
+   how to use the app and how the review scheduling logic works (when a card
+   comes back after "Umiem" and after "Nie umiem").
+8. All UI text is in Polish, with correct diacritics (ą ć ę ł ń ó ś ź ż),
+   wherever Polish spelling requires them.
+
+Rules:
+- Do not ask questions. When something is unspecified, decide yourself and
+  record the decision in DECISIONS.md in the project directory — one line per
+  decision, each naming the alternative you rejected.
+- The task is done when `dotnet build` finishes with no errors and
+  `dotnet run` starts the application. Verify this yourself before you finish;
+  you may close the window afterwards.
+- At the end, write README.md in Polish: how to run the application, and what
+  you did not manage to do.
+```
+
+## Jak to uruchomić
+
+Poniżej jest to, co robi prowadzący na pokazie, i jednocześnie instrukcja dla
+każdego, kto chce to powtórzyć u siebie. Trzy narzędzia — trzy różne miejsca,
+w które wkleja się ten sam prompt.
+
+### Przygotowanie (raz, wspólne dla wszystkich)
+
+[WPF](https://learn.microsoft.com/dotnet/desktop/wpf/) działa tylko na Windows
+— to jest ograniczenie frameworka, nie tego zadania.
+
+1. Zainstaluj [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+   i sprawdź w terminalu:
+
+   ```powershell
+   dotnet --version
+   ```
+
+   Ma się wypisać numer zaczynający się od `8.`.
+
+2. Utwórz trzy puste foldery obok siebie. Nazwy nie są przypadkowe — po
+   pokazie od razu widać, który wynik jest czyj:
+
+   ```powershell
+   mkdir fiszki-claude-code, fiszki-cursor, fiszki-antigravity
+   ```
+
+3. Zapisz prompt z poprzedniej sekcji do pliku `prompt.txt`, żeby wklejać go
+   z jednego miejsca, a nie przepisywać.
+
+### Claude Code — Fable 5
+
+[Claude Code](https://code.claude.com/docs/en/quickstart) działa w terminalu,
+nie w edytorze. Instaluje się go raz:
+
+```powershell
+winget install Anthropic.ClaudeCode
+```
+
+Potem, w folderze przeznaczonym na ten wynik:
+
+```powershell
+cd fiszki-claude-code
+claude --dangerously-skip-permissions
+```
+
+Przy pierwszym uruchomieniu poprosi o zalogowanie (potrzebne jest konto
+Claude). W sesji wpisz `/model` i wybierz Fable 5, a potem wklej prompt.
+
+Flaga `--dangerously-skip-permissions` robi dokładnie to, co mówi jej nazwa:
+agent nie pyta o nic.
+[Dokumentacja Anthropic](https://code.claude.com/docs/en/permission-modes) mówi
+wprost, że jest przeznaczona do izolowanych kontenerów i maszyn wirtualnych,
+nie do zwykłego laptopa. Na pokazie jest użyta świadomie, na potrzeby jednego
+ćwiczenia, w pustym folderze. **Jeśli powtarzasz to u siebie, uruchom `claude`
+bez tej flagi** — domyślny tryb zatwierdzania, w którym agent pyta o zgodę,
+zanim coś uruchomi, jest wolniejszy i o to właśnie chodzi.
+
+### Cursor — Opus 4.8
+
+Cursor jest edytorem (odgałęzieniem VS Code) z
+[wbudowanym agentem](https://cursor.com/docs/agent/overview).
+
+1. Otwórz folder `fiszki-cursor` (File → Open Folder).
+2. Otwórz panel agenta: **Ctrl+I**.
+3. W panelu, u dołu, wybierz model
+   [**Claude Opus 4.8**](https://cursor.com/docs/models/claude-opus-4-8).
+4. [Tryb wykonywania](https://cursor.com/docs/agent/security/run-modes): Settings → Agents → *Approvals & Execution* →
+   **Run Everything**. To jest odpowiednik flagi z Claude Code. Domyślny tryb
+   *Auto-review* uruchamia bezpieczne komendy sam, a resztę daje do oceny —
+   i przy nim zostań, gdy powtarzasz pokaz.
+5. Wklej prompt, Enter.
+
+### Antigravity — Opus 4.6
+
+Antigravity to edytor Google zbudowany wokół agentów: ma osobny widok do
+zarządzania nimi (Agent Manager) i zwykły widok edytora.
+
+1. Otwórz folder `fiszki-antigravity` jako projekt.
+2. Pod polem promptu wybierz [model](https://antigravity.google/docs/models/) **Claude Opus 4.6**.
+3. [Ustawienie wykonywania komend](https://antigravity.google/docs/agent-settings/): w ustawieniach agenta
+   *Terminal Command Auto Execution* → **Always Proceed**. Wartość domyślna, *Request Review*, pyta
+   przed każdą komendą spoza listy dozwolonych — i to jest ustawienie dla
+   ciebie.
+4. Wklej prompt, Enter.
+
+### Uruchomienie wyników
+
+Stos jest ten sam, więc wszystkie trzy wyniki uruchamia się identycznie:
+
+```powershell
+cd fiszki-claude-code    # albo fiszki-cursor, albo fiszki-antigravity
+dotnet run
+```
+
+Jeśli `dotnet run` nie działa, a agent twierdził, że sprawdził — to też jest
+wynik. Zapisz go.
 
 ## Na co patrzeć
 
 Nie patrz na to, jak szybko powstaje kod. To najmniej interesująca rzecz na
-ekranie. Patrz na te pięć:
+ekranie. Patrz na te pięć, osobno dla każdego z trzech:
 
-1. **Moment, w którym agent prosi o zgodę.** Zanim uruchomi komendę w terminalu,
-   pyta. Zwróć uwagę, jak łatwo byłoby klikać „tak" bez czytania.
+1. **Momenty, w których agent zapytałby o zgodę.** To jest ta wyłączona ramka
+   z rysunku: zgody są wyłączone, więc nie zapyta — ale komenda i tak przewija
+   się na ekranie. Policz, ile razy „tak” poszłoby bez czytania. Przy trzech
+   agentach naraz nikt nie jest w stanie przeczytać wszystkiego — i to jest
+   powód, dla którego ta flaga ma w nazwie *dangerously*.
 2. **Pierwszy błąd.** Zobaczysz, jak agent czyta komunikat i sam się poprawia.
-   To jest cała różnica między czatem a agentem.
+   To jest cała różnica między czatem a agentem. Który z trzech dostał pierwszy
+   błąd i jak długo go naprawiał?
 3. **Moment, w którym idzie w złą stronę.** Zdarzy się. Zapamiętaj, po czym to
    było widać i ile czasu minęło, zanim ktokolwiek to zauważył.
-4. **Wielkość diffu.** Ile linii kodu powstało w minutę i ile z tego zdążyłeś
+4. **Wielkość diffu.** Ile linii kodu powstało w minutę i ile z tego dało się
    przeczytać.
-5. **Co agent przyjął za oczywiste.** Wybrał bibliotekę? Nazwę? Strukturę
-   katalogów? Nikt mu tego nie kazał — po prostu założył.
+5. **Co agent przyjął za oczywiste.** Prompt celowo nie mówi, jak zapisywać
+   dane, jak liczyć powtórki ani jak surowo porównywać wpisaną odpowiedź.
+   Każdy z trzech coś wybrał. `DECISIONS.md`
+   powie, czy wybrał *świadomie*, czy tylko *jakoś wyszło* — porównaj plik z
+   tym, co jest w kodzie.
+
+### Tabela porównawcza
+
+Wypełnij ją w trakcie pokazu, nie po. Puste pole jest lepsze niż pole
+uzupełnione z pamięci.
+
+| | Claude Code / Fable 5 | Cursor / Opus 4.8 | Antigravity / Opus 4.6 |
+| --- | --- | --- | --- |
+| Czas do pierwszego `dotnet build` | | | |
+| Liczba błędów budowania po drodze | | | |
+| Czas do „skończone” | | | |
+| Czy mimo zakazu o coś zapytał? | | | |
+| Format zapisu danych | | | |
+| Algorytm powtórek (co znaczy „wróci wcześniej”) | | | |
+| Jak porównuje wpisaną odpowiedź (wielkość liter, spacje, ogonki) | | | |
+| Liczba plików `.cs` / linii kodu | | | |
+| Liczba wpisów w `DECISIONS.md` | | | |
+| Polskie znaki w interfejsie: wszystkie poprawne? | | | |
+| `dotnet run` działa u prowadzącego? | | | |
+| Co jest w README pod „nie udało się”? | | | |
 
 ## Czego pokaz nie udowadnia
 
 Uczciwie, zanim zrobi na tobie zbyt duże wrażenie:
 
-- **Zadanie jest dobrane.** Nowy, mały projekt, popularny język — czyli
-  najlepsza komórka macierzy z [poprzedniej lekcji](/moduly/01-jak-powstaje-oprogramowanie/co-model-naprawde-potrafi).
-- **Pokaz się nie powtórzy identycznie.** Model jest niedeterministyczny; drugie
-  uruchomienie da inny kod.
-- **Nie widać kosztu.** Ani czasu na przygotowanie kontekstu, ani pieniędzy.
-- **Nie widać, co będzie za miesiąc.** Czy ten kod da się utrzymać, wie się
+- Zadanie jest dobrane: nowy, mały projekt, popularny język — czyli najlepsza
+  komórka macierzy z lekcji [Co model naprawdę potrafi](/moduly/01-jak-powstaje-oprogramowanie/co-model-naprawde-potrafi).
+- Pokaz się nie powtórzy identycznie, bo model jest niedeterministyczny: ten
+  sam model, uruchomiony drugi raz, też dałby inny kod. Trzy różne wyniki z
+  jednego promptu to więc nie tylko trzy różne modele. Żeby odróżnić jedno od
+  drugiego, trzeba by puścić każdy agent kilka razy — na lekcji nie ma na to
+  czasu, na ćwiczeniach w domu jest.
+- Nie widać kosztu: ani czasu na przygotowanie kontekstu, ani pieniędzy za
+  tokeny.
+- Nie widać, co będzie za miesiąc. Czy ten kod da się utrzymać, wie się
   dopiero wtedy, gdy trzeba go zmienić.
+- To nie jest ranking modeli. Trzy narzędzia, trzy różne pętle, trzy różne
+  zestawy poleceń — zwycięzca, jeśli będzie, wygrał jako para model +
+  narzędzie.
 
-Pokaz dowodzi jednej rzeczy: **że pętla działa i jak wygląda**. Tyle wystarczy.
+Pokaz dowodzi jednej rzeczy: że pętla działa i jak wygląda — i że pod tym
+samym promptem kryją się decyzje, których nikt nie podjął. Tyle wystarczy.
 
 ## Po pokazie
 
-Rozmowa w klasie, na trzy pytania:
+Rozmowa w klasie, na cztery pytania:
 
-1. W którym momencie **ty** byś przerwał i sprawdził?
+1. W którym momencie **ty** przerwiesz i sprawdzisz?
 2. Co poszłoby nie tak, gdyby nikt nie patrzył na ekran?
-3. Które z 70% Osmaniego widzieliśmy, a których 30% nie?
+3. Które z [70% Osmaniego](https://addyosmani.com/agentic-engineering/the-70-percent-problem/)
+   widzieliśmy, a których 30% nie?
+4. Która z trzech aplikacji jest „najlepsza” — i co to słowo w ogóle tu znaczy?
+   Najładniejsza? Najkrótszy kod? Najuczciwsze `DECISIONS.md`?
+
+Po tej lekcji pętla agenta przestaje być rysunkiem: da się ją obejrzeć,
+policzyć i wpisać do tabeli, razem z decyzjami, których w prompcie nie było. Na
+pokazie trwała kilkanaście minut, w pustym folderze, przy wyłączonych zgodach.
+Następna lekcja pyta, jak z tą samą pętlą pracuje się na co dzień — nie na
+pokazie, tylko w zawodzie, przez osiem godzin, przez miesiące.
 
 ## Ćwiczenia
 
 {/* Numery zadań celowo nieprzypisane — ADR-0003, numeracja ciągła przez moduł. */}
 
 1. W trakcie pokazu notuj **czas i zdarzenie** przy każdym z pięciu punktów z
-   sekcji „Na co patrzeć". Notatka ma być z pokazu, nie z pamięci.
+   sekcji „Na co patrzeć”, osobno dla każdego agenta. Notatka ma być z pokazu,
+   nie z pamięci.
 2. Opisz w pięciu zdaniach pętlę agenta, nie zaglądając do rysunku.
-3. Wypisz trzy decyzje, które agent podjął, choć nikt mu ich nie zlecił. Przy
-   każdej dopisz, co ty byś wybrał.
+3. Weź trzy pliki `DECISIONS.md` i znajdź **jedną decyzję, którą wszystkie trzy
+   agenty podjęły inaczej**. Przy każdej wersji dopisz, jaki byłby twój wybór —
+   i dlaczego.
 4. Jedno zdanie: co takiego musiałby zrobić człowiek, żeby ten sam wynik był
    pewny, a nie prawdopodobny? (To jest pytanie o moduł o specyfikacjach — na
    razie wystarczy zgadywać.)
+5. **Spróbuj samodzielnie.** Wybierz *jedno* z trzech narzędzi
+   ([Claude Code](https://code.claude.com/docs/en/quickstart), [Cursor](https://cursor.com/docs/agent/overview), [Antigravity](https://antigravity.google/docs/getting-started/));
+   każde ma darmowy próg wejścia albo okres próbny — sprawdź aktualne warunki
+   na stronie producenta, bo zmieniają się częściej niż ta lekcja. Wykonaj
+   „Przygotowanie” i puść ten sam prompt **bez wyłączania zgód**. Zanotuj:
+   ile razy cię zapytał,
+   ile razy „tak” padło bez czytania, i czy wynik różni się od tego z pokazu.
+   Jeśli masz czas — puść to samo narzędzie drugi raz i porównaj oba wyniki ze
+   sobą. To jest test na to, ile z różnic na pokazie było modelem, a ile
+   losem.
 
 ## Źródła
 
-Stan na **2026-08-28**.
+Stan na **2026-08-29**.
 
+- [Claude Opus 4.6](https://www.anthropic.com/news/claude-opus-4-6),
+  [Claude Opus 4.8](https://www.anthropic.com/news/claude-opus-4-8),
+  [Claude Fable 5 and Claude Mythos 5](https://www.anthropic.com/news/claude-fable-5-mythos-5) — Anthropic; ogłoszenia modeli, daty i opisy
+- [Claude Code: Quickstart](https://code.claude.com/docs/en/quickstart) i
+  [Choose a permission mode](https://code.claude.com/docs/en/permission-modes) — instalacja, `/model`, znaczenie `--dangerously-skip-permissions`
+- [Cursor: Agent overview](https://cursor.com/docs/agent/overview),
+  [Run modes](https://cursor.com/docs/agent/security/run-modes),
+  [Claude Opus 4.8 in Cursor](https://cursor.com/docs/models/claude-opus-4-8) — panel agenta, tryby wykonywania, dostępność modelu
+- [Antigravity: Getting started](https://antigravity.google/docs/getting-started/),
+  [Agent settings](https://antigravity.google/docs/agent-settings/),
+  [Models](https://antigravity.google/docs/models/) — Google; projekt, ustawienie wykonywania komend, lista modeli
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) i
+  [WPF documentation](https://learn.microsoft.com/dotnet/desktop/wpf/) — Microsoft
 - [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices) — Anthropic
+- [The 70% Problem](https://addyosmani.com/agentic-engineering/the-70-percent-problem/) — Addy Osmani (Google); 70% i 30% z pytania po pokazie
 - [Agentic Coding Recommendations](https://lucumr.pocoo.org/2025/6/12/agentic-coding/) — Armin Ronacher, praktyczne uwagi z pierwszej ręki
 - [AI Blindspots](https://ezyang.github.io/ai-blindspots/) — krótkie obserwacje o tym, czego agenty nie widzą

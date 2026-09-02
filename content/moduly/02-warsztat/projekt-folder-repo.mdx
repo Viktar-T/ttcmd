@@ -1,0 +1,232 @@
+---
+title: "Projekt, folder, repozytorium"
+order: 2
+summary: "Gdzie mieszka projekt, żeby ani ty, ani agent, ani wspólny komputer w pracowni nie musieli zgadywać: jeden folder, repozytorium od pierwszego dnia i narzędzia sprawdzone poleceniem, a nie założone."
+publish: true
+---
+
+{/* Drafted 2026-09-01 from docs/content-briefs/02b-projekt-folder-repo.md.
+    TO CONFIRM before this lesson is taught — the lab-disk path where a
+    student's projects live and survive between lessons is an institutional
+    fact this repo does not own (Article V), so the lesson says it is settled
+    in class and writes no path. Also assumes the v2 install list: .NET SDK 10
+    present, standard accounts, NuGet cache warmed. */}
+
+Spróbuj czegoś, co zajmie minutę. Znajdź na dysku pliki, które twój agent
+stworzył podczas pierwszego eksperymentu — nie kartę obserwacji, bo ta leży w
+repozytorium, tylko sam kod aplikacji.
+
+Bywa, że idzie to w kilkanaście sekund. Częściej pliki są tam, gdzie
+zaproponowało narzędzie: w folderze domowym, w Dokumentach, w katalogu o
+nazwie, której nikt świadomie nie wymyślił. Przy jednym projekcie to nie
+przeszkadza. Przy trzecim projekt nie ma już adresu, tylko poszlaki — a ta
+sama trudność dotyczy agenta, który za chwilę będzie w tym folderze pracował.
+
+Ta lekcja jest o miejscu. Zanim postawimy na ekranie okno, projekt musi mieć
+adres: jeden folder, repozytorium od pierwszego dnia i pewność — sprawdzona
+poleceniem, nie założona — że narzędzia do budowania naprawdę są na tym
+komputerze. Na koniec będziesz mieć folder pusty i całkiem prawdziwy.
+
+## Jeden folder, jeden projekt
+
+Zasada jest jednozdaniowa: **jeden projekt mieszka w jednym folderze i nie
+dzieli go z niczym innym**. Powody są dwa i oba są praktyczne.
+
+Pierwszy dotyczy agenta. Kiedy otwierasz edytor „na folderze”, ten folder jest
+dla agenta całym światem: to, co w nim leży, agent widzi, a tego, co poza nim —
+nie. Folder, w którym leży pięć niepowiązanych projektów, daje mu pięć razy
+więcej do przeczytania i pięć okazji, żeby zmienić nie ten plik, o który
+chodziło. Folder z jednym projektem daje dokładnie to, co potrzebne, i nic
+poza tym.
+
+Drugi powód jest przyziemny: te komputery są wspólne. Dwie grupy, jeden dysk,
+trzydzieści kont — a praca, której nie da się jednoznacznie wskazać, prędzej
+czy później zostanie skasowana przez kogoś, kto porządkował pulpit. Gdzie
+dokładnie na dysku pracowni mają mieszkać twoje projekty, ustalamy na
+zajęciach: to zależy od tego, jak skonfigurowane są konta i co przeżywa między
+lekcjami. Zapisz sobie tę ścieżkę, kiedy padnie, i trzymaj się jej przez cały
+kurs.
+
+Nazwa folderu ma trzy wymagania, wszystkie z tego samego powodu — nazwa folderu
+trafia potem do poleceń, do adresu repozytorium i do wielu miejsc, w których
+spacja albo ogonek robią kłopot:
+
+- małe litery,
+- myślnik zamiast spacji,
+- bez polskich znaków.
+
+Projekt, który prowadzimy przez resztę tego modułu, nazywa się `pierwsze-okno`.
+Utwórz dla niego folder w umówionym miejscu — i na razie nic więcej.
+
+## Repozytorium od pierwszego dnia
+
+Repozytorium zakładasz teraz, kiedy w folderze nie ma jeszcze nic. Brzmi to
+przewrotnie: po co historia czemuś, co nie ma historii? Odpowiedź padła już w
+lekcji [Git i GitHub](/moduly/00-start/git-i-github) i dopiero teraz robi się
+konkretna — kiedy część kodu pisze AI, historia zmian przestaje być kroniką, a
+staje się narzędziem kontroli. Narzędzie kontroli musi istnieć **przed**
+pierwszą zmianą, którą trzeba skontrolować, a nie po niej.
+
+Ruchy są dokładnie te, które masz z ćwiczenia z tamtej lekcji, tylko tym razem
+nie na próbę. Załóż na GitHubie repozytorium o tej samej nazwie co folder i
+sklonuj je w umówione miejsce:
+
+```bash
+git clone adres-twojego-repozytorium
+cd pierwsze-okno
+```
+
+Potem plik, od którego zaczyna się każdy projekt na tym kursie. `README.md` jest
+odpowiedzią na pytanie „co to w ogóle jest”, zadane przez kogoś, kto trafi tu za
+pół roku — a tym kimś najczęściej będziesz ty:
+
+```markdown title="README.md"
+# pierwsze-okno
+
+Projekt z Modułu 2: pierwsza aplikacja z oknem, budowana na zajęciach.
+```
+
+I pierwszy commit, który zapisuje pusty projekt z jego opisem:
+
+```bash
+git add README.md
+git commit -m "dodaj README z opisem projektu"
+git push
+```
+
+Od tego commita obowiązuje w tym repozytorium lista rzeczy, które do niego nie
+trafiają: hasła, klucze, pliki `.env`, cudze dane osobowe. Jest na niej także
+czwarta pozycja — katalogi, które tworzy budowanie — i ta wróci do nas na końcu
+modułu, kiedy będzie już co budować.
+
+## SDK — narzędzia, którymi buduje się programy
+
+Zostaje jedna rzecz, i to taka, której nie widać. Kod sam z siebie nie jest
+programem; ktoś musi go zamienić w coś, co się uruchamia. Robi to zestaw
+narzędzi, który na tym komputerze albo jest, albo go nie ma.
+
+**SDK** (*software development kit*) to komplet narzędzi do budowania programów
+w danej technologii: kompilator, podstawowe biblioteki i polecenia, które
+uruchamiają jedno i drugie. Nas interesuje **.NET SDK** — zestaw, którym buduje
+się programy w języku C#, i ten, na którym stoi reszta tego modułu.
+
+I tu zaczyna się nawyk, na którym cały moduł się opiera: **twierdzenie o
+środowisku sprawdza się poleceniem, a nie przyjmuje na wiarę**. „Powinno być
+zainstalowane” nie jest odpowiedzią. Odpowiedzią jest to, co wypisze komputer.
+
+Polecenia wpisuje się w **terminalu** — to ta sama konsola, w której uruchamiasz
+programy w szkole, tyle że w edytorze z agentem jest zwykle w panelu na dole,
+otwartym w folderze projektu. Wpisz w nim:
+
+```bash
+dotnet --list-sdks
+```
+
+Odpowiedź wygląda mniej więcej tak — u ciebie numery i ścieżka mogą się różnić:
+
+```text
+10.0.100 [C:\program files\dotnet\sdk]
+```
+
+Pierwsza część to numer wersji, druga — folder, w którym zestaw leży. Wersja,
+o którą nam chodzi, zaczyna się od dziesiątki: .NET 10 jest obecnym wydaniem
+**LTS**, czyli takim z długim wsparciem. [Zasady wsparcia .NET](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core)
+mówią, że LTS to trzy lata poprawek od premiery; dla .NET 10, wydanego 11
+listopada 2025, oznacza to wsparcie do 14 listopada 2028 — dłużej, niż potrwa
+ten kurs, i to jest jedyny powód, dla którego akurat ta wersja nas interesuje.
+
+Jeśli polecenie nie wypisze nic albo odpowie, że nie zna komendy `dotnet`, nie
+instaluj niczego samodzielnie — na koncie uczniowskim zwykle się nie da, a to
+jest problem, który rozwiązuje się raz dla całej pracowni. Zgłoś go i zapisz na
+karcie, że na tym stanowisku nie było czym budować.
+
+Wynik wklej do `README.md`, pod opis. Za trzy tygodnie, kiedy coś przestanie się
+budować, ta jedna linijka odpowie na pierwsze pytanie, które trzeba sobie wtedy
+zadać:
+
+```bash
+git add README.md
+git commit -m "zapisz wersje SDK na stanowisku"
+git push
+```
+
+## Pusty, ale prawdziwy
+
+W folderze, który masz teraz, nie ma ani jednej linijki kodu aplikacji. Jest za
+to wszystko, czego brakowało przy pierwszym eksperymencie: adres, pod którym
+projekt leży i pod którym zostanie; historia, zaczęta zanim było co
+kontrolować; kopia poza tym komputerem; i sprawdzona — nie założona —
+odpowiedź na pytanie, czy jest tu czym budować.
+
+- **Nowy projekt zaczynaj od folderu i repozytorium**, nie od pierwszego pliku.
+  Odwrotna kolejność kosztuje pół godziny przenoszenia w tygodniu, w którym
+  akurat się spieszysz.
+- **Edytor otwieraj na folderze projektu**, nie na pulpicie i nie na całym
+  dysku. To, co widzisz w drzewku plików, widzi też agent.
+- **Każde „powinno działać” zamieniaj na polecenie.** To najtańsza rzecz w całym
+  tym module i jedyna, która działa tak samo w trzeciej klasie i w pracy.
+- **Wynik sprawdzenia zapisuj tam, gdzie się go potem szuka.** README twojego
+  projektu jest takim miejscem; własna pamięć nie jest.
+
+W następnej lekcji folder przestaje być pusty. Stanie w nim okno — najpierw
+postawione przez gotowy wzór projektu, bez udziału AI, a potem zmienione przez
+agenta na twoich oczach i za twoją zgodą, wydaną po przeczytaniu.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: zapisz zasadę o folderze i projekcie wraz z jej dwoma powodami,
+wyjaśnij w jednym zdaniu, czym jest SDK, i podaj polecenie, które dowodzi, że
+SDK jest na komputerze.
+
+</Zadanie>
+
+<Zadanie>
+
+Uruchom `dotnet --list-sdks` na swoim stanowisku i zapisz wynik. Jeśli masz
+komputer w domu, uruchom je również tam i przynieś oba wyniki. Dwa różne
+środowiska obok siebie to pierwsza rzecz, o którą pytasz, kiedy coś działa u
+kolegi, a u ciebie nie.
+
+</Zadanie>
+
+<Zadanie>
+
+Doprowadź `pierwsze-okno` do stanu, w którym: folder leży w umówionym miejscu,
+jest repozytorium na GitHubie, `README.md` mówi jednym zdaniem, czym projekt
+będzie, wynik sprawdzenia SDK jest w README, a wszystko zostało wypchnięte.
+`git status` ma być pusty. Od tego repozytorium zaczyna się następna lekcja.
+
+</Zadanie>
+
+<Zadanie title="Do kiedy?">
+
+Wejdź na stronę z zasadami wsparcia .NET i sprawdź dwie rzeczy: co dokładnie
+znaczy skrót LTS i do kiedy wspierana jest wersja, którą wypisało twoje
+polecenie. Zapisz obie odpowiedzi razem z dzisiejszą datą. Jeśli twoja wersja
+nie jest już wspierana, to też jest wynik — i wart zgłoszenia.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-01">
+
+<Zrodlo title=".NET and .NET Core Support Policy" publisher="Microsoft" date="2026" url="https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core">definicja LTS jako trzech lat wsparcia; tabela wersji z datą premiery .NET 10 (11.11.2025) i końcem wsparcia (14.11.2028); strona bez własnej daty publikacji</Zrodlo>
+
+<Zrodlo title="dotnet command — Options" publisher="Microsoft Learn" date="2026" url="https://learn.microsoft.com/dotnet/core/tools/dotnet#options">opis `--list-sdks`: wypisuje zainstalowane SDK; strona dokumentacji bez własnej daty</Zrodlo>
+
+<Zrodlo title="How to check that .NET is already installed" publisher="Microsoft Learn" date="2026" url="https://learn.microsoft.com/dotnet/core/install/how-to-detect-installed-versions">stąd postać wyniku polecenia, wraz z przykładową ścieżką; strona dokumentacji bez własnej daty</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="dokumentacja" title=".NET CLI overview" url="https://learn.microsoft.com/dotnet/core/tools/">spis wszystkich poleceń `dotnet`, z których w tym kursie użyjemy może dziesięciu — warto raz zobaczyć, jak duży jest ten zestaw i czego jeszcze można od niego chcieć</Lektura>
+
+<Lektura kind="dokumentacja" title="Pro Git (po polsku)" url="https://git-scm.com/book/pl/v2">darmowa książka o Gicie w polskiej wersji; pierwsze dwa rozdziały wystarczą na cały ten kurs, a rozdział o historii przyda się już w ostatniej lekcji tego modułu</Lektura>
+
+</CzytajDalej>

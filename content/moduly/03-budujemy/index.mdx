@@ -1,0 +1,47 @@
+---
+title: "Budujemy: pierwsze aplikacje"
+---
+
+{/* Drafted 2026-09-01 from docs/content-briefs/03-index.md, autonomous run —
+    the brief is a proposal, not an approved spec. Two of the three build apps
+    differ from course-structure-v2.3: minutnik replaces stoper, a katalog
+    replaces konwerter jednostek; reasons in the brief's Decisions. */}
+
+W twoim repozytorium uruchamia się okno i stoi za nim historia, która mówi, co
+postawił szablon, co dopisał agent i co powstało twoją ręką. Warsztat jest
+kompletny. Nie ma w nim jeszcze ani jednej aplikacji, która by cokolwiek
+robiła — okno z napisem to dowód, że narzędzia działają, nie program, z którego
+ktoś skorzysta.
+
+Ten moduł to trzy małe aplikacje, po jednej na tydzień, budowane z agentem. Nie
+są ćwiczeniami z języka C#: każda jest dobrana tak, żeby w tygodniu, w którym ją
+budujesz, jedno pojęcie stało się nie do ominięcia. Pisanie z agentem wychodzi
+ci już na tyle, żeby coś powstało. Czego jeszcze nie umiesz, to powiedzieć, co
+model naprawdę dostaje, kiedy do niego piszesz; czym prośba, która daje dobry
+wynik, różni się od tej, która daje byle jaki; gdzie mieszkają zasady, żeby nie
+trzeba było przepisywać ich w kółko; i skąd wiadomo, że to, co powstało, jest
+prawdziwe, a nie tylko ładnie wygląda.
+
+Kolejność wynika z tych czterech pytań. Najpierw minutnik z siedmioma zasadami
+naraz — rozmowa robi się długa, agent gubi po drodze jedną z nich, a lekcja
+tłumaczy dlaczego: całą rozmowę wysyła się do modelu od nowa przy każdej
+wiadomości, liczy się ją w tokenach i musi się zmieścić w oknie, które nie
+jest pamięcią. Potem notatnik zapisujący do pliku, zbudowany cztery razy z
+tego samego zadania: bez podanego formatu, z formatem, z jednym przykładem i z
+trzema — cztery pliki na dysku obok siebie pokazują, co w prośbie naprawdę
+zrobiło robotę. Potem katalog własnego zbioru — trzy ekrany, przy których
+dojrzewa zmęczenie powtarzaniem tych samych zaleceń, a zalecenia trafiają do
+jednego pliku reguł, który narzędzie dokłada za ciebie. Na koniec lekcja bez
+nowej aplikacji: bierze kod z tych trzech tygodni i pyta, jak odróżnić kod
+dobry od kodu, który tylko tak wygląda.
+
+Trzy rzeczy powtarzają się w każdym tygodniu i nie są dekoracją: dziesięć
+minut na czytanie zmian, zanim je przyjmiesz, jedna zmiana zrobiona własną
+ręką, bez agenta, i jeden wpis na karcie obserwacji. Karta jest ta sama co
+przy pierwszym eksperymencie i od tego modułu przestaje być jednorazowa —
+prowadzisz ją dalej, w tym samym pliku, aż ostatnia lekcja zastąpi ją
+dziennikiem zakładanym w repozytorium każdej aplikacji. Aplikacje są celowo
+małe — takie, które da się w tygodniu **skończyć**, a nie zacząć. Skończona
+rzecz jest warunkiem, nie ambicją: pojęcie z danego tygodnia pojawia się
+dlatego, że budowa je wymusiła, a budowa, która utknęła w połowie, nie wymusza
+niczego.

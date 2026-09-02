@@ -1,44 +1,65 @@
 ---
 title: "Vibe coding kontra inżynieria"
-order: 3
-summary: "Gdzie przebiega granica między korzystaniem z AI a udawaniem, że się programuje — i dlaczego obie strony tej granicy są potrzebne."
+order: 7
+summary: "Kiedy wolno nie czytać kodu, który napisał agent, a kiedy nie wolno — i dlaczego tę granicę wyznacza nie narzędzie, lecz to, kto poniesie koszt błędu."
 ---
 
-W lutym 2025 roku Andrej Karpathy — współzałożyciel OpenAI i były szef AI w
-Tesli — wrzucił na Twittera notatkę, która nazwała coś, co wszyscy już robili:
+Na pokazie z lekcji [Na żywo: agent buduje aplikację](/moduly/01-jak-powstaje-oprogramowanie/na-zywo-agent-buduje-aplikacje)
+zgody były wyłączone i nikt nie czytał diffów. Kod powstawał, aplikacje się
+uruchamiały — i przez kilkanaście minut nikt na sali nie programował. Czy to
+było w porządku?
 
-> Jest nowy rodzaj kodowania, który nazywam „vibe codingiem": całkowicie
+Ta lekcja jest o tym, kiedy wolno nie czytać kodu, a kiedy nie wolno — i o
+tym, że ta granica nie biegnie tam, gdzie zwykle się ją stawia. Słowo na
+to, co działo się na pokazie, istnieje od lutego 2025 roku. Nadał je Andrej
+Karpathy, współzałożyciel OpenAI i były szef AI w Tesli, w notatce
+opublikowanej na X, dawnym Twitterze — notatce, która nazwała coś, co wszyscy
+już robili:
+
+> Jest nowy rodzaj kodowania, który nazywam „vibe codingiem”: całkowicie
 > poddajesz się wibracjom, wchodzisz w wykładniczość i zapominasz, że kod w
-> ogóle istnieje. […] Zawsze klikam „Accept All", nie czytam już diffów. Kiedy
+> ogóle istnieje. […] Zawsze klikam „Accept All”, nie czytam już diffów. Kiedy
 > dostaję komunikat błędu, po prostu wklejam go bez komentarza i to zwykle
 > naprawia sprawę. Kod rośnie ponad moje zwykłe rozumienie.
 >
 > — Andrej Karpathy, [2 lutego 2025](https://x.com/karpathy/status/1886192184808149383)
 
-Warto przeczytać też ostatnie zdanie tamtego wpisu, bo prawie nikt go nie
-cytuje:
+Brzmi jak opis pokazu. Warto jednak przeczytać też
+[ostatnie zdanie tamtego wpisu](https://x.com/karpathy/status/1886192184808149383),
+bo prawie nikt go nie cytuje:
 
 > Nie jest to złe do weekendowych projektów na wyrzucenie, ale nadal całkiem
 > zabawne.
+>
+> — Andrej Karpathy, [2 lutego 2025](https://x.com/karpathy/status/1886192184808149383)
 
-**Karpathy od początku mówił, do czego to służy.** To nie było ogłoszenie nowego
-sposobu budowania oprogramowania. To był opis zabawy.
+**Karpathy od początku mówił, do czego to służy.** To nie było ogłoszenie
+nowego sposobu budowania oprogramowania. To był opis zabawy. Żeby z tego
+skorzystać, trzeba jednak najpierw odzyskać samo słowo, bo po kilku miesiącach
+znaczyło już coś innego.
 
 ## Co się stało z tym pojęciem
 
-W ciągu kilku miesięcy „vibe coding" zaczęło oznaczać w prasie i w ogłoszeniach
-o pracę po prostu „programowanie z AI". Simon Willison — twórca frameworka
-Django i jeden z najuważniejszych komentatorów tej dziedziny — postawił sprawę
-jasno:
+W ciągu kilku miesięcy „vibe coding” zaczęło oznaczać w prasie i w
+ogłoszeniach o pracę po prostu „programowanie z AI” — i to jest miejsce, w
+którym zwykle stawia się granicę: z AI albo bez. Simon Willison — twórca
+frameworka Django i jeden z najuważniejszych komentatorów tej dziedziny —
+postawił sprawę jasno:
 
-> Vibe coding nie oznacza „używania narzędzi AI do pomocy w pisaniu kodu".
-> Oznacza „generowanie kodu przy pomocy AI bez dbania o to, jaki kod powstaje".
+> Vibe coding nie oznacza „używania narzędzi AI do pomocy w pisaniu kodu”.
+> Oznacza „generowanie kodu przy pomocy AI bez dbania o to, jaki kod powstaje”.
 >
 > — Simon Willison, [1 maja 2025](https://simonwillison.net/2025/May/1/not-vibe-coding/)
 
-Ta różnica nie jest pedanterią. Jest **całą treścią tej lekcji**.
+Ta różnica nie jest pedanterią. Jest **całą treścią tej lekcji**, bo przenosi
+granicę z narzędzia na człowieka: nie „czy używasz AI”, tylko „czy dbasz o to,
+jaki kod powstaje”. A dbać można w różnym stopniu — dlatego zamiast dwóch
+obozów dostajesz oś.
 
 ## Oś, na której się poruszasz
+
+Kryterium Willisona da się narysować. Górny rząd rysunku mówi, co robisz z
+kodem; dolny — do jakiego zadania to pasuje.
 
 <svg viewBox="0 0 700 240" role="img" aria-label="Oś od vibe codingu do inżynierii wspieranej przez AI" style={{ width: "100%", height: "auto" }}>
   <defs>
@@ -79,19 +100,27 @@ Ta różnica nie jest pedanterią. Jest **całą treścią tej lekcji**.
 </svg>
 
 Nie ma tu strony dobrej i złej. Jest **dobór trybu do zadania**. Vibe coding
-przy skrypcie, który uruchomisz raz i wyrzucisz, jest rozsądny. Vibe coding przy
-aplikacji, którą ktoś będzie miał na telefonie, nie jest.
+przy skrypcie, który uruchomisz raz i wyrzucisz, jest rozsądny. Vibe coding
+przy aplikacji, którą ktoś będzie miał na telefonie, nie jest. Środek osi — na
+rysunku *AI-assisted*, czyli to, co Willison odróżnił od vibe codingu: pomoc
+AI przy kodzie, który czytasz, testujesz i rozumiesz — to zadania na tym
+kursie. Prawy koniec różni się od środka jednym słowem: *odpowiadasz*. Co ono
+znaczy w praktyce, opisał ten sam Willison.
 
 ## Drugi koniec osi
 
-W październiku 2025 Willison zaproponował nazwę dla przeciwnego bieguna —
-**vibe engineering**:
+W październiku 2025 Willison
+[zaproponował nazwę dla przeciwnego bieguna](https://simonwillison.net/2025/Oct/7/vibe-engineering/)
+— **vibe engineering**:
 
 > doświadczeni profesjonaliści przyspieszają swoją pracę przy pomocy LLM-ów,
 > pozostając dumnie i pewnie odpowiedzialni za oprogramowanie, które tworzą.
+>
+> — Simon Willison, [7 października 2025](https://simonwillison.net/2025/Oct/7/vibe-engineering/)
 
-I wypisał, co konkretnie sprawia, że praca z agentami zaczyna się opłacać.
-Przeczytaj tę listę uważnie, bo **to jest spis treści reszty tego kursu**:
+Całą robotę robi tu słowo „odpowiedzialni”. Willison wypisał też, co
+konkretnie sprawia, że praca z agentami zaczyna się opłacać. Przeczytaj tę
+listę uważnie, bo **to jest spis treści reszty tego kursu**:
 
 - automatyczne testy — solidny, kompletny i stabilny zestaw
 - planowanie z wyprzedzeniem, zanim agent zacznie pisać
@@ -106,41 +135,128 @@ Przeczytaj tę listę uważnie, bo **to jest spis treści reszty tego kursu**:
 - wyczucie, co oddać AI, a co zrobić samemu
 - zaktualizowane szacowanie czasu
 
-Zauważ, czego **nie ma** na tej liście: ani jednej sztuczki promptowej. Same
+Dwa słowa z tej listy mogą być nowe: *CI* to automatyczne budowanie i
+testowanie projektu po każdej zmianie, a *lintowanie* — automatyczne
+sprawdzanie stylu i typowych błędów w kodzie.
+
+Zauważ, czego *nie ma* na tej liście: ani jednej sztuczki promptowej. Same
 klasyczne umiejętności inżynierskie. Właśnie dlatego, że agent pracuje szybko,
 wszystko, co go otacza, musi być solidne.
+
+Lista mówi, co trzeba mieć na prawym końcu osi, ale nie mówi, kiedy musisz
+tam stać — a od tego pytania zaczęła się ta lekcja. Odpowiedź dał półtora
+roku po Karpathym ktoś, kto tę samą granicę wyznaczył niezależnie i dwa razy sprawdził
+ją na własnym kodzie.
+
+## Ta sama granica, półtora roku później
+
+Tym kimś jest DHH, którego dzień pracy znasz z poprzedniej lekcji,
+[Nowy warsztat programisty](/moduly/01-jak-powstaje-oprogramowanie/nowy-warsztat-programisty).
+W tej samej rozmowie z Lexem Fridmanem, z sierpnia 2026, wyznaczył tę granicę
+niezależnie — i definicja wyszła mu praktycznie identyczna:
+
+> vibe coding, jeśli mamy go tu zdefiniować, polega na tym, że każesz agentowi
+> zbudować dla ciebie oprogramowanie. Nie patrzysz na implementację. To dla mnie
+> jest to, co oddziela vibe coding od programowania — albo, powiedzmy, od
+> tworzenia oprogramowania przyspieszonego przez agenty.
+>
+> — DHH, [Lex Fridman Podcast #501, 51:05](https://www.youtube.com/watch?v=NYFGCESmikA&t=3065s), sierpień 2026
+
+Dwie osoby, półtora roku odstępu, jedno kryterium: **czy patrzysz na implementację.**
+Nie „ile kodu napisał model”, nie „z jakiego narzędzia korzystasz”.
+
+Ale DHH idzie dalej niż Karpathy i dorzuca myśl, której w 2025 roku jeszcze
+nikt nie stawiał tak wprost. Wszystko, czego uczy się o „ładnym kodzie”, miało
+ukryte założenie: piękny kod jest łatwiejszy do zrozumienia, prostszy i
+bardziej plastyczny — a to założenie opierało się na tym, że zmiany
+wprowadzają ludzie. Dziś, mówi DHH w tej samej rozmowie
+([1:01:16 i 1:02:03](https://www.youtube.com/watch?v=NYFGCESmikA&t=3676s)),
+bardzo opłaca się pisać systemy, z którymi agentom łatwiej się pracuje i które
+łatwiej rozwijać bez uczenia się całego kontekstu od nowa.
+
+Zwróć uwagę, co się tu *nie* zmieniło: czytelność, prostota i porządek nadal
+się opłacają. Zmienił się tylko odbiorca — czyta to teraz także agent, który
+za każdym razem zaczyna bez pamięci poprzedniej sesji. To jest, w jednym
+zdaniu, powód istnienia specyfikacji, testów i dokumentacji w dalszej części
+kursu.
+
+Definicja to jednak dopiero połowa. W 2026 roku DHH zrobił dwie rzeczy, obie
+świadomie, i o obu opowiedział — a razem wyznaczają one granicę z osi lepiej
+niż jakakolwiek definicja.
+
+**Po jasnej stronie.** Zlecił agentowi
+[napisanie własnego edytora tekstu w C++](https://www.youtube.com/watch?v=NYFGCESmikA&t=1605s)
+— języku, którego nie zna — i postanowił, że nie zajrzy do ani jednej linijki.
+Traktował program
+[jak czarną skrzynkę](https://www.youtube.com/watch?v=NYFGCESmikA&t=3238s):
+używał go, mówił, co mu się nie podoba, dostawał poprawkę. Pierwsza wersja
+powstała w dwadzieścia minut, po dwóch dniach porzucił edytor, którego używał
+wcześniej, i pisze w nowym do dziś. To jest vibe coding w czystej postaci — i
+jest w porządku, bo jedynym użytkownikiem jest on sam, a jedyną osobą, która
+poniesie koszt błędu, też.
+
+**Po ciemnej stronie.**
+[W lutym 2026 w 37signals, jego firmie, pozwolono projektantom wysyłać w ten sam sposób pull requesty do Basecampa](https://www.youtube.com/watch?v=NYFGCESmikA&t=1004s)
+— dużej, dojrzałej aplikacji, z której korzystają firmy, czyli do tej komórki
+macierzy z lekcji o danych, w której zysk jest najmniejszy: stary projekt,
+złożone zadanie. Efekt, jego słowami: razem zniszczyli architekturę systemu, a
+programiści musieli to sprzątać ręcznie. Wniosek, który z tego wyciągnął, brzmi
+dokładnie jak oś wyżej: na dużym, istniejącym kodzie trzeba być programistą,
+żeby wibrować bezpiecznie — bo trzeba wiedzieć, co się psuje.
+
+Ten sam człowiek, ten sam rok, te same narzędzia. Różnica jest tylko jedna:
+**kto poniesie koszt, jeśli kod okaże się zły.** To jest lepsze kryterium niż
+„czy czytasz kod”, bo mówi ci, *kiedy* musisz go czytać. Nie mówi, czy
+będziesz to umieć — a umiejętności potrzebne po prawej stronie osi właśnie
+zmieniły cenę.
 
 ## Co się przesunęło w wartości
 
 Kent Beck — twórca programowania ekstremalnego i autor książek o TDD, człowiek
-w zawodzie od dekad — napisał w kwietniu 2023 zdanie, które do dziś jest
-najlepszym jednozdaniowym podsumowaniem tej zmiany:
+w zawodzie od dekad — napisał w kwietniu 2023, zanim jeszcze słowo „vibe
+coding” istniało, zdanie, które do dziś jest najlepszym jednozdaniowym
+podsumowaniem tej zmiany:
 
 > Wartość 90% moich umiejętności właśnie spadła do 0 dolarów. Dźwignia
 > pozostałych 10% wzrosła 1000-krotnie. Muszę się przekalibrować.
 >
 > — Kent Beck, [18 kwietnia 2023](https://x.com/KentBeck/status/1648413998025707520)
 
-W eseju, który napisał później, uczciwie przyznaje, że **nie wie, które
-umiejętności należą do których 10%** — i że jedyny sposób, żeby się dowiedzieć,
-to próbować po trochu wielu rzeczy.
-
-To jest dobra wiadomość dla ciebie: nikt nie ma tu przewagi dziesięciu lat
+W
+[eseju, który napisał później](https://newsletter.kentbeck.com/p/90-of-my-skills-are-now-worth-0),
+uczciwie przyznaje, że **nie wie, które umiejętności należą do których 10%** —
+i że jedyny sposób, żeby się dowiedzieć, to próbować po trochu wielu rzeczy. To
+jest dobra wiadomość dla ciebie: nikt nie ma tu przewagi dziesięciu lat
 doświadczenia w czymś, co istnieje od trzech.
 
-## Uczciwy głos praktyka
-
-Armin Ronacher, twórca Flaska, podsumowując rok 2025 pracy z agentami, napisał,
-że tam, gdzie kiedyś spędzał czas w Cursorze, teraz pracuje niemal całkowicie
-„bez rąk". Ale zwrócił też uwagę na problem, który dotknie i was: **pull request
-nie niesie ze sobą wystarczającego kontekstu, żeby ocenić kod wygenerowany przez
-AI** — chciałby widzieć prompty, które doprowadziły do zmian.
-
-I jedno zdanie, które warto potraktować jako zasadę zachowania: wysyłanie do
-cudzego projektu **nieprzejrzanego kodu** jest dla utrzymującego go człowieka
-obraźliwe.
+Jedno jednak widać już w tej lekcji: po prawej stronie osi odpowiada się za
+kod, którego się nie napisało, więc bez czytania i oceniania cudzego kodu tam
+nie staniesz. A najwyraźniej widać tę umiejętność wtedy, gdy kod trafia do
+kogoś innego — bo wtedy to ten ktoś musi go ocenić.
 
 ## Zasada na ten kurs
+
+Armin Ronacher, twórca Flaska,
+[podsumowując rok 2025 pracy z agentami](https://lucumr.pocoo.org/2025/12/22/a-year-of-vibes/),
+napisał, że tam, gdzie kiedyś spędzał czas w Cursorze, teraz pracuje niemal
+całkowicie „bez rąk”. Ale zwrócił też uwagę na problem, który dotknie i ciebie:
+**pull request nie niesie ze sobą wystarczającego kontekstu, żeby ocenić kod
+wygenerowany przez AI** — chciałby widzieć prompty, które doprowadziły do
+zmian. I jedno zdanie, które warto potraktować jako zasadę zachowania:
+wysyłanie do cudzego projektu nieprzejrzanego kodu jest dla utrzymującego go
+człowieka obraźliwe.
+
+Obie uwagi mówią to samo, co dwa eksperymenty DHH, tylko od strony odbiorcy:
+koszt nieprzeczytanego kodu nie znika, lecz przechodzi na tego, kto ten kod
+dostaje. Tu domyka się pytanie z początku lekcji. Granica nie biegnie między
+„z AI” a „bez AI” — biegnie tam, gdzie koszt błędu przechodzi na kogoś innego.
+Nie czytać wolno wtedy, kiedy jedyną osobą, która zapłaci za błąd, jesteś ty:
+jak Karpathy przy projekcie na wyrzucenie i DHH przy edytorze, którego nikt
+inny nie używa. Kiedy oddajesz pracę na tym kursie, zapłaci za nią osoba,
+która ją dostanie — i ty za miesiąc, kiedy kod przestanie działać. Czy pokaz
+był w porządku, rozstrzyga więc nie liczba przeczytanych diffów, lecz to, kto
+miał tych aplikacji używać; to jest ostatnie ćwiczenie tej lekcji. Stąd
+zasada:
 
 > **Wolno ci vibe-code'ować.** Wolno ci nie czytać kodu prototypu, który
 > wyrzucisz tego samego dnia.
@@ -154,19 +270,24 @@ obraźliwe.
 {/* Numery zadań celowo nieprzypisane — ADR-0003, numeracja ciągła przez moduł. */}
 
 1. Zdefiniuj vibe coding w jednym zdaniu, własnymi słowami, tak żeby definicja
-   wykluczała „programowanie z pomocą AI". Porównaj ze zdaniem Willisona.
+   wykluczała „programowanie z pomocą AI”. Porównaj
+   [ze zdaniem Willisona](https://simonwillison.net/2025/May/1/not-vibe-coding/).
 2. Wypisz z listy vibe engineeringu trzy punkty, których dziś jeszcze nie umiesz.
    Zachowaj tę listę — wrócimy do niej pod koniec roku.
 3. Zrób celowo jedną rzecz w trybie vibe coding: poproś model o mały skrypt,
    nie czytaj kodu, uruchom. Potem przeczytaj go i wypisz wszystko, czego nie
    rozumiesz. Ta lista jest właściwym wynikiem ćwiczenia.
-4. Zadanie na myślenie: Kent Beck mówi, że nie wie, które 10% umiejętności
-   zyskało na wartości. Napisz trzy zdania o tym, które umiejętności **twoim
+4. Zadanie na myślenie: Kent Beck [mówi, że nie wie, które 10% umiejętności
+   zyskało na wartości](https://newsletter.kentbeck.com/p/90-of-my-skills-are-now-worth-0). Napisz trzy zdania o tym, które umiejętności **twoim
    zdaniem** są w tych 10% i dlaczego.
+5. Wróć do trzech aplikacji z pokazu. Na osi z tej lekcji zaznacz, gdzie był
+   pokaz (podpowiedź: zgody były wyłączone i nikt nie czytał diffów). Potem
+   napisz w dwóch zdaniach, co musiałoby się zmienić, żeby tę samą aplikację
+   przesunąć na prawy koniec osi — i kto by wtedy ponosił koszt błędu.
 
 ## Źródła
 
-Stan na **2026-08-28**. Wpisy na X mogą wymagać zalogowania — treść oryginalnego
+Stan na **2026-08-29**. Wpisy na X mogą wymagać zalogowania — treść oryginalnego
 wpisu Karpathy'ego jest cytowana także w tekście Willisona.
 
 - [Andrej Karpathy, wpis definiujący vibe coding](https://x.com/karpathy/status/1886192184808149383) — 2.02.2025
@@ -175,3 +296,4 @@ wpisu Karpathy'ego jest cytowana także w tekście Willisona.
 - [Kent Beck, wpis o 90% i 10%](https://x.com/KentBeck/status/1648413998025707520) — 18.04.2023 — oraz esej [90% of My Skills Are Now Worth $0](https://newsletter.kentbeck.com/p/90-of-my-skills-are-now-worth-0)
 - [A Year Of Vibes](https://lucumr.pocoo.org/2025/12/22/a-year-of-vibes/) — Armin Ronacher, 22.12.2025
 - [AI Blindspots](https://ezyang.github.io/ai-blindspots/) — zbiór krótkich, praktycznych obserwacji o pracy z LLM-ami
+- [DHH: Future of Programming, AI, Agentic Engineering, Vibe Coding & Linux](https://www.youtube.com/watch?v=NYFGCESmikA) — Lex Fridman Podcast #501, sierpień 2026; sekcja *Vibe coding vs agentic engineering* od 47:05 i *The end of manual programming* od 1:00:06; o edytorze jako czarnej skrzynce od 26:45 i 53:58, o Basecampie w lutym 2026 od 16:44. Pełny zapis rozmowy: [lexfridman.com/dhh-2-transcript](https://lexfridman.com/dhh-2-transcript/)

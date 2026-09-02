@@ -4,35 +4,35 @@ order: 3
 summary: "Git w zakresie, w jakim będziesz go używać na tym kursie: zapis pracy, historia zmian i wysłanie kodu na GitHub."
 ---
 
-Git jest systemem kontroli wersji. W praktyce oznacza to trzy rzeczy: **nie
-tracisz pracy**, **widzisz, co się zmieniło i kiedy**, a jeśli coś zepsujesz —
+Na tym kursie pracujemy inaczej niż w zeszycie: kod powstaje małymi krokami,
+część z nich okazuje się ślepą uliczką, a wracanie do stanu sprzed godziny musi
+być tanie i nudne — nie dramatyczne. Narzędziem, które to umożliwia, jest Git,
+system kontroli wersji. W praktyce oznacza to trzy rzeczy: **nie tracisz
+pracy**, **widzisz, co się zmieniło i kiedy**, a jeśli coś zepsujesz —
 **wracasz do wersji, która działała**.
+
+Jest jeszcze drugi powód, żeby używać Gita, i zrozumiesz go w pełni dopiero w
+module o specyfikacjach. Kiedy część kodu pisze AI, historia zmian
+przestaje być kroniką, a staje się **narzędziem kontroli**: to w niej widać, co
+dokładnie zostało dopisane, zanim zdecydujesz, czy to zostawiasz.
 
 Ta lekcja nie jest kursem Gita. Jest zestawem komend, które będziesz wykonywać
 na każdych zajęciach, i jednym pojęciem, które będzie ci potrzebne później:
-gałęzią.
+gałęzią. Czytając, zwracaj uwagę na jedno: Git istnieje po to, żeby cofanie
+było tanie, ale paru rzeczy, o których tu mowa, cofnąć się nie da — przy nich
+zwolnij.
 
 {/* TO CONFIRM (Article V; open decision #4 in content-research/course-structure-v1.md):
     whether students may create third-party accounts for classwork, whether
     guardian consent is required for anyone under 18, and whether the school
     e-mail address may be used. The "Konto na GitHubie" section assumes yes. */}
 
-## Po co nam Git na tym kursie
-
-Bo pracujemy inaczej niż w zeszycie. Kod powstaje małymi krokami, część z nich
-okazuje się ślepą uliczką, a wracanie do stanu sprzed godziny musi być tanie i
-nudne — nie dramatyczne.
-
-Jest jeszcze drugi powód, który zrozumiesz w pełni dopiero w module o
-specyfikacjach. Kiedy część kodu pisze agent, historia zmian przestaje być
-kroniką, a staje się **narzędziem kontroli**: to w niej widać, co dokładnie
-zostało dopisane, zanim zdecydujesz, czy to zostawiasz.
-
 ## Konto na GitHubie
 
-GitHub to serwis, w którym trzymamy repozytoria — czyli projekty prowadzone w
-Gicie. Konto osobiste jest bezpłatne i obejmuje nielimitowaną liczbę
-repozytoriów publicznych i prywatnych.
+Zanim wpiszesz pierwszą komendę, potrzebujesz miejsca, do którego będziesz
+wysyłać pracę. GitHub to serwis, w którym trzymamy repozytoria — czyli projekty
+prowadzone w Gicie. Konto osobiste jest bezpłatne i obejmuje nielimitowaną
+liczbę repozytoriów publicznych i prywatnych.
 
 Przy zakładaniu konta zwróć uwagę na jedną rzecz, bo później trudno ją cofnąć:
 **adres e-mail zapisany w commicie zostaje w historii na zawsze.** Jeśli
@@ -59,7 +59,7 @@ Sprawdź, czy się zapisało:
 git config --global --list
 ```
 
-Jeśli włączyłeś ochronę adresu e-mail, w drugiej komendzie wpisz adres
+Jeśli masz włączoną ochronę adresu e-mail, w drugiej komendzie wpisz adres
 techniczny, który GitHub pokazuje w ustawieniach konta — nie swój prywatny.
 
 ## Cztery komendy, których używasz codziennie
@@ -86,7 +86,7 @@ git add .
 
 Pierwsza wersja dodaje jeden plik. Druga — wszystko, co się zmieniło. Druga
 jest wygodna i właśnie dlatego niebezpieczna: to nią najłatwiej wrzucić do
-repozytorium coś, czego nie chciałeś (patrz niżej).
+repozytorium coś, czego nie chcesz (patrz niżej).
 
 ### `git commit` — zapisuję punkt w historii
 
@@ -95,7 +95,7 @@ git commit -m "dodaj obsluge przycisku zapisu"
 ```
 
 Commit to zapisany stan projektu wraz z opisem. Opis pisz w trybie
-rozkazującym i po tym, **co robi zmiana**, a nie jakim plikiem ruszyłeś.
+rozkazującym i po tym, **co robi zmiana**, a nie po tym, który plik się zmienił.
 `popraw` i `zmiany` to nie są opisy — za miesiąc nic z nich nie wyczytasz.
 
 Jeden commit powinien zawierać jedną skończoną rzecz. Jeśli w opisie musisz
@@ -155,7 +155,16 @@ zostaje w repozytorium, nawet jeśli plik później usuniesz.**
   repozytorium to nie jest twoja decyzja do podjęcia.
 
 Do wykluczania plików służy `.gitignore`. Do bezpieczeństwa wrócimy osobno —
-tutaj chodzi tylko o to, żebyś do tego czasu nie zrobił czegoś nieodwracalnego.
+tutaj chodzi tylko o to, żeby do tego czasu nie zdarzyło ci się nic
+nieodwracalnego.
+
+To całe minimum: jednorazowa konfiguracja, cztery komendy na każdych zajęciach,
+gałąź, kiedy nie chcesz ruszać tego, co działa, i lista powyżej. Od teraz
+cofanie jest tanie, ale to, co raz trafiło do historii, zostaje w niej —
+dlatego adres e-mail ustawiasz przed pierwszym commitem, a lista rzeczy,
+których nie wrzucamy, jest krótka i bez wyjątków. Git wróci jeszcze w dwóch
+rolach, o których była tu mowa: jako narzędzie kontroli nad tym, co dopisało
+AI, i jako bramka, którą stanie się pull request.
 
 ## Ćwiczenia
 

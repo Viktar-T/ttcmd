@@ -1,0 +1,264 @@
+---
+title: "Budowa 3: reguły zamiast powtarzania"
+order: 3
+summary: "Trzeci tydzień, trzeci projekt i te same osiem zdań przepisywanych do każdej nowej rozmowy. Lekcja o tym, gdzie zasady projektu mają mieszkać, żeby narzędzie dokładało je za ciebie — i dlaczego „wklej wszystko” nie jest odpowiedzią."
+publish: true
+---
+
+{/* Drafted 2026-09-01 from docs/content-briefs/03c-budowa-3-reguly-projektu.md,
+    autonomous run — brief unapproved. TO CONFIRM on the lab machine before
+    teaching: that the installed editor really reads AGENTS.md from the project
+    root. If it uses only its own file name, section „Plik reguł” names that
+    file first and the open standard becomes its second paragraph. */}
+
+Policz, ile razy w ciągu dwóch ostatnich tygodni poszło do agenta zdanie
+„interfejs po polsku, nazwy w kodzie po angielsku”. Do tego „bez dodatkowych
+bibliotek” i format zapisu z notatnika. Trzy zdania, przepisywane do każdej
+nowej rozmowy, w dwóch projektach.
+
+Dlaczego tak jest, wiadomo od pierwszej lekcji tego modułu: model nie pamięta
+niczego między zapytaniami, a wątek, w którym te zasady padły, został w
+poprzednim tygodniu. Wyjaśnienie jest jednak tylko wyjaśnieniem. Przepisywanie
+w kółko nie może być odpowiedzią, bo dzisiejsza aplikacja ma trzy ekrany, czyli
+co najmniej trzy okazje, żeby te same trzy zdania napisać jeszcze raz.
+
+Pytanie na dziś jest więc praktyczne: **gdzie mają mieszkać zasady projektu,
+żeby narzędzie dokładało je do każdego zapytania samo?**
+
+## Katalog: pierwszy ekran i lista zasad
+
+Budujemy katalog własnego zbioru — filmów, książek, gier planszowych albo
+czegokolwiek, co się zbiera. Zaczynasz tak jak dwa razy wcześniej: nowy
+folder, `dotnet new avalonia.app -o katalog`, repozytorium i pierwszy commit z
+samym szablonem. Dane leżą w zwykłym pliku tekstowym, który tworzysz
+samodzielnie — `dane/pozycje.txt` — po jednej pozycji w linii, rozdzielone
+średnikiem:
+
+```text title="dane/pozycje.txt"
+Diuna;2021;8
+Ronja, córka zbójnika;1981;10
+Osada;2023;6
+```
+
+Aplikacja ma trzy ekrany: lista pozycji, szczegóły wybranej pozycji i
+formularz dodawania nowej. Trzy ekrany to dzisiejsza miara skończonej roboty;
+usuwanie i wyszukiwanie są dodatkiem dla tych, którym zostanie czas. Jedna
+decyzja techniczna zapada z góry, żeby nie zjadła tygodnia: wszystko piszemy
+wprost w kodzie ekranu, bez żadnego automatycznego łączenia danych z
+kontrolkami, a przełączanie ekranów niech agent zrobi najprościej, jak umie —
+jednym oknem, w którym podmienia się zawartość. Porządny sposób budowania
+okien jest tematem Modułu 5 i wtedy zobaczysz, czym się różni.
+
+Zbuduj pierwszy ekran tak jak dotąd, ale z jedną nową czynnością: **zapisuj
+każdą zasadę w momencie, w którym ją wypowiadasz.** Nie po lekcji, nie z
+pamięci — na bieżąco, w pliku tekstowym obok. Po pierwszym ekranie lista będzie
+miała u większości sześć do dziesięciu pozycji i będzie wyglądać mniej więcej
+tak: interfejs po polsku, nazwy w kodzie po angielsku, jeden plik na ekran,
+żadnych dodatkowych bibliotek, dane wyłącznie z pliku w `dane/`, wszystko w
+kodowaniu UTF-8, bez zmian w plikach, o których nie było mowy.
+
+To nie jest lista życzeń. To jest lista rzeczy, które i tak powiesz — jedyne
+pytanie brzmi, ile razy.
+
+## Plik reguł: jedno miejsce zamiast dziesięciu wiadomości
+
+Zasady projektu zapisuje się w pliku, który leży w głównym folderze
+repozytorium i nazywa się `AGENTS.md`. To zwykły tekst — ten sam Markdown, co
+w README twojego projektu z poprzedniego modułu — i nie ma w nim żadnej
+składni do nauczenia.
+
+Format nie jest wymysłem tego kursu. `AGENTS.md` to [otwarty, wspólny zapis
+instrukcji dla agentów kodujących](https://agents.md/), opisywany przez samych
+autorów jako „README dla agentów”: narzędzie, które go obsługuje, czyta ten
+plik i dokłada jego treść do tego, co wysyła modelowi. [Powstał w OpenAI w
+sierpniu 2025 roku, a od grudnia tego samego roku opiekuje się nim fundacja
+przy Linux
+Foundation](https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation),
+razem z kilkoma innymi standardami tej branży. Praktyczny skutek jest taki, że
+ten sam plik rozumie więcej niż jedno narzędzie — a to dokładnie ta cecha, o
+którą chodziło w lekcji o tym, jak nie wypaść z obiegu, i to samo pytanie,
+które tamta lekcja kazała zadawać nowemu narzędziu: czy obsługuje pliki reguł.
+Sprawdź w dokumentacji **swojego** edytora, czy czyta akurat ten plik, czy
+własny o innej nazwie. Jest na to dzisiejsze ćwiczenie.
+
+Napisz swój, z listy zebranej przed chwilą:
+
+```markdown title="AGENTS.md"
+# Katalog — zasady projektu
+
+- Interfejs po polsku, nazwy plików, klas i metod po angielsku.
+- Jeden ekran to jeden plik `.axaml` i jeden plik `.axaml.cs`.
+- Bez dodatkowych bibliotek — tylko to, co daje szablon.
+- Dane wczytujemy wyłącznie z pliku `dane/pozycje.txt`, format `tytuł;rok;ocena`.
+- Wszystkie pliki w UTF-8.
+- Nie zmieniaj plików, o które nie było prośby.
+- Krótkie metody: jedna rzecz, jedna metoda.
+```
+
+Dlaczego to w ogóle działa? Bo treść tego pliku dokłada się do zapytania tak
+samo jak przeczytane pliki i cała dotychczasowa rozmowa. Mechanizm jest ten
+sam co w pierwszej lekcji modułu — i pierwszy raz działa na twoją korzyść:
+skoro i tak wszystko jedzie od nowa przy każdej wiadomości, niech jedzie tam
+również to, czego nie chcesz powtarzać.
+
+Plik reguł trafia do repozytorium i jest zwykłym commitem. W przeciwieństwie do
+katalogów `bin/` i `obj/`, które ignorujesz od poprzedniego modułu, tu jest
+odwrotnie: to jedna z niewielu rzeczy w projekcie, w której każde słowo napisał
+człowiek.
+
+## Drugi ekran, świeża sesja
+
+Teraz eksperyment, i tym razem naprawdę warto go zrobić uczciwie.
+
+Zamknij dotychczasowy wątek. Otwórz **nowy**, i poproś o drugi ekran — widok
+szczegółów jednej pozycji — **nie powtarzając ani jednej zasady**. Jedno
+zdanie o tym, co ma powstać, i tyle.
+
+Kiedy agent skończy, przejrzyj wynik z listą reguł w ręku i zaznacz przy każdej:
+dotrzymana czy nie. Wynik bywa mieszany i to jest dokładnie ta informacja, po
+którą tu przyszliśmy. Zasady złamane nie są dowodem, że plik nie działa — są
+dowodem, że **ta konkretna zasada jest źle napisana**.
+
+Poprawiaj więc nie głośniej, tylko dokładniej:
+
+- „Kod ma być porządny” nie jest regułą, bo nic nie znaczy. „Metoda nie
+  dłuższa niż dwadzieścia linii” jest.
+- „Nie używaj bibliotek” bywa rozumiane jako „nie pisz nic od zera”, co nie
+  jest tym samym. Napisz, o co chodzi: „nie dodawaj do projektu niczego, czego
+  nie było w szablonie”.
+- Reguła, której złamania nie umiesz zauważyć w diffie, jest życzeniem, nie
+  regułą.
+
+Zrób commit z poprawionym plikiem i wracaj do budowania. Trzeci ekran —
+formularz dodawania — poproś znowu w świeżej rozmowie, znowu bez powtarzania
+zasad. Różnica między drugim a trzecim podejściem to jest miara tego, ile
+zysku dał ci ten plik.
+
+## Dlaczego „wklej wszystko” nie działa
+
+Skoro model dostaje tylko to, co mu się wyśle, nasuwa się prosty pomysł:
+wysłać mu wszystko. Cały projekt, wszystkie pliki, do każdej wiadomości.
+
+Nie działa to z dwóch powodów i oba znasz. Po pierwsze, wszystko musi się
+zmieścić w oknie kontekstu, a projekt rośnie szybciej niż okno. Po drugie —
+i to jest ważniejsze — im więcej nieistotnego tekstu jedzie razem z prośbą,
+tym mniejszą częścią zapytania są twoje zasady i twoje pytanie. Ten sam
+rozwadniający efekt, który psuł długie rozmowy w pierwszej lekcji modułu,
+działa tu od pierwszej wiadomości.
+
+Narzędzia radzą sobie inaczej i każde po swojemu; szczegóły są u każdego
+producenta inne i zmieniają się co kilka miesięcy, więc nie ma sensu ich
+zapamiętywać. Wspólny schemat jest jednak od lat ten sam: zamiast wysyłać
+projekt w całości, najpierw poszukać w nim fragmentów pasujących do pytania i
+dołączyć do prośby tylko je. Ten schemat ma nazwę — [*RAG*, po angielsku
+*retrieval-augmented generation*](https://arxiv.org/abs/2005.11401), czyli
+generowanie wspomagane wyszukiwaniem; brzmi poważnie, a jest prosty: najpierw
+znajdź, potem wklej znalezione do prośby, potem generuj. Pytanie „czy
+indeksuje projekt”, które lekcja o niewypadaniu z obiegu kazała zadawać
+każdemu nowemu narzędziu, dotyczy właśnie tego.
+
+Szczegóły są u każdego producenta inne i zmieniają się co kilka miesięcy,
+więc nie ma sensu ich zapamiętywać. Zapamiętaj konsekwencję: **wskazuj pliki,
+zamiast je wklejać**, a plik reguł trzymaj krótki, bo on akurat jedzie w
+komplecie za każdym razem.
+
+## Co należy do reguł, a co do prośby
+
+Granica jest jedna i łatwo ją sprawdzić: **czy powiem to jeszcze w trzech
+kolejnych prośbach?**
+
+Jeśli tak — to jest zasada projektu i jej miejsce jest w pliku. Jeśli nie — to
+jest treść zadania i jej miejsce jest w wiadomości. „Nazwy po angielsku”
+dotyczy całego projektu. „Zrób formularz dodawania z polem na rok wydania”
+dotyczy dzisiejszej godziny i w pliku reguł byłoby śmieciem.
+
+Z tego wynika rzecz, która wygląda na drobiazg, a nie jest: **plik reguł musi
+być krótki**. Nie z estetyki — z arytmetyki, którą liczyliśmy w pierwszej
+lekcji. Reguły jadą do modelu przy każdym zapytaniu, więc trzy strony zaleceń
+kosztują przy każdej wiadomości i rozwadniają dokładnie tak samo jak wklejony
+projekt. Kilkanaście linijek, z których każda została przynajmniej raz złamana
+i poprawiona, jest warte więcej niż regulamin napisany z wyobraźni.
+
+Ten plik jest też pierwszą rzeczą w tym kursie napisaną **dla maszyny, a
+czytaną przez człowieka**. Reguły projektu to jeszcze nie specyfikacja — nie
+mówią, co aplikacja ma robić, tylko jak ma być zrobiona. Od pisania tego
+pierwszego zaczyna się moduł o specyfikacjach, następny w kolejności.
+
+## Trzy ekrany i kilkanaście linijek
+
+Odpowiedź na pytanie z początku lekcji leży w twoim repozytorium i ma
+kilkanaście linijek. Zasady przestały być czymś, co się pamięta i przepisuje,
+a stały się plikiem, który narzędzie dokłada za ciebie — i który przy okazji
+mówi każdemu, kto otworzy ten projekt, jak się w nim pracuje.
+
+- **Regułę pisz wtedy, gdy wypowiadasz ją drugi raz.** Nie wcześniej, bo
+  zgadujesz, i nie piąty raz, bo to już strata czasu.
+- **Sprawdzaj reguły świeżą sesją.** To jedyny uczciwy test: rozmowa bez
+  historii pokazuje dokładnie tyle, ile jest w pliku.
+- **Złamana reguła to reguła do przepisania**, nie do powtórzenia głośniej.
+- **Krótko.** Każda linijka jedzie do modelu za każdym razem, więc każda musi
+  na to zasłużyć.
+
+Masz trzy aplikacje i trzy repozytoria. Umiesz powiedzieć, co dostaje model,
+jak go poprosić i gdzie trzymać to, czego nie chcesz powtarzać. Nie umiesz
+jeszcze jednego, i to jest jedyna rzecz z tej listy, której nie da się załatwić
+lepszym narzędziem: sprawdzić, czy to, co przyszło, jest prawdą. O tym jest
+ostatnia lekcja tego modułu.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: po co jest plik reguł — w jednym zdaniu, w którym pada słowo
+„zapytanie”; dwie rzeczy, które do niego należą, i dwie, które należą do
+zwykłej prośby.
+
+</Zadanie>
+
+<Zadanie title="Świeża sesja, drugi raz">
+
+Po poprawieniu pliku reguł otwórz jeszcze jedną nową rozmowę i poproś o drobną
+zmianę w gotowym ekranie, znowu bez powtarzania czegokolwiek. Zaznacz przy
+każdej regule, czy została dotrzymana, i zapisz na karcie, ile ich było za
+pierwszym razem, a ile teraz.
+
+</Zadanie>
+
+<Zadanie>
+
+Skończ katalog do trzech działających ekranów, z plikiem `AGENTS.md` w
+repozytorium, w którym każda linijka została wcześniej wypowiedziana co
+najmniej dwa razy. Każdą zmianę agenta przeczytaj, zanim ją przyjmiesz —
+dziesięć minut na czytanie zmian należy do każdego tygodnia tego modułu. Jedną
+zmianę zrób własną ręką, bez agenta. Wypchnij wszystko.
+
+</Zadanie>
+
+<Zadanie title="Jak to nazywa twój edytor">
+
+Znajdź w dokumentacji swojego edytora, jak nazywa się u niego plik z zasadami
+projektu, gdzie musi leżeć i czy czyta `AGENTS.md`. Zapisz link i datę. Porównaj
+z osobą, która pracuje w drugim narzędziu — jeśli plik jest ten sam, macie
+odpowiedź, dlaczego warto było uczyć się kategorii, a nie produktu.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-01">
+
+<Zrodlo title="AGENTS.md" publisher="agents.md / Agentic AI Foundation" date="2026-09-01" url="https://agents.md/">otwarty format instrukcji dla agentów kodujących, opisywany jako „a README for agents”; strona podaje, że jest używany przez ponad 60 tysięcy projektów otwartych i że opiekuje się nim Agentic AI Foundation; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="Linux Foundation Announces the Formation of the Agentic AI Foundation" publisher="The Linux Foundation" date="2025-12-09" url="https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation">powstanie fundacji i przekazanie jej `AGENTS.md` przez OpenAI; w tekście data pierwszej publikacji formatu — sierpień 2025</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="dokumentacja" title="AGENTS.md — przykłady" url="https://agents.md/">na dole strony leżą prawdziwe pliki reguł z dużych projektów otwartych; warto zobaczyć, jak krótkie są w praktyce i jak mało w nich ogólników</Lektura>
+
+<Lektura kind="artykul" title="Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks" url="https://arxiv.org/abs/2005.11401">praca, w której nazwano RAG; pierwsze dwie strony wystarczą, żeby zobaczyć, że pomysł „najpierw znajdź, potem odpowiedz” jest starszy od dzisiejszych edytorów</Lektura>
+
+</CzytajDalej>
