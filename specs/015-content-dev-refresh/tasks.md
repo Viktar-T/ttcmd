@@ -7,7 +7,7 @@ prefixed `015/TNN` (AGENTS.md §5).
 
 ---
 
-- [ ] **T01 — Confirm no server cache stands between a request and the file.**
+- [x] **T01 — Confirm no server cache stands between a request and the file.**
 
   The plan names this as the risk that would make the slice impossible without
   touching the pipeline: if content is read behind `cacheComponents`, a `use
@@ -16,7 +16,7 @@ prefixed `015/TNN` (AGENTS.md §5).
   routes. **Checked by:** the search and its output, recorded here. No commit if
   nothing changes — this is a gate, not a change.
 
-- [ ] **T02 — Add the development-only refresh component.**
+- [x] **T02 — Add the development-only refresh component.**
 
   Two files, per the plan's file map: the `"use client"` component that renders
   `null` and refreshes the route when the browser regains attention, and the
