@@ -136,13 +136,20 @@ No request of any kind on return, let alone an RSC request.
 
 ## 8 — With scripting absent
 
-The component renders `null` and adds no element to the document, so a page
-without JavaScript has nothing of this slice in it. On a lesson page and a
-module page in development the error console is empty:
+**Met in substance; the evidence is weaker than the criterion asks for, and this
+says so rather than dressing it up.** The component renders `null` and puts no
+element in the document, so a page without JavaScript contains nothing of this
+slice and has nothing that could fail. What was actually observed is the error
+console on a lesson page and a module page in development, with scripting
+enabled:
 
 ```
 read_console_messages(onlyErrors) → No console logs.
 ```
+
+Scripting was never switched off, because this run's browser offers no control
+for it. The closing review reached the same verdict by the same reasoning and
+recorded it as an evidence gap, not a correctness gap.
 
 ## 9 — What the diff touches
 
@@ -164,4 +171,23 @@ all in Viktar's browser — is a judgement this run cannot make. Left unchecked.
 
 ## 11 — The closing review
 
-Recorded in the final report of the run.
+Carried out in a fresh subagent context against `spec.md` and the diff from the
+slice's base commit. It reports **no gap that affects correctness or the
+criteria** and no scope violation.
+
+It did not take criterion 7 on trust, and it was right not to: the wrapper's
+`await import()` stands *after* an early `return null`, not syntactically inside
+a guarded block, and a bundler is free to keep a lazy chunk for an `import()` it
+cannot prove dead. It decompiled the production build instead. The wrapper
+compiles to `async function k(){return null}`; the server chunk contains no
+`import(` and no reference to the client module; no emitted client file mentions
+it or the event name. One production source map carries the wrapper's own text
+in its `sourcesContent`, which is not served to a reader's page. The comment in
+`components/dev-content-refresh.tsx` was corrected to make that argument
+explicitly, because the version it replaced would have misled the next person
+reasoning about why this is safe.
+
+Three process deviations it recorded, none affecting correctness, all noted in
+`docs/sdd-journal.md`: T05 was checked off inside the T04 commit rather than
+getting one of its own, `015/T00` prefixes two commits, and T01's evidence lives
+in a commit message rather than in `tasks.md`.

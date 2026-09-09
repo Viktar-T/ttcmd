@@ -667,3 +667,63 @@ in the reflection sections.
 - **Left open for a human eye:** whether the module page and a lesson page now
   read as the same site. Open `/moduly/01-jak-powstaje-oprogramowanie` at
   1280 px or wider and click `1b`.
+
+---
+
+## Slice 015 — the development-time content refresh
+
+**Agent notes** *(factual, appended by agents)*
+
+- **The slice started as a bug report and turned out not to be a bug.** Viktar
+  edited a lesson in his editor, watched `localhost:3000`, and saw nothing
+  change. The file was correct and the dev server was already serving the new
+  text on every fresh request. What was missing was any reason for the browser
+  to ask again: content is read from disk per request, so no route has a link
+  to a lesson file and hot reloading never fires for a content edit. Diagnosed
+  by loading the page, editing a heading with the page open, and watching it
+  stay unchanged for six seconds — then reloading and seeing the edit.
+- **Run autonomously on Viktar's instruction**, with both things AGENTS.md §2
+  requires: the plan written by a subagent whose only inputs were
+  `constitution.md`, `AGENTS.md` and this slice's `spec.md`, and the closing
+  diff reviewed by a second subagent. Nothing here is approved.
+- **The blind plan reported the spec sufficient and got the mechanism right.**
+  It guessed `components/dev/`; the tree is flat, so the files took a `dev-`
+  prefix instead. It also insisted on a gate before any code — check that no
+  `cacheComponents`, `use cache` or route `revalidate` sits between a request
+  and the file — which was run as T01 and passed. That gate was worth having:
+  had it failed, the slice would have been impossible without touching the
+  pipeline, which the spec forbids.
+- **The verification was run against a browser that cannot alt-tab.** The
+  embedded pane never receives an operating-system focus transition, and
+  switching tabs inside it does not change `document.visibilityState`. The
+  return was therefore produced by dispatching the same events at the same
+  targets, which exercises the handler, the guard, the deduplication and the
+  refresh, but not the OS delivering them. Stated at the top of
+  `verification.md` rather than buried, and folded into the criterion left for
+  a human eye.
+- **The closing review did the one thing that mattered: it distrusted a
+  comment.** The wrapper's `await import()` stands after an early `return null`,
+  not syntactically inside a guarded block, and a bundler may keep a lazy chunk
+  for an `import()` it cannot prove dead — so "the import is inside the guard"
+  was both inaccurate and the wrong argument. The review decompiled the
+  production build instead: the wrapper compiles to `async function
+  k(){return null}`, no emitted client chunk carries the component, and no
+  request is made on return. The comment was rewritten to make the real
+  argument, which is that the build was checked and the criterion is what
+  catches it if that ever changes.
+- **Three process deviations, recorded because Article II says an unrecorded
+  shortcut is the only real failure here.** T05 was checked off inside the T04
+  commit instead of getting one of its own — one task, one commit, broken once.
+  `015/T00` prefixes two commits, the spec and then the plan-plus-tasks; neither
+  is a numbered task, but the same ID now names two commits. T01 was a gate that
+  changed nothing, so its evidence lives in the body of the `015/T02` commit
+  message rather than in `tasks.md`.
+- **Criterion 8 is met in substance and thin on evidence.** Scripting was never
+  actually switched off; the run's browser offers no control for it. The
+  component renders `null`, so a page without JavaScript contains nothing of
+  this slice, and the review agreed the reasoning holds — but the record now
+  says which of those two things was observed.
+- **Left open for a human eye:** alt-tab from the editor back to the browser
+  once. That single attempt closes both halves of what this run could not
+  reach — whether the operating system delivers the event at all, and whether
+  the refresh is invisible enough not to lose the line being edited.

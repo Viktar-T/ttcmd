@@ -55,3 +55,10 @@ prefixed `015/TNN` (AGENTS.md §5).
 
 Criterion 10 is a human-eye judgement (AGENTS.md §3) and is not closable by the
 run that builds the slice. Criterion 11 is the closing fresh-context review.
+
+**Handoff / deviations.** T05's box was checked and its evidence written inside
+the `015/T04` commit rather than getting a commit of its own — one task, one
+commit, broken once and recorded in `docs/sdd-journal.md` rather than tidied
+away. T01 was a gate that changed no file, so its evidence lives in the body of
+the `015/T02` commit message. The closing review's corrections — the wrapper's
+comment and two overclaims in `verification.md` — are in the `015/T06` commit.
