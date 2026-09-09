@@ -28,7 +28,7 @@ prefixed `015/TNN` (AGENTS.md §5).
   file map. **Checked by:** `npm run lint` and `npm run build`, both clean, with
   the component unused at this point.
 
-- [ ] **T03 — Mount it in the root layout.**
+- [x] **T03 — Mount it in the root layout.**
 
   Last child of `<body>`, after the existing children. Verify first that the
   root layout is a Server Component and is the file rendering `<html>` and

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { mono, sans } from "./fonts";
 import { SiteHeader } from "@/components/site-header";
+import DevContentRefresh from "@/components/dev-content-refresh";
 import "./tokens.css";
 import "./globals.css";
 import "./prose.css";
@@ -59,6 +60,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body>
         <SiteHeader />
         <main>{children}</main>
+        {/* Renders nothing, in either environment, and in production is a
+            constant null — slice 015. It is here rather than in a page because
+            every page on the site reads the same content files, and one page
+            that quietly showed a stale lesson is the failure that slice
+            removes. */}
+        <DevContentRefresh />
       </body>
     </html>
   );
