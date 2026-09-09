@@ -37,7 +37,7 @@ prefixed `015/TNN` (AGENTS.md §5).
   nothing, so the check is that the page still renders and the behaviour of T04
   now exists.
 
-- [ ] **T04 — Verify the development behaviour and record it.**
+- [x] **T04 — Verify the development behaviour and record it.**
 
   Criteria 2, 3, 4, 5, 6, 8, 9. Run each against `npm run dev` in a real
   browser, editing real content files and reverting them, and write the
@@ -45,7 +45,7 @@ prefixed `015/TNN` (AGENTS.md §5).
   **Checked by:** that file, and `git status --porcelain content/` returning
   nothing at the end.
 
-- [ ] **T05 — Verify that production carries nothing, and record it.**
+- [x] **T05 — Verify that production carries nothing, and record it.**
 
   Criterion 7, the criterion the spec names as the one that matters most.
   Against a real production build served locally: no request on return, and the
