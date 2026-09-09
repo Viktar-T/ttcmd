@@ -8,7 +8,7 @@ What gets built, in what order, and what forces each step.
 | Binding?     | No. `constitution.md` is law; an accepted `spec.md` is a commitment; this file is a plan.                                                                         |
 | Scope        | **The application.** Not the curriculum.                                                                                                                          |
 | Owner        | Viktar                                                                                                                                                            |
-| Last revised | 2026-09-09 — 016 (a term explained where the reader meets it, and the Moduł that holds every term) added; discoverability renumbered again, to 017 |
+| Last revised | 2026-09-09 — 016 (a term explained where the reader meets it, and `/slownik`, the page that holds every term) added; discoverability renumbered again, to 017 |
 
 **The course plan does not live here.** Lesson plans, task sheets, the program
 contract and anything student-facing belong in the vault (`30_work/TTC/`), per
@@ -964,14 +964,14 @@ The reader paying for that is the one the survey counted: of eleven concepts,
 half.
 
 So, two halves. A term the reader can point at, tap, or reach from the
-keyboard, returning one sentence without leaving the paragraph; and one Moduł
-after every other module, always last, holding every term grouped by topic. The
+keyboard, returning one sentence without leaving the paragraph; and one page
+after every module, always last, holding every term grouped by topic. The
 rows carry a term and a home and nothing else — there is no topic column, so
 the grouping has to be derived from them, named in the spec, and recorded row
 by row; a grouping nobody can reconstruct drifts on the next revision, and it
 invents nothing the lessons do not already teach. The sentence shown beside the
-term and the entry on that module's page are the same text, **stored once** —
-two copies of one definition is the failure ADR-0003 argues against for lesson
+term and the entry on that page are the same text, **stored once** — two
+copies of one definition is the failure ADR-0003 argues against for lesson
 letters, and it would happen here on the first revision.
 
 A gloss is one sentence in the home lesson's own words, not a second lesson: a
@@ -989,26 +989,28 @@ That follow-on work is Viktar's, and this entry books it. So the slice closes
 against a specimen and a seed rather than a filled glossary — as 013 shipped a
 mode with nothing marked.
 
-One decision is not the slice's. „Always last" is a module number and a URL a
-student writes down, and it adds a Moduł to a course structure that lives in
-the vault — AGENTS.md §4 three times over: a module's number comes from its
-folder prefix, and ADR-0003 calls that identity, not presentation. Whatever the
-answer, course-structure v2.x records the new Moduł, or the destination is not
-numbered as one. Three candidates, and only one meets both halves of what the
-request asks for. `99-slownik` is a Moduł and sorts after every module the course
-plans — v2.7 runs Moduł 0 through Moduł 11, twelve modules and nothing above
-11 — so it is last permanently and needs no code; the price is a breadcrumb
-reading „Moduł 99". `12-slownik` reads honestly and is last only until a Moduł
-12, and keeping it last past one means renumbering a module folder, which
-ADR-0003 puts behind a superseding ADR; it is listed here to be rejected rather
-than chosen. `/slownik` answers the need but not the request: a page is not the
-Moduł the request names. Nothing places it before a module either, but it must enter
-`SITE_ROUTES` and be ordered by hand, and choosing it means the criterion below
-reads „one destination", not „one Moduł". There is a fourth answer the slice may
-not take on its own: a folder that keeps its numeric prefix and renders
-„Słownik" where the label would say „Moduł 99". ADR-0003 makes that label
-identity, so it needs a superseding ADR — Article X, Viktar's call. If he wants
-one opened, the slice waits for it.
+*Decided 2026-09-09: the destination is `/slownik` — a page, not a Moduł.* A
+top-level route beside `/`, `/moduly` and `/styleguide`, and the course keeps
+the twelve modules course structure v2.7 gives it. `99-slownik` sorts after
+every module the course plans — v2.7 runs Moduł 0 through Moduł 11, nothing
+above 11 — and would be last permanently with no code to keep it there; it lost
+on the breadcrumb it produces, „Moduł 99", a number that names nothing, and on
+adding a thirteenth Moduł to a structure that has twelve. `12-slownik` reads
+honestly and is last only until a Moduł 12, and keeping it last past one means
+renumbering a module folder, which ADR-0003 puts behind a superseding ADR. The
+fourth answer — a folder that keeps its numeric prefix and renders „Słownik"
+where the label would say „Moduł 99" — needs that superseding ADR too, Article
+X and Viktar's alone; he opened none and chose the page instead, so it is
+rejected rather than waiting.
+
+The request asked for a Moduł and got a page, and what that costs is the
+machinery a folder would have inherited. **Nothing derives its position or its
+existence:** the module grid is built from `CourseModule[]` and a page is not
+one, the breadcrumb's steps are the module listing, „Moduł N" and the lesson,
+and the pager runs between lessons and between modules over the course model,
+so today the last module and the last lesson of it both page into nothing. Each
+of those is now something the slice states rather than inherits, and the build
+has to be told the route exists at all before a lesson may link to it.
 
 Another app slice in a row, and the rule at the top of this file is not
 suspended by it: content goes between them. **Nor is Budget reality
@@ -1022,12 +1024,13 @@ long and calling it one.
 
 **Done when** a marked term in the specimen returns one short sentence by
 pointing, by tapping and from the keyboard alone, dismissible from the keyboard
-and announced to a screen reader; the seeded terms appear on one Moduł that
-sits after every other module in the reading order and stays there when a
-module is added, grouped by topic, one anchor per term, the page saying in
-Polish that it is a seed and which modules the appendix does not yet record;
-and the report names what remains — the 31 unmarked lessons and the sentences
-still unwritten — as the content work this slice deliberately does not do.
+and announced to a screen reader; the seeded terms appear on one page at
+`/slownik` that sits after every module in the reading order and stays there
+when a module is added, reachable from the course without a URL typed by hand,
+grouped by topic, one anchor per term, the page saying in Polish that it is a
+seed and which modules the appendix does not yet record; and the report names
+what remains — the 31 unmarked lessons and the sentences still unwritten — as
+the content work this slice deliberately does not do.
 
 ```
 Read in full, in this order:
@@ -1081,32 +1084,42 @@ paragraph, and every term the course has recorded has one destination.
 - The store — one place under content/ where a term's sentence, its topic and
   its home lesson live, keyed on the home lesson's slug and read when the site
   is built, by the marker and by the destination alike.
-- The destination — every term the store carries, grouped by topic, one anchor
-  per term, each entry naming its home lesson and linking to it when that
-  lesson is published, and the page naming the modules the appendix does not
-  yet record. It comes after every module in the reading order, and stays after
-  every module a future one adds. Watch what a new folder under content/moduly/
-  does to machinery already built: the module grid, the breadcrumb, and slice
-  006's pagers, which will now run from the last lesson of the last module into
-  a module with no lessons. Decide what previous/next does at both ends, and
-  whether slice 015's index covers this page or skips it; record both.
+- The destination — `/slownik`: every term the store carries, grouped by topic,
+  one anchor per term, each entry naming its home lesson and linking to it when
+  that lesson is published, and the page naming the modules the appendix does
+  not yet record. Three pieces of machinery are built for modules and cannot
+  see a page, and each is a decision to take and record here. The module grid
+  takes `CourseModule[]`, so the glossary appears in no grid on /moduly or the
+  home page unless something is written to put it there: decide how a reader
+  who is not already holding the URL arrives — the module listing, the end of
+  the reading order, the gloss itself — and note that the header is not free,
+  Out of scope below holds it at the two controls it has. The breadcrumb takes
+  a trail whose steps are the module listing, „Moduł N" and the lesson, and
+  this page is none of those: decide whether it wears one and what its steps
+  say, or whether it goes bare as /moduly does. And the pager runs over the
+  course model twice — `getLessonNeighbours` flattens it, `getModuleNeighbours`
+  walks the module list — so the last lesson of the last module and the last
+  module page both end in nothing today: decide what previous and next do at
+  both ends and on the glossary itself. Record also whether slice 015's index —
+  scoped to published lessons — reaches a page that is not one, or skips it.
 - A specimen of the marker, the gloss and one topic group goes on /styleguide.
 
 Out of scope: search — that is slice 015, and no control is added to the
 header, which holds two and says why a third would move both. The contents
 panel, the scroll-spy and back-to-top slice 007 settled, and the columns slices
-011, 012 and 014 settled. A sitemap entry for whatever this creates — that is
-slice 017; leave it a note in the spec's Out of scope, as slice 008 did.
-Footnotes, a bibliography and inline citation markers, refused by name in slice
-010 and still refused. Changing what the quotation element renders. Writing the
-Polish sentences and marking the 31 existing lessons — content lane, one lesson
-at a time, after this slice closes; what ships here is the mechanism, the
+011, 012 and 014 settled. A sitemap entry for `/slownik` — that is slice 017;
+leave it a note in the spec's Out of scope, as slice 008 did. Footnotes, a
+bibliography and inline citation markers, refused by name in slice 010 and
+still refused. Changing what the quotation element renders. Writing the Polish
+sentences and marking the 31 existing lessons — content lane, one lesson at a
+time, after this slice closes; what ships here is the mechanism, the
 destination and a handful of seeded terms.
 
 **Nothing here changes how the site looks.** The marker, the gloss and the
 destination are built from the tokens slice 003 already defines; the header,
-the lesson page and the contents panel are not redesigned to make room, and the
-presentation palette and its dim rule are not touched.
+the lesson page and the contents panel are not redesigned to make room, the
+empty strip slice 012 gave every non-lesson page stays empty on this one, and
+the presentation palette and its dim rule are not touched.
 
 Constraints:
 - **The store lives under `content/`, never in `app/` or `lib/`, and is
@@ -1116,19 +1129,36 @@ Constraints:
   sentence, no topic, or a home slug no lesson has fails the build the way an
   invalid lesson does (Article VIII) — the style checker reports and never
   fails, and this material is student-facing.
-- **Where the destination lives is the one question below, and nothing about
-  the place is decided until it is answered.** Whatever the answer, a folder
-  under content/moduly/ keeps its numeric prefix and renders the label that
-  prefix gives it: Article VI and ADR-0003 make the number identity rather than
-  presentation, and rendering anything else needs a superseding ADR, which is
-  the fourth answer above and mine alone to open.
-- **A Moduł with no lessons is new here.** Article VI's axis is module →
-  lesson, and the module page slice 014 settled renders a lesson list. Decide
-  and record what this module's introduction says, what its page shows where
-  the lesson list would be, and what its entry in the module grid reads — that
-  page is inside this slice despite 014 being settled elsewhere. If the answer
-  needs the module page to stop being a lesson list, that is an ADR (Article
-  X), not a quiet edit.
+- **`/slownik` is a route the build has to be told about, deliberately.** A new
+  top-level segment beside `app/page.tsx`, `app/moduly/page.tsx` and
+  `app/styleguide/page.tsx`, ASCII — `slownik`, never `słownik` (Article III).
+  `SITE_ROUTES` in lib/links.ts holds `/` and `/moduly` and nothing else; every
+  other target a link may resolve to comes from the course model, so a lesson
+  linking to /slownik is refused by the build until the route is added there.
+  Add it in the same slice that creates the page — one entry, made on purpose,
+  and not the start of widening a list whose own comment says why /styleguide
+  is absent from it. And because no folder prefix orders a page, **where it
+  sits in the reading order is nothing the tree decides**: derive the module it
+  comes after from the last entry of the course model rather than from a slug
+  written by hand, so a module added later leaves it last, and decide where
+  that ordering is stated to the reader — the page itself, the module listing,
+  or both — keeping it in one place.
+- **The page carries the empty strip every non-lesson page carries, and this
+  slice does not fill it.** Since slice 012 a page that is not a lesson begins
+  its content where a lesson's article begins, and 012 left the column to the
+  left of that edge empty as a decision — filling it „with anything" is named
+  there as a design decision nobody has made, with a nav and a repeat of the
+  module list rejected by name. A glossary grouped by topic wants exactly that
+  strip for its topic list, and slice 014 has already filled it once, on the
+  module page, with the module's own contents — in a slice written for that,
+  which is how a strip gets filled if one ever is. So the topic list goes in
+  the content column with the rest of the page, and filling the strip is a
+  later slice, not a quiet extension of this one. It is a slice and not an ADR:
+  012 decided it in a spec, and a new spec is what overrules a spec (AGENTS.md
+  §8). If what is wanted there is the contents panel itself, note that it is
+  built from a `CourseModule` and a glossary is not one — making it serve a
+  list that is not a module's lessons changes what that component is, and that
+  is 014's shape, not this slice's to bend.
 - **Nothing here may be hover-only.** Android 6 and iOS 3 of 12 on the survey's
   platform question, and there is no hover on a touch screen. Pointer, touch
   and keyboard are three ways into the same thing, and a screen reader is a
@@ -1183,11 +1213,8 @@ Slice 009 asks for the file and line that demonstrates a new element is needed.
 Here the evidence is above and the request is mine; say which in the spec rather
 than dressing one as the other.
 
-Decide everything else yourself, per AGENTS.md §4. Ask one question and one
-only, before writing the spec: where the destination lives and what a student
-types to reach it, from the candidates above. Everything under it — the
-element's name, the gloss's behaviour, the grouping, the store's format — is
-yours.
+Decide everything else yourself, per AGENTS.md §4 — and ask nothing unless it
+clears the escalation bar there.
 
 Run this slice **autonomously** — AGENTS.md §2, "Two modes". Do not stop
 between stages.
