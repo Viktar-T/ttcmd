@@ -1,0 +1,360 @@
+---
+title: "Stan poza kontrolkami"
+order: 6
+summary: "Gdzie właściwie jest twoja lista: w kontrolce, która ją pokazuje, czy gdzie indziej? Jedna klasa bez ani jednego `using Avalonia`, okno, które samo zauważa zmiany, ta sama wartość w dwóch miejscach z jednego obiektu, debugger patrzący na stan zamiast na okno — i reguła, którą od 1979 roku wymyślano na nowo pięć razy."
+publish: false
+---
+
+{/* Drafted 2026-09-02 from docs/content-briefs/05f-stan-poza-kontrolkami.md,
+    autonomous run — brief unapproved. Code is stage 08 of tmp-modul5-build/,
+    built with SDK 10.0.400 against Avalonia 12.1.2 (build.log 19:48); the
+    headless tests of the final state (stage 11, which keeps this lesson's
+    Stan and bindings) confirmed: adding an item updates the ListBox, the
+    TextBlock and the window Title from one PropertyChanged; Enter in the
+    TextBox adds; an empty text adds nothing. The lineage section is
+    narrative; every date has its link. */}
+
+W pierwszej budowie, w bloku o liście, dopisałeś dwie linijki: jedna
+dokładała napis do listy, druga dawała oknu **świeżą kopię** całej listy do
+pokazania — bo, jak stało w tamtym bloku, „zwykła lista nie mówi oknu, że się
+zmieniła”. W poprzedniej lekcji to samo działo się inaczej: po każdym
+dodaniu kod ręcznie ustawiał `Licznik.Text`, ręcznie czyścił pole, ręcznie
+wkładał nazwę do `Lista.Items`. Trzy linijki, które utrzymują trzy
+kontrolki w zgodzie ze sobą.
+
+Działa, więc trudno zobaczyć, co w tym jest nie tak. Zadaj sobie jedno
+pytanie: gdzie *jest* twoja lista? Odpowiedź brzmi: w `Lista.Items`, czyli w
+kontrolce, która ją pokazuje. Prawda o tym, co użytkownik widzi, mieszka w
+tym, co użytkownik widzi. Dopóki jest jedna kontrolka, to bez znaczenia. W
+chwili, gdy tę samą liczbę pokazują dwa miejsca — licznik na dole i, powiedzmy,
+pasek tytułu — trzeba pamiętać o obu przy każdej zmianie, i któregoś dnia się
+zapomni.
+
+Pytanie tej lekcji: **gdzie właściwie jest twoja lista — w kontrolce, która
+ją pokazuje, czy gdzie indziej — i dlaczego od 1979 roku każdy, kto budował
+okna, dochodził do tej samej odpowiedzi?** Napiszesz klasę, która trzyma
+stan i nie wie, że istnieje okno; okno przestanie być miejscem, w którym
+cokolwiek jest, i zacznie być miejscem, w którym coś widać.
+
+## Klasa, która nie wie, że jest okno
+
+Tryb pracy: **bez AI**. Nowy plik w projekcie `spis`, obok `MainWindow.axaml.cs`
+— w Visual Studio prawy przycisk na projekcie, **Add › Class**, nazwa
+`Stan.cs`. W całości:
+
+```csharp title="Stan.cs"
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+
+namespace spis;
+
+public class Stan : INotifyPropertyChanged
+{
+    public ObservableCollection<string> Pozycje { get; } = new();
+
+    public string Opis => $"Pozycji: {Pozycje.Count}";
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    public void Dodaj(string nazwa)
+    {
+        Pozycje.Insert(0, nazwa);
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Opis)));
+    }
+}
+```
+
+Trzy rzeczy o składni, zanim pójdziemy dalej. `Opis` jest **właściwością** —
+w C# to to, co w Javie robiłbyś getterem, tylko czytane jak pole; strzałka
+`=>` po nazwie znaczy: policz to przy każdym odczycie. `Pozycje { get; } =
+new()` to właściwość tylko do odczytu, ustawiona raz, na pustą kolekcję. A
+`: INotifyPropertyChanged` po nazwie klasy to obietnica, że klasa ma
+zdarzenie o tej nazwie, które za chwilę objaśnimy.
+
+Przeczytaj też, czego w tym pliku nie ma: ani jednego `using Avalonia`. Ta klasa
+nie wie, że istnieją okna, przyciski i listy. Wie tylko dwie rzeczy: ma
+kolekcję napisów `Pozycje` i ma opis, który jest napisem z liczbą pozycji.
+`Dodaj` wkłada nazwę na początek kolekcji — to samo `Insert(0, …)` co w
+poprzedniej lekcji, tylko nie do kontrolki.
+
+Dwie rzeczy są nowe i obie służą temu samemu: **powiadamianiu**.
+`ObservableCollection` to lista, która — słowami dokumentacji — [„dostarcza
+powiadomienia, kiedy elementy są dodawane lub usuwane, albo kiedy cała lista
+jest odświeżana”](https://learn.microsoft.com/en-us/dotnet/api/system.collections.objectmodel.observablecollection-1).
+To jest ta lista, której w pierwszej budowie brakowało: zwykła `List<string>`
+milczy, ta mówi. A `INotifyPropertyChanged` to umowa z jednym zdarzeniem,
+`PropertyChanged`, którym obiekt [„powiadamia wszystkie powiązane elementy,
+że właściwość zmieniła
+wartość”](https://docs.avaloniaui.net/docs/guides/data-binding/inotifypropertychanged).
+`Opis` sam z siebie nie mówi nic — jest zwykłą właściwością liczoną z
+`Pozycje.Count` — dlatego `Dodaj` po włożeniu nazwy wysyła to zdarzenie z
+napisem `nameof(Opis)`: „zmieniło się to, co nazywa się Opis; kto patrzy,
+niech spojrzy jeszcze raz”.
+
+Kto patrzy? Na razie nikt. Zbuduj projekt, żeby sprawdzić, że kompiluje się
+sam, i przejdź do okna.
+
+## Okno, które zauważa
+
+Teraz okno ma przestać trzymać dane i zacząć je pokazywać. W `MainWindow.axaml`
+zmień nagłówek `<Window …>` — dopisz dwie linijki z przestrzenią nazw i typem
+danych oraz zmień `Title` — i zamień `Name` na `ItemsSource` w liście, a
+`Name` i `Text` na `Text` z wiązaniem w liczniku. Cały plik po zmianie:
+
+```xml title="MainWindow.axaml"
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="using:spis"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="spis.MainWindow"
+        x:DataType="local:Stan"
+        Title="{Binding Opis}"
+        Width="400" Height="500">
+    <Grid RowDefinitions="Auto,*,Auto" ColumnDefinitions="*,Auto" Margin="12">
+        <TextBox Name="NowaPozycja" PlaceholderText="Nowa pozycja" KeyDown="OnNowaPozycjaKeyDown" />
+        <Button Grid.Column="1" Name="Dodaj" Click="OnDodajClick" Margin="8,0,0,0">Dodaj</Button>
+        <ListBox Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Pozycje}" Margin="0,8" />
+        <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Opis}" />
+    </Grid>
+</Window>
+```
+
+`{Binding Pozycje}` to **wiązanie danych**: zamiast wartości wpisanej na
+stałe, kontrolka dostaje nazwę właściwości obiektu, z którego ma tę wartość
+brać — i z którego będzie ją brała za każdym razem, kiedy obiekt powie, że
+coś się zmieniło. `xmlns:local="using:spis"` mówi, gdzie szukać klasy, a
+`x:DataType="local:Stan"` — [wymagane w Avalonii 12, która wiązania sprawdza
+w czasie budowania](https://docs.avaloniaui.net/docs/data-binding/compiled-bindings)
+— jaki to typ, żeby literówka w `{Binding Pozycje}` była błędem kompilacji, a
+nie pustą listą na ekranie. Zwróć uwagę, że lista i licznik straciły `Name`:
+kod nie będzie ich już potrzebował po imieniu.
+
+Zostało powiedzieć oknu, *który* obiekt. W `MainWindow.axaml.cs`:
+
+```csharp title="MainWindow.axaml.cs"
+using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
+
+namespace spis;
+
+public partial class MainWindow : Window
+{
+    private readonly Stan _stan = new();
+
+    public MainWindow()
+    {
+        InitializeComponent();
+        DataContext = _stan;
+    }
+
+    private void OnDodajClick(object? sender, RoutedEventArgs e)
+    {
+        DodajPozycje();
+    }
+
+    private void OnNowaPozycjaKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter)
+        {
+            DodajPozycje();
+        }
+    }
+
+    private void DodajPozycje()
+    {
+        var nazwa = NowaPozycja.Text?.Trim();
+        if (string.IsNullOrEmpty(nazwa))
+        {
+            return;
+        }
+
+        _stan.Dodaj(nazwa);
+        NowaPozycja.Text = "";
+    }
+}
+```
+
+`DataContext = _stan` — jedna linijka: „dane tego okna to ten obiekt”. Od tej
+chwili każde `{Binding …}` w pliku znaczników czyta z `_stan`. F5, dodaj
+kilka pozycji. Lista rośnie, licznik rośnie — i pasek tytułu okna rośnie
+razem z nimi, bo `Title` też jest wiązaniem do `Opis`. A z trzech linijek w
+`DodajPozycje`, które utrzymywały kontrolki w zgodzie, została jedna —
+`_stan.Dodaj(nazwa)` — plus wyczyszczenie pola. Nikt nie
+wkłada niczego do `Lista.Items`, nikt nie ustawia `Licznik.Text`. Okno
+zauważa samo.
+
+```bash
+git add .
+git commit -m "wlasna reka: stan poza kontrolkami"
+```
+
+## Dwie kontrolki, jedna prawda
+
+Pasek tytułu jest w tej lekcji nie dla ozdoby. Jest dowodem. Ta sama wartość
+— `Opis` — jest pokazana w dwóch miejscach, a w kodzie nie ma ani jednej
+linijki, która by o którymkolwiek z nich wiedziała. Zmiana jest jedna:
+`Dodaj` wysyła `PropertyChanged`. Kto słucha, ten się odświeża, i nie ma
+znaczenia, czy słucha jedno miejsce, dwa czy dziesięć.
+
+Najlepszy sposób, żeby to zobaczyć, to to zepsuć. Usuń z `Dodaj` linijkę z
+`PropertyChanged?.Invoke(…)`, F5, dodaj trzy pozycje. Lista rośnie —
+`ObservableCollection` powiadamia sama. Licznik stoi na zerze i pasek tytułu
+stoi na zerze, bo `Opis` zmienił wartość, ale nikt o tym nie powiedział.
+To jest najbardziej pouczający błąd w tym module, bo wygląda dokładnie tak
+jak w połowie diffów, które przeczytasz w życiu: dane są dobre, a ekran
+kłamie. Wstaw linijkę z powrotem.
+
+## Debugger patrzy na stan, nie na okno
+
+Postaw punkt przerwania w `Dodaj`, na linijce z `Insert`. F5, wpisz coś,
+Enter. Program stoi. W oknie Watch wpisz `Pozycje.Count` i `Opis`: zero i
+„Pozycji: 0”. F10 — jedna linijka, `Insert` wykonany. Watch: jeden i
+„Pozycji: 1”. Stan jest już prawdziwy. Spójrz na okno programu: lista wciąż
+pusta, tytuł wciąż zero. Nie dlatego, że coś nie działa — dlatego, że okno
+przerysowuje się dopiero wtedy, kiedy pętla zdarzeń z lekcji o niej
+dostanie z powrotem wątek, a ten wątek stoi w twojej metodzie. F5. Wszystko
+wraca.
+
+Ta różnica — stan jest prawdziwy, piksele są spóźnione — to jest powód, dla
+którego debugger patrzy na `_stan`, a nie na `Lista`. Okno pokazuje to, co
+ostatnio zdążyło pokazać. Klasa `Stan` wie, co jest naprawdę. Kiedy w
+programie coś nie zgadza się na ekranie, pytanie brzmi zawsze: co jest w
+stanie, a co w kontrolce — i które z nich kłamie.
+
+## Czterdzieści siedem lat tej samej reguły
+
+To, co dziś zrobiłeś, ma nazwę, a nawet kilka, bo wymyślano to na nowo co
+kilkanaście lat. Rzecz warta przeczytania nie dlatego, że nazwy są ważne,
+tylko dlatego, że pięć pokoleń inteligentnych ludzi doszło do tej samej
+reguły z różnych stron.
+
+[W 1979 roku, w języku Smalltalk](https://www.martinfowler.com/eaaDev/uiArchs.html),
+wzorzec **MVC** rozdzielił po raz pierwszy model — dane — od widoku, który
+je pokazuje. [W 1996 roku](https://www.wildcrest.com/Potel/Portfolio/mvp.pdf)
+**MVP** zauważył, że w prawdziwych bibliotekach kontrolka i tak obsługuje
+własne kliknięcia, więc połączył je z widokiem i całą logikę wyniósł do
+osobnego obiektu. [W 2004 roku](https://www.martinfowler.com/eaaDev/PresentationModel.html)
+Martin Fowler opisał **Presentation Model**: obiekt, który jest modelem
+stanu widoku i da się go sprawdzić bez żadnego okna — dokładnie tym jest
+twoja klasa `Stan`. Rok później, [8 października
+2005](https://learn.microsoft.com/en-us/archive/blogs/johngossman/introduction-to-modelviewviewmodel-pattern-for-building-wpf-apps),
+John Gossman nazwał to **MVVM** i dodał jedno zdanie, które lekcja o ekosystemie
+.NET już cytowała:
+wzorzec „relies on one more thing: a general mechanism for data binding”. Ręczne
+przepisywanie wartości z obiektu do kontrolek — twoje trzy linijki z
+poprzedniej lekcji — może robić silnik wiązania. Cała historia ma jeden
+kierunek: **każdy kolejny wzorzec przesuwał zmienny stan o krok dalej od
+kontrolki.** Najnowsza odpowiedź, nazywana **MVU**, z bibliotek, w których opis okna
+jest funkcją stanu i jest wykonywany od nowa po każdej zmianie, idzie o krok
+dalej i nie trzyma po twojej stronie żadnego zmiennego drzewa kontrolek —
+ale to inna rodzina bibliotek, nie ta, w której pracujesz.
+
+Twoja klasa `Stan` jest więc modelem widoku, a twoje okno — widokiem, i
+zrobiłeś MVVM, zanim poznałeś nazwę. Kiedy agent generuje ci folder
+`ViewModels`, klasę dziedziczącą po `ObservableObject` i atrybut
+`[ObservableProperty]` nad polem, to jest to samo, co dziś napisałeś w
+sześciu linijkach, tylko zapakowane w bibliotekę, która pisze te sześć
+linijek za ciebie. Rozpoznaj to. Nie musisz tego używać.
+
+## Dlaczego to jest lekcja o telefonie
+
+Jeszcze jedno o pliku `Stan.cs`, bo to najważniejsza rzecz, jaką ten moduł
+zostawia modułowi o aplikacjach mobilnych. Nie ma w nim `using Avalonia`. Gdyby jutro
+zamienić `MainWindow.axaml` na ekran telefonu z innymi kontrolkami, `Stan`
+zostałby bez zmiany jednej litery. Jeśli stan nie mieszka w oknie, to
+przejście na telefon jest wymianą powłoki — nie przepisaniem programu. W
+module o aplikacjach mobilnych to zdanie będzie stało na argumencie, który
+dziś napisałeś, a nie na obietnicy.
+
+I stąd pytanie, które od dziś zadajesz każdej aplikacji, także tej wspólnej
+z następnego modułu, zanim zapytasz o cokolwiek innego: gdzie jest stan?
+
+## Lista, która jest gdzie indziej
+
+Na pytanie z początku lekcji odpowiedź brzmi: lista jest w `_stan.Pozycje`,
+a `ListBox` ją tylko pokazuje. Licznik i pasek tytułu pokazują `_stan.Opis`.
+Okno nie jest miejscem, w którym coś jest; jest miejscem, w którym coś
+widać.
+
+- **Stan w jednej klasie bez `using Avalonia`.** Jeśli klasa stanu zna
+  kontrolki, stan nadal mieszka w oknie, tylko w przebraniu.
+- **Dwa powiadomienia:** kolekcja, która mówi sama (`ObservableCollection`),
+  i właściwość, o której mówi `PropertyChanged`. Brak drugiego to ekran,
+  który kłamie.
+- **Debugger patrzy na stan.** Piksele są spóźnione z definicji.
+- **Reguła ma czterdzieści siedem lat i pięć nazw.** Kiedy zobaczysz w
+  diffie `ViewModel`, wiesz, że to ta sama rzecz.
+
+Od dziś każdy diff czytasz od pytania „gdzie jest stan”, a zaraz po nim: „kto
+jeszcze go zmienia”. Na karcie linijka z minutami. Następna lekcja zabiera
+`Stan` na dysk — i pokazuje, ile rzeczy może pójść nie tak między listą a
+plikiem.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: dwie rzeczy, których okno potrzebuje od obiektu ze stanem, żeby
+zauważać zmiany; rok i zdanie z wpisu, w którym MVVM dostał nazwę.
+
+</Zadanie>
+
+<Zadanie>
+
+Usuń linijkę z `PropertyChanged?.Invoke(…)`, uruchom, dodaj trzy pozycje.
+Zapisz, które kontrolki się odświeżyły, a które nie, i dlaczego. Wstaw
+linijkę z powrotem i sprawdź.
+
+</Zadanie>
+
+<Zadanie title="Stan w historii">
+
+Commit `wlasna reka: stan poza kontrolkami` z `Stan.cs` i związanym oknem.
+Linijka na karcie z minutami — i drugie zdanie: które linijki zniknęły z
+`DodajPozycje` i dokąd poszła ich praca.
+
+</Zadanie>
+
+<Zadanie>
+
+Otwórz `notatnik-v2` i znajdź, gdzie mieszka lista notatek: w polu okna, w
+osobnej klasie, w czymś, co nazywa się `ViewModel`? Przepisz deklarację na
+kartę i dopisz jedno zdanie: czy moduł o aplikacjach mobilnych musiałby ją
+zmienić.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-02">
+
+<Zrodlo title="ObservableCollection<T> Class" publisher="Microsoft Learn" date="2026-09-02" url="https://learn.microsoft.com/en-us/dotnet/api/system.collections.objectmodel.observablecollection-1">„Represents a dynamic data collection that provides notifications when items get added or removed, or when the whole list is refreshed”; strona bez własnej daty, sprawdzona 2 września 2026</Zrodlo>
+
+<Zrodlo title="How To Use INotifyPropertyChanged" publisher="Avalonia Docs" date="2026-09-02" url="https://docs.avaloniaui.net/docs/guides/data-binding/inotifypropertychanged">jedno zdarzenie, `PropertyChanged`: „the object raises a PropertyChanged event to notify any bound elements that the property has changed”; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="Compiled bindings" publisher="Avalonia Docs" date="2026-08-25" url="https://docs.avaloniaui.net/docs/data-binding/compiled-bindings">w wersji 12 wiązania są domyślnie kompilowane i wymagają `x:DataType`</Zrodlo>
+
+<Zrodlo title="Data binding" publisher="Avalonia Docs" date="2026-03-07" url="https://docs.avaloniaui.net/docs/basics/data/data-binding/data-binding-syntax">`{Binding …}` i `DataContext`: skąd wiązanie bierze obiekt z danymi; tryby wiązania</Zrodlo>
+
+<Zrodlo title="Introduction to Model/View/ViewModel pattern for building WPF apps" publisher="John Gossman, Microsoft (archiwum blogów)" date="2005-10-08" url="https://learn.microsoft.com/en-us/archive/blogs/johngossman/introduction-to-modelviewviewmodel-pattern-for-building-wpf-apps">nazwa MVVM i zdanie o mechanizmie wiązania danych</Zrodlo>
+
+<Zrodlo title="Presentation Model" publisher="Martin Fowler" date="2004-07-19" url="https://www.martinfowler.com/eaaDev/PresentationModel.html">obiekt będący modelem stanu widoku, sprawdzalny bez widoku; strona odnotowuje, że wzorzec „is increasingly known as MVVM”</Zrodlo>
+
+<Zrodlo title="MVP: Model-View-Presenter" publisher="Mike Potel, Taligent" date="1996" url="https://www.wildcrest.com/Potel/Portfolio/mvp.pdf">wzorzec z 1996 roku: kontrolka obsługuje własne wejście, logika idzie do prezentera</Zrodlo>
+
+<Zrodlo title="GUI Architectures" publisher="Martin Fowler" date="2006-07-18" url="https://www.martinfowler.com/eaaDev/uiArchs.html">MVC w Smalltalku z 1979 roku jako początek całej rodziny wzorców</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="artykul" title="GUI Architectures — Martin Fowler" url="https://www.martinfowler.com/eaaDev/uiArchs.html">cała rodzina wzorców w jednym eseju, z rysunkami — jeśli dzisiejszy akapit o czterdziestu siedmiu latach zostawił pytanie „ale dlaczego pięć razy”</Lektura>
+
+<Lektura kind="dokumentacja" title="MVVM Toolkit — Microsoft Learn" url="https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/">biblioteka, którą agent zwykle wstawia zamiast twoich sześciu linijek: `ObservableObject`, `[ObservableProperty]`; przeczytaj, żeby rozpoznawać, nie żeby dziś użyć</Lektura>
+
+</CzytajDalej>

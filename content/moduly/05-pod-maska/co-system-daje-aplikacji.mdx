@@ -1,0 +1,270 @@
+---
+title: "Co system naprawdę daje aplikacji"
+order: 1
+summary: "Twój notatnik wygląda tak samo w pracowni i na laptopie w domu — kto właściwie rysuje to okno? Lekcja rozbiera je na to, co daje system, co biblioteka, a co ty, kładzie na mapie czterech rodzin narzędzi i nazywa pięć rzeczy, które nie zmieniły się od 1984 roku."
+publish: false
+---
+
+{/* Drafted 2026-09-02 from docs/content-briefs/05a-co-system-daje-aplikacji.md,
+    autonomous run — brief unapproved. Observations 1 and 4 describe Windows
+    (Explorer's frame, the „Nie odpowiada” ghost window); on an Ubuntu lab the
+    shell's own dialog replaces them — TO CONFIRM against open decision #1.
+    The iOS sentence from the brief was dropped, not guessed (no page checked
+    today). Every number is linked where it is used. */}
+
+Uruchom `notatnik-v2`, ten z modułu o specyfikacji. Stoi na ekranie, ma pasek
+tytułu, pole na tytuł, pole na treść, listę. Jeśli masz Linuksa w domu i
+kiedykolwiek uruchomiono go tam, wyglądał tak samo — dokładnie tak samo, co
+do piksela — i w lekcji o pierwszym oknie przyjęliśmy to jako zaletę, bez
+pytania, skąd się bierze.
+
+Bo skądś się bierze. Coś narysowało ten przycisk i to nie był Windows, bo na
+Linuksie nie ma Windowsa. Coś obsługuje przeciąganie okna po ekranie i to
+nie była biblioteka, bo przeciąganie działa tak samo dla każdego programu,
+także tych, których nikt nie pisał w C#. Wrażenie „okno po prostu jest” składa
+się z co najmniej trzech warstw pracy, a ty do tej pory oglądałeś tylko
+najwyższą.
+
+Pytanie tej lekcji: **co z tego, co widać, zrobił system, co Avalonia, a co
+ty** — i dlaczego odpowiedź rozstrzyga, jak w ogóle wybiera się technologię
+do okien. Nic dziś nie wpisujesz. Patrzysz na własny program i nazywasz to,
+co widzisz.
+
+## Ramka od systemu, środek od biblioteki
+
+Pierwsza obserwacja, do zrobienia teraz: obok notatnika otwórz Eksplorator
+plików i porównaj oba okna. Pasek tytułu, przyciski do zwijania i zamykania,
+cień pod oknem, to, co się dzieje, kiedy ciągniesz za krawędź — w obu wygląda
+i działa identycznie. Nie dlatego, że autorzy Avalonii skopiowali
+Eksplorator. Dlatego, że **ramkę rysuje system**. Program dostaje od systemu
+prostokąt z tytułem i to, co dzieje się z tym prostokątem na pulpicie —
+przesuwanie, zwijanie, zamykanie, napis „Nie odpowiada”, kiedy program
+przestaje reagować — należy do systemu, nie do programu.
+
+Teraz spójrz do środka. Przycisk „Zapisz” w notatniku nie wygląda jak
+przycisk w Eksploratorze ani jak przycisk w Ustawieniach. Ma inne zaokrąglenie,
+inaczej reaguje na najechanie myszą. To dlatego, że Avalonia **nie używa
+przycisków systemu**. Sama rysuje każdy piksel w środku okna, przez
+bibliotekę graficzną o nazwie Skia — dokumentacja mówi to wprost:
+[Avalonia rysuje kontrolki przy pomocy Skii, zamiast opakowywać natywne
+kontrolki systemu](https://docs.avaloniaui.net/docs/fundamentals/cross-platform-architecture).
+Jedno zdanie wyjaśnia obie rzeczy, które widziałeś: program wygląda tak samo
+na każdym systemie, bo na każdym systemie rysuje się sam; i program nie
+wygląda jak reszta systemu, z tego samego powodu.
+
+Zostaje trzecia warstwa: ty. Z całego okna do ciebie należy to, co jest w
+`MainWindow.axaml` i w pliku obok — które kontrolki, gdzie, co po kliknięciu.
+Wszystko poniżej jest cudze i było cudze na długo przed tym, zanim
+przeczytałeś pierwszy diff.
+
+## Cztery rodziny
+
+Ten podział — kto rysuje środek okna — dzieli prawie wszystkie biblioteki do
+okien, jakie istnieją, na cztery rodziny. Rodzina mówi o programie więcej niż
+nazwa konkretnej biblioteki, bo rozstrzyga, ile program waży, jak wygląda,
+kogo można zatrudnić do pracy nad nim i jak się go testuje. Nazwy bibliotek
+zmieniają się co kilka lat; rodziny są te same od dawna.
+
+| Rodzina | Kto rysuje środek okna | Co dostajesz | Co płacisz | Przykład, który masz na komputerze |
+| --- | --- | --- | --- | --- |
+| **A. Silnik przeglądarki w pudełku** | silnik przeglądarki, HTML i CSS | największa liczba ludzi, którzy to umieją; najszybsze zmiany wyglądu | pamięć, jaką zjada przeglądarka; wygląd, który nie jest niczyim systemem | VS Code i każdy edytor zbudowany na jego bazie — [„powłoka Electron używana przez Visual Studio Code”](https://code.visualstudio.com/docs/supporting/faq) to słowa jego własnej dokumentacji |
+| **B. Jeden rysownik, każdy system** | biblioteka rysuje wszystko sama (Skia albo własny silnik) | identyczny wygląd wszędzie, jeden kod, język kompilowany | zgodność z systemem — dostępność, skróty, wygląd — trzeba odtworzyć w bibliotece; dziedziczysz jej błędy | twój notatnik i wszystko, co zbudowałeś w Avalonii |
+| **C. Kontrolki systemu** | system, jego własne przyciski i listy | poprawne zachowanie i wygląd, dostępność za darmo, najmniejsze pliki | osobny kod na każdy system albo jeden rdzeń i kilka powłok | Kalkulator Windows — [otwarty kod na GitHubie](https://github.com/microsoft/calculator), C++ i C# ze znacznikami XAML |
+| **D. Własny silnik graficzny** | program sam, na karcie graficznej | pełna kontrola nad każdą klatką | dostępność i wszystko, co system daje za darmo, trzeba napisać od zera | gry |
+
+Przejdź teraz po pasku zadań i przypisz każdy otwarty program do rodziny.
+Większość trafi do A i C. Rzecz, którą warto zauważyć po drodze: edytor zbudowany na bazie VS Code,
+w którym agent buduje twoje aplikacje z rodziny B, sam jest z rodziny A —
+przeglądarką, która udaje program. To nie jest zarzut. To jest decyzja
+kogoś, kto zatrudniał ludzi, i za chwilę zobaczysz jej cenę.
+
+## Jedna uczciwa liczba z każdej strony
+
+Wybór rodziny jest wymianą, i po obu jej stronach da się wskazać coś
+konkretnego.
+
+Koszt zmierzył zespół małego programu do wspólnej pracy nad kodem, Hopp,
+który porównał swoją aplikację w dwóch wersjach: jako Electron, czyli
+przeglądarkę wożoną w środku, i jako Tauri, powłokę, która używa silnika
+przeglądarki wbudowanego w system zamiast wozić własny. [Paczka instalacyjna
+ważyła 8,6 MB wobec 244 MB, a przy sześciu otwartych oknach program zajmował
+około 172 MB pamięci wobec około 409 MB](https://www.gethopp.app/blog/tauri-vs-electron)
+(9 kwietnia 2025). Zanim ta liczba pójdzie w świat, dwie rzeczy, które sami
+autorzy piszą w tym samym tekście: pomiar zrobiono raz, na jednym laptopie, i
+opublikowała go firma, która wybrała Tauri. Liczba Hoppa jest prawdziwa; dowodem
+na wszystko nie jest.
+
+Korzyść opisał zespół 1Password, kiedy w 2021 roku przeniósł swój program na
+Windows i Linuksa do rodziny A. Powód nie był techniczny: firma utrzymywała
+wcześniej cztery osobne zestawy technologii, po jednym na system, i chciała
+mieć [jeden wspólny rdzeń i jeden sposób budowania interfejsu zamiast
+czterech](https://1password.com/blog/1password-8-the-story-so-far)
+(12 sierpnia 2021). Cztery zespoły, cztery kolejki poprawek, cztery daty
+wydania — dla 1Password ta cena była wyższa niż dwieście megabajtów.
+
+Stąd zdanie, które warto zapamiętać w tej postaci: **koszt wyboru rodziny
+jest techniczny, a korzyść jest organizacyjna.** Internet kłóci się o
+megabajty. Ludzie, którzy podejmują te decyzje, liczą zespoły. Dlatego
+pytanie „która biblioteka” jest najmniej ciekawym pytaniem o aplikację
+desktopową — i jedynym, o które kłóci się internet.
+
+## Co to właściwie jest aplikacja desktopowa
+
+Skoro środek okna może rysować cokolwiek, definicja „program, który działa na
+komputerze” nic nie rozstrzyga: strona w przeglądarce też działa na
+komputerze. Potrzebna jest definicja, którą da się sprawdzić na konkretnym
+programie.
+
+**Aplikacja desktopowa to program, który ma własne okno, pętlę zdarzeń i
+jeden wątek interfejsu.** Trzy rzeczy, każda do sprawdzenia. Okno — to, co
+dostał od systemu, z ramką i tytułem. Pętla zdarzeń — sposób, w jaki
+program czeka na kliknięcie zamiast wykonywać się od góry do dołu; zetknąłeś
+się z nią w bloku o zdarzeniu, a rozbierzesz ją za trzy lekcje. Jeden wątek
+interfejsu — reguła, że do okna wolno dotykać tylko z jednego wątku, tego,
+który je stworzył; wątek to jeden tok wykonywania programu, a program może
+mieć ich kilka naraz, i o tym jest lekcja o pętli zdarzeń.
+
+Ta trzecia rzecz zasługuje na drugą obserwację, bo trzy firmy, które
+zbudowały trzy różne systemy, spisały ją niezależnie i prawie tymi samymi
+słowami. Microsoft o Windows: [„Windows pozwala, by do elementów interfejsu
+miał dostęp tylko wątek, który je
+utworzył”](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/advanced/threading-model).
+Google o Androidzie, dwie zasady: [„nie blokuj wątku interfejsu” i „nie
+sięgaj do interfejsu Androida spoza wątku
+interfejsu”](https://developer.android.com/guide/components/processes-and-threads).
+Apple o macOS: [operacje na widokach „tylko z głównego wątku
+aplikacji”](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Multithreading/ThreadSafetySummary/ThreadSafetySummary.html).
+Trzy firmy, trzy dekady, jedna reguła. Kiedy w lekcji o halucynacjach
+agent napisał kod, który kończył się wyjątkiem „Call from invalid thread”,
+naruszył właśnie ją — i nie dlatego, że Avalonia jest kapryśna.
+
+Sprawdź definicję na czymś, co nie przechodzi: karta w przeglądarce ma
+okno, ale cudze — przeglądarki; ma pętlę zdarzeń, ale cudzą. Nie jest
+aplikacją desktopową, choćby nie wiem jak wyglądała. Twój notatnik
+przechodzi wszystkie trzy punkty.
+
+## Pięć rzeczy, które się nie zmieniły od 1984 roku
+
+Pierwszy masowo sprzedawany komputer z oknami i myszą [pokazano 24
+stycznia 1984 roku](https://www.folklore.org/The_Times_They_Are_A-Changin.html)
+— tak wspomina tamten dzień jeden z jego twórców. Biblioteki, języki i
+rodziny zmieniały się od tamtej pory kilkanaście razy. Pięć rzeczy
+nie zmieniło się wcale, i te pięć jest mapą tego modułu — każda z nich
+dostanie lekcję, w której zbudujesz ją własną ręką.
+
+1. **Program nie biegnie — jest wywoływany.** System trzyma kolejkę komunikatów,
+   biblioteka zdejmuje je po jednym i woła twoją metodę. Lekcja o pętli
+   zdarzeń.
+2. **Jeden wątek jest właścicielem okna.** Ta sama lekcja: co się dzieje,
+   kiedy złamiesz regułę, i dwa sposoby, żeby jej nie łamać, jeden tak stary
+   jak okna z wątkami, drugi z 2012 roku.
+3. **Okno, które nie odpowiada przez pięć sekund, system uznaje za
+   zawieszone** i zastępuje je duchem z napisem „Nie odpowiada”. Liczba
+   pięć nie jest przybliżeniem — [stoi w dokumentacji
+   Microsoftu](https://learn.microsoft.com/en-us/previous-versions/windows/win32/win7appqual/preventing-hangs-in-windows-applications).
+   Zna je każdy, kto używa Windowsa; prawie nikt nie wie, że to zapisana liczba. Ta
+   sama lekcja co punkt pierwszy.
+4. **Stan nie mieszka w kontrolkach.** Lista, którą widać, i lista, która
+   *jest*, to dwie różne rzeczy — i od 1979 roku każdy, kto budował okna,
+   dochodził do tego sam. Lekcja o stanie, najważniejsza w module.
+5. **Instalacja i aktualizacja są ciężarem użytkownika.** Jedyna z pięciu,
+   której ten moduł nie buduje — wraca w module o wydaniu, kiedy będzie
+   komu coś zainstalować.
+
+Jedno zdanie o tym, po co to wszystko, bo łatwo je źle usłyszeć. Ten moduł
+nie jest o tym, jak się robiło okna, zanim był agent. Jest o tym, co musisz
+umieć zrobić sam, żeby przy diffie agenta powiedzieć „za skomplikowane” — i
+mieć rację, a nie tylko wrażenie.
+
+## Okno, które da się rozłożyć
+
+Na pytanie z początku masz teraz odpowiedź, którą da się pokazać palcem na
+własnym programie. Ramkę, przeciąganie i napis „Nie odpowiada” daje system.
+Każdy piksel w środku rysuje biblioteka, i to dlatego notatnik wygląda tak
+samo wszędzie, a nie wygląda jak reszta systemu. Twoje jest to, co stoi w
+dwóch plikach — i to jest ta warstwa, którą przez cztery następne lekcje
+zbudujesz od pustego pliku.
+
+- **Rodzina przed nazwą.** Kiedy ktoś pyta „w czym to napisać”, pierwsza
+  odpowiedź to litera od A do D, a dopiero druga to nazwa biblioteki.
+- **Koszt jest techniczny, korzyść organizacyjna.** Megabajty da się
+  zmierzyć; zespoły też, tylko trudniej.
+- **Definicja do sprawdzenia:** okno, pętla zdarzeń, jeden wątek. Program,
+  który nie przechodzi trzech punktów, nie jest aplikacją desktopową, choćby
+  nie wiem jak wyglądał.
+- **Pięć stałych** to mapa modułu; wróć do tej listy po każdej lekcji i
+  odhacz, którą masz już we własnych rękach.
+
+Stack, w którym to wszystko zbudujesz, wybrano za ciebie w drugim tygodniu, z
+obietnicą, że decyzję potwierdzimy razem, kiedy będziesz umiał ją ocenić.
+Następna lekcja jest tą decyzją.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: cztery rodziny bibliotek do okien, po jednym programie z twojego
+komputera na każdą; i trzy rzeczy, które ma każda aplikacja desktopowa.
+
+</Zadanie>
+
+<Zadanie>
+
+Uruchom `notatnik-v2` i Eksplorator plików obok siebie. Zapisz trzy rzeczy,
+które system robi dla obu okien tak samo, i dwie, które Avalonia robi tylko w
+środku notatnika. Jeśli pracujesz na Linuksie, zrób to samo z dowolnym oknem
+systemu i zanotuj, co różni się od opisu w lekcji.
+
+</Zadanie>
+
+<Zadanie title="Rodziny na twoim pasku zadań">
+
+W `notatnik-v2` załóż plik `docs/rodziny.md`: każdy program, który masz na
+pasku zadań, przypisany do rodziny A–D, z jedną linijką dowodu — stroną
+producenta albo oknem „O programie” — i dzisiejszą datą. Commit.
+
+</Zadanie>
+
+<Zadanie>
+
+W Menedżerze zadań odczytaj, ile pamięci zajmuje twój edytor z agentem, a
+ile notatnik. Zapisz obie liczby z datą i jedno zdanie o tym, czego to
+porównanie **nie** dowodzi — to dwa różne programy i jeden pomiar.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-02">
+
+<Zrodlo title="Cross-platform architecture" publisher="Avalonia Docs" date="2026-08-25" url="https://docs.avaloniaui.net/docs/fundamentals/cross-platform-architecture">Avalonia rysuje kontrolki przy pomocy Skii zamiast opakowywać natywne kontrolki; stąd identyczny wygląd na każdym systemie</Zrodlo>
+
+<Zrodlo title="Visual Studio Code FAQ" publisher="Microsoft" date="2026-02-04" url="https://code.visualstudio.com/docs/supporting/faq">„The Electron shell used by Visual Studio Code” — dokumentacja edytora nazywa powłokę, w której działa</Zrodlo>
+
+<Zrodlo title="microsoft/calculator" publisher="GitHub" date="2026-09-02" url="https://github.com/microsoft/calculator">Kalkulator Windows: kod otwarty, C++ i C#, interfejs w XAML na kontrolkach systemu; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="Tauri vs. Electron: performance, bundle size, and the real trade-offs" publisher="Hopp" date="2025-04-09" url="https://www.gethopp.app/blog/tauri-vs-electron">8,6 MB wobec 244 MB paczki, około 172 MB wobec około 409 MB pamięci przy sześciu oknach; pomiar jednorazowy (N = 1), opublikowany przez firmę, która wybrała Tauri</Zrodlo>
+
+<Zrodlo title="1Password 8: The Story So Far" publisher="1Password" date="2021-08-12" url="https://1password.com/blog/1password-8-the-story-so-far">jeden wspólny rdzeń i jeden interfejs zamiast czterech osobnych zestawów technologii — powód organizacyjny, nie techniczny</Zrodlo>
+
+<Zrodlo title="Threading model (WPF)" publisher="Microsoft Learn" date="2023-10-26" url="https://learn.microsoft.com/en-us/dotnet/desktop/wpf/advanced/threading-model">„Windows allows UI elements to be accessed only by the thread that created them”</Zrodlo>
+
+<Zrodlo title="Processes and threads overview" publisher="Android Developers" date="2026-08-28" url="https://developer.android.com/guide/components/processes-and-threads">dwie zasady: nie blokuj wątku interfejsu; nie sięgaj do interfejsu spoza tego wątku</Zrodlo>
+
+<Zrodlo title="Thread Safety Summary" publisher="Apple Developer (archiwum)" date="2014-07-15" url="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Multithreading/ThreadSafetySummary/ThreadSafetySummary.html">operacje na `NSView` „only from the main thread of an application”</Zrodlo>
+
+<Zrodlo title="Preventing Hangs in Windows Applications" publisher="Microsoft Learn" date="2018-05-31" url="https://learn.microsoft.com/en-us/previous-versions/windows/win32/win7appqual/preventing-hangs-in-windows-applications">„If a message has not been retrieved within 5 seconds, the DWM declares the window to be hung”; okno-duch z napisem „Not Responding”</Zrodlo>
+
+<Zrodlo title="The Times They Are A-Changin'" publisher="Andy Hertzfeld, folklore.org" date="1984-01" url="https://www.folklore.org/The_Times_They_Are_A-Changin.html">„January 24, 1984 — the big day had finally arrived”: premiera Macintosha we wspomnieniu jednego z jego twórców; relacja pierwszoosobowa, nie dokument firmy</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="dokumentacja" title="Cross-platform architecture" url="https://docs.avaloniaui.net/docs/fundamentals/cross-platform-architecture">strona, z której pochodzi zdanie o Skii — i dalej: jak Avalonia dzieli kod na część wspólną i część zależną od systemu, czyli rodzina B opisana przez jej autorów</Lektura>
+
+<Lektura kind="dokumentacja" title="Preventing Hangs in Windows Applications" url="https://learn.microsoft.com/en-us/previous-versions/windows/win32/win7appqual/preventing-hangs-in-windows-applications">cały problem zamrożonego okna na jednej stronie, napisanej przez ludzi, którzy zbudowali okno-ducha; wrócimy do niej z własnym zamrożonym oknem za trzy lekcje</Lektura>
+
+</CzytajDalej>

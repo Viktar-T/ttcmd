@@ -1,0 +1,254 @@
+---
+title: "Ekosystem .NET i nasza decyzja"
+order: 2
+summary: "W drugim tygodniu ktoś wybrał za ciebie stack i obiecał, że decyzję podejmiemy razem, kiedy będziesz umiał ją ocenić. Uczciwa tabela bibliotek .NET, dziewięćdziesiąt sekund o tym, dlaczego każde okno w .NET mówi XAML-em, historia technologii, która nie przegrała na jakości — i decyzja zapisana tak, żeby za rok dało się przeczytać, dlaczego."
+publish: false
+---
+
+{/* Drafted 2026-09-02 from docs/content-briefs/05b-ekosystem-dotnet-i-decyzja.md,
+    autonomous run — brief unapproved. The vote is written as real (the class
+    may overturn the stack; the named cost is Linux at home); Viktar decides
+    whether it is consultative. INF.04 appears only in exercise 4 as something
+    the student looks up — the site asserts nothing about the exam (Article V).
+    Every version and price is a dated claim; re-check the links before class. */}
+
+Cztery aplikacje w jednym stacku, kilkaset linijek diffów przeczytanych w
+jednym języku znaczników, jeden raz, kiedy agent użył klasy, której w tej
+bibliotece już nie ma — i od poprzedniej lekcji wiedza, do której rodziny ta
+biblioteka należy. Tyle masz za sobą w „C# i Avalonii”. Wybrano je za ciebie
+w drugim tygodniu, ze zdaniem, które wtedy nie mogło znaczyć wiele: stack na
+czas nauki, a prawdziwe porównanie i decyzja podejmowana razem z wami czekają
+w tym module.
+
+To wystarczy, żeby mieć zdanie. Nie wystarczy, żeby mieć decyzję, bo decyzja
+różni się od zdania tym, że jest zapisana z powodem i z tym, co odrzucono —
+tak, jak w module o specyfikacji zapisałeś format pliku notatek. Dziś
+piszesz drugi taki zapis, i to jest najważniejsza rzecz w tej lekcji: nie
+wynik głosowania, tylko plik, w którym za rok da się przeczytać, dlaczego.
+
+Pytanie tej lekcji: **czy zostajemy przy C# i Avalonii — i jak podjąć tę
+decyzję tak, żeby dało się ją potem przeczytać?** Otwórz `notatnik-v2` i
+załóż plik `decyzje/0002-stack.md` z czterema nagłówkami z lekcji o
+konstytucji: kontekst, decyzja, odrzucone, skutki. Każda sekcja tej lekcji
+dopisuje do niego jeden akapit.
+
+## Co już wiemy z własnych rąk
+
+Pierwszy akapit kontekstu nie wymaga żadnej lektury, tylko własnej historii
+commitów. Przez jedenaście tygodni ten stack robił dla ciebie okna, a ty
+czytałeś, co zrobił. Zapisz trzy zdania, każde z faktem z twoich repozytoriów:
+co działało bez walki (okno stanęło w kilkanaście sekund, agent zmienił jedną
+rzecz i diff miał dwie linijki); co się opierało (diff, którego nie
+rozumiałeś; klasa `SaveFileDialog`, która [w wersji 12 biblioteki przestała
+istnieć](/moduly/03-budujemy/halucynacje-i-weryfikacja), a agent użył jej,
+bo internet jest jej pełen); gdzie to działało (pracownia, a jeśli masz
+Linuksa w domu — także tam).
+
+To nie jest ocena biblioteki. To jest dowód, że masz na czym stanąć: ktoś,
+kto porównuje dwie technologie, z których żadnej nie użył, porównuje reklamy.
+Ty porównujesz z jedną rzeczą, którą znasz od środka.
+
+## Uczciwa tabela
+
+Drugi akapit kontekstu to porównanie. Trzy biblioteki, w których pisze się
+dziś okna w .NET na więcej niż jeden system, i dwie starsze, które działają
+tylko na Windowsie i wciąż dostają nowe wersje. Każda liczba w tabeli ma
+link, bo każda z nich za rok może być inna.
+
+| | Gdzie działa | Kto rysuje środek okna | Uwaga |
+| --- | --- | --- | --- |
+| **Avalonia** 12.1.2 | [Windows, Linux, macOS, Android, iOS i przeglądarka](https://docs.avaloniaui.net/docs/fundamentals/cross-platform-architecture) | biblioteka sama, przez Skię — rodzina B | [wersja, którą 02.09.2026 instaluje szablon `avalonia.app`](https://github.com/AvaloniaUI/avalonia-dotnet-templates); jedyna z trójki z pulpitem Linuksa bez zastrzeżeń |
+| **.NET MAUI** | [Android, iOS, macOS, Windows](https://learn.microsoft.com/en-us/dotnet/maui/supported-platforms) — Linuksa nie ma na liście | kontrolki systemu — rodzina C | biblioteka Microsoftu, najlepiej opisana w jego dokumentacji; na pracownię z Ubuntu nie nadaje się wcale |
+| **Uno Platform** | [Windows, macOS, Linux, iOS, Android, WebAssembly](https://platform.uno/) | zależnie od systemu i ustawień — sprawdź w dokumentacji, zanim zacytujesz | jedyna, w której gotowy program da się wysłać komuś jako link do przeglądarki; największa z trzech do nauczenia |
+| **WPF** | [tylko Windows](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/overview/) — „even though .NET is a cross-platform technology, WPF only runs on Windows” | własne rysowanie | przodek wszystkich powyższych, z 2006 roku; wciąż rozwijany |
+| **Windows Forms** | [tylko Windows](https://learn.microsoft.com/en-us/dotnet/desktop/winforms/overview/) | kontrolki systemu | najstarszy z tej listy; [„features a drag-and-drop visual designer in Visual Studio”](https://learn.microsoft.com/en-us/dotnet/desktop/winforms/overview/) — projektant, w którym przyciski przeciąga się myszą |
+
+Do tabeli należy jeszcze jeden wiersz, który nie jest biblioteką: środowisko
+uruchomieniowe. Kurs stoi na **.NET 10**, wersji z długim wsparciem — [do
+listopada 2028 roku](https://learn.microsoft.com/en-us/dotnet/core/releases-and-support).
+W listopadzie 2026 wyjdzie .NET 11, ze wsparciem krótszym, i celowo go nie
+gonimy: zmiana wersji w środku roku kosztuje tydzień pracy wszystkich i nie
+uczy niczego. Zapiszesz to w skutkach.
+
+## Dlaczego każde okno w .NET mówi XAML-em
+
+Zanim porównasz wiersze tabeli, jedna rzecz, która je łączy i która obniża
+cenę każdej zmiany zdania. Cztery z pięciu bibliotek opisują okno w tym
+samym języku znaczników — tym, który czytasz w `MainWindow.axaml` — a nie
+jest to przypadek ani moda. To jest pochodzenie.
+
+W listopadzie 2006 roku Microsoft wydał [.NET Framework
+3.0](https://devblogs.microsoft.com/setup/microsoft-net-framework-3-0-released/),
+a w nim WPF: bibliotekę, która przyniosła dwie rzeczy w jednym pudełku —
+język znaczników XAML i **silnik wiązania danych**, czyli mechanizm, który sam utrzymuje zgodność między tym, co widać
+w kontrolce, a wartością, która mieszka gdzie indziej. Rok wcześniej, 8
+października 2005, John Gossman z zespołu WPF opisał wzorzec pracy z tym
+silnikiem i nazwał go MVVM; jedno zdanie z tego wpisu mówi, na czym wzorzec
+stoi:
+
+<Cytat author="John Gossman" source="Introduction to Model/View/ViewModel pattern for building WPF apps" date="2005-10-08" url="https://learn.microsoft.com/en-us/archive/blogs/johngossman/introduction-to-modelviewviewmodel-pattern-for-building-wpf-apps">
+
+Model/View/ViewModel also relies on one more thing: a general mechanism for
+data binding.
+
+</Cytat>
+
+Każda późniejsza biblioteka do okien w .NET wzięła to pudełko w całości, bo
+wzięcie samych znaczników bez silnika oznaczałoby wymyślanie wzorca od nowa.
+Avalonia też: jej plik nazywa się `.axaml` zamiast `.xaml`, ale język jest
+ten sam. Stąd zdanie, które warto zapamiętać, bo oszczędzi ci rok
+nieporozumień: **plik XAML to zapisane drzewo kontrolek plus silnik, który
+utrzymuje to drzewo w zgodzie z danymi mieszkającymi gdzie indziej.** Gdzie
+indziej — to jest temat lekcji o stanie, za cztery lekcje. Na dziś wystarczy
+wniosek do kontekstu: przejście między wierszami tabeli kosztuje mniej, niż
+wygląda, bo znaczniki, wiązanie i sposób myślenia o oknie są wspólne.
+
+## Jak naprawdę przegrywa technologia
+
+Trzeci akapit kontekstu jest o tym, czego tabela nie pokaże: technologie
+rzadko przegrywają na jakości. Najlepszy przykład jest sprzed twoich narodzin
+i nadal jest w sprzedaży.
+
+Delphi było w latach dziewięćdziesiątych narzędziem, w którym okno
+budowało się przeciąganiem przycisków, i wzorem dla późniejszych
+projektantów — także tego w Windows Forms. Produkt był technicznie świetny
+i ma go dziś w cenniku jego obecny właściciel, w pakiecie RAD Studio, [za
+2 000, 3 400 albo 4 416 dolarów za jedno
+stanowisko](https://www.embarcadero.com/app-development-tools-store/rad-studio),
+zależnie od wersji. Nie przegrało na jakości. Przegrało w 1998 roku, kiedy
+jego producent, Borland, [zmienił nazwę na Inprise, żeby pokazać
+klientom, że „nie jest już tylko dostawcą narzędzi do
+programowania”](https://www.techmonitor.ai/technology/borland_becomes_inprise_as_it_shifts_to_the_enterprise/)
+— i przegrało na cenie, której uczeń ani mała firma nie zapłacą, kiedy obok
+leży darmowe.
+
+Dlatego zapis decyzji ma sekcje *odrzucone* i *skutki*, a nie kolumnę „lepszy
+/ gorszy”. Stack wybiera się nie dlatego, że jest najlepszy, tylko dlatego,
+że działa tam, gdzie pracujesz, że umiesz przeczytać, co w nim pisze agent, i
+że ktoś obcy zdoła to zainstalować. Trzy pytania — i za chwilę zadamy je
+sali.
+
+## Decyzja
+
+Procedura jest krótka i odbywa się na lekcji, nie w pliku. Trzy pytania do
+sali, każde z odpowiedzią tak albo nie:
+
+1. **Czy działa tam, gdzie pracujesz?** W pracowni i na tym, co masz w domu.
+2. **Czy umiesz przeczytać, co pisze w nim agent?** Po jedenastu tygodniach
+   — nie „czy rozumiesz wszystko”, tylko „czy umiesz wskazać, czego nie
+   rozumiesz”.
+3. **Czy ktoś obcy zdoła to zainstalować?** Wróci w module o wydaniu; dziś
+   wystarczy odpowiedź z tabeli.
+
+Potem głosowanie i dwa uprawnione wyniki. Pierwszy: zostajemy — Avalonia
+zatwierdzona, z pełną świadomością, że została wybrana bez porównania, a
+teraz jest porównana. Drugi: zmieniamy — na Windows Forms albo WPF, jeśli
+pracownia jest tylko windowsowa i sala uzna, że projektant z przeciąganiem
+przycisków jest wart ceny. Cena jest nazwana i idzie do skutków: **Linux w
+domu przestaje być miejscem, w którym da się budować**, a wszystko, co
+zbudowałeś do tej pory, zostaje w starej bibliotece. Żaden z wyników nie jest
+błędem. Błędem byłby wynik bez zapisanej ceny.
+
+Sekcje *decyzja* i *skutki* piszesz sam, po głosowaniu, własnymi słowami — w
+skutkach także te, na które ty osobiście się godzisz: wersja .NET, której nie
+gonimy; system, na którym nie będzie dało się pracować; to, czego trzeba się
+douczyć, jeśli sala zmieniła zdanie.
+
+## Decyzja, którą da się przeczytać
+
+Na pytanie z początku lekcji odpowiedziała sala, nie ta strona, i tak miało
+być. Ważniejsze jest to, co zostaje po odpowiedzi: plik z czterema
+nagłówkami, w którym stoi, co porównano, co odrzucono i co ta decyzja
+kosztuje. Za rok, kiedy ktoś zapyta „dlaczego Avalonia” albo „dlaczego nie
+Avalonia”, odpowiedzią będzie link, a nie „bo tak było”.
+
+- **Kontekst z własnych repozytoriów, nie z reklam.** Trzy zdania z faktami
+  z twoich commitów ważą więcej niż tabela cudzych obietnic.
+- **Wiersze tabeli dzieli mniej, niż wygląda.** Cztery z pięciu mówią tym
+  samym językiem znaczników i mają ten sam silnik wiązania; przejście
+  kosztuje naukę różnic, nie naukę od zera.
+- **Technologie przegrywają na cenie, na właścicielu i na tym, kogo da się
+  zatrudnić** — rzadko na jakości. Dlatego zapis ma *odrzucone* i *skutki*.
+- **Zapisz cenę, na którą się godzisz.** Decyzja bez ceny jest życzeniem.
+
+Stack został; narzędzie się zmienia. Następna lekcja otwiera program, który
+nie jest kolejnym edytorem z rodziny VS Code — i pokazuje, po co komuś, kto
+ma agenta, debugger.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: trzy biblioteki do okien w .NET na więcej niż jeden system i
+jedno zdanie, które je od siebie odróżnia; rok, w którym wyszedł WPF, i dwie
+rzeczy, które przyniósł razem.
+
+</Zadanie>
+
+<Zadanie>
+
+Napisz sekcję *kontekst* pliku `decyzje/0002-stack.md`: trzy zdania z
+faktami z twoich własnych repozytoriów — co działało, co się opierało, gdzie
+to działało — i akapit z tabeli, z linkami.
+
+</Zadanie>
+
+<Zadanie title="Decyzja w pliku">
+
+Po głosowaniu dokończ `decyzje/0002-stack.md`: *decyzja* w jednym zdaniu,
+*odrzucone* z powodem, *skutki* z ceną, na którą się godzisz. Commit i push.
+Ten plik jest pierwszym zapisem decyzji, który dotyczy czegoś, co naprawdę
+zbudujesz.
+
+</Zadanie>
+
+<Zadanie title="Co mówi informator">
+
+Znajdź aktualny informator Centralnej Komisji Egzaminacyjnej dla
+kwalifikacji INF.04 — jej pełną nazwę znajdziesz w programie nauczania
+swojego kierunku — i wypisz technologie do aplikacji desktopowych, które
+tam padają, z datą dokumentu. Dopisz jedno zdanie do sekcji *skutki*: czy to
+coś zmienia w twojej decyzji. Ta strona nie twierdzi niczego o egzaminie —
+sprawdzasz ty.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-02">
+
+<Zrodlo title="Avalonia — wydania pakietu" publisher="NuGet" date="2026-09-02" url="https://www.nuget.org/packages/Avalonia">lista wersji z datami; 12.1.2 jest wersją, którą 2 września 2026 instalował szablon `avalonia.app` w projekcie sprawdzanym do tej lekcji</Zrodlo>
+
+<Zrodlo title="Cross-platform architecture" publisher="Avalonia Docs" date="2026-08-25" url="https://docs.avaloniaui.net/docs/fundamentals/cross-platform-architecture">Avalonia rysuje kontrolki sama, przez Skię; lista systemów</Zrodlo>
+
+<Zrodlo title="Supported platforms for .NET MAUI apps" publisher="Microsoft Learn" date="2026-04-09" url="https://learn.microsoft.com/en-us/dotnet/maui/supported-platforms">Android, iOS, macOS, Windows i Tizen; Linuksa nie ma na liście</Zrodlo>
+
+<Zrodlo title="Uno Platform" publisher="Uno Platform" date="2026-08-13" url="https://platform.uno/">lista celów: Windows, iOS i Android, WebAssembly, Linux, macOS</Zrodlo>
+
+<Zrodlo title="Desktop Guide (WPF .NET)" publisher="Microsoft Learn" date="2026-03-23" url="https://learn.microsoft.com/en-us/dotnet/desktop/wpf/overview/">„Even though .NET is a cross-platform technology, WPF only runs on Windows”; XAML i silnik wiązania danych opisane w tym samym przewodniku</Zrodlo>
+
+<Zrodlo title=".NET and .NET Core Support Policy" publisher="Microsoft" date="2026-09-02" url="https://learn.microsoft.com/en-us/dotnet/core/releases-and-support">.NET 10 to wersja LTS ze wsparciem do listopada 2028; wersje LTS i STS wychodzą na przemian</Zrodlo>
+
+<Zrodlo title="Microsoft .NET Framework 3.0 released" publisher="Microsoft (blog zespołu instalatora)" date="2006-11-07" url="https://devblogs.microsoft.com/setup/microsoft-net-framework-3-0-released/">ogłoszenie wydania .NET Framework 3.0, w którym pojawił się WPF</Zrodlo>
+
+<Zrodlo title="Desktop Guide (Windows Forms .NET)" publisher="Microsoft Learn" date="2025-05-07" url="https://learn.microsoft.com/en-us/dotnet/desktop/winforms/overview/">Windows Forms jako biblioteka tylko dla Windows; „features a drag-and-drop visual designer in Visual Studio”</Zrodlo>
+
+<Zrodlo title="Avalonia Templates for dotnet new" publisher="AvaloniaUI, GitHub" date="2026-09-02" url="https://github.com/AvaloniaUI/avalonia-dotnet-templates">szablony `avalonia.app` i `avalonia.mvvm`; domyślna wersja pakietów 12.1.2 w chwili sprawdzenia</Zrodlo>
+
+<Zrodlo title="Introduction to Model/View/ViewModel pattern for building WPF apps" publisher="John Gossman, Microsoft (archiwum blogów)" date="2005-10-08" url="https://learn.microsoft.com/en-us/archive/blogs/johngossman/introduction-to-modelviewviewmodel-pattern-for-building-wpf-apps">pierwszy opis MVVM; „relies on one more thing: a general mechanism for data binding”</Zrodlo>
+
+<Zrodlo title="RAD Studio — cennik" publisher="Embarcadero" date="2026-09-02" url="https://www.embarcadero.com/app-development-tools-store/rad-studio">2 000, 3 400 i 4 416 dolarów za licencję wieczystą, zależnie od wersji; strona bez własnej daty, sprawdzona 2 września 2026</Zrodlo>
+
+<Zrodlo title="Borland becomes Inprise as it shifts to the enterprise" publisher="Tech Monitor" date="1998-04-29" url="https://www.techmonitor.ai/technology/borland_becomes_inprise_as_it_shifts_to_the_enterprise/">„no longer just a supplier of desktop programming tools” — zmiana nazwy jako odejście od narzędzi</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="artykul" title="GUI Architectures — Martin Fowler" url="https://www.martinfowler.com/eaaDev/uiArchs.html">długa wersja tego, co dziś dostało dziewięćdziesiąt sekund: skąd wzięły się wzorce budowy okien i dlaczego jest ich tyle; wrócimy do niej w lekcji o stanie</Lektura>
+
+<Lektura kind="dokumentacja" title="Avalonia XAML" url="https://docs.avaloniaui.net/docs/basics/user-interface/introduction-to-xaml">wprowadzenie do języka znaczników, w którym piszesz okna — także o tym, dlaczego plik nazywa się `.axaml`</Lektura>
+
+</CzytajDalej>

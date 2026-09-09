@@ -1,0 +1,440 @@
+---
+title: "Zapis do pliku i błędy, których nie widać"
+order: 7
+summary: "Lista przeżywa zamknięcie okna: zapis po każdej zmianie, odczyt na starcie. A potem cztery sposoby, na jakie to się psuje — brak pliku, plik tylko do odczytu, plik zajęty przez inny program, zapis przerwany w połowie — każdy wywołany własną ręką i każdy z imieniem zamiast `catch (Exception)`."
+publish: false
+---
+
+{/* Drafted 2026-09-02 from docs/content-briefs/05g-zapis-i-bledy.md, autonomous
+    run — brief unapproved. Code is stages 09–11 of tmp-modul5-build/, built
+    with SDK 10.0.400 against Avalonia 12.1.2 (build.log 19:48): stage 10 fails
+    with CS0160 exactly as section 4 says; the headless tests of stage 11
+    confirmed the missing-file start, the read-only message and — a finding —
+    that a file locked by another program makes File.Move throw
+    UnauthorizedAccessException, not IOException, which is why section 5
+    changes the message. The direct-write IOException claim in section 3 is
+    pinned by a plain fact test in the same project (status in the brief). */}
+
+`spis` ma stan poza kontrolkami i okno, które go pokazuje — i traci
+wszystko w chwili, gdy zamkniesz okno. W drugiej budowie notatnik zapisywał
+do pliku od pierwszej wersji, bo tak kazał prompt, a w bloku własną ręką
+otoczyłeś linijkę zapisu klamrami `try` i `catch (Exception ex)`. Tamten blok
+powiedział, że `catch (Exception)` „łapie każdy rodzaj błędu naraz” i że to
+bywa za szerokie — i odłożył wyjaśnienie na ten moduł.
+
+Jest jeszcze jedno odłożone zdanie, twoje własne. W specyfikacji notatnika,
+w sekcji „Do ustalenia”, stoi pytanie z dziennika drugiej budowy: co ma się
+stać, gdy `notatki.md` jest w chwili zapisu otwarty w innym programie. Nikt
+na nie nie odpowiedział, bo nikt nie wiedział, jak to sprawdzić.
+
+Pytanie tej lekcji: **co może pójść nie tak między twoją listą a plikiem na
+dysku — i skąd program ma wiedzieć, *co* poszło nie tak, skoro `catch
+(Exception)` mówi tylko, że coś?** Zapiszesz `spis` do pliku, a potem
+zepsujesz ten zapis na cztery sposoby, każdy własną ręką, i każdemu nadasz
+imię.
+
+## Zapis i odczyt w dwóch metodach
+
+Tryb pracy: **bez AI**, w Visual Studio, jak w całym module.
+
+Zapis i odczyt należą do stanu, nie do okna — `Stan` wie, że ma listę, więc
+`Stan` ją zapisuje. Dwie metody w `Stan.cs`, pod `Dodaj`, i jedno `using` na
+górze:
+
+```csharp title="Stan.cs — dwie nowe metody i using System.IO na górze"
+public void Zapisz(string sciezka)
+{
+    File.WriteAllLines(sciezka, Pozycje);
+}
+
+public void Wczytaj(string sciezka)
+{
+    Pozycje.Clear();
+    foreach (var linia in File.ReadAllLines(sciezka))
+    {
+        Pozycje.Add(linia);
+    }
+    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Opis)));
+}
+```
+
+`File.WriteAllLines` bierze kolekcję napisów i zapisuje ją po jednej linijce
+na napis; `File.ReadAllLines` czyta plik i zwraca tablicę linijek, którą
+`Wczytaj` przepisuje do kolekcji — a po przepisaniu wysyła
+`PropertyChanged`, bo `Opis` się zmienił, a nikt inny o tym nie powie. W
+oknie: stała z nazwą pliku, odczyt w konstruktorze po ustawieniu
+`DataContext`, zapis w `DodajPozycje` po `_stan.Dodaj(nazwa)`:
+
+```csharp title="MainWindow.axaml.cs — trzy dopisane linijki"
+private const string Plik = "spis.txt";
+
+// w konstruktorze, po DataContext = _stan;
+_stan.Wczytaj(Plik);
+
+// w DodajPozycje, po _stan.Dodaj(nazwa);
+_stan.Zapisz(Plik);
+```
+
+`spis.txt` bez ścieżki to plik w folderze, z którego program został
+uruchomiony: pod `dotnet run` to folder projektu, pod F5 w Visual Studio —
+folder z plikiem wykonywalnym, czyli `bin\Debug\net10.0` wewnątrz folderu
+projektu. Zapamiętaj to miejsce, bo za chwilę będziesz tam zaglądać
+kilka razy. Dodaj trzy pozycje,
+jedną z polskimi znakami, zamknij, uruchom jeszcze raz: trzy pozycje wracają,
+znaki są całe. Otwórz `spis.txt` w edytorze: trzy linijki, każda jedna
+pozycja, najnowsza na górze. Dokumentacja mówi, że plik został zapisany [w
+UTF-8 bez znacznika kolejności bajtów](https://learn.microsoft.com/en-us/dotnet/api/system.io.file.writealllines)
+— to jest odpowiedź na kryterium K3 ze specyfikacji notatnika, „Żółć, nie
+krzaczki”, tylko że tym razem wiesz, skąd się bierze.
+
+Do tej pory wszystko działało, i to jest właśnie problem. Szczęśliwa
+ścieżka — ta, na której plik jest, wolno do niego pisać i nic nie przeszkadza
+— to jedna z pięciu, a ty widziałeś tylko ją.
+
+## Pierwsze uruchomienie: pliku nie ma
+
+Zamknij program, usuń `spis.txt` z folderu, w którym leży, F5. Program nie
+pokazuje okna: Visual Studio zatrzymuje się w `Wczytaj`, na linijce z
+`ReadAllLines`, z oknem wyjątku `FileNotFoundException`, „Could not find
+file …spis.txt”.
+
+**Wyjątek** to sposób, w jaki metoda mówi, że nie może zrobić tego, o co ją
+poproszono: przerywa pracę i oddaje w górę obiekt z opisem powodu — do
+pierwszego miejsca, które go złapie klamrą `catch`, a jeśli takiego miejsca
+nie ma, program się kończy. Tak było teraz: `ReadAllLines` nie znalazł pliku,
+wyjątek przeszedł przez `Wczytaj` i przez konstruktor, nikt go nie złapał i
+okno nie zdążyło powstać. To jest [jeden z
+dziewięciu wyjątków, które dokumentacja `ReadAllLines` wymienia z
+nazwy](https://learn.microsoft.com/en-us/dotnet/api/system.io.file.readalllines),
+każdy z powodem: pliku nie ma, folderu nie ma, ścieżka za długa, brak
+uprawnień, błąd wejścia-wyjścia. Nie „coś poszło nie tak” — konkretna
+rzecz, która poszła nie tak, z własnym typem.
+
+Brak pliku przy pierwszym uruchomieniu nie jest błędem programu; to jest
+zwykły pierwszy dzień. Specyfikacja notatnika miała na to kryterium K6:
+program uruchamia się z pustą listą i tworzy plik przy pierwszym zapisie.
+Dokładnie to mówi `catch` z pustym ciałem — i komentarzem, który wyjaśnia,
+dlaczego puste jest tu właściwe:
+
+```csharp title="MainWindow.axaml.cs — konstruktor"
+public MainWindow()
+{
+    InitializeComponent();
+    DataContext = _stan;
+
+    try
+    {
+        _stan.Wczytaj(Plik);
+    }
+    catch (FileNotFoundException)
+    {
+        // Pierwsze uruchomienie: pliku jeszcze nie ma, lista zostaje pusta.
+    }
+}
+```
+
+Na górze pliku przybywa `using System.IO;`. F5 bez pliku: puste okno,
+„Pozycji: 0”. Dodaj pozycję — plik powstaje. To jest pierwszy z czterech
+przypadków i jedyny, w którym właściwą reakcją jest nic nie robić — po
+nazwie wyjątku wiesz, że to ten, a nie inny.
+
+## Plik tylko do odczytu, plik zajęty
+
+Zapis ma [własną listę w
+dokumentacji](https://learn.microsoft.com/en-us/dotnet/api/system.io.file.writealllines)
+i dwa jej wiersze da się wywołać ręcznie w minutę. Pierwszy: nadaj
+`spis.txt` atrybut „tylko do odczytu” — prawy przycisk i **Właściwości** —
+uruchom, dodaj pozycję. Wyjątek: `UnauthorizedAccessException`; dokumentacja
+mówi, że tak kończy się zapis, gdy „ścieżka wskazuje plik tylko do odczytu”.
+Drugi: zdejmij atrybut i zajmij plik tak, jak zajmuje go program, który
+otworzył go na wyłączność. Najkrócej robi to jedna linijka w PowerShellu,
+uruchomiona w folderze, w którym leży `spis.txt` (pod F5: `cd
+bin\Debug\net10.0` w folderze projektu) — otwiera plik bez prawa dzielenia
+się nim z kimkolwiek i trzyma go, dopóki nie zamkniesz:
+
+```powershell title="PowerShell, w folderze, w którym leży spis.txt"
+$plik = [System.IO.File]::Open("$PWD\spis.txt", "Open", "ReadWrite", "None")
+```
+
+Wróć do programu i dodaj pozycję. Wyjątek: `IOException`, „The process cannot
+access the file … because it is being used by another process”. To jest
+twoje pytanie z „Do ustalenia”, po raz pierwszy zobaczone, a nie wyobrażone.
+Zwolnij plik, kiedy skończysz: `$plik.Close()`.
+
+Dwa różne typy, dwie różne reakcje, i to jest cały powód, dla którego
+`catch (Exception)` bywa za szerokie: łapie oba, a potem musi zgadywać, co
+powiedzieć użytkownikowi. Pod licznikiem przybywa czwarty wiersz siatki i
+kontrolka na komunikat — `RowDefinitions="Auto,*,Auto,Auto"` i pod
+licznikiem:
+
+```xml title="MainWindow.axaml — czwarty wiersz"
+<TextBlock Grid.Row="3" Grid.ColumnSpan="2" Name="Komunikat" Foreground="DarkRed" />
+```
+
+A `DodajPozycje` dostaje dwa `catch`, każdy z własnym zdaniem — i `using
+System;` na górze pliku, bo `UnauthorizedAccessException` mieszka w tej
+przestrzeni nazw:
+
+```csharp title="MainWindow.axaml.cs — DodajPozycje"
+private void DodajPozycje()
+{
+    var nazwa = NowaPozycja.Text?.Trim();
+    if (string.IsNullOrEmpty(nazwa))
+    {
+        return;
+    }
+
+    _stan.Dodaj(nazwa);
+    NowaPozycja.Text = "";
+
+    try
+    {
+        _stan.Zapisz(Plik);
+        Komunikat.Text = "";
+    }
+    catch (UnauthorizedAccessException)
+    {
+        Komunikat.Text = "Plik jest tylko do odczytu — ta pozycja nie została zapisana.";
+    }
+    catch (IOException ex)
+    {
+        Komunikat.Text = $"Nie udało się zapisać: {ex.Message}";
+    }
+}
+```
+
+Powtórz oba przypadki. Program nie ginie; pozycja jest na liście, bo stan
+dostał ją przed zapisem; pod licznikiem stoi zdanie, które mówi, co się
+stało. Zwróć uwagę, gdzie użyto `ex.Message`, a gdzie nie: przy pliku tylko
+do odczytu program wie dokładnie, co się stało, i mówi to własnymi słowami;
+przy `IOException` wie tylko, że to błąd wejścia-wyjścia, więc oddaje głos
+systemowi. Zapisz:
+
+```bash
+git add .
+git commit -m "wlasna reka: zapis do pliku i dwa bledy z imienia"
+```
+
+## Kolejność, której pilnuje kompilator
+
+Wróć na chwilę do konstruktora i spróbuj czegoś, co wygląda rozsądnie:
+złapać najpierw każdy błąd wejścia-wyjścia, a potem osobno brak pliku.
+
+```csharp title="MainWindow.axaml.cs — konstruktor, wersja, która się nie zbuduje"
+try
+{
+    _stan.Wczytaj(Plik);
+}
+catch (IOException)
+{
+    Komunikat.Text = "Nie udało się wczytać pliku.";
+}
+catch (FileNotFoundException)
+{
+    // Pierwsze uruchomienie: pliku jeszcze nie ma, lista zostaje pusta.
+}
+```
+
+Zbuduj. Kompilator odmawia:
+
+```text
+error CS0160: Poprzednia klauzula catch przechwytuje już wszystkie wyjątki
+tego typu lub jego nadtypu („IOException”)
+```
+
+(W angielskiej wersji Visual Studio: „A previous catch clause already catches
+all exceptions of this or of a super type”.)
+
+Powód: [`FileNotFoundException` dziedziczy po
+`IOException`](https://learn.microsoft.com/en-us/dotnet/api/system.io.filenotfoundexception)
+— jest jego szczególnym przypadkiem, tak jak `Żółć` jest szczególnym
+przypadkiem napisu. Pierwszy `catch` złapałby więc także brak pliku, a drugi
+nigdy by się nie wykonał, i [kompilator woli to zgłosić niż pozwolić na
+martwy kod](https://learn.microsoft.com/en-us/dotnet/csharp/misc/cs0160).
+Reguła: **od najbardziej szczegółowego do najogólniejszego** — `FileNotFoundException`
+przed `IOException`, `IOException` przed `Exception`, a `Exception` na samym
+końcu i rzadko. Przewodnik po języku mówi to jednym zdaniem: [nie łap
+wyjątku, jeśli nie umiesz go obsłużyć i zostawić programu w znanym
+stanie](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/exceptions/).
+`catch (Exception)` z drugiej budowy nie spełniało tej reguły — łapało
+wszystko, żeby program nie zniknął, co wtedy było postępem, a dziś już nie
+wystarcza.
+
+Przywróć konstruktor z jednym `catch (FileNotFoundException)`.
+
+## Zapis, który pęka w połowie
+
+Czwarty przypadek jest najgorszy, bo nie daje wyjątku. `WriteAllLines`
+najpierw opróżnia plik, a potem pisze do niego od nowa. Jeśli między tymi
+dwoma krokami zabraknie prądu, system się zawiesi albo program zostanie
+zabity, na dysku zostaje `spis.txt` pusty albo urwany — i przy następnym
+uruchomieniu `Wczytaj` wczyta go bez słowa skargi, bo pusty plik jest
+poprawnym plikiem. Cała lista znika, a program nie zgłasza niczego.
+
+Rozwiązanie jest starsze niż C# i stosuje je każdy program, który traktuje
+dane poważnie: pisz do pliku obok, a kiedy zapis się skończy, podmień.
+Podmiana jest jedną operacją systemu — albo się uda w całości, albo wcale.
+
+```csharp title="Stan.cs — Zapisz, wersja bezpieczna"
+public void Zapisz(string sciezka)
+{
+    var tymczasowy = sciezka + ".tmp";
+    File.WriteAllLines(tymczasowy, Pozycje);
+    File.Move(tymczasowy, sciezka, overwrite: true);
+}
+```
+
+[`File.Move` z `overwrite: true`](https://learn.microsoft.com/en-us/dotnet/api/system.io.file.move)
+przenosi plik tymczasowy na miejsce właściwego, zastępując go. Uruchom,
+dodaj pozycję, zajrzyj do folderu z plikiem: `spis.txt` jest, `spis.txt.tmp`
+już nie — zniknął w chwili podmiany.
+
+Teraz powtórz przypadek z zajętym plikiem, i patrz uważnie, bo coś się
+zmieniło. `spis.txt.tmp` powstał. Podmiana się nie udała — i nie udała się z
+innym wyjątkiem niż poprzednio: `UnauthorizedAccessException`, bo, jak mówi
+dokumentacja `File.Move`, tak kończy się sytuacja, gdy „system nie zdołał
+uzyskać wyłącznego dostępu do pliku docelowego”. Ten sam błąd na dysku —
+zajęty plik — zgłosił się pod innym typem, bo inna operacja go napotkała. A
+twój `catch (UnauthorizedAccessException)` mówi teraz użytkownikowi „plik
+jest tylko do odczytu”, co jest nieprawdą.
+
+To jest to, na co ten moduł cię przygotowuje: kod, który był poprawny, a po
+zmianie obok stał się nieprawdziwy, choć nadal się kompiluje i nadal nie
+wyrzuca programu. Napraw zdanie, żeby mówiło tyle, ile program naprawdę wie:
+
+```csharp title="MainWindow.axaml.cs — poprawiony komunikat"
+catch (UnauthorizedAccessException)
+{
+    Komunikat.Text = "Brak dostępu do pliku — jest tylko do odczytu albo zajęty przez inny program. Ta pozycja nie została zapisana.";
+}
+```
+
+I jedno więcej: po nieudanej podmianie w folderze został `spis.txt.tmp`. To
+jest ślad, który od dziś umiesz przeczytać — nieudany zapis, a nie śmieć —
+i przy następnym udanym zapisie zostanie nadpisany. Commit:
+
+```bash
+git add .
+git commit -m "wlasna reka: bezpieczny zapis przez plik tymczasowy"
+```
+
+## Co jeszcze ukrywa szczęśliwa ścieżka
+
+Cztery przypadki wywołałeś. Jeszcze cztery rzeczy warto znać z nazwy, bez
+kodu, bo zobaczysz je w diffach agenta i będziesz wiedzieć, o co pytać.
+
+**`finally`** to trzecia klamra po `try` i `catch`: to, co w niej stoi,
+[wykonuje się zawsze, czy wyjątek był, czy nie](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/exceptions/)
+— miejsce na zamknięcie tego, co się otworzyło. W tej lekcji nie było
+potrzebne, bo `WriteAllLines` zamyka plik samo; kiedy zobaczysz w kodzie
+agenta `using (var plik = …)`, to jest `finally` zapisane krócej.
+
+**Zapis po każdej zmianie czy przy zamknięciu.** `spis` zapisuje po każdym
+dodaniu — prosto, i jedna nieudana podmiana kosztuje jedną pozycję. Program,
+który zapisuje dopiero w zdarzeniu `Closing` okna, robi mniej zapisów i traci
+wszystko, jeśli okno nie zdąży się zamknąć. Obie decyzje są uczciwe; nieuczciwa
+jest tylko ta niezapisana.
+
+**Znacznik kolejności bajtów.** `ReadAllLines` [rozpoznaje kodowanie pliku
+po znaczniku na
+początku](https://learn.microsoft.com/en-us/dotnet/api/system.io.file.readalllines),
+a `WriteAllLines` go nie zapisuje. Dla plików, które piszesz i czytasz sam, to
+bez znaczenia; dla pliku, który ktoś przyniesie z innego programu, to
+pierwsza rzecz do sprawdzenia, kiedy zamiast „Żółć” zobaczysz krzaczki.
+
+**Folder, którego nie ma.** `DirectoryNotFoundException`, na obu listach.
+Zapis do `dane/spis.txt` w folderze bez `dane` kończy się nim, a nie
+utworzeniem folderu — folder trzeba utworzyć samemu.
+
+A reguła czytania kodu agenta na dziś: znajdź każde `File.` i przy każdym
+zapytaj, które z czterech dzisiejszych przypadków przeżyje. Zwykle: jeden.
+
+## Błędy z imienia
+
+Na pytanie z początku lekcji odpowiedziałeś trzema wyjątkami, które sam
+wywołałeś — `FileNotFoundException`, `UnauthorizedAccessException`,
+`IOException` — i jednym przypadkiem, który wyjątku nie daje: zapisem
+przerwanym w połowie. Program wie, co poszło nie tak, bo wyjątek ma typ, a typ
+ma powód w dokumentacji; `catch (Exception)` był sposobem, żeby nie
+zniknąć, i nie był sposobem, żeby wiedzieć.
+
+- **Cztery przypadki, cztery reakcje.** Brak pliku: nic; brak dostępu:
+  powiedz; błąd wejścia-wyjścia: oddaj głos systemowi; zapis w połowie: plik
+  tymczasowy i podmiana.
+- **Od szczegółu do ogółu.** Kompilator pilnuje kolejności `catch`, bo
+  wyjątki dziedziczą.
+- **Ten sam błąd, inna operacja, inny typ.** Zmiana obok potrafi
+  unieważnić zdanie w `catch`, które nadal się kompiluje.
+- **Stan przed zapisem, komunikat po.** Nieudany zapis nie cofa listy —
+  mówi.
+
+Została jedna rzecz poza `spis`: twoje „Do ustalenia” w specyfikacji
+notatnika. Odpowiedź znasz: kiedy `notatki.md` jest otwarty w innym
+programie, zapis się nie udaje, notatka zostaje na liście, a pod przyciskiem
+pojawia się komunikat. Wpisz ją do `spec.md` — specyfikację zmienia się przed
+kodem, jak mówiła lekcja o pełnej pętli — i zapisz commit. Linijka na karcie z minutami zamyka czwarty i ostatni
+blok budowania w tym module. Następna lekcja nie buduje niczego nowego:
+buduje jedną rzecz trzy razy.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: cztery rzeczy, które mogą pójść nie tak przy zapisie pliku, i
+wyjątek, którym zgłasza się każda z nich; dlaczego `IOException` musi stać po
+`FileNotFoundException`.
+
+</Zadanie>
+
+<Zadanie>
+
+Zajmij `spis.txt` linijką z PowerShella z lekcji, dodaj pozycję, przeczytaj
+komunikat. Zwolnij plik przez `$plik.Close()`, dodaj jeszcze raz. Zajrzyj do folderu, znajdź `spis.txt.tmp` albo jego brak, i
+zapisz, dlaczego jest albo dlaczego go nie ma.
+
+</Zadanie>
+
+<Zadanie title="Do ustalenia — ustalone">
+
+Commit `wlasna reka: bezpieczny zapis przez plik tymczasowy` w `spis`. W
+`notatnik-v2` zamień pytanie z „Do ustalenia” w `specs/001-notatnik/spec.md`
+na jedno zdanie odpowiedzi w formie „Kiedy …, to …” i zapisz commit z opisem
+`spec: plik otwarty w innym programie`. Linijka na karcie: minuty.
+
+</Zadanie>
+
+<Zadanie>
+
+W `NoteFile.cs` swojego notatnika wypisz każde wywołanie `File.` i obok
+każdego — które z czterech dzisiejszych przypadków przeżyje. Jedno zdanie o
+tym, którego nie przeżyje, i co by wtedy zobaczył użytkownik.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-02">
+
+<Zrodlo title="File.WriteAllLines Method" publisher="Microsoft Learn" date="2026-09-02" url="https://learn.microsoft.com/en-us/dotnet/api/system.io.file.writealllines">lista wyjątków: `DirectoryNotFoundException`, `IOException`, `UnauthorizedAccessException` („path specified a file that is read-only”) i inne; domyślnie UTF-8 bez znacznika kolejności bajtów; strona bez własnej daty, sprawdzona 2 września 2026</Zrodlo>
+
+<Zrodlo title="File.ReadAllLines Method" publisher="Microsoft Learn" date="2026-09-02" url="https://learn.microsoft.com/en-us/dotnet/api/system.io.file.readalllines">dziewięć wyjątków z nazwy, w tym `FileNotFoundException`; kodowanie rozpoznawane po znaczniku kolejności bajtów; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="File.Move(String, String, Boolean) Method" publisher="Microsoft Learn" date="2025-07-01" url="https://learn.microsoft.com/en-us/dotnet/api/system.io.file.move">podmiana pliku docelowego przy `overwrite: true`; `UnauthorizedAccessException`, gdy „the Operating System has failed to acquire an exclusive access to the destination file”</Zrodlo>
+
+<Zrodlo title="FileNotFoundException Class" publisher="Microsoft Learn" date="2026-09-02" url="https://learn.microsoft.com/en-us/dotnet/api/system.io.filenotfoundexception">łańcuch dziedziczenia: `Exception` → `SystemException` → `IOException` → `FileNotFoundException`; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="Compiler Error CS0160" publisher="Microsoft Learn" date="2023-04-22" url="https://learn.microsoft.com/en-us/dotnet/csharp/misc/cs0160">„A previous catch clause already catches all exceptions of this or of a super type”; klauzule `catch` w kolejności od najbardziej pochodnych</Zrodlo>
+
+<Zrodlo title="Exceptions and Exception Handling (C#)" publisher="Microsoft Learn" date="2023-04-22" url="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/exceptions/">„Don't catch an exception unless you can handle it and leave the application in a known state”; `finally` wykonuje się zawsze</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="dokumentacja" title="Best practices for exceptions — .NET" url="https://learn.microsoft.com/en-us/dotnet/standard/exceptions/best-practices-for-exceptions">co łapać, czego nie łapać i jak pisać komunikat, żeby mówił prawdę — kilkanaście zasad, z których dziś użyto trzech</Lektura>
+
+<Lektura kind="dokumentacja" title="File and Stream I/O — .NET" url="https://learn.microsoft.com/en-us/dotnet/standard/io/">wszystko, co jest pod `File.`: strumienie, `using`, ścieżki — do przeczytania, kiedy `WriteAllLines` przestanie wystarczać</Lektura>
+
+</CzytajDalej>

@@ -1,0 +1,56 @@
+---
+title: "Pod maską: aplikacja własną ręką"
+---
+
+{/* Drafted 2026-09-02 from docs/content-briefs/05-index.md, autonomous run —
+    the brief is a proposal, not an approved spec. Stack inside the module:
+    C# + Avalonia (Viktar, 2026-09-02; open decision #12). Lessons 5d–5g
+    contain code the student types; every block was built as a stage of
+    tmp-modul5-build/ — see the briefs' Deviations for the build status. The
+    whole module stays publish: false until that status says „built and tests
+    green”. Windows-only observations (the „Nie odpowiada” ghost window,
+    Visual Studio) assume lab list A; TO CONFIRM against open decisions #1 and #9. */}
+
+Przez jedenaście tygodni okna budował agent, a twoją pracą było czytanie tego, co zbudował. Masz
+cztery działające aplikacje, trzy commity z napisem „wlasna reka” i przy
+każdym z nich liczbę minut na karcie. Umiesz powiedzieć, co robi zmiana w
+diffie. Nie umiesz jeszcze powiedzieć, czy jest **za skomplikowana** — bo nigdy nie
+było okazji zrobić tej samej rzeczy samemu i nie ma z czym porównać.
+
+Ten moduł wyłącza agenta i kładzie twoje ręce na czterech rzeczach, które nie
+zmieniły się od pierwszego masowo sprzedawanego okna z 1984 roku: na pętli,
+która wywołuje twój program, zamiast pozwolić mu biec; na jednym wątku, który
+jest właścicielem okna; na stanie, który nie może mieszkać w kontrolkach; i na
+pliku, który potrafi zawieść. Pytanie modułu brzmi: co musisz umieć zrobić
+sam, żeby być tym, kto redaguje pracę agenta — kimś, kto potrafi powiedzieć
+„za skomplikowane” i mieć rację. Nie chodzi o to, żeby pisać szybciej niż
+agent. Chodzi o to, żeby różnica między zrobieniem a przyjęciem była liczbą w
+twoim dzienniku, a nie wrażeniem.
+
+Kolejność lekcji: najpierw trzy decyzje, potem cztery budowy, na końcu jeden
+pomiar. Pierwsza lekcja rozbiera twój notatnik na to, co rysuje system, co
+biblioteka, a co ty — i nazywa pięć rzeczy, z których moduł zbuduje cztery. Druga płaci
+obietnicę z drugiego modułu: stack wybrany „na czas nauki” jest porównywany
+uczciwie i zatwierdzany albo odrzucany razem z wami, a decyzja trafia do
+twojego pierwszego prawdziwego zapisu decyzji. Trzecia zmienia narzędzie:
+Visual Studio jest innym programem niż wszystko, w czym dotąd pisaliśmy, i
+jego debugger jest instrumentem do pytań, które ten moduł zadaje. Czwarta
+stawia od pustego pliku okno z jednym przyciskiem, zamraża je celowo i
+pokazuje liczbę sekund, po której system się poddaje. Piąta wpisuje linijka
+po linijce układ, który dotąd generował agent. Szósta jest lekcją, na której
+stoi reszta roku: dane wychodzą z kontrolek do jednej klasy, a okno samo
+zauważa zmianę — ta sama reguła, którą wymyślano na nowo od 1979 roku. Siódma
+zapisuje listę do pliku i nadaje imię każdemu błędowi, który `catch
+(Exception)` ukrywał. Ósma buduje jedną funkcję twojego notatnika trzy razy —
+bez AI, z podpowiadaniem, z agentem — mierzy czas każdej i czyta wersję agenta
+oczami czterech poprzednich lekcji.
+
+Kilka rzeczy o tym, jak ten moduł jest prowadzony. Każda lekcja od czwartej
+mówi w jednym zdaniu, w jakim **trybie pracy** się odbywa — bez AI, tylko z
+podpowiadaniem, z agentem — i w tym module domyślnym trybem jest „bez AI”, a
+agent jest wyjątkiem, który trzeba nazwać. Kod, który wpisujesz, jest krótki,
+kompletny i został zbudowany i uruchomiony, zanim trafił do lekcji. Każdy
+blok kończy się tak samo: commitem w twoich słowach i linijką na karcie z
+liczbą minut. To nie jest moduł o tym, „jak się kiedyś robiło”. Dwie godziny
+rezerwy leżą przy czwartej i szóstej lekcji, bo to one najczęściej się
+przeciągają.

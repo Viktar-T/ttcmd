@@ -750,7 +750,7 @@ introduction and 1b's opening stop relying on it.
 | Story / number | Home | Elsewhere |
 | --- | --- | --- |
 | The forty-year promise of “programming by talking” (4GL, Visual Basic, iPhone web apps) | 1a | 1b opens by recalling it in one sentence |
-| The constants since 1984 (event loop, one UI thread, five seconds, state outside controls, installation) | 1a | Moduł 5 (Pod maską), when it exists — 5a names them, 5d–5g build them |
+| The constants since 1984 (event loop, one UI thread, five seconds, state outside controls, installation) | **5a** (named as the module's map; drafted 2026-09-02) — 1a keeps its telling outside the pipeline | 5d–5g build the first four, one each; the fifth waits for the release module |
 | The causes table; Visual Basic 6 and Delphi; Airbnb and Shopify | 1a | — |
 | The five layers and the dated timeline (Copilot 21.06.2022 → Fable 5 09.06.2026); sub-agents in spring 2026 | 1b | later lessons refer to layers by number |
 | “Jednostka pracy” (linijka → zadanie) | 1b | 1c, 2a, 1d as a term |
@@ -781,13 +781,21 @@ introduction and 1b's opening stop relying on it.
 | Böckeler's three levels and her critique („I'd rather review code than all these markdown files”; „a sledgehammer to crack a nut”) | 4d | — |
 | Cursor Plan Mode / Antigravity Implementation Plan as the plan-and-tasks half of the loop | 4d | 4e uses the feature without naming the products |
 | „Ktoś prawdziwy ma tego używać — i ty się liczysz” | 4f | Moduł 9 (the project; v2.5 numbering), when the project is chosen |
+| The four families of window toolkits (A web shell, B one renderer, C native controls, D own renderer); Hopp's 8,6 vs 244 MB with its N = 1 caveat; 1Password's „four stacks”; „the cost is technical, the benefit organisational” | 5a | 5b as the family of each table row, one clause |
+| Delphi did not lose on merit — the price list (2 000 / 3 400 / 4 416 USD) and Borland → Inprise, 29.04.1998 | 5b | — (1a's telling stays outside the pipeline) |
+| WPF, 7.11.2006: markup + a binding engine in one box; Gossman's „relies on one more thing: a general mechanism for data binding” (8.10.2005); „a XAML file is a saved tree of controls plus an engine that keeps it in sync with data that live elsewhere” | 5b | 5f recalls the Gossman sentence in one clause, by link |
+| The five-second rule and the ghost window („Nie odpowiada”), caused by hand with `Thread.Sleep(6000)`; the four versions of one handler (freeze → wrong thread → `Dispatcher.UIThread.Post` → `async`/`await`) | 5d | 5a names the number in the constants list, one clause; 5f („piksele są spóźnione”), one clause |
+| The generated half of `partial class MainWindow` (`Avalonia.Generators`, `InitializeComponent`, one field per `Name`) and the SDK-8 build that lost it (`CS0103`) | 5e | — |
+| MVC 1979 → MVP 1996 → Presentation Model 2004 → MVVM 2005: forty-seven years of „state does not live in the widget tree”; „okno tylko pokazuje”; mobile as „change the shell” | 5f | Moduł 8 (mobile) stands on it; Moduł 6 reads the shared app with „gdzie jest stan” first |
+| The four failures of a file (missing, read-only, locked, interrupted) and the one that changes type with the operation (`File.Move` over a locked file → `UnauthorizedAccessException`) | 5g | 5h's fourth question, one clause |
+| The three modes on three branches (bez AI → podpowiadanie → agent), the card's three columns (minuty · zmienione linijki · linijki, które rozumiesz) and the feature-scale *Rozbierz to* (four questions) | 5h | Moduł 6 reads its diffs with the four questions |
 
 ### Terms
 
 | Term | Home |
 | --- | --- |
 | Git, repozytorium, commit, gałąź (branch), pull request, `.gitignore`, `clone`, `pull`, `push` | 0c |
-| pętla zdarzeń, framework, RAD, XAML / język znaczników, wiązanie danych, MVVM, deklaratywnie, SDK, sklep jako bramka | 1a |
+| framework, RAD, XAML / język znaczników, deklaratywnie, SDK, sklep jako bramka — and, until 2026-09-02, *pętla zdarzeń, wiązanie danych, MVVM*, now homed in 5d and 5f (1a is outside the pipeline) | 1a |
 | podpowiedzi kodu, autouzupełnianie, IDE, czat w IDE, next edit, agent, pętla agenta, orkiestracja, podagent, MCP, jednostka pracy, refaktoryzacja | 1b |
 | randomizowane badanie z grupą kontrolną, open source, junior i senior, boilerplate, debugowanie, CRUD, mediana, punkt procentowy | 1c |
 | prompt, diff, build, tokeny, niedeterministyczny, zgody / tryb zatwierdzania, `DECISIONS.md` | 1g |
@@ -805,6 +813,16 @@ introduction and 1b's opening stop relying on it.
 | spec-driven development / SDD, spec-first / spec-anchored / spec-as-source, Plan Mode, Implementation Plan, „jedna pętla, pięć opakowań” | 4d |
 | „specyfikację zmienia się przed kodem”, dowód w dzienniku (polecenie i wynik, nie zdanie), przegląd w świeżym kontekście (luki w kryteriach, nie styl), wariant konsolowy jako dowód, że specyfikacja nie mówi *jak* | 4e |
 | pomysł jako specyfikacja w miniaturze (cztery zdania: co robi, kto otworzy, po czym poznam, czego nie robi), „zebrane, nie wybrane” | 4f |
+| cztery rodziny bibliotek do okien (A–D), aplikacja desktopowa jako definicja do sprawdzenia (okno, pętla zdarzeń, jeden wątek), pięć stałych od 1984, Skia jako „biblioteka rysująca piksele”, silnik przeglądarki w pudełku | 5a |
+| ekosystem .NET (Avalonia / MAUI / Uno / WPF / Windows Forms), LTS i STS, XAML jako zapisane drzewo kontrolek + silnik wiązania, zapis decyzji o stacku (`decyzje/0002-stack.md`) | 5b |
+| IDE kontra edytor z rozszerzeniami, solution (`.sln`), plik projektu jako XML MSBuild, `PackageReference`, punkt przerwania (F9), F5, krok (F10), okno Watch, Call Stack, tryb pracy (the sentence), Copilot niezalogowany / podpowiedzi ręczne | 5c |
+| pętla zdarzeń, kolejka komunikatów, jeden wątek interfejsu (wątek okna), zamrożone okno i pięć sekund, `Dispatcher.UIThread.Post`, `async`/`await` jako odpowiedź na zamrożone okno, `Task.Run`, `Thread.Sleep` jako udawana długa praca | 5d |
+| kontener układu (`StackPanel`, `DockPanel`, `Grid`; `Auto`, `*`), `Name` jako pole klasy, `partial` i `InitializeComponent()` jako druga połowa generowana przy budowaniu, generator (`Avalonia.Generators`), `KeyDown` / `Key.Enter`, `PlaceholderText` | 5e |
+| stan, model widoku, wiązanie danych (`{Binding …}`), `DataContext`, `x:DataType`, `ObservableCollection`, `INotifyPropertyChanged` / `PropertyChanged`, MVVM jako reguła z datą, „okno tylko pokazuje”, „gdzie jest stan” | 5f |
+| wyjątek jako typ (`FileNotFoundException`, `UnauthorizedAccessException`, `IOException`, `DirectoryNotFoundException`), kolejność `catch` i CS0160, zapis przez plik tymczasowy (`File.Move` z `overwrite`), `finally`, `Closing`, UTF-8 bez BOM | 5g |
+| trzy tryby pracy (bez AI / tylko podpowiadanie / agent), gałąź na tryb, trzy kolumny karty, *Rozbierz to* w skali funkcji (cztery pytania), werdykt z „bo” | 5h |
+
+**Moduł 5's rows were added on 2026-09-02 (evening)** from the autonomous drafts under `content/moduly/05-pod-maska/`, all `publish: false`; three terms left 1a's row for their practical homes (5d, 5f). `scripts/check-content-style.mjs` still reports Delphi as 1a's story — its pattern predates the 5b home; update it with the 5b lesson's publication.
 
 **Moduł 4's rows were added on 2026-09-02** from drafts that are still `publish: false`; if a lesson changes before publication, its rows change with it. `scripts/check-content-style.mjs` was not touched: its story patterns are for stories re-told across lessons, and no Moduł 4 story is told outside its home.
 

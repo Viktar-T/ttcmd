@@ -1,0 +1,448 @@
+---
+title: "Pętla zdarzeń: program, który jest wywoływany"
+order: 4
+summary: "Nowy projekt, jeden przycisk i licznik wpisane od pustego pliku — a potem zamrożenie okna na sześć sekund, celowo, żeby zobaczyć liczbę, po której system się poddaje. Jedna metoda w czterech wersjach: zamrożona, z drugim wątkiem, który łamie regułę okna, z wątkiem oddającym wynik oknu, i z async — czyli odpowiedź z 2012 roku na problem tak stary jak okna."
+publish: false
+---
+
+{/* Drafted 2026-09-02 from docs/content-briefs/05d-petla-zdarzen.md, autonomous
+    run — brief unapproved. Every code block below is stage 01–05 of
+    tmp-modul5-build/, built with SDK 10.0.400 against Avalonia 12.1.2 on
+    2026-09-02 (build.log 19:48): all five compile; stage 05 ran for 8 s.
+    The frozen-window and „Nie odpowiada” description is Windows behaviour
+    (lab list A); GNOME shows its own dialog — TO CONFIRM against decision #1.
+    Stage 03 is meant to crash at run time; the message is Avalonia's own. */}
+
+W trzeciej budowie wpisałeś jedną metodę z dwoma parametrami w nawiasie,
+`sender` i `e`, podpiąłeś ją do przycisku przez `Click` i zadziałało. W
+poprzedniej lekcji postawiłeś w podobnej metodzie punkt przerwania i
+zobaczyłeś pod nią kolumnę kilkunastu cudzych wywołań, z niczym twoim na
+dole. Obie rzeczy działały; żadna nie tłumaczyła, kto właściwie tę metodę
+wywołuje.
+
+Jest jeszcze trzecia rzecz, którą znasz z własnego komputera: okno, które
+przestaje reagować, szarzeje, a po chwili dostaje w tytule napis „Nie
+odpowiada”. Zna je każdy, kto używa Windowsa. Prawie nikt nie wie, że chwila, po której się
+pojawia, to konkretna liczba sekund zapisana w dokumentacji — ani że jego
+przyczyna jest tą samą rzeczą, co kolumna pod twoją metodą.
+
+Pytanie tej lekcji: **kto wywołuje twoją metodę po kliknięciu — i dlaczego
+okno zamarza dokładnie wtedy, kiedy w tej metodzie jest coś do zrobienia?**
+Zbudujesz najmniejsze okno, które potrafi zamarznąć, zamrozisz je celowo i
+przepiszesz jedną metodę cztery razy.
+
+## Przycisk i licznik, od pustego okna
+
+Tryb pracy na dziś i na trzy następne lekcje: **bez AI** — Visual Studio bez
+zalogowanego Copilota, edytor z agentem zamknięty. Wszystko, co niżej,
+wpisujesz sam; agent wraca dopiero w lekcji o trzech trybach.
+
+Nowy projekt, z tego samego szablonu co `okno` w drugim module, w nowym
+folderze obok twoich repozytoriów. Drugie polecenie dokłada plik
+`.gitignore` z gotowego wzoru, żeby foldery `bin` i `obj` nigdy nie trafiły
+do historii — w drugim module wpisywałeś go ręcznie:
+
+```bash
+dotnet new avalonia.app -o spis
+cd spis
+dotnet new gitignore
+git init
+git add .
+git commit -m "utworz projekt spis z szablonu Avalonia"
+```
+
+Jeśli budujesz w domu, potrzebujesz zestawu .NET SDK w wersji 10 — z wersją
+8 ten szablon się nie zbuduje, choć polecenie `dotnet` istnieje.
+
+`spis` to lista rzeczy — części do komputera, książek, czegokolwiek — którą
+przez cztery lekcje zbudujesz od podstaw: dziś licznik kliknięć, potem pole i
+lista, potem stan, potem plik. Otwórz `spis.csproj` w Visual Studio.
+`MainWindow.axaml` zawiera po szablonie jeden napis między znacznikami
+`<Window>`; zastąp go trzema linijkami:
+
+```xml title="MainWindow.axaml — zawartość między <Window …> i </Window>"
+<StackPanel Margin="16" Spacing="8">
+    <Button Name="Dodaj" Click="OnDodajClick">Dodaj</Button>
+    <TextBlock Name="Licznik" Text="Kliknięć: 0" />
+</StackPanel>
+```
+
+`StackPanel` układa kontrolki jedna pod drugą; o kontenerach będzie następna
+lekcja, dziś wystarczy, że jest. `Name` daje kontrolce nazwę, pod którą kod
+C# będzie ją znał; `Click` mówi, którą metodę wywołać. Teraz ta metoda, w
+`MainWindow.axaml.cs`, w całości:
+
+```csharp title="MainWindow.axaml.cs"
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+
+namespace spis;
+
+public partial class MainWindow : Window
+{
+    private int _klikniecia;
+
+    public MainWindow()
+    {
+        InitializeComponent();
+    }
+
+    private void OnDodajClick(object? sender, RoutedEventArgs e)
+    {
+        _klikniecia++;
+        Licznik.Text = $"Kliknięć: {_klikniecia}";
+    }
+}
+```
+
+F5. Klikaj. Licznik rośnie. Zapisz to zaraz, bo za chwilę tę metodę
+zepsujesz na trzy różne sposoby:
+
+```bash
+git add .
+git commit -m "wlasna reka: przycisk i licznik"
+```
+
+Zwróć uwagę na jedną rzecz, zanim pójdziesz dalej: konstruktor `MainWindow`
+uruchomił się raz, na starcie, a `OnDodajClick` uruchamia się tylko wtedy,
+kiedy klikniesz. Między kliknięciami program nie robi nic. Nie wykonuje się
+„od góry do dołu” jak program w konsoli. Czeka.
+
+## Program, który jest wywoływany
+
+To czekanie ma mechanizm, i jest on starszy od wszystkiego, co masz na
+komputerze. Program z oknem nie prosi systemu o wejście — system je
+przynosi. Dokumentacja Windows opisuje to od pierwszego zdania: programy
+z oknem [„nie wywołują funkcji, żeby dostać wejście — czekają, aż system je
+im przekaże”](https://learn.microsoft.com/en-us/windows/win32/winmsg/about-messages-and-message-queues).
+System trzyma dla każdego wątku z oknem **kolejkę komunikatów**: kliknięcie,
+ruch myszy, klawisz, prośba o przerysowanie — każde z nich to jeden
+komunikat w kolejce. Program ma pętlę, która zdejmuje komunikaty po jednym
+i dla każdego woła metodę okna, do którego komunikat należy. Ta pętla
+nazywa się **pętlą zdarzeń** i to ona jest tą kolumną kilkunastu wierszy,
+którą widziałeś pod swoją metodą. Avalonia ma ją w środku; ty tylko
+podpinasz do niej metody przez `Click`.
+
+Stąd też te dwa parametry. `object? sender` to kontrolka, która zdarzenie
+wywołała — przycisk; `RoutedEventArgs e` to szczegóły zdarzenia. W pierwszych systemach
+okienkowych metoda okna dostawała uchwyt do okna i treść komunikatu; dziś
+dostaje `sender` i `e`. Ten sam kształt, w garniturze. Nie wymyślono go dla C# —
+odziedziczono.
+
+Sprawdź to na własnym programie: postaw punkt przerwania w pierwszej
+linijce `OnDodajClick`, F5, kliknij, otwórz Call Stack. Twoja metoda na
+górze; pod nią — po odsłonięciu cudzego kodu, jak w poprzedniej lekcji —
+pętla, wiersz po wierszu, aż do `Program.Main`. Puść program i zdejmij
+kropkę.
+
+## Zamrożone okno i pięć sekund
+
+Najpierw jedno słowo, bo za chwilę będzie w każdym zdaniu. **Wątek** to
+jeden tok wykonywania programu: ciąg instrukcji wykonywanych po kolei, jedna
+po drugiej. Programy w konsoli, które pisałeś w szkole, miały jeden. Program
+z oknem też zaczyna od jednego — i to ten jeden zdejmuje komunikaty z kolejki
+i woła twoje metody; będziemy go nazywać wątkiem okna. Program może
+uruchomić kolejne wątki, i za chwilę to zrobisz.
+
+Teraz udamy długą pracę. Nie ma znaczenia, jaką — zapis dużego pliku,
+pobranie czegoś z sieci, obliczenie; udamy ją przez uśpienie wątku na sześć
+sekund. Dopisz jedną linijkę na początku metody i jedno `using` na górze
+pliku:
+
+```csharp title="MainWindow.axaml.cs — wersja 2: zamrożona"
+using System.Threading;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+
+namespace spis;
+
+public partial class MainWindow : Window
+{
+    private int _klikniecia;
+
+    public MainWindow()
+    {
+        InitializeComponent();
+    }
+
+    private void OnDodajClick(object? sender, RoutedEventArgs e)
+    {
+        Thread.Sleep(6000);
+        _klikniecia++;
+        Licznik.Text = $"Kliknięć: {_klikniecia}";
+    }
+}
+```
+
+F5, kliknij — i spróbuj przesunąć okno. Nie da się. Spróbuj kliknąć
+jeszcze raz. Nic. Po pięciu sekundach Windows zmienia tytuł okna na „Nie
+odpowiada” i zaszarza je — na sekundę, bo po szóstej licznik przeskakuje na 1
+i wszystko wraca do normy; jeśli chcesz się przyjrzeć, wpisz 10000. To nie jest przybliżenie ani wrażenie. W
+dokumentacji Microsoftu stoi liczba:
+
+<Cytat author="Microsoft" source="Preventing Hangs in Windows Applications" date="2018-05-31" url="https://learn.microsoft.com/en-us/previous-versions/windows/win32/win7appqual/preventing-hangs-in-windows-applications">
+
+If a message has not been retrieved within 5 seconds, the DWM declares the
+window to be hung.
+
+</Cytat>
+
+Jeśli komunikat nie został zdjęty z kolejki w ciągu pięciu sekund, menedżer
+okien uznaje okno za zawieszone — i, jak pisze ta sama strona, podmienia je
+na „ducha”: kopię ostatniego obrazu okna z dopiskiem w tytule. Dlaczego
+komunikat nie został zdjęty? Bo zdejmuje je ten sam, jeden wątek, który
+właśnie siedzi w twojej metodzie i śpi. **Jeden wątek jest właścicielem
+okna** — poprzednia lekcja przytaczała tę regułę słowami trzech firm — i
+dopóki ten wątek jest zajęty twoją pracą, nie ma kto obsłużyć ani
+przesunięcia okna, ani drugiego kliknięcia. Zauważ, że drugie kliknięcie
+nie przepadło: zostało w kolejce i po odmrożeniu licznik przeskoczy jeszcze
+raz. Kolejka jest cierpliwa. Użytkownik nie.
+
+## Zły sposób: drugi wątek dotyka okna
+
+Pierwszy pomysł, jaki przychodzi do głowy każdemu — i jaki agent czasem
+zapisuje — brzmi: skoro wątek okna nie może spać, niech śpi inny. `Task.Run`
+uruchamia kod na innym wątku:
+
+```csharp title="MainWindow.axaml.cs — wersja 3: drugi wątek, źle"
+using System.Threading;
+using System.Threading.Tasks;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+
+namespace spis;
+
+public partial class MainWindow : Window
+{
+    private int _klikniecia;
+
+    public MainWindow()
+    {
+        InitializeComponent();
+    }
+
+    private void OnDodajClick(object? sender, RoutedEventArgs e)
+    {
+        Task.Run(() =>
+        {
+            Thread.Sleep(6000);
+            _klikniecia++;
+            Licznik.Text = $"Kliknięć: {_klikniecia}";
+        });
+    }
+}
+```
+
+F5, kliknij. Okno nie zamarza — da się je przesuwać, kliknąć drugi raz. Po
+sześciu sekundach Visual Studio zatrzymuje program na wyjątku, a w jego
+oknie jest zdanie, które znasz z [lekcji o
+halucynacjach](/moduly/03-budujemy/halucynacje-i-weryfikacja): **Call from
+invalid thread**. Licznik nie drgnął. Gorsza wiadomość: bez debuggera to
+samo kliknięcie nie pokazałoby niczego — wyjątek rzucony wewnątrz `Task.Run`
+ginie razem z zadaniem, program działa dalej, a licznik po prostu nigdy nie
+rośnie. Błąd, który nie wywala programu, jest trudniejszy do znalezienia niż
+ten, który wywala. Dokumentacja Avalonii mówi wprost, że [każde dotknięcie
+kontrolki musi odbywać się na wątku interfejsu, a z innego wątku kończy się
+tym wyjątkiem](https://docs.avaloniaui.net/docs/app-development/threading).
+Wtedy napisał to agent i wyjątek był dowodem, że kod jest zły. Dziś napisałeś
+to sam, i wiesz dlaczego jest zły: `Thread.Sleep` poszedł na drugi wątek —
+dobrze; ale linijka `Licznik.Text = …` też, a do okna wolno dotykać tylko z
+tego jednego wątku, który je stworzył. Reguła jednego wątku nie zna wyjątków
+dla dobrych chęci.
+
+## Sposób pierwszy: oddaj wynik wątkowi okna
+
+Skoro do okna wolno dotykać tylko z jego wątku, drugi wątek musi mu ten
+kawałek oddać. Do tego jest `Dispatcher.UIThread` — obiekt, przez który
+[każdy wątek może zlecić kawałek kodu wątkowi
+interfejsu](https://docs.avaloniaui.net/docs/app-development/threading);
+`Post` wkłada go do tej samej kolejki, którą pętla zdejmuje po jednym:
+
+```csharp title="MainWindow.axaml.cs — wersja 4: wynik oddany wątkowi okna"
+using System.Threading;
+using System.Threading.Tasks;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+using Avalonia.Threading;
+
+namespace spis;
+
+public partial class MainWindow : Window
+{
+    private int _klikniecia;
+
+    public MainWindow()
+    {
+        InitializeComponent();
+    }
+
+    private void OnDodajClick(object? sender, RoutedEventArgs e)
+    {
+        Task.Run(() =>
+        {
+            Thread.Sleep(6000);
+            Dispatcher.UIThread.Post(() =>
+            {
+                _klikniecia++;
+                Licznik.Text = $"Kliknięć: {_klikniecia}";
+            });
+        });
+    }
+}
+```
+
+F5, kliknij, przesuń okno, kliknij jeszcze raz. Nic nie zamarza, nic się nie
+wywala, po sześciu sekundach licznik rośnie. Praca poszła na drugi wątek,
+dwie linijki dotykające okna wróciły do kolejki wątku okna. To jest ta sama
+reguła, egzekwowana tym samym sposobem od dekad, pod różnymi nazwami w
+różnych bibliotekach — i to jest sposób, którym programiści okien
+rozwiązywali ten problem, zanim język dostał lepszy.
+
+Ma jedną wadę, którą widać gołym okiem: metoda z siedmiu linijek urosła do
+kilkunastu i ma dwa poziomy zagnieżdżenia, a to była najprostsza praca na
+świecie. Przy czymś prawdziwym — zapis, potem odczyt, potem aktualizacja
+okna, potem drugi zapis — każdy krok wymagałby własnego `Post`. Tę wadę
+naprawiono w języku.
+
+## Sposób z 2012: `async` i `await`
+
+W 2012 roku C# dostał dwa słowa, które do tej pory wolno ci było najwyżej
+rozpoznawać w cudzym kodzie. Zostały zaprojektowane dokładnie
+przeciw temu, co zamroziłeś dziś: zespół kompilatora [pisał wtedy o
+utrzymaniu responsywności wątku
+interfejsu](https://devblogs.microsoft.com/dotnet/asyncawait-faq/) jako o
+celu tej funkcji. Wersja piąta, ostatnia:
+
+```csharp title="MainWindow.axaml.cs — wersja 5: async"
+using System.Threading.Tasks;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+
+namespace spis;
+
+public partial class MainWindow : Window
+{
+    private int _klikniecia;
+
+    public MainWindow()
+    {
+        InitializeComponent();
+    }
+
+    private async void OnDodajClick(object? sender, RoutedEventArgs e)
+    {
+        await Task.Delay(6000);
+        _klikniecia++;
+        Licznik.Text = $"Kliknięć: {_klikniecia}";
+    }
+}
+```
+
+F5, kliknij, przesuń, kliknij. Ten sam wynik co w wersji czwartej — bez
+`Task.Run`, bez `Dispatcher`, bez zagnieżdżenia. Trzy rzeczy do przeczytania
+z tych siedmiu linijek. `async` przed nazwą metody mówi: w tej metodzie
+będzie czekanie. `await Task.Delay(6000)` mówi: tu czekaj sześć sekund, ale
+**nie trzymaj w tym czasie wątku** — oddaj go pętli, niech obsługuje
+kliknięcia i przesuwanie. A dwie linijki po `await` wykonują się, kiedy
+czekanie się skończy — i wykonują się z powrotem na wątku okna, bo kompilator
+sam dopisał za ciebie to, co w wersji czwartej robił `Post`. Dlatego wolno im
+dotykać `Licznik`.
+
+To jest forma, którą pisze agent, i teraz wiesz, czego w niej szukać:
+`async void` przy metodzie obsługi zdarzenia; `await` przed każdą rzeczą,
+która może trwać; i **nic, co dotyka okna, wewnątrz `Task.Run`**. Jeśli w
+diffie agenta zobaczysz `Task.Run` z `Licznik.Text` w środku, wiesz już, jak
+skończy się kliknięcie.
+
+## Cztery wersje jednej metody
+
+Na dwa pytania z początku lekcji masz odpowiedzi, które sam wywołałeś.
+Twoją metodę wywołuje pętla zdarzeń: system wkłada kliknięcie do kolejki,
+biblioteka zdejmuje je i woła metodę z `Click`, a `sender` i `e` to ten
+komunikat w dzisiejszym ubraniu. Okno zamarza, bo ten sam jeden wątek, który
+zdejmuje komunikaty, siedzi w twojej metodzie — a po pięciu sekundach system
+przestaje na niego czekać.
+
+- **Program nie biegnie, jest wywoływany.** Między zdarzeniami nie robi nic;
+  wszystko, co robi, robi w metodach, które ktoś podpiął.
+- **Jeden wątek, jedno okno.** Z innego wątku wolno oddać wynik przez
+  `Dispatcher.UIThread.Post`; dotknąć okna — nie.
+- **Pięć sekund** to zapisana liczba, nie wrażenie.
+- **`async`/`await` to odpowiedź z 2012 roku na problem tak stary jak okna.** Kompilator
+  robi to, co w wersji czwartej robiłeś ręcznie, i dlatego tak wygląda kod
+  agenta.
+
+Zostaw w projekcie wersję piątą i zapisz ją:
+
+```bash
+git add .
+git commit -m "wlasna reka: przycisk, licznik, async"
+```
+
+Na karcie linijka z liczbą minut — i jedna rzecz więcej: otwórz swój
+`notatnik-v2`, znajdź metodę obsługi zapisu i zapisz, którą z czterech
+wersji ona jest. Następna lekcja zostawia licznik w spokoju i zabiera się za
+to, co dziś zostało jednym `StackPanel`: układ okna, wpisany linijka po
+linijce.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: dwa parametry każdej metody obsługi zdarzenia i co każdy z nich
+znaczy; liczba sekund, po której Windows uznaje okno za zawieszone; dwa
+sposoby, żeby drugi wątek nie dotykał okna — i który z nich pisze agent.
+
+</Zadanie>
+
+<Zadanie>
+
+W wersji piątej zamień na chwilę `await Task.Delay(6000)` na
+`Thread.Sleep(4000)` (z `using System.Threading;` na górze) i kliknij dwa
+razy szybko. Zapisz: czy pojawił się napis „Nie odpowiada” i dlaczego drugie
+kliknięcie i tak zostało policzone. Przywróć `await`.
+
+</Zadanie>
+
+<Zadanie title="Cztery wersje w historii">
+
+Doprowadź repozytorium `spis` do stanu, w którym w historii jest commit z
+szablonem, commit z wersją pierwszą i commit z wersją piątą. Linijka na
+karcie: ile minut zajął dzisiejszy blok — i jedno zdanie, dlaczego wersje
+druga i czwarta nie zostały.
+
+</Zadanie>
+
+<Zadanie>
+
+W swoim `notatnik-v2` znajdź metodę obsługi zapisu. Przepisz na kartę
+linijkę, która rozstrzyga, którą z czterech wersji ona jest, i dopisz jedno
+zdanie: co stałoby się z oknem, gdyby zapis pliku trwał sześć sekund.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-02">
+
+<Zrodlo title="About Messages and Message Queues" publisher="Microsoft Learn" date="2025-07-14" url="https://learn.microsoft.com/en-us/windows/win32/winmsg/about-messages-and-message-queues">„Windows-based applications are event-driven. They do not make explicit function calls… to obtain input. Instead, they wait for the system to pass input to them”; jedna kolejka komunikatów na wątek z oknem; pętla, która zdejmuje komunikaty po jednym</Zrodlo>
+
+<Zrodlo title="Preventing Hangs in Windows Applications" publisher="Microsoft Learn" date="2018-05-31" url="https://learn.microsoft.com/en-us/previous-versions/windows/win32/win7appqual/preventing-hangs-in-windows-applications">„If a message has not been retrieved within 5 seconds, the DWM declares the window to be hung”; okno-duch z napisem „Not Responding”</Zrodlo>
+
+<Zrodlo title="Threading" publisher="Avalonia Docs" date="2026-06-03" url="https://docs.avaloniaui.net/docs/app-development/threading">każde dotknięcie interfejsu na wątku interfejsu, inaczej `InvalidOperationException` „Call from invalid thread”; `Dispatcher.UIThread.Post` zleca kod wątkowi interfejsu bez czekania na wynik</Zrodlo>
+
+<Zrodlo title="Async/Await FAQ" publisher="Stephen Toub, .NET Blog" date="2012-04-12" url="https://devblogs.microsoft.com/dotnet/asyncawait-faq/">`async`/`await` w C# 5 i cel: „maintain[ing] the responsiveness of your UI thread”</Zrodlo>
+
+<Zrodlo title="Threading model (WPF)" publisher="Microsoft Learn" date="2023-10-26" url="https://learn.microsoft.com/en-us/dotnet/desktop/wpf/advanced/threading-model">reguła jednego wątku w słowach Microsoftu — przywołana z poprzedniej lekcji</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="artykul" title="How Async/Await Really Works in C# — Stephen Toub" url="https://devblogs.microsoft.com/dotnet/how-async-await-really-works/">długi i aktualny opis tego, co kompilator naprawdę generuje z twoich siedmiu linijek wersji piątej — do przeczytania, kiedy `await` przestanie być magią, a zacznie być pytaniem</Lektura>
+
+<Lektura kind="dokumentacja" title="Threading — Avalonia Docs" url="https://docs.avaloniaui.net/docs/app-development/threading">cała strona o wątku interfejsu w Avalonii: `Post`, `InvokeAsync` i to, kiedy który</Lektura>
+
+</CzytajDalej>

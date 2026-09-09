@@ -1,0 +1,339 @@
+---
+title: "Układ i kontrolki własną ręką"
+order: 5
+summary: "Znaczniki, które przez trzy budowy generował agent, wpisane linijka po linijce: pole, przycisk, lista i licznik w siatce, potem to samo okno w innym kontenerze. Skąd okno wie, gdzie co położyć — i skąd twój kod C# zna kontrolkę tylko dlatego, że w pliku znaczników dostała nazwę."
+publish: false
+---
+
+{/* Drafted 2026-09-02 from docs/content-briefs/05e-uklad-i-kontrolki.md,
+    autonomous run — brief unapproved. Code blocks are stages 06 and 07 of
+    tmp-modul5-build/, built with SDK 10.0.400 against Avalonia 12.1.2 on
+    2026-09-02 (build.log 19:48); the generated file quoted in section 4 is the
+    one that build emitted with EmitCompilerGeneratedFiles=true. `Watermark`
+    is obsolete in 12.1.2 — the lesson uses `PlaceholderText` (source: the
+    12.1.2 tag of Avalonia's TextBox.cs). */}
+
+W pierwszej budowie dopisałeś linijkę `<ListBox Name="HistoryList" />` „obok
+kontrolki, która pokazuje licznik” — w miejsce, które wybrał agent, do pliku,
+którego kształt wybrał agent. W trzeciej budowie podobnie: `<Button
+Click="…">` pod istniejącymi przyciskami. Za każdym razem twoja linijka
+trafiała do czyjegoś układu, i za każdym razem działało, więc nie było
+powodu pytać, dlaczego ta kontrolka stanęła akurat tam.
+
+W poprzedniej lekcji sam wybrałeś kontener — `StackPanel` — bo lekcja ci
+kazała, i zadziałał, bo dwie kontrolki jedna pod drugą to jedyny układ, jaki
+`StackPanel` zna. Dziś kontrolek będą cztery, jedna z nich ma wypełnić całe
+okno, a wybór kontenera staje się prawdziwą decyzją.
+
+Pytanie tej lekcji: **skąd okno wie, gdzie co położyć — i skąd twój kod C#
+zna kontrolkę tylko dlatego, że w pliku znaczników dostała nazwę?** Wpiszesz
+cały plik `MainWindow.axaml` od znacznika `<Window>` w dół, potem ten sam
+zestaw kontrolek w innym kontenerze, a po drodze zajrzysz do połowy swojej
+klasy, której zwykle nikt nie ogląda.
+
+## Trzy kontenery, jedna decyzja
+
+Tryb pracy: **bez AI**, jak w tej części modułu — Visual Studio, Copilot
+niezalogowany, edytor z agentem zamknięty.
+
+Kontrolka nie wie, gdzie stoi. Miejsce nadaje jej **kontener układu** —
+kontrolka, której jedyną pracą jest rozmieszczać inne. Avalonia ma ich
+kilka; trzy wystarczą na cały kurs, i każdy z nich robi jedną rzecz, którą
+dokumentacja opisuje jednym zdaniem:
+
+| Kontener | Co robi | Kiedy go wybrać |
+| --- | --- | --- |
+| `StackPanel` | [układa kontrolki w jednej linii, pionowo albo poziomo](https://docs.avaloniaui.net/docs/basics/user-interface/building-layouts/panels-overview) | kilka kontrolek jedna za drugą, każda tak duża, jak potrzebuje |
+| `DockPanel` | [przykleja kontrolki do krawędzi, a ostatnia wypełnia resztę](https://docs.avaloniaui.net/docs/reference/controls/dockpanel) | pasek na górze, pasek na dole, coś dużego w środku |
+| `Grid` | [rozmieszcza kontrolki w wierszach i kolumnach](https://docs.avaloniaui.net/docs/reference/controls/grid), których rozmiar jest stały, dopasowany do zawartości (`Auto`) albo proporcjonalny do reszty (`*`) | wszystko inne — i to jest kontener, który agent generuje najczęściej |
+
+Dzisiejsze okno to: pole tekstowe i przycisk na górze, lista w środku,
+licznik na dole. Lista ma zająć całą resztę okna, cokolwiek by się z oknem
+robiło. `StackPanel` tego nie umie — każdej kontrolce daje tyle, ile ta
+potrzebuje, i lista z trzema pozycjami miałaby trzy wiersze wysokości.
+`Grid` umie: trzy wiersze, środkowy oznaczony gwiazdką, czyli „resztę”.
+Decyzja: `Grid` z `RowDefinitions="Auto,*,Auto"` i dwiema kolumnami, żeby
+pole i przycisk stały obok siebie.
+
+## Okno wpisane linijka po linijce
+
+Otwórz `MainWindow.axaml` w projekcie `spis`. Pierwsze sześć linijek — od
+`<Window` do `x:Class` — zostaw, jak wygenerował je szablon: to nazwy
+przestrzeni znaczników i nazwa klasy, do której ten plik należy. Wszystko od
+`Title` w dół zastąp tym:
+
+```xml title="MainWindow.axaml — od atrybutu Title w dół"
+        Title="spis"
+        Width="400" Height="500">
+    <Grid RowDefinitions="Auto,*,Auto" ColumnDefinitions="*,Auto" Margin="12">
+        <TextBox Name="NowaPozycja" PlaceholderText="Nowa pozycja" KeyDown="OnNowaPozycjaKeyDown" />
+        <Button Grid.Column="1" Name="Dodaj" Click="OnDodajClick" Margin="8,0,0,0">Dodaj</Button>
+        <ListBox Grid.Row="1" Grid.ColumnSpan="2" Name="Lista" Margin="0,8" />
+        <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Name="Licznik" Text="Pozycji: 0" />
+    </Grid>
+</Window>
+```
+
+Kilka rzeczy do przeczytania, zanim uruchomisz. Kontrolka bez `Grid.Row` i
+`Grid.Column` trafia do wiersza zero i kolumny zero — dlatego pole tekstowe
+nie ma tych atrybutów, a przycisk ma tylko `Grid.Column="1"`. `Grid.ColumnSpan="2"`
+mówi, że lista i licznik rozciągają się na obie kolumny. `PlaceholderText` to
+szary napis w pustym polu — podpowiedź, co wpisać. `Margin="8,0,0,0"` to
+odstęp: lewy, górny, prawy, dolny. A `KeyDown="OnNowaPozycjaKeyDown"` to
+drugie zdarzenie w tym oknie, na naciśnięcie klawisza w polu — metoda jeszcze
+nie istnieje, więc F5 zakończy się błędem. Zanim ją napiszesz, uruchom
+program bez tej jednej pary atrybutów, żeby zobaczyć samo okno: puste,
+prawidłowo rozłożone — pole i przycisk na górze, pusta lista wypełniająca
+środek, napis na dole. Zmień rozmiar okna: lista rośnie i maleje, reszta
+stoi. Pusty, dobrze rozłożony ekran to wynik, choć nie ma w nim ani jednej
+linijki C#.
+
+## Kod, który zna kontrolki po imieniu
+
+Teraz kod, w całości — zastępuje wersję z poprzedniej lekcji:
+
+```csharp title="MainWindow.axaml.cs"
+using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
+
+namespace spis;
+
+public partial class MainWindow : Window
+{
+    public MainWindow()
+    {
+        InitializeComponent();
+    }
+
+    private void OnDodajClick(object? sender, RoutedEventArgs e)
+    {
+        DodajPozycje();
+    }
+
+    private void OnNowaPozycjaKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter)
+        {
+            DodajPozycje();
+        }
+    }
+
+    private void DodajPozycje()
+    {
+        var nazwa = NowaPozycja.Text?.Trim();
+        if (string.IsNullOrEmpty(nazwa))
+        {
+            return;
+        }
+
+        Lista.Items.Insert(0, nazwa);
+        Licznik.Text = $"Pozycji: {Lista.Items.Count}";
+        NowaPozycja.Text = "";
+    }
+}
+```
+
+F5. Wpisz coś, naciśnij Enter; wpisz coś, kliknij „Dodaj”. Dwie drogi, jedna
+metoda: `DodajPozycje` robi całą pracę, a dwie metody obsługi zdarzeń tylko
+ją wołają — druga po sprawdzeniu, że klawisz to Enter, bo `KeyDown`
+przychodzi przy każdym klawiszu. Trzy linijki w środku warto przeczytać
+osobno. `NowaPozycja.Text?.Trim()` bierze tekst z pola i obcina spacje;
+znak zapytania po `Text` to zabezpieczenie, że pole może nie mieć żadnego
+tekstu. `Lista.Items.Insert(0, nazwa)` wkłada nazwę na początek listy — jak
+najnowsza notatka na górze w specyfikacji notatnika. `Licznik.Text = …`
+ustawia napis z liczbą pozycji. Zapisz:
+
+```bash
+git add .
+git commit -m "wlasna reka: uklad okna"
+```
+
+Zauważ, że kod zna `NowaPozycja`, `Lista` i `Licznik` po imieniu — tak, jak
+w poprzedniej lekcji znał `Licznik`. Nigdzie ich nie zadeklarowałeś. W
+`MainWindow.axaml.cs` nie ma linijki `TextBox NowaPozycja;`, a kompilator nie
+protestuje. Skąd?
+
+## Skąd się bierze `InitializeComponent`
+
+Odpowiedź jest w jednym słowie w nagłówku klasy: `partial`. Znaczy ono:
+ta klasa ma drugą połowę, zapisaną gdzie indziej, i kompilator składa obie w
+jedną. Dziś tę połowę zobaczysz.
+
+Kiedy budujesz projekt, jedno z narzędzi w pakiecie Avalonii — generator o
+nazwie `Avalonia.Generators` — czyta `MainWindow.axaml`, znajduje każdy
+atrybut `Name` i pisze **drugą połowę twojej klasy**: po jednym polu na każdą
+nazwę oraz metodę `InitializeComponent`, która wczytuje znaczniki i wypełnia
+te pola. Normalnie ten plik żyje tylko w pamięci kompilatora. Można go
+zobaczyć: dopisz do `spis.csproj`, wewnątrz `<PropertyGroup>`, jedną linijkę
+`<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>`, zbuduj i
+zajrzyj do `obj\Debug\net10.0\generated\Avalonia.Generators\…\spis.MainWindow.g.cs`.
+Oto co tam stoi, z pominięciem atrybutów, którymi generator się podpisuje:
+
+```csharp title="obj/…/spis.MainWindow.g.cs — wygenerowany, nie wpisuj"
+partial class MainWindow
+{
+    internal global::Avalonia.Controls.TextBox NowaPozycja;
+    internal global::Avalonia.Controls.Button Dodaj;
+    internal global::Avalonia.Controls.ListBox Lista;
+    internal global::Avalonia.Controls.TextBlock Licznik;
+
+    public void InitializeComponent(bool loadXaml = true)
+    {
+        if (loadXaml)
+        {
+            AvaloniaXamlLoader.Load(this);
+        }
+
+        var __thisNameScope__ = this.FindNameScope();
+        NowaPozycja = __thisNameScope__?.Find<global::Avalonia.Controls.TextBox>("NowaPozycja");
+        Dodaj = __thisNameScope__?.Find<global::Avalonia.Controls.Button>("Dodaj");
+        Lista = __thisNameScope__?.Find<global::Avalonia.Controls.ListBox>("Lista");
+        Licznik = __thisNameScope__?.Find<global::Avalonia.Controls.TextBlock>("Licznik");
+    }
+}
+```
+
+Cztery pola, po jednym na każde `Name`, i metoda, którą twój konstruktor woła
+w pierwszej linijce: wczytaj znaczniki, a potem znajdź w nich każdą nazwaną
+kontrolkę i włóż do pola. To jest cała tajemnica. Po obejrzeniu usuń linijkę
+z `spis.csproj` — plik i tak powstaje przy każdym budowaniu, tylko niewidocznie.
+
+Skąd wiadomo, że to naprawdę generator, a nie coś wbudowanego w język? Bo
+kiedy generator nie może się załadować, budowanie kończy się błędem `CS0103:
+Nazwa „InitializeComponent” nie istnieje w bieżącym kontekście` — i drugim
+takim samym o `Licznik`. Dokładnie to zdarzyło się przy sprawdzaniu tej lekcji
+2 września 2026 na komputerze, który miał starszy zestaw SDK, niż wymaga
+Avalonia 12: ten sam plik, ten sam kod, a klasa nagle miała tylko jedną
+połowę. Wzorzec „pół klasy pisze narzędzie” jest starszy od generatorów: pomysł
+jest z czasów projektantów okien z lat dziewięćdziesiątych, które
+przepisywały swoją połowę pliku, nie dotykając twojej, a słowo `partial`
+przyszło do C# później właśnie po to, żeby ten podział był widoczny w
+języku.
+
+## To samo okno, inny kontener
+
+Układ jest decyzją znaczników, nie kodu, i najkrótszy dowód to zmiana
+kontenera bez zmiany ani jednej linijki C#. Zastąp `<Grid …>…</Grid>` tym:
+
+```xml title="MainWindow.axaml — wariant z DockPanel"
+    <DockPanel Margin="12">
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="8">
+            <TextBox Name="NowaPozycja" Width="260" PlaceholderText="Nowa pozycja" KeyDown="OnNowaPozycjaKeyDown" />
+            <Button Name="Dodaj" Click="OnDodajClick">Dodaj</Button>
+        </StackPanel>
+        <TextBlock DockPanel.Dock="Bottom" Name="Licznik" Text="Pozycji: 0" />
+        <ListBox Name="Lista" Margin="0,8" />
+    </DockPanel>
+```
+
+F5. Te same cztery kontrolki, te same nazwy, ten sam kod — a układ powstał
+inaczej: pasek z polem i przyciskiem przyklejony do góry, licznik do dołu, a
+lista, jako ostatnie dziecko, [wypełnia resztę, bo tak działa `DockPanel`,
+dopóki nie wyłączysz tego przez
+`LastChildFill`](https://docs.avaloniaui.net/docs/reference/controls/dockpanel).
+Zmień rozmiar okna i porównaj z wersją z siatką: pole tekstowe nie rośnie
+razem z oknem, bo w `StackPanel` dostało stałą szerokość. To jest różnica,
+którą wybiera się, a nie dostaje.
+
+Który zostaje? Siatka: rośnie razem z oknem i jest tym, co zobaczysz w
+większości kodu generowanego przez agenta. Wróć do wersji z `Grid` (`git
+restore MainWindow.axaml`, jeśli wariantu nie zapisałeś w commicie).
+
+## Co narzędzie pisze, a czego nie pokazuje
+
+Otwórz teraz `MainWindow.axaml` swojego minutnika z pierwszej budowy — ten,
+który w całości napisał agent — i przeczytaj go tak, jak dziś czytałeś swój.
+Trzy pytania, w tej kolejności: który kontener stoi najwyżej i dlaczego ten;
+które kontrolki mają `Name`; kto tych nazw używa w pliku `.cs` obok. Zwykle
+znajdziesz `Grid` bez wyjaśnienia, `Margin` przy każdej kontrolce, i kilka
+nazw, których nikt nie używa — pola, które generator posłusznie wygeneruje i
+które nigdy nie zostaną odczytane.
+
+To nie jest zarzut wobec agenta. To jest różnica między czytaniem
+znaczników jako obrazka a czytaniem ich jako decyzji: od dziś każdy plik
+`.axaml` w diffie czytasz przez te trzy pytania, a podgląd z rozszerzenia w
+Visual Studio pokazuje ci tylko pierwszą warstwę — jak to wygląda — i nic o
+drugiej.
+
+## Okno, którego każdy znacznik ma powód
+
+Na dwa pytania z początku lekcji odpowiedzi stoją teraz w twoim własnym
+pliku. Okno wie, gdzie co położyć, bo mówi mu to kontener układu — a wybór
+kontenera jest decyzją, którą dziś pierwszy raz podjąłeś sam. Kod zna
+kontrolki po imieniu, bo generator pisze drugą połowę twojej klasy z każdego
+`Name`, a `InitializeComponent` ją wypełnia.
+
+- **Kontener przed kontrolkami.** `StackPanel` na linię, `DockPanel` na
+  krawędzie, `Grid` na wszystko inne; gwiazdka znaczy „resztę”.
+- **`Name` to pole klasy**, napisane przez narzędzie w czasie budowania.
+  Nazwa, której kod nie używa, jest polem, którego nikt nie czyta.
+- **`partial` znaczy: druga połowa jest gdzie indziej** — i wiesz gdzie.
+- **Znaczniki agenta czytaj przez trzy pytania**: który kontener, które
+  nazwy, kto ich używa.
+
+Commit z siatką jest w historii; na karcie linijka z liczbą minut i jedno
+zdanie: który kontener wybrałbyś dla minutnika. Następna lekcja zaczyna od
+trzech linijek w `DodajPozycje`, które utrzymują listę, licznik i pole w
+zgodzie — ręcznie, po każdej zmianie — i zabiera je z kodu na dobre.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: trzy kontenery i po jednej sytuacji na każdy; co znaczy
+`partial`; co robi `InitializeComponent` i kto ją napisał.
+
+</Zadanie>
+
+<Zadanie>
+
+Zmień `RowDefinitions` na `"Auto,Auto,*"` i uruchom. Zapisz, co się
+przesunęło i dlaczego pusta lista prawie zniknęła. Wróć do `"Auto,*,Auto"`.
+
+</Zadanie>
+
+<Zadanie title="Układ w historii">
+
+Commit `wlasna reka: uklad okna` z wersją z siatką; wariant z `DockPanel`
+opcjonalnie w osobnym commicie, który potem cofasz przez `revert`, żeby
+historia mówiła, że został wypróbowany. Linijka na karcie: minuty i kontener
+dla minutnika.
+
+</Zadanie>
+
+<Zadanie>
+
+W `MainWindow.axaml` minutnika z pierwszej budowy wypisz każdy atrybut
+`Name`, a obok każdego — linijkę pliku `.cs`, która go używa. Jedno zdanie o
+każdej nazwie, której nic nie używa.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-02">
+
+<Zrodlo title="Panels overview" publisher="Avalonia Docs" date="2026-07-14" url="https://docs.avaloniaui.net/docs/basics/user-interface/building-layouts/panels-overview">`StackPanel` „arranges child controls in a single line, stacked horizontally or vertically”; `Grid` układa w kolumnach i wierszach</Zrodlo>
+
+<Zrodlo title="Grid" publisher="Avalonia Docs" date="2026-04-20" url="https://docs.avaloniaui.net/docs/reference/controls/grid">rozmiary wierszy i kolumn: stałe w pikselach, proporcjonalne (`*`, `2*`) i `Auto` dopasowane do największego dziecka</Zrodlo>
+
+<Zrodlo title="DockPanel" publisher="Avalonia Docs" date="2026-04-20" url="https://docs.avaloniaui.net/docs/reference/controls/dockpanel">krawędzie dokowania; ostatnie dziecko wypełnia resztę, chyba że `LastChildFill` jest wyłączone</Zrodlo>
+
+<Zrodlo title="ListBox" publisher="Avalonia Docs" date="2026-07-23" url="https://docs.avaloniaui.net/docs/reference/controls/listbox">lista pozycji z wyborem pojedynczym albo wielokrotnym</Zrodlo>
+
+<Zrodlo title="TextBox.cs w wydaniu 12.1.2" publisher="AvaloniaUI, GitHub" date="2026-09-02" url="https://github.com/AvaloniaUI/Avalonia/blob/12.1.2/src/Avalonia.Controls/TextBox.cs">`WatermarkProperty` oznaczona `[Obsolete("Use PlaceholderTextProperty instead.")]` — dlatego lekcja używa `PlaceholderText`; plik sprawdzony 2 września 2026</Zrodlo>
+
+<Zrodlo title="Compiled bindings" publisher="Avalonia Docs" date="2026-08-25" url="https://docs.avaloniaui.net/docs/data-binding/compiled-bindings">strona, z której następna lekcja weźmie `x:DataType`; tu tylko jako dowód, że Avalonia 12 kompiluje znaczniki w czasie budowania</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="dokumentacja" title="Building layouts — Avalonia Docs" url="https://docs.avaloniaui.net/docs/basics/user-interface/building-layouts/">wszystkie kontenery, także te, których ten kurs nie użyje, z obrazkami — do przejrzenia, kiedy trzy dzisiejsze przestaną wystarczać</Lektura>
+
+<Lektura kind="dokumentacja" title="Source Generators — .NET" url="https://learn.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview">czym jest generator kodu w C# i dlaczego druga połowa twojej klasy powstaje w czasie budowania; tekst dla ciekawych, nie do egzaminu z tej lekcji</Lektura>
+
+</CzytajDalej>

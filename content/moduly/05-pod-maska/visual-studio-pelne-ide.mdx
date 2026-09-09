@@ -1,0 +1,272 @@
+---
+title: "Visual Studio: pełne IDE"
+order: 3
+summary: "Edytory, w których dotąd pisaliśmy, były jednym rodzajem programu w różnych płaszczach. Visual Studio nim nie jest — i różnica nie polega na agencie, tylko na tym, co się dzieje po naciśnięciu F5. Solution, plik projektu, punkt przerwania w metodzie obsługi zapisu notatnika i okno, które pokazuje, kto wywołał twoją metodę."
+publish: false
+---
+
+{/* Drafted 2026-09-02 from docs/content-briefs/05c-visual-studio-pelne-ide.md,
+    autonomous run — brief unapproved. Assumes lab list A: Visual Studio 2026
+    Community with the „.NET desktop development” workload, launched once per
+    profile (per-user trap 4); Windows only — open decision #9. No screenshots
+    by design: every UI element is a „znajdź u siebie” sentence with its menu
+    path and a dated link. Menu labels are given in English as Visual Studio
+    shows them under an English install; a Polish install shows translated
+    labels in the same places — TO CONFIRM which language the lab has. */}
+
+W tym kursie pisaliśmy dotąd w dwóch edytorach z agentem — a jeśli znasz
+VS Code, to ten sam rodzaj programu, bo, jak pokazała [lekcja o dwóch
+edytorach](/moduly/02-warsztat/narzedzia-dwa-edytory), to jedna kategoria:
+edytor z rozszerzeniami. Żeby uruchomić program, wpisywało się `dotnet run`
+w terminalu; kiedy coś nie działało, czytało się czerwone podkreślenia i
+to, co terminal wypisał po błędzie.
+
+Jest jeszcze czwarty program, o innej nazwie, choć z tym samym słowem w
+środku, i przez nazwę łatwo wziąć go za czwarty płaszcz tego samego. Nie
+jest. Visual Studio ma wbudowany kompilator, system projektów i debugger —
+narzędzie, które zatrzymuje twój program w dowolnej linijce i pozwala
+zajrzeć do środka, kiedy stoi. Od tej lekcji praca własną ręką odbywa się w
+nim.
+
+Pytanie tej lekcji: **czym różni się Visual Studio od wszystkiego, w czym
+dotąd pisaliśmy — i po co komuś, kto ma agenta, debugger?** Odpowiedź jest
+praktyczna: otworzysz w nim `notatnik-v2`, postawisz jeden punkt przerwania w
+metodzie, którą napisał agent, i przeczytasz, kto ją wywołał.
+
+## Inny program, nie inny edytor
+
+Różnica w jednym zdaniu: edytor z rozszerzeniami to program do pisania
+tekstu, do którego rozszerzenia doczepiają rozumienie języka i uruchamianie;
+**IDE** — zintegrowane środowisko programistyczne — ma to wszystko w środku,
+zbudowane razem, i dlatego jego instalacja jest duża i długa. Visual Studio
+jest tym drugim i istnieje tylko na Windowsie; w pracowni powinno być już
+zainstalowane z zestawem „.NET desktop development”, bo to nie jest czynność
+na lekcję — jeśli go nie ma, powiedz o tym, zanim zaczniemy. Aktualna wersja nazywa się Visual Studio 2026; [wydano ją 11
+listopada 2025](https://learn.microsoft.com/en-us/visualstudio/releases/2026/release-history)
+jako 18.0, a w chwili pisania tej lekcji bieżące wydanie to 18.9.2 z 25
+sierpnia 2026. Edycja Community jest [darmowa dla uczniów, do nauki w klasie
+i do własnych programów](https://visualstudio.microsoft.com/vs/community/) —
+warunki na stronie producenta, sprawdź je, zanim zainstalujesz w domu.
+
+Uruchom je. Jeśli pierwsze uruchomienie na twoim koncie trwa kilka minut z
+paskiem postępu, to normalne: program konfiguruje się osobno dla każdego
+użytkownika. Kiedy pokaże okno startowe, wybierz otwarcie projektu i wskaż
+plik `notatnik-v2.csproj` w folderze notatnika — albo jak nazywa się u
+ciebie; nie folder, tylko plik projektu.
+
+## Solution, projekt, plik projektu
+
+Po lewej albo po prawej stronie okna stoi panel **Solution Explorer** i to w
+nim widać, jak Visual Studio patrzy na twój kod. Na górze jest *solution* —
+rozwiązanie, pojemnik, który może trzymać kilka projektów naraz; Visual
+Studio tworzy go samo, kiedy otwierasz pojedynczy projekt, i zapisuje jako
+plik `.sln` obok. Pod nim projekt, pod projektem folder **Dependencies** —
+zależności, czyli pakiety, które agent dopisał, kiedy budował notatnik — a
+dalej twoje pliki: `MainWindow.axaml` i te, które nazwał twój plan z modułu
+o specyfikacji — na przykład `Note.cs` i `NoteFile.cs`.
+
+Kliknij dwa razy w nazwę projektu — otworzy się `notatnik-v2.csproj` jako
+tekst. To jest plik projektu, i ma kształt, który znasz: znaczniki w
+nawiasach ostrych. Nie jest to przypadek — plik projektu to plik XML
+programu budującego, MSBuild, i dlatego ma elementy, a nie ustawienia:
+
+```xml title="notatnik-v2.csproj — fragment"
+<ItemGroup>
+  <PackageReference Include="Avalonia" Version="12.1.2" />
+  <PackageReference Include="Avalonia.Desktop" Version="12.1.2" />
+</ItemGroup>
+```
+
+Każdy wiersz `PackageReference` to jeden pakiet z folderu Dependencies. U
+ciebie numery wersji mogą być inne — to jest właśnie ta rzecz, którą warto
+teraz odczytać i porównać z tym, co zapisała poprzednia lekcja w tabeli.
+
+Jedno rozszerzenie warto doinstalować, jeśli pracownia go nie ma: **Avalonia
+for Visual Studio**, które dodaje podpowiadanie i podkreślanie błędów w
+plikach `.axaml` oraz [podgląd okna bez uruchamiania
+programu](https://docs.avaloniaui.net/tools/visual-studio-extension). To jest
+podgląd, nie projektant: nie przeciągniesz w nim przycisku myszą, zobaczysz
+tylko, jak wygląda to, co wpisałeś. W module, w którym znaczniki wpisuje się
+własną ręką, to jest właściwe narzędzie, a nie brak.
+
+## F5
+
+Naciśnij **F5**. Visual Studio buduje projekt i uruchamia go pod debuggerem
+— to samo, co robiło `dotnet run`, tylko z jedną różnicą, która za chwilę
+będzie wszystkim. Na dole pojawiają się dwa okna warte zapamiętania: **Output**
+— to, co dotąd wypisywał terminal — i **Error List**, w którym te same
+czerwone podkreślenia, które znasz z bloków własną ręką, są listą z numerami
+linijek. Pliki wynikowe lądują w `bin` i `obj`, w tych samych folderach,
+które [lekcja o Gicie w pracy z agentem](/moduly/02-warsztat/git-w-pracy-z-agentem)
+kazała wpisać do `.gitignore`.
+
+Notatnik stoi na ekranie. Zamknij go i wróć do kodu: teraz zaczyna się
+część, dla której ten program istnieje.
+
+## Punkt przerwania: program stoi, ty patrzysz
+
+Otwórz `MainWindow.axaml.cs` i znajdź metodę, która obsługuje przycisk zapisu
+— tę, którą napisał agent, z `sender` i `e` w nawiasie. [Kliknij na lewym
+marginesie obok jej pierwszej linijki albo ustaw kursor w tej linijce i
+naciśnij F9](https://learn.microsoft.com/en-us/visualstudio/debugger/get-started-with-breakpoints).
+Na marginesie pojawia się czerwona kropka: **punkt przerwania**. Naciśnij F5,
+wpisz w notatniku tytuł i treść, kliknij zapis.
+
+Program stoi. Nie zawiesił się — stoi, bo mu kazano, dokładnie w linijce z
+kropką, a Visual Studio pokazuje ją na żółto. To jest moment, którego żaden
+`Console.WriteLine` nie da: program zatrzymany w środku twojej metody, z
+każdą zmienną do obejrzenia. Najedź myszą na nazwę zmiennej, która trzyma
+tytuł notatki — dymek pokaże jej wartość. Otwórz okno **Watch** ([Debug ›
+Windows › Watch › Watch 1](https://learn.microsoft.com/en-us/visualstudio/debugger/watch-and-quickwatch-windows))
+i wpisz w nim tę nazwę: będzie tam stała, dopóki program stoi, i zmieniała
+się, kiedy pójdzie dalej.
+
+Naciśnij **F10** — [krok przez jedną
+linijkę](https://learn.microsoft.com/en-us/visualstudio/debugger/navigating-through-code-with-the-debugger).
+Żółta linijka przesuwa się o jedną w dół; jeśli to była linijka z
+`File.WriteAllText` albo podobną, otwórz w Eksploratorze folder, z którego
+program został uruchomiony — pod F5 to `bin\Debug\net10.0` w folderze
+projektu, nie sam folder projektu — plik `notatki.md` właśnie zmienił datę
+modyfikacji. Widziałeś jedną linijkę
+w akcji, oddzieloną od wszystkich innych. **F5** puszcza program dalej.
+
+## Kto wywołał twoją metodę
+
+Zanim puścisz, jeszcze jedno okno, najważniejsze w tej lekcji: **Call Stack**
+— [Debug › Windows › Call Stack albo Ctrl+Alt+C](https://learn.microsoft.com/en-us/visualstudio/debugger/how-to-use-the-call-stack-window).
+Pokazuje, [w jakiej kolejności wywoływane są metody](https://learn.microsoft.com/en-us/visualstudio/debugger/how-to-use-the-call-stack-window):
+na samej górze twoja metoda obsługi zapisu, a pod nią — na razie jeden
+szary wiersz, **[External Code]**, bo Visual Studio domyślnie zwija wszystko,
+co nie jest twoim kodem. Kliknij w tym oknie prawym przyciskiem i wybierz
+**Show External Code**. Teraz widać kolumnę: kilkanaście wierszy z nazwami,
+których nie pisałeś — metody z bibliotek Avalonii, oznaczone przejścia do
+kodu systemu i z powrotem — a na samym dole `Program.Main` twojego
+projektu, czyli miejsce, od którego program czekał.
+
+Przeczytaj tę kolumnę od góry do dołu i zauważ, czego w niej nie ma: żadnej
+twojej linijki, która by tę metodę wywołała. Ty jej nie wywołałeś. Wywołało
+ją okno — w odpowiedzi na kliknięcie, przez kilkanaście warstw cudzego kodu,
+który czekał na to kliknięcie od chwili uruchomienia. W bloku własną ręką z
+trzeciej budowy stało zdanie, że nazwy `sender` i `e` „pochodzą z lat
+osiemdziesiątych”; ta kolumna jest tym, skąd pochodzą. Następna lekcja
+zbuduje tę kolumnę od dołu.
+
+Naciśnij F5, zamknij notatnik, kliknij czerwoną kropkę, żeby zniknęła.
+
+## Agent zostaje za drzwiami
+
+Ostatnia rzecz na dziś jest o trybie pracy, bo od następnej lekcji każda
+lekcja modułu mówi o nim w pierwszym zdaniu swojej pierwszej sekcji. Otwórz ten sam folder
+`notatnik-v2` w edytorze z agentem, obok Visual Studio. Oba programy patrzą
+na te same pliki; zmiana w jednym pojawia się w drugim. Agent ma więc swoje
+drzwi do tego samego repozytorium — tylko że w tym module przez większość
+czasu są zamknięte.
+
+Visual Studio ma własnego asystenta, GitHub Copilot, wbudowanego w program.
+[Bez zalogowania kontem GitHub nie działa](https://learn.microsoft.com/en-us/visualstudio/ide/visual-studio-github-copilot-install-and-states)
+— i w trybie „bez AI” nie logujesz się do niego, więc w każdym takim bloku
+jest wyłączony z definicji. Jego znaczek w prawym górnym rogu
+można schować: **Tools › Options › Environment › Hide Copilot Badge**. Na
+własnym komputerze, jeśli masz konto i chcesz je zachować, ustaw
+podpowiedzi w tekście na ręczne: [Tools › Options › All Settings › Text Editor
+› Inline Suggestions › General, *Inline Suggestions Invocation* na
+*Manual*](https://learn.microsoft.com/en-us/visualstudio/ide/visual-studio-github-copilot-extension)
+— wtedy nic nie podpowiada się samo, a kiedy zechcesz, wywołasz podpowiedź
+skrótem Alt+przecinek. W lekcji o trzech trybach będzie to potrzebne
+dokładnie w tej postaci.
+
+## Narzędzie do patrzenia
+
+Na pytanie z początku lekcji odpowiedź ma dwie części. Visual Studio różni
+się od edytorów tym, że kompilator, projekt i debugger ma w środku — a
+debugger jest tym, co zmienia najwięcej, bo pozwala zatrzymać program i
+patrzeć. Po co komuś z agentem debugger? Bo cztery pytania, które ten moduł
+zadaje każdemu kodowi — kto to wywołuje i na którym wątku, jaki układ, gdzie
+jest stan, co z plikiem — to są pytania do zatrzymanego programu, nie do
+diffa.
+
+- **Plik projektu to XML programu budującego.** Każdy `PackageReference` to
+  pakiet, który ktoś — agent albo ty — do niego wpisał.
+- **F9, F5, F10.** Punkt przerwania, uruchomienie, krok. Trzy klawisze,
+  które w tym module będą używane częściej niż terminal.
+- **Call Stack czyta się od góry do dołu** i najważniejsze jest w nim to,
+  czego nie ma: twojego wywołania.
+- **Tryb pracy stoi na początku pierwszej sekcji każdej następnej lekcji.**
+  W trybie bez AI Copilot jest niezalogowany; w domu — ustawiony na ręczny.
+
+Na karcie zapisz jedną linijkę: ile wierszy stało pod twoją metodą w oknie
+Call Stack po odsłonięciu cudzego kodu i nazwę najniższego z nich. W następnej
+lekcji zbudujesz od pustego pliku okno, które tę kolumnę wywoła — i zamrozisz
+je celowo.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: trzy rzeczy, które Visual Studio ma w środku, a edytor z
+rozszerzeniami doczepia; co robią klawisze F9, F5 i F10; co pokazuje okno
+Call Stack, co w nim trzeba odsłonić i czego w nim nie ma.
+
+</Zadanie>
+
+<Zadanie>
+
+Postaw punkt przerwania w metodzie notatnika, która wczytuje plik na
+starcie. Uruchom, odczytaj w oknie Watch zmienną, która trzyma treść pliku,
+zrób jeden krok F10 i zapisz, jak zmieniła się jej długość.
+
+</Zadanie>
+
+<Zadanie title="Solution w repozytorium">
+
+Visual Studio przy zamykaniu proponuje zapisanie obok projektu pliku
+solution. Zdecyduj, czy trafia do repozytorium, i uzasadnij w opisie commita — jednym zdaniem, po co komuś ten
+plik albo dlaczego jest zbędny. Dopisz na karcie linijkę z liczbą wierszy w
+Call Stack pod twoją metodą.
+
+</Zadanie>
+
+<Zadanie>
+
+Na stronie rozszerzenia Avalonia for Visual Studio w Marketplace znajdź
+najniższą wersję Visual Studio, której ono dziś wymaga, i datę ostatniego
+wydania rozszerzenia. Porównaj z wersją zainstalowaną w pracowni (**Help ›
+About**). Zapisz obie z dzisiejszą datą.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-02">
+
+<Zrodlo title="Visual Studio 2026 release history" publisher="Microsoft Learn" date="2026-09-02" url="https://learn.microsoft.com/en-us/visualstudio/releases/2026/release-history">wydanie 18.0.0 z 11 listopada 2025; bieżąca wersja 18.9.2 z 25 sierpnia 2026 w chwili sprawdzenia</Zrodlo>
+
+<Zrodlo title="Visual Studio Community" publisher="Microsoft" date="2026-06-18" url="https://visualstudio.microsoft.com/vs/community/">warunki użycia edycji Community: dowolny programista dla własnych aplikacji; w organizacjach bez limitu do nauki w klasie, badań i open source</Zrodlo>
+
+<Zrodlo title="Avalonia for Visual Studio extension" publisher="Avalonia Docs" date="2026-07-28" url="https://docs.avaloniaui.net/tools/visual-studio-extension">podpowiadanie w plikach `.axaml` i podgląd — „see what the UI of the open document will look like without needing to run the application”; o projektancie z przeciąganiem ani słowa</Zrodlo>
+
+<Zrodlo title="Avalonia for Visual Studio" publisher="Visual Studio Marketplace" date="2026-09-02" url="https://marketplace.visualstudio.com/items?itemName=AvaloniaTeam.AvaloniaVS">rozszerzenie w wersji 12.2.2 wymaga Visual Studio od 17.14; strona sprawdzona 2 września 2026</Zrodlo>
+
+<Zrodlo title="Get started with breakpoints" publisher="Microsoft Learn" date="2026-04-23" url="https://learn.microsoft.com/en-us/visualstudio/debugger/get-started-with-breakpoints">punkt przerwania: kliknięcie na lewym marginesie albo F9; F5 uruchamia pod debuggerem</Zrodlo>
+
+<Zrodlo title="Watch variables with Watch windows and QuickWatch" publisher="Microsoft Learn" date="2026-03-12" url="https://learn.microsoft.com/en-us/visualstudio/debugger/watch-and-quickwatch-windows">Debug › Windows › Watch › Watch 1; prawy przycisk › Add Watch</Zrodlo>
+
+<Zrodlo title="Navigate through code by using the Visual Studio debugger" publisher="Microsoft Learn" date="2026-01-27" url="https://learn.microsoft.com/en-us/visualstudio/debugger/navigating-through-code-with-the-debugger">F10 krok przez linijkę, F11 krok do środka wywołania</Zrodlo>
+
+<Zrodlo title="View the call stack and use the Call Stack window in the debugger" publisher="Microsoft Learn" date="2026-03-16" url="https://learn.microsoft.com/en-us/visualstudio/debugger/how-to-use-the-call-stack-window">Debug › Windows › Call Stack albo Ctrl+Alt+C; „shows the order in which methods and functions are getting called”</Zrodlo>
+
+<Zrodlo title="Manage GitHub Copilot installation and state" publisher="Microsoft Learn" date="2026-04-22" url="https://learn.microsoft.com/en-us/visualstudio/ide/visual-studio-github-copilot-install-and-states">Copilot wymaga zalogowania kontem GitHub; Tools › Options › Environment › Hide Copilot Badge</Zrodlo>
+
+<Zrodlo title="Copilot Completions in Visual Studio" publisher="Microsoft Learn" date="2026-05-06" url="https://learn.microsoft.com/en-us/visualstudio/ide/visual-studio-github-copilot-extension">podpowiedzi w tekście przyjmuje się klawiszem Tab; ustawienie *Inline Suggestions Invocation* na *Manual* wyłącza podpowiadanie przy każdym naciśnięciu klawisza; ręczne wywołanie Alt+, lub Alt+.</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="dokumentacja" title="First look at the Visual Studio debugger" url="https://learn.microsoft.com/en-us/visualstudio/debugger/debugger-feature-tour">przegląd wszystkiego, co debugger potrafi poza punktem przerwania i krokiem — warunki na kropce, okno Locals, cofnięcie się o krok; do przeczytania po tym module, nie przed</Lektura>
+
+<Lektura kind="dokumentacja" title="Understand the project file (MSBuild)" url="https://learn.microsoft.com/en-us/aspnet/web-forms/overview/deployment/web-deployment-in-the-enterprise/understanding-the-project-file">dlaczego plik projektu ma elementy, a nie ustawienia — na przykładzie starszego rodzaju projektu, ale mechanizm jest ten sam</Lektura>
+
+</CzytajDalej>

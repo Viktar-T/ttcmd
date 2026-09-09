@@ -54,3 +54,6 @@ Thumbs.db
 
 # survey exports — personal data of students, never committed (Article IV)
 docs/surveys/*.csv
+
+# local scratch builds, never committed
+/tmp-modul5-build/

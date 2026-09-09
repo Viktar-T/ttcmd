@@ -2,7 +2,7 @@
 
 | | |
 | --- | --- |
-| Version | **2.5 — proposal** (supersedes v1.1 as the working proposal; v1 stays in the tree, per this folder's rules; v2.5 revised in place on 2026-09-02) |
+| Version | **2.7 — proposal** (supersedes v1.1 as the working proposal; v1 stays in the tree, per this folder's rules; v2.5 and v2.6 revised in place on 2026-09-02; v2.7 on 2026-09-09) |
 | Written | 2026-08-30 |
 | Status | **Not law.** For Viktar to cut, reorder and reject. Not a spec slice; nothing here authorises an app change (Article IX). Institutional facts stay TO CONFIRM (Article V) |
 | Course | 4th year, 8 h/week, two groups, from 2026-09-01 <!-- TO CONFIRM: official PL course title --> |
@@ -159,16 +159,21 @@ versions; 0c Git i GitHub (written).
 
 ### Moduł 1 — Jak dziś powstaje oprogramowanie
 
-`content/moduly/01-jak-powstaje-oprogramowanie/` · in class **4 h** (v2.4: 16)
-· six lessons: five to read in the student's own time, one demo done in class
+`content/moduly/01-jak-powstaje-oprogramowanie/` · in class **4 h** (v2.4: 16; those hours are the demo, which left for
+Moduł 2 in v2.7 — see the changelog) · five lessons, all read in the
+student's own time
 
 **v2.5:** a reading module in the literal sense. The five texts stay exactly
 as they are — the teacher's view of the profession, for students who want to
 read — and leave the class hours; the class time is the demo and the
-discussion it starts. The demo is now the **last** lesson of the module so
-that the site's order matches the classroom's: the demo on the teacher's
-screen, then the student's own twenty-five minutes, which is the first lesson
-of Moduł 2. `czterdzieści lat zmian` stays outside the module in
+discussion it starts.
+
+**v2.7 (2026-09-09, Viktar's call):** the demo leaves the module altogether
+and opens Moduł 2 as **2a**. The classroom order it was chasing in v2.5 — the
+demo on the teacher's screen, then the student's own twenty-five minutes — is
+now one unbroken pair inside one module, and Moduł 1 is purely reading. The
+five reading lessons keep their orders 2–6, so no published letter or URL
+moved. `czterdzieści lat zmian` stays outside the module in
 `content/interesting-to-read/` as optional reading.
 
 |        | Polish title                    | slug                             | v2.5 change                                                                                                                          |
@@ -178,13 +183,13 @@ of Moduł 2. `czterdzieści lat zmian` stays outside the module in
 | **1d** | Nowy warsztat programisty       | `nowy-warsztat-programisty`      | was 1f; reading. Opening no longer assumes „Teraz ty”; refers to the demo as seen in class, with a link                             |
 | **1e** | Vibe coding kontra inżynieria   | `vibe-coding-kontra-inzynieria`  | was 1g; reading                                                                                                                      |
 | **1f** | Jak nie wypaść z obiegu         | `jak-nie-wypasc-z-obiegu`        | was 1h; reading                                                                                                                      |
-| **1g** | Na żywo: agent buduje aplikację | `na-zywo-agent-buduje-aplikacje` | was 1d; **the one class lesson**, last in the module; its ending hands over to 2a and points at 1d as free-time reading             |
 
-„Teraz ty: twój pierwszy agent” → **2a** (below).
+„Teraz ty: twój pierwszy agent” → **2b**, and „Na żywo: agent buduje
+aplikację” → **2a** (both below).
 ### Moduł 2 — Warsztat: środowisko pracy
 
 `content/moduly/02-warsztat/` · est. **14 h** (v2.4: 10) · absorbs „Teraz
-ty” from Moduł 1 and gains a reading lesson on C#
+ty” and, from v2.7, the demo from Moduł 1, and gains a reading lesson on C#
 
 The lesson the discussion asked for: „how a student organises their
 programming environment before programming with agents”. Everything here is
@@ -193,12 +198,13 @@ v2.5, with a first reading of the language the window is written in.
 
 |        | Polish title                                           | slug                       | What it does                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ------ | ------------------------------------------------------ | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **2a** | **Teraz ty: twój pierwszy agent**                      | `teraz-ty-pierwszy-agent`  | **Moved from 1e in v2.5.** Straight after the demo: the student installs both class editors (**Krok 2**, new — what an editor with an agent is, download, first launch, sign-in deferred to the class rules, one empty folder), gives the agent a small task of their own choosing and records what happens on the observation card — now the lesson's first exercise, numbered by the build. No success criterion; the card is graded for honesty of observation. Fallback plan kept: switch to the second editor, then pairs. Vendor facts dated 2026-09-02. |
-| **2b** | Narzędzia: dwa edytory z agentem                       | `narzedzia-dwa-edytory`    | was 2a. The two class tools — Antigravity and Cursor — as *categories* first (1b's layers made flesh): both agent-first editors, both VS Code forks, so one set of habits serves both. Sign-ins under the school's account rules; where the agent's output lands in each; when to reach for which. Why two, said to students plainly: a spare when one free tier throttles, more combined free usage, and 1f made practical — the category is stable, the names are not.                                                                                                                                                                                                                                                                                                                                       |
-| **2c** | Projekt, folder, repozytorium                          | `projekt-folder-repo`      | was 2b. The conventions that survive the whole course: one folder per project, a repo from day one (0c applied), what never enters a repo; the SDK verified (`dotnet --list-sdks`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| **2d** | Pierwsze okno                                          | `pierwsze-okno`            | was 2c. The training stack declared, honestly provisional: „C# + Avalonia na czas nauki; wybór potwierdzimy w Module 5”. `dotnet new`, a window runs, the agent changes one visible thing, the student reads the diff.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| **2e** | Git i GitHub w pracy z agentem                         | `git-w-pracy-z-agentem`    | was 2d. The working level of Git, on the project from 2d — 0c stays the minimum and keeps every term it owns; this lesson puts the tools to work where agents make them necessary: reading a diff before accepting it; one task, one commit; undoing an agent's change (`restore`, `revert`); a branch as a place to let the agent experiment; `.gitignore` for build output; the GitHub repo as the course's working portfolio.                                                                                                                                                                                                                                                                                                                                                                              |
-| **2f** | **C# na pierwszy rzut oka, dla kogoś po Javie i C++** | `csharp-na-pierwszy-rzut-oka` | **New in v2.5; brief first, not drafted.** A reading lesson, no build: the six constructs the student will meet in every generated diff — a class with properties, `List<T>`, `try`/`catch`, an event handler with its two parameters, `async`, and the file/namespace shape of a project — each shown beside the Java or C++ form the reader knows, on the `pierwsze-okno` project they already have. Owns the *reading* of C#; the by-hand Moduł 3 blocks and Moduł 5 own the *writing*. Reader position from the survey: Java strongest (5 write simple programs), C# 11 of 12 „nie znam”. |
+| **2a** | Na żywo: agent buduje aplikację                        | `na-zywo-agent-buduje-aplikacje` | **Moved from 1g in v2.7.** The one lesson watched together on the teacher's screen, now opening the module it hands over to: one prompt, three agents, three applications, and the list of things to watch for. Its closing paragraph points forward to „Teraz ty” and back at 1d as free-time reading. |
+| **2b** | **Teraz ty: twój pierwszy agent**                      | `teraz-ty-pierwszy-agent`  | **Moved from 1e in v2.5, renumbered from 2a in v2.7.** Straight after the demo: the student installs both class editors (**Krok 2**, new — what an editor with an agent is, download, first launch, sign-in deferred to the class rules, one empty folder), gives the agent a small task of their own choosing and records what happens on the observation card — now the lesson's first exercise, numbered by the build. No success criterion; the card is graded for honesty of observation. Fallback plan kept: switch to the second editor, then pairs. Vendor facts dated 2026-09-02. |
+| **2c** | Narzędzia: dwa edytory z agentem                       | `narzedzia-dwa-edytory`    | was 2a. The two class tools — Antigravity and Cursor — as *categories* first (1b's layers made flesh): both agent-first editors, both VS Code forks, so one set of habits serves both. Sign-ins under the school's account rules; where the agent's output lands in each; when to reach for which. Why two, said to students plainly: a spare when one free tier throttles, more combined free usage, and 1f made practical — the category is stable, the names are not.                                                                                                                                                                                                                                                                                                                                       |
+| **2d** | Projekt, folder, repozytorium                          | `projekt-folder-repo`      | was 2b. The conventions that survive the whole course: one folder per project, a repo from day one (0c applied), what never enters a repo; the SDK verified (`dotnet --list-sdks`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| **2e** | Pierwsze okno                                          | `pierwsze-okno`            | was 2c. The training stack declared, honestly provisional: „C# + Avalonia na czas nauki; wybór potwierdzimy w Module 5”. `dotnet new`, a window runs, the agent changes one visible thing, the student reads the diff.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| **2f** | Git i GitHub w pracy z agentem                         | `git-w-pracy-z-agentem`    | was 2d. The working level of Git, on the project from 2d — 0c stays the minimum and keeps every term it owns; this lesson puts the tools to work where agents make them necessary: reading a diff before accepting it; one task, one commit; undoing an agent's change (`restore`, `revert`); a branch as a place to let the agent experiment; `.gitignore` for build output; the GitHub repo as the course's working portfolio.                                                                                                                                                                                                                                                                                                                                                                              |
+| **2g** | **C# na pierwszy rzut oka, dla kogoś po Javie i C++** | `csharp-na-pierwszy-rzut-oka` | **New in v2.5; brief first, not drafted.** A reading lesson, no build: the six constructs the student will meet in every generated diff — a class with properties, `List<T>`, `try`/`catch`, an event handler with its two parameters, `async`, and the file/namespace shape of a project — each shown beside the Java or C++ form the reader knows, on the `pierwsze-okno` project they already have. Owns the *reading* of C#; the by-hand Moduł 3 blocks and Moduł 5 own the *writing*. Reader position from the survey: Java strongest (5 write simple programs), C# 11 of 12 „nie znam”. |
 ### Moduł 3 — Budujemy: pierwsze aplikacje
 
 `content/moduly/03-budujemy/` · est. **26 h** · new doing time; absorbs old
@@ -298,10 +304,32 @@ not 24.
 | —      | *(reserve)*                                                    |                               | two hours unassigned inside the module for the lesson that runs long; 5d and 5f are the candidates                                                                                                                                                                                                          | 2 |
 
 Fixed segments from Moduł 3 stay (diff reading, journal entry); „by hand” is
-the default here and the agent is the named exception. Lessons and briefs are
-written one session each after the plan is settled and after the survey's
-second run; 5d's opening depends on a fact the second run must confirm
-(block D: who has ever typed a click handler).
+the default here and the agent is the named exception. 5d's opening depends
+on a fact the survey's second run must confirm (block D: who has ever typed a
+click handler).
+
+**Drafted 2026-09-02** (autonomous run on Viktar's request; briefs
+`docs/content-briefs/05-*.md`, unapproved; lessons `publish: false`).
+Decisions taken there, for Viktar to keep or overturn: the stack inside the
+module is **C# + Avalonia 12** — Viktar's answer the same day to open
+decision #12, so 5c drops the drag-and-drop designer (the Avalonia extension
+is a previewer) and 5e types the markup; the by-hand running example of
+5d–5g is a **new small project `spis`** (a list typed, counted, saved), not a
+rebuild of the notatnik, so that 5h can rebuild a feature of the intact
+agent-built `notatnik-v2`; 5h's feature is a **count of notes under the
+list**, one sentence of spec (K8), three branches, order bez AI →
+podpowiadanie → agent; 5f writes `INotifyPropertyChanged` by hand, no
+toolkit; the decision record of 5b lives in `notatnik-v2/decyzje/0002-stack.md`.
+Every code block a student types in 5d–5g was built on Viktar's Windows
+machine as a stage of the throwaway `tmp-modul5-build/` (SDK 10.0.400,
+Avalonia 12.1.2, net10.0; eleven stages, one of them meant to fail with
+CS0160; headless tests of the final state) — the log and the per-stage status
+are in each brief's Deviations. **A lab-preparation finding from that
+build:** Avalonia 12's source generator (which writes `InitializeComponent`
+and the `Name` fields) needs the Roslyn shipped with SDK 10 — on a machine
+with only SDK 8 even the untouched template fails with `CS0103`, whatever
+the target framework. The Windows and Ubuntu lists below say so at the SDK
+step.
 
 ### Moduł 6 — Wspólna aplikacja
 
@@ -491,6 +519,10 @@ Install as administrator, once per machine; verify per user.
 4. **.NET SDK 10 (LTS)** — `winget install Microsoft.DotNet.SDK.10`.
    Current LTS as of 2026-08 (`research-02` §2; .NET 11 is STS, due
    2026-11-10 — do not chase it mid-semester). Verify: `dotnet --list-sdks`.
+   **Not optional even for a net8.0 target:** Avalonia 12.1.2's source
+   generator needs the SDK 10 compiler; with SDK 8 alone the `avalonia.app`
+   template fails to build (`CS9057` + `CS0103: InitializeComponent`) —
+   seen on 2026-09-02 while verifying the Moduł 5 code.
 5. **Visual Studio Code** — `winget install Microsoft.VisualStudioCode`
    (machine-wide installer). Extensions per user in first login script: the
    C# extension (or C# Dev Kit — its licence for education TO CONFIRM at
@@ -532,7 +564,8 @@ X11/Wayland as imaged is sufficient for Avalonia.
 4. **.NET SDK 10 (LTS)** — `sudo apt install dotnet-sdk-10.0` from the
    Ubuntu feed **if the imaged release carries it (TO CONFIRM)**; otherwise
    Microsoft's install script (`dotnet-install.sh`) or the
-   `packages.microsoft.com` repo. Verify: `dotnet --list-sdks`.
+   `packages.microsoft.com` repo. Verify: `dotnet --list-sdks`. SDK 10, not
+   8, for the same reason as on Windows (Avalonia 12's generator).
 5. **Visual Studio Code** — the `.deb` from `code.visualstudio.com` (adds
    Microsoft's apt repo; keeps updates working). The snap also works;
    choose one for the whole lab. Extensions per user, as on Windows.
@@ -580,11 +613,34 @@ projector and network — not at home.
 | 9 | What environment the school's INF.04 practical stations actually run, and — if the lab is Ubuntu — where students get Visual Studio hours (exam stations? a Windows room?) | before Moduł 5 | 5c; exam preparation |
 | 10 | The v2.5 renumbering: Moduł 5 = Pod maską, shared app → 6, tests → 7, Semester 2 → 8–11 — versus keeping v2.4's Moduł 5 and sharpening 5f–5g into by-hand lessons inside it | before the Moduł 5 briefs | 5–7; the docs that already say „Moduł 8” for the project |
 | 11 | Hours: 4 / 14 / 26 / 20 / 28 / 20 / 20 + 4 slack — or take the slack into Moduł 5 | with #10 | the volume table |
-| 12 | The stack inside Moduł 5: the training stack (Avalonia, no designer in Visual Studio — TO CONFIRM) versus WinForms on Windows-only labs (decision #4); the module must not introduce a third framework | before the 5c brief | 5c, 5e |
+| 12 | ~~The stack inside Moduł 5: the training stack (Avalonia, no designer in Visual Studio — TO CONFIRM) versus WinForms on Windows-only labs (decision #4); the module must not introduce a third framework~~ **Answered 2026-09-02: C# + Avalonia.** The Avalonia extension is a previewer, confirmed against its docs (28.07.2026); the drafts of 5c and 5e are written for it | — | 5c, 5e drafted |
+| 14 | Moduł 5 as drafted: the `spis` running example, the K8 feature of 5h, the real vote in 5b, the `.sln` in student repos (5c) — the open questions of the nine briefs `05-*.md` | before the module is published | Moduł 5 |
 | 13 | Whether the reading lessons of Moduł 1 get any class time at all beyond the demo (the 4 h assume one discussion hour); and whether 1c is taught or only read | week 2 | 1c's opening from the E5 aggregate |
 
 ## Changelog
 
+- **v2.7 — 2026-09-09.** **The demo moves to Moduł 2**, on Viktar's request:
+  „Na żywo: agent buduje aplikację” leaves Moduł 1 as 1g and becomes **2a**,
+  so the module that starts hands-on work opens with the pokaz and „Teraz ty”
+  follows it immediately as **2b**; the former 2b–2f shift to 2c–2g. Moduł 1
+  is five reading lessons and keeps orders 2–6, so no published lesson letter
+  or URL there moved. The lesson's URL did move, with the file, from
+  `/moduly/01-jak-powstaje-oprogramowanie/` to `/moduly/02-warsztat/`, and
+  every inbound link in the content was rewritten in the same change. **Not
+  settled here:** the 4 class hours v2.5 gave Moduł 1 were the demo and its
+  discussion, so on paper they now belong to Moduł 2 (14 → 18 h, Moduł 1 → 0).
+  The volume table is left as it stands until Viktar says which way to book
+  them; nothing student-facing depends on the answer.
+- **v2.6 — 2026-09-02 (evening).** **Moduł 5 drafted**: nine briefs
+  (`05-index`, `05a`–`05h`, unapproved) and nine lessons under
+  `content/moduly/05-pod-maska/` (`publish: false`), in one autonomous run on
+  Viktar's request. Open decision #12 answered (C# + Avalonia; no third
+  framework); #14 added for the briefs' open questions. The by-hand code of
+  5d–5g built and tested on Viktar's machine in `tmp-modul5-build/`
+  (untracked, throwaway); the SDK-10 finding recorded in the lab lists.
+  `docs/content-style.md` appendix: the Moduł 5 term and story rows added,
+  *pętla zdarzeń / wiązanie danych / MVVM* rehomed from 1a to 5d/5f. Hours
+  unchanged (28).
 - **v2.5 — 2026-09-02.** **Moduł 1 becomes free-time reading with the demo
   last** (1d → 1g; 1f/1g/1h → 1d/1e/1f; class hours 16 → 4); **„Teraz ty”
   moves to 2a** with a new Krok 2 on installing both class editors (former

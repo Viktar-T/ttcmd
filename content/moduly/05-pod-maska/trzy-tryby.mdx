@@ -1,0 +1,252 @@
+---
+title: "Trzy tryby: ta sama funkcja bez AI, z podpowiadaniem, z agentem"
+order: 8
+summary: "Jedna funkcja twojego własnego notatnika, opisana jednym zdaniem, zbudowana trzy razy na trzech gałęziach — bez AI w Visual Studio, tylko z podpowiadaniem, z agentem — każda na czas i z wpisem w dzienniku. Potem wersja agenta czytana czterema pytaniami z czterech poprzednich lekcji: kto to wywołuje, jaki układ, gdzie stan, co z plikiem."
+publish: false
+---
+
+{/* Drafted 2026-09-02 from docs/content-briefs/05h-trzy-tryby.md, autonomous
+    run — brief unapproved. No new compiled code: the feature is the student's
+    own, in their notatnik-v2; the lesson fixes the spec sentence and the
+    procedure. Mode 2 assumes a class editor can run with the agent panel
+    closed and Tab completion on (2c: TO CONFIRM under the school's
+    accounts). The pooled class table is counts on the board, never a file in
+    any repository (Article IV). */}
+
+Na karcie masz siedem liczb: minuty czterech bloków z tego modułu i trzech z
+budów — lista, obsługa błędu, zdarzenie. Każda z nich mówi, ile kosztowało
+zrobienie czegoś samemu. Żadna nie mówi, ile ta sama rzecz kosztowałaby
+inaczej, bo nigdy nie robiłeś tej samej rzeczy dwa razy — a co dopiero trzy,
+na trzy sposoby, z zegarkiem.
+
+Jest jeszcze coś, czego karta nie ma: sposobu na przeczytanie tego, co robi
+agent, innego niż „rozumiem / nie rozumiem”. Przez cztery lekcje zbudowałeś
+własnymi rękami pętlę, układ, stan i plik; każda zostawiła jedno pytanie,
+które od tamtej pory zadajesz kodowi. Dziś te cztery pytania idą razem na
+jeden diff.
+
+Pytanie tej lekcji: **ile naprawdę kosztuje zrobienie tej samej rzeczy
+samemu, z podpowiadaniem i z agentem — i co z tych trzech wersji potrafisz
+teraz przeczytać, czego nie widziałeś w trzeciej budowie?** Zbudujesz jedną
+funkcję swojego notatnika trzy razy i położysz trzy liczby obok siebie.
+
+## Jedna funkcja, trzy gałęzie
+
+Tryb pracy: **wszystkie trzy, w tej kolejności**, i każdy z nazwą w opisie
+commita.
+
+Funkcja jest mała i celowo dotyka wszystkich czterech lekcji: liczy notatki i
+pokazuje wynik pod listą. Zapisana tak, jak uczyła lekcja o pętli
+specyfikacji — jedno zdanie do sprawdzenia, dopisane do `specs/001-notatnik/spec.md`
+jako kryterium K8:
+
+```markdown title="specs/001-notatnik/spec.md — nowe kryterium"
+K8. Kiedy lista pokazuje N notatek, to pod listą widać napis „Notatek: N”,
+    po starcie i po każdym zapisie. Sprawdzenie: policzyć notatki w
+    `notatki.md` (w formacie z twojej decyzji 0001) i porównać z napisem.
+```
+
+Dotyka stanu, bo liczba musi wziąć się stamtąd, gdzie mieszka lista notatek;
+układu, bo pod listą trzeba zrobić miejsce; pliku, bo po starcie liczba
+bierze się z tego, co wczytano; i pętli, bo „po każdym zapisie” znaczy: w
+odpowiedzi na zdarzenie. Kryterium jest jedno i to samo dla wszystkich
+trzech wersji — wersja, która nie przechodzi sprawdzenia, nie liczy się,
+choćby powstała w minutę.
+
+Trzy gałęzie od `main`, jak w [lekcji o Gicie w pracy z agentem](/moduly/02-warsztat/git-w-pracy-z-agentem):
+
+```bash
+git switch -c tryb-1-bez-ai
+```
+
+— a przed drugą i trzecią wersją wracasz na `main` i tworzysz następną:
+`tryb-2-podpowiadanie`, `tryb-3-agent`. Na karcie tabela z trzema wierszami
+i trzema kolumnami: **minuty** (od otwarcia gałęzi do commita, z czytaniem
+włącznie), **zmienione linijki** (`git diff --stat main`), **linijki, które
+rozumiesz** (twoja ocena, uczciwa). Jedna uwaga o kolejności, zanim
+zaczniesz: robisz najpierw bez AI dlatego, że trzecia próba tej samej
+rzeczy jest zawsze szybsza od pierwszej — i lepiej, żeby przewagę
+„już to robiłem” dostały wersje z narzędziami niż ta bez. Liczba z trybu
+pierwszego ma być uczciwa; pozostałe dwie będą miały handicap na swoją
+korzyść, i to też zapiszesz.
+
+## Tryb 1: bez AI, w Visual Studio
+
+Copilot niezalogowany, edytor z agentem zamknięty, zegarek włączony. Zaczynasz
+od pytania z lekcji o stanie: gdzie mieszka lista notatek? Znajdź ją — pole w
+oknie, osobna klasa, cokolwiek agent zbudował w piątej lekcji poprzedniego
+modułu — i tam, obok niej, umieść liczbę: właściwość liczona z długości
+listy, tak jak `Opis` w `spis`. Potem układ: miejsce pod listą, jedna
+kontrolka. Potem połączenie: wiązanie, jeśli lista jest wiązana; ręczne
+ustawienie po zapisie i po wczytaniu, jeśli nie jest — obie drogi są
+poprawne, o ile K8 przechodzi. Uruchom, policz wpisy w `notatki.md`, porównaj.
+
+Commit `tryb 1: licznik notatek (bez AI)`, zegarek stop, wiersz tabeli. W
+dzienniku weryfikacji wpis: co zajęło najwięcej czasu — szukanie miejsca,
+składnia, czy sprawdzenie.
+
+## Tryb 2: tylko podpowiadanie
+
+`git switch main`, `git switch -c tryb-2-podpowiadanie`. Otwórz notatnik w
+edytorze z agentem, ale **zamknij panel agenta** i zostaw tylko
+podpowiadanie w tekście — to, co przyjmuje się klawiszem Tab. To jest
+[pierwsza warstwa z mapy w lekcji o
+warstwach](/moduly/01-jak-powstaje-oprogramowanie/od-podpowiedzi-do-agenta):
+sposób pracy z 2022 roku — warstwa, na której branża pracowała, zanim
+pojawiły się następne, w tym ta, od której zaczął się ten kurs.
+
+Ta sama funkcja, od zera, z jedną regułą: **Tab przyjmuje tylko to, co
+przeczytałeś do końca.** Podpowiedź, której nie rozumiesz, odrzucasz
+klawiszem Escape i piszesz sam. Zegarek liczy także czytanie. Commit
+`tryb 2: licznik notatek (podpowiadanie)`, wiersz tabeli, wpis w dzienniku:
+co Tab wiedział — nazwę twojej klasy, kształt wiązania — i gdzie zgadł źle.
+Jeśli w twoim edytorze nie da się zamknąć agenta i zostawić samego
+podpowiadania, zapisz to i przejdź dalej; brak wiersza jest uczciwszy niż
+wiersz zmyślony.
+
+## Tryb 3: agent
+
+`git switch main`, `git switch -c tryb-3-agent`. Otwórz panel agenta i wyślij
+jedną wiadomość — dokładnie zdanie K8, nic więcej: ani nazwy pliku, ani
+sposobu, ani prośby o wyjaśnienie. Specyfikacja mówi *co*, i to jest cały
+test, czy agent sam znajdzie *jak* w twoim kodzie. Kiedy skończy, **nie
+zgadzaj się od razu**: `git diff`, cały, do końca, jak w lekcji o pierwszym
+oknie. Uruchom, policz wpisy, porównaj. Zegarek liczy od wysłania wiadomości
+do końca czytania, bo czytanie jest częścią pracy w tym trybie — to jest
+rzecz, którą lekcja o tym, co model naprawdę potrafi, nazwała gołym
+liczbami. Commit `tryb 3: licznik notatek (agent)`, wiersz tabeli, wpis w
+dzienniku: co agent zrobił, o co zadanie nie prosiło.
+
+## Trzy liczby obok siebie
+
+Zanim tabela cokolwiek powie, trzy rzeczy, których nie powie. Jeden uczeń,
+jedna funkcja, jedna próba na tryb — to nie jest pomiar, to jest
+obserwacja. Tryb pierwszy był pierwszy, więc dwa pozostałe znały już
+odpowiedź. I funkcja była mała, wybrana pod ten moduł; przy czymś większym
+proporcje mogłyby być inne.
+
+Z tymi zastrzeżeniami spójrz na kolumny. Minuty pewnie maleją w dół; to
+nikogo nie zaskoczy. Ciekawsze są dwie pozostałe: ile linijek zmienił każdy
+tryb i ile z nich rozumiesz. Jeśli tryb trzeci zmienił trzy razy więcej
+linijek niż pierwszy, a rozumiesz z nich tyle samo, to różnica w minutach
+kupiła ci coś, czego nie umiesz nazwać. Jeśli zmienił tyle samo i rozumiesz
+wszystkie, agent zrobił to, co ty, tylko szybciej — i to też jest wynik.
+
+Na tablicy powstanie tabela klasy: same liczby, bez nazwisk, po jednym
+wierszu na osobę. Popatrz, gdzie twoje trzy liczby leżą względem reszty, i
+przypomnij sobie jedno zdanie z [lekcji o tym, co model naprawdę
+potrafi](/moduly/01-jak-powstaje-oprogramowanie/co-model-naprawde-potrafi):
+w badaniu, w którym ludzie uczyli się z asystentem, były dwa sposoby
+używania tego samego narzędzia, z zewnątrz nie do odróżnienia, o
+przeciwnych skutkach. Kolumna „linijki, które rozumiesz” jest jedyną w tej
+tabeli, która mówi, którym z tych dwóch sposobów pracowałeś.
+
+## Rozbierz to: wersja agenta czytana oczami modułu
+
+Teraz najważniejsza część, i to ona jest powodem, dla którego moduł ma
+osiem lekcji, a nie cztery. Wróć na `tryb-3-agent` i otwórz diff jeszcze
+raz — tym razem nie po to, żeby zrozumieć, tylko żeby zadać cztery pytania,
+po jednym z każdej lekcji. Każda odpowiedź to numer linijki w diffie, nie
+zdanie ogólne.
+
+1. **Kto wywołuje ten kod i na którym wątku?** Z lekcji o pętli zdarzeń.
+   Gdzie agent podpiął aktualizację licznika — do zdarzenia zapisu, do
+   `PropertyChanged`, do czegoś w konstruktorze? Czy jest tam `async`, a
+   jeśli jest, co czeka?
+2. **Jaki kontener i jakie nazwy?** Z lekcji o układzie. Gdzie stanęła
+   nowa kontrolka i czy dostała `Name`, którego ktoś używa.
+3. **Gdzie jest stan i kto jeszcze go zmienia?** Z lekcji o stanie. Czy
+   liczba jest liczona z listy, czy trzymana osobno i aktualizowana ręcznie
+   — a jeśli osobno, to w ilu miejscach.
+4. **Które `File.` i które z czterech przypadków przeżyje?** Z lekcji o
+   zapisie. Jeśli agent dotknął odczytu albo zapisu pliku, co się stanie
+   przy braku pliku, przy pliku zajętym, przy zapisie w połowie.
+
+Werdykt nie brzmi „dobrze” ani „źle”. Brzmi: **co bym zmienił i dlaczego**
+— dwa, trzy zdania w dzienniku, z numerami linijek. „Za skomplikowane” jest
+dozwolone, jeśli po nim stoi „bo”. To jest *Rozbierz to* w skali funkcji,
+ta sama czynność co w lekcji o halucynacjach, tylko że wtedy szukałeś
+błędu, a dziś oceniasz decyzje — i po czterech lekcjach masz do tego
+podstawy, których wtedy nie było.
+
+## Co zostaje na `main`
+
+Do `main` idzie wersja, której umiesz bronić — niekoniecznie najszybsza i
+niekoniecznie twoja własna. Wybierz ją, wróć na `main` i wpisz `git merge` z
+nazwą gałęzi: to polecenie dokłada zmiany z tamtej gałęzi do bieżącej. Jeśli
+zgłosi konflikt — bo `main` i gałąź zmieniły tę samą linijkę — zatrzymaj się
+i poproś o pomoc; rozwiązywanie konfliktów jest tematem na później. W opisie
+scalenia jedno zdanie: dlaczego ta. Dwie pozostałe
+gałęzie zostają w repozytorium; historia, z której da się odczytać, co
+wypróbowano, jest warta więcej niż czysta.
+
+Tabela na karcie ma teraz dziesięć liczb minut: siedem sprzed tej lekcji i
+trzy z dzisiaj. W [lekcji o nowym warsztacie
+programisty](/moduly/01-jak-powstaje-oprogramowanie/nowy-warsztat-programisty)
+stało zdanie o wyczuciu, którego jeszcze nie masz. Te liczby są tym, z czego
+wyczucie się bierze: nie z czytania o tym, ile coś kosztuje, tylko z
+zapłacenia raz.
+
+## Nie szybciej — trafniej
+
+Na pytanie z początku lekcji odpowiedź stoi w trzech wierszach tabeli i w
+trzech zdaniach dziennika. Koszt jest liczbą — twoją, na tej funkcji, z
+zastrzeżeniami, które umiesz wymienić. A czytanie wersji agenta przestało być
+wrażeniem: to cztery pytania z numerami linijek i werdykt z „bo”.
+
+- **Trzy tryby to trzy warstwy z mapy**, i ten kurs przeszedł je w
+  odwrotnej kolejności niż branża; dziś zobaczyłeś trzy obok siebie, na tej
+  samej funkcji.
+- **Kolumna „rozumiem” jest ważniejsza niż kolumna „minuty”.** Minuty
+  kupują czas; ta kolumna mówi, co za niego oddano.
+- **Cztery pytania do każdego diffa:** kto wywołuje, jaki układ, gdzie
+  stan, co z plikiem. Zadawaj je w tej kolejności, zanim zapytasz o
+  cokolwiek innego.
+- **Werdykt z „bo”.** Bez „bo” to opinia; z „bo” to przegląd kodu.
+
+Moduł kończy się tu. Od następnego modułu bloki własną ręką nie są już domyślnym
+trybem — wracają jako wyjątek, który trzeba nazwać, w aplikacji, którą cała
+klasa buduje tak samo, pętlą z modułu o specyfikacji, i czyta tymi czterema
+pytaniami. Agent wraca do warsztatu. Ty wracasz jako ktoś, kto wie, ile to
+kosztuje.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: trzy tryby i warstwa z mapy, której każdy odpowiada; cztery
+pytania, którymi czyta się diff w skali funkcji.
+
+</Zadanie>
+
+<Zadanie>
+
+`git diff --stat main..tryb-3-agent` i to samo dla `tryb-1-bez-ai`. Wpisz
+obie liczby linijek na kartę i jedno zdanie o tym, w których plikach jest
+różnica.
+
+</Zadanie>
+
+<Zadanie title="Wersja, której bronisz">
+
+Scal wybraną gałąź do `main` z opisem, w którym stoi „bo”. Wpis w dzienniku
+z czterema odpowiedziami i werdyktem. Karta z dziesięcioma liczbami minut —
+commit i push.
+
+</Zadanie>
+
+<Zadanie>
+
+Za tydzień otwórz scaloną wersję i zmień treść napisu pod listą — na przykład
+na „Wpisów: N”. Zapisz, ile czasu zajęło znalezienie miejsca i czy do jego
+znalezienia trzeba było otworzyć agenta.
+
+</Zadanie>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="artykul" title="Od podpowiedzi do agenta — lekcja z modułu pierwszego" url="/moduly/01-jak-powstaje-oprogramowanie/od-podpowiedzi-do-agenta">mapa pięciu warstw z datami, na którą dziś położyłeś trzy własne liczby; warto ją przeczytać jeszcze raz, teraz, kiedy dwie z tych warstw przeżyłeś na własnym kodzie</Lektura>
+
+</CzytajDalej>

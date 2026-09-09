@@ -11,8 +11,8 @@ first task of a session.
 Deployed at **<https://ttcmd.vercel.app>**, rebuilt from `main` on every push.
 The module → lesson pipeline works: MDX under `content/`, Zod-validated at
 build time, routes rendering. Real content: Moduł 0–3 published, Moduł 4
-drafted unpublished, Moduł 5 planned — see `docs/roadmap.md` „Where we are”
-and `docs/content-research/course-structure-v2.md` (v2.5), written to
+and Moduł 5 drafted unpublished — see `docs/roadmap.md` „Where we are”
+and `docs/content-research/course-structure-v2.md` (v2.6), written to
 `docs/content-style.md`. The commands
 below work.
 
