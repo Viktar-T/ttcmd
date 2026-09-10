@@ -11,14 +11,21 @@ publish: true
     (course-structure-v2.3, „Network allowlist” — the choice was left open);
     (2) that an hour-long session on the lab tool actually degrades on a
     project this small — Viktar should run the build once beforehand, because
-    section „Dwa różne psucia się sesji” rests on the student seeing it. */}
+    section „Dwa różne psucia się sesji” rests on the student seeing it.
+    Revised 2026-09-09 on Viktar's request: the opening now stands on the
+    Moduł 2 of 2026-09-09 (2e's fifteen agent changes) instead of the
+    experimental branch of the removed Git lesson; „tydzień” replaced by
+    „budowa” throughout (Article V); the four exercises became one hand-in
+    Zadanie ending with the teacher's form, as in 2d/2e — the recall moved
+    into the closing section and the two research exercises became lines of
+    `README.md`, so every part of the task is visible in the repository. */}
 
-Do tej pory każda rozmowa z agentem była krótka: prośba, zmiana, diff,
-commit. Nawet ta z gałęzią eksperymentalną zamykała się w kilku wymianach zdań.
-Dziś rozmowa potrwa godzinę i będzie miała kilkanaście wiadomości — a gdzieś w
-połowie stanie się rzecz, o której lepiej wiedzieć wcześniej: z aplikacji
-zniknie coś, o co prosiło twoje pierwsze zdanie. Zasada podana na starcie po
-prostu przestanie obowiązywać.
+Piętnaście zmian, które agent wprowadził w twoim drugim oknie, to piętnaście
+krótkich rozmów: prośba, zmiana, diff, commit — i od nowa. Żadna nie musiała
+trwać dłużej niż kilka wymian zdań. Dziś rozmowa potrwa godzinę i będzie miała
+kilkanaście wiadomości — a gdzieś w połowie stanie się rzecz, o której lepiej
+wiedzieć wcześniej: z aplikacji zniknie coś, o co prosiło twoje pierwsze zdanie.
+Zasada podana na starcie po prostu przestanie obowiązywać.
 
 „Agent się zmęczył” nie jest wyjaśnieniem, a „model jest głupi” tym bardziej.
 Wyjaśnienie jest prostsze i całkowicie mechaniczne, ale żeby je zobaczyć,
@@ -44,11 +51,12 @@ skończyć. Siedem zasad, wszystkie do podania od razu:
 6. interfejs po polsku, nazwy w kodzie po angielsku;
 7. żadnych dodatkowych bibliotek.
 
-Zacznij tak jak przy pierwszym eksperymencie: napisz, co ma powstać, co ma być
-widać na ekranie i po czym poznasz, że działa. Nowy projekt zakładasz sam,
-poleceniem z poprzedniego modułu — `dotnet new avalonia.app -o minutnik` w
-świeżym folderze z własnym repozytorium — i dopiero potem otwierasz panel
-agenta.
+Zacznij tak jak przy pierwszym eksperymencie z lekcji
+[Teraz ty: twój pierwszy agent](/moduly/02-warsztat/teraz-ty-pierwszy-agent):
+napisz, co ma powstać, co ma być widać na ekranie i po czym poznasz, że działa.
+Nowy projekt zakładasz sam, poleceniem z poprzedniego modułu —
+`dotnet new avalonia.app -o minutnik` w świeżym folderze z własnym
+repozytorium — i dopiero potem otwierasz panel agenta.
 
 ```text
 Zbuduj minutnik w tym projekcie Avalonia. Ma odmierzać 25 minut pracy,
@@ -71,7 +79,7 @@ Kiedy agent skończy pierwszą rundę, zrób to, co w poprzednim module:
 przeczytaj zmianę, zanim się na nią zgodzisz, i dopiero potem uruchom. Jedna
 pułapka potrafi tu zjeść pół lekcji, więc lepiej wiedzieć o niej wcześniej.
 Jeśli aplikacja wywala się przy pierwszym tyknięciu z komunikatem
-`Call from invalid thread`, to znaczy, że agent wziął nie ten zegar co trzeba.
+`Call from invalid thread`, to znaczy, że agent wziął nie ten zegar, co trzeba.
 Poproś wprost o `DispatcherTimer` — to
 [jedyny zegar, który wolno łączyć z tym, co widać na ekranie](https://docs.avaloniaui.net/docs/app-development/threading).
 Dlaczego akurat ten, jest tematem na Moduł 5, przy okazji budowy okna od
@@ -124,7 +132,7 @@ więcej trzy czwarte krótkiego angielskiego słowa
 sprawdzone 1 września 2026). Ta średnia zależy jednak od języka: producenci
 zaznaczają, że liczba znaków na token bywa różna w różnych językach
 ([słownik Anthropic](https://platform.claude.com/docs/en/docs/resources/glossary)).
-Ile wychodzi po polsku, nie zgaduj — zmierz. Jest na to dzisiejsze ćwiczenie i
+Ile wychodzi po polsku, nie zgaduj — zmierz. To część dzisiejszego zadania i
 zajmuje dwie minuty.
 
 Po co ci ta liczba? Bo w tokenach liczy się wszystko, co dalej: ile mieści się w
@@ -196,7 +204,7 @@ wrócimy do wątku, na pół godziny odłóż agenta na bok.
 
 ## Własną ręką: lista
 
-Pół godziny tego tygodnia należy do twojej klawiatury, nie do agenta — tak
+Pół godziny tej budowy należy do twojej klawiatury, nie do agenta — tak
 będzie w każdej budowie tego modułu, za każdym razem z jedną konstrukcją
 języka. Dziś jest nią **lista**: rzecz, która pamięta wiele wartości naraz i
 rośnie, kiedy coś do niej dopisać. Minutnik dostanie historię skończonych
@@ -264,7 +272,11 @@ rozmiarów.
   odpowiedzi i to, ile tokenów ma twoja polska wiadomość, to trzy liczby, które
   za rok będą inne.
 - **Skończ aplikację, zanim ją ulepszysz.** Siedem zasad spełnionych naraz jest
-  celem tego tygodnia; ósma zasada to już następny tydzień.
+  celem tej budowy; ósma zasada to już następna.
+
+Sprawdź się, zanim zamkniesz lekcję, bez zaglądania wyżej: co leci do modelu,
+kiedy wysyłasz piątą wiadomość; czym jest token; jakie dwa różne limity się tu
+liczą i czym się różnią.
 
 Minutnik działa i wiesz, co dostaje model. Czego jeszcze nie wiesz, to jak
 sformułować prośbę, żeby nie trzeba było jej powtarzać trzy razy — bo dziś
@@ -272,42 +284,33 @@ szło to metodą prób i błędów. Następna budowa jest dokładnie o tym.
 
 ## Ćwiczenia
 
-<Zadanie>
+<Zadanie title="Minutnik, który spełnia siedem zasad naraz">
 
-Z pamięci: co leci do modelu, kiedy wysyłasz piątą wiadomość w rozmowie; czym
-jest token; jakie dwa różne limity się tu liczą i czym się różnią.
+Skończ minutnik tak, żeby wszystkie siedem zasad było spełnionych **naraz** — to
+jest trudniejsze niż spełnienie każdej z osobna. Blok „Własną ręką: lista” jest
+częścią tego zadania: historia skończonych cykli ma być w aplikacji, wpisana
+twoją ręką.
 
-</Zadanie>
+Warunki są cztery i wszystkie widać w repozytorium:
 
-<Zadanie title="Zmierz swoją wiadomość">
+- każda zmiana agenta jest **przeczytana, zanim ją przyjmiesz**; przy dłuższych
+  zaplanuj na to dziesięć minut, bo tyle to naprawdę zajmuje;
+- każda prośba ma **osobny commit**, żeby historia mówiła, ile podejść zajęła
+  która zasada, a zmiana wpisana własną ręką ma swój, z opisem
+  `wlasna reka: historia cykli`;
+- w `README.md` są cztery liczby z tej lekcji, z datą i nazwą narzędzia: na ile
+  tokenów rozpada się twoja pierwsza wiadomość do agenta po polsku i na ile po
+  angielsku, oraz okno kontekstu i maksymalna długość odpowiedzi twojego
+  modelu — te dwie z linkiem do strony, na której są podane. Jeśli którejś nie
+  da się znaleźć, zapisz i to: brak liczby też jest wynikiem;
+- w `README.md` jest też wynik jednej próby: wpisz w pole długości `25,5`, a
+  potem `25.5`, i zapisz, co się stało w każdym z tych przypadków.
 
-Wklej do wybranego tokenizera swoją pierwszą wiadomość do agenta i zapisz, na
-ile tokenów się rozpadła. Potem wklej jej tłumaczenie na angielski i zapisz
-drugą liczbę. Obie zapisz na karcie razem z dzisiejszą datą i nazwą narzędzia —
-za pół roku będziesz je porównywać z nowymi.
+Na koniec wypchnij wszystko.
 
-</Zadanie>
-
-<Zadanie>
-
-Skończ minutnik tak, żeby wszystkie siedem zasad było spełnionych **naraz** —
-to jest trudniejsze niż spełnienie każdej z osobna. Każdą zmianę agenta
-przeczytaj, zanim ją przyjmiesz; przy dłuższych zmianach zaplanuj na to
-dziesięć minut, bo tyle to naprawdę zajmuje. Blok „Własną ręką: lista” jest
-częścią tego zadania — historia cykli ma być w aplikacji, wpisana twoją ręką.
-Każdą prośbę zapisz osobnym commitem, żeby historia mówiła,
-ile podejść zajęła która zasada. Na koniec sprawdź jedno: wpisz w pole długości
-`25,5`, a potem `25.5`, i zapisz, co się stało w każdym z tych przypadków.
-Wypchnij wszystko.
-
-</Zadanie>
-
-<Zadanie title="Ile mieści twój model">
-
-Znajdź w dokumentacji swojego narzędzia albo producenta modelu, którego
-używasz, dwie liczby: rozmiar okna kontekstu i maksymalną długość odpowiedzi.
-Zapisz je razem z linkiem i datą sprawdzenia. Jeśli nie da się ich znaleźć,
-zapisz i to — brak liczby też jest wynikiem.
+Kiedy repozytorium z aplikacją będzie umieszczone na GitHubie, wypełnij
+[formularz](https://docs.google.com/forms/d/e/1FAIpQLSc9Da0ossYyhSCMjnkMCqom2VQ9CYpB2L0Kvymb3yt_UYF6rw/viewform?usp=header),
+żeby nauczyciel sprawdził zadanie.
 
 </Zadanie>
 

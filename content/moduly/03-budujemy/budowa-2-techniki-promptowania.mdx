@@ -9,7 +9,14 @@ publish: true
     autonomous run — brief unapproved. The four rounds assume the class tool
     lets a student start a fresh thread cheaply; if it does not, each round is
     a separate session (said in the lesson). The removed SaveFileDialog is
-    deliberately left unexplained here — its home is 3d. */}
+    deliberately left unexplained here — its home is 3d.
+    Revised 2026-09-09 on Viktar's request: „tydzień” replaced by „budowa”
+    (Article V); the four exercises became one hand-in Zadanie ending with the
+    teacher's form, as in 2d/2e — the recall moved into the closing section,
+    the repeat-run and vendor-advice exercises became conditions that leave a
+    trace in the repository. Round 1 no longer assumes a single output file,
+    and the closing section counts the four rounds it compares, not every copy
+    in `rundy/`. */}
 
 Kiedy w minutniku wynik nie był tym, o co chodziło, najprostszym wyjściem było
 dopisać do prośby jeszcze jedno zdanie i wysłać ją jeszcze raz. Czasem
@@ -51,10 +58,12 @@ ma](https://v11.docs.avaloniaui.net/docs/avalonia12-breaking-changes/)
 z nazwą klasy, której zabrakło. Ostatnia lekcja tego modułu jest w dużej
 części o tym jednym błędzie.
 
-Zanim ruszysz dalej, zachowaj wynik: skopiuj powstały plik do folderu `rundy/`
-pod nazwą `runda-1.md`. Tak samo zrobisz po każdej kolejnej rundzie i dlatego
-na końcu lekcji będzie co z czym porównywać — plik notatek jest cały czas ten
-sam, a kopie zostają. Zrób commit z opisem `runda 1`.
+Zanim ruszysz dalej, zachowaj wynik: skopiuj to, co powstało, do folderu
+`rundy/` pod nazwą `runda-1.md`. Jeśli powstał więcej niż jeden plik — a w tej
+rundzie zdarza się to często — wklej do `runda-1.md` ich nazwy i zawartość, po
+kolei; kopia ma pokazywać, co dokładnie zastałeś na dysku. Tak samo zrobisz po
+każdej kolejnej rundzie i dlatego na końcu lekcji będzie co z czym porównywać.
+Zrób commit z opisem `runda 1`.
 
 ## Zadanie, format i ograniczenia
 
@@ -87,9 +96,9 @@ Polskie znaki mają zostać polskimi znakami.
 Uruchom, zapisz te same dwie notatki co poprzednio, skopiuj wynik do
 `rundy/runda-2.md` i zrób commit. Teraz otwórz obie kopie obok siebie. Różnica
 jest zwykle większa, niż się spodziewasz — i cała bierze się z sześciu linijek
-dopisanych do prośby, nie z lepszego modelu. Kodu też warto zajrzeć: `git
-diff` między dwoma commitami rund pokazuje, co się zmieniło w programie, kiedy
-zmieniła się prośba.
+dopisanych do prośby, nie z lepszego modelu. Do kodu też warto zajrzeć:
+`git diff` między commitami dwóch rund pokazuje, co się zmieniło w programie,
+kiedy zmieniła się prośba.
 
 Ostatnia linijka jest tam nie bez powodu. Polskie znaki potrafią wylądować w
 pliku jako krzaczki, jeśli program zapisuje je w innym **kodowaniu** — czyli
@@ -133,7 +142,7 @@ jednym przykładem jest tą, z którą za chwilę porównasz kopię z trzema.
 
 Runda 4 to trzy przykłady zamiast jednego, celowo różniące się między sobą:
 jeden wpis jednolinijkowy, jeden wielolinijkowy, jeden z polskimi znakami i
-myślnikiem w tytule. Przykłady, które są do siebie podobne, uczą modelu
+myślnikiem w tytule. Przykłady, które są do siebie podobne, uczą model
 przypadku; przykłady różne pokazują, co jest w nich stałe.
 
 Uruchom, zapisz, skopiuj do `rundy/runda-4.md`, zrób commit i otwórz plik. To
@@ -197,7 +206,7 @@ której w żadnej rundzie nikt nie zamówił.
 
 ## Własną ręką: obsługa błędu
 
-Pół godziny dla twojej klawiatury, jak w każdym tygodniu tego modułu. Dzisiejsza
+Pół godziny dla twojej klawiatury, jak w każdej budowie tego modułu. Dzisiejsza
 konstrukcja to **`try` i `catch`** — sposób, w jaki program mówi: spróbuj to
 zrobić, a jeśli się nie uda, zrób zamiast tego tamto. Miejsce, w którym notatnik
 jej potrzebuje, jest jedno: zapis do pliku.
@@ -207,7 +216,7 @@ tylko do odczytu, folder zniknął, dysk jest pełny. Bez obsługi takiego błę
 aplikacja **znika** — okno zamyka się bez słowa, a notatka razem z nim. Zobacz
 to, zanim cokolwiek zmienisz: zamknij notatnik, ustaw plikowi, do którego pisze
 (po rundzie 2 to `notatki.md` w folderze projektu), atrybut „tylko do odczytu”
-— prawy przycisk i **Właściwości** na Windows, `chmod a-w notatki.md` na
+— prawy przycisk i **Właściwości** na Windowsie, `chmod a-w notatki.md` na
 Linuksie i macOS — uruchom i spróbuj zapisać. Zapisz na karcie, co się stało.
 
 Teraz czytanie: znajdź w projekcie linijkę, która pisze do pliku. Szukaj w
@@ -247,10 +256,11 @@ najtrudniejsze.
 
 ## Cztery pliki obok siebie
 
-Otwórz teraz wszystkie pliki z folderu `rundy/` naraz. To jest odpowiedź na
-pytanie z początku lekcji, w postaci, której nie da się podważyć wrażeniem:
-prośba nie stała się „lepsza”, tylko **dostała format i przykład**, a wynik
-zmienił się z przypadkowego na dokładnie ten zamówiony.
+Otwórz teraz obok siebie cztery pierwsze kopie z folderu `rundy/` — od
+`runda-1.md` do `runda-4.md`. To jest odpowiedź na pytanie z początku lekcji, w
+postaci, której nie da się podważyć wrażeniem: prośba nie stała się „lepsza”,
+tylko **dostała format i przykład**, a wynik zmienił się z przypadkowego na
+dokładnie ten zamówiony.
 
 - **Pisz format, nie przymiotniki.** „Ładnie sformatowany plik” nie znaczy nic;
   dwie linijki wzoru znaczą wszystko.
@@ -262,6 +272,11 @@ zmienił się z przypadkowego na dokładnie ten zamówiony.
   niedeterministyczny, więc różnica między dwiema rundami może w części brać
   się stąd, a nie z twojej prośby.
 
+Sprawdź się, zanim zamkniesz lekcję, bez zaglądania wyżej: trzy rzeczy, które
+siedzą w jednej prośbie do modelu; czym różni się *zero-shot* od *few-shot*;
+jedna sytuacja, w której proszenie o rozumowanie krok po kroku jest złym
+pomysłem.
+
 I jedna rzecz na koniec, wbrew temu, czego można się po takiej lekcji
 spodziewać. Umiejętność układania próśb ma niski sufit: po kilku tygodniach
 większość ludzi umie to wystarczająco i dalej nic z tego nie rośnie. Rzeczą,
@@ -272,38 +287,32 @@ trzymać zasady, których dziś przepisujesz do każdej wiadomości.
 
 ## Ćwiczenia
 
-<Zadanie>
-
-Z pamięci: trzy rzeczy, które siedzą w jednej prośbie do modelu; czym różni się
-*zero-shot* od *few-shot*; jedna sytuacja, w której proszenie o rozumowanie
-krok po kroku jest złym pomysłem.
-
-</Zadanie>
-
-<Zadanie title="To samo dwa razy">
-
-Wybierz jedną rundę i uruchom ją drugi raz, bez żadnej zmiany w prośbie.
-Porównaj oba pliki. Zapisz na karcie, co się różni, i jedno zdanie o tym, ile z
-różnicy między rundami 1–4 mogło wziąć się z tego samego zjawiska.
-
-</Zadanie>
-
-<Zadanie>
+<Zadanie title="Notatnik i cztery rundy próśb">
 
 Skończ notatnik: format z rundy 4 działa, polskie znaki są polskimi znakami,
-najnowsza notatka jest na górze i nic nie ginie po piątym zapisie. Każdą
-zmianę agenta przeczytaj, zanim ją przyjmiesz — dziesięć minut na czytanie
-zmian jest częścią każdego tygodnia tego modułu. Blok „Własną ręką: obsługa
-błędu” jest częścią tego zadania. Każda runda ma swój commit, a jej kopia zostaje w `rundy/`
-jako dowód. Wypchnij wszystko.
+najnowsza notatka jest na górze i nic nie ginie po piątym zapisie. Blok „Własną
+ręką: obsługa błędu” jest częścią tego zadania.
 
-</Zadanie>
+Warunki są cztery i wszystkie widać w repozytorium:
 
-<Zadanie title="Instrukcja od producenta">
+- każda zmiana agenta jest **przeczytana, zanim ją przyjmiesz** — dziesięć minut
+  na czytanie zmian należy do każdej budowy w tym module;
+- każda runda ma **swój commit**, a jej kopia zostaje w `rundy/`: `runda-1.md`
+  do `runda-4.md` oraz `runda-5.md` z prośby poprawionej przez model;
+- jedną rundę uruchom **drugi raz, bez żadnej zmiany w prośbie**, i zachowaj
+  wynik jako `rundy/runda-X-powtorka.md`. W `README.md` zapisz, co się w niej
+  różni, i jedno zdanie o tym, ile z różnicy między rundami 1–4 mogło wziąć się
+  z tego samego zjawiska;
+- w `README.md` jest też jedna rada ze strony z zaleceniami dotyczącymi
+  promptów, wydanej przez producenta twojego modelu — taka, której dziś na
+  lekcji nie było — z linkiem, datą odczytania i jednym zdaniem o tym, co
+  zrobiła z twoim notatnikiem.
 
-Znajdź stronę z zaleceniami dotyczącymi promptów wydaną przez producenta
-modelu, którego używasz. Zapisz link i datę odczytania, a potem jedną
-radę, której dziś na lekcji nie było — i sprawdź ją na swoim notatniku.
+Na koniec wypchnij wszystko.
+
+Kiedy repozytorium z aplikacją będzie umieszczone na GitHubie, wypełnij
+[formularz](https://docs.google.com/forms/d/e/1FAIpQLSc9Da0ossYyhSCMjnkMCqom2VQ9CYpB2L0Kvymb3yt_UYF6rw/viewform?usp=header),
+żeby nauczyciel sprawdził zadanie.
 
 </Zadanie>
 

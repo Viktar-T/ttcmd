@@ -1,0 +1,255 @@
+---
+title: "Budujemy okno z agentem"
+order: 5
+summary: "Ten sam szablon, osobne repozytorium — i piętnaście zmian, które tym razem wprowadza agent, a wymyślasz ty. Po każdej czytasz diff w całości i robisz osobny commit, bo tylko wtedy po piętnastu zmianach wiadomo, która z nich co zrobiła."
+publish: true
+---
+
+{/* Split out of `pierwsze-okno.mdx` on 2026-09-09, on Viktar's request: that
+    lesson became two, „Budujemy okno ręcznie” (2d, `budujemy-recznie.mdx`)
+    and „Budujemy okno z agentem” (2e, this file). This half carries the
+    second repository created from the terminal with `git init`, the agent's
+    changes one at a time, the first self-read diff, and the module's ending.
+    On 2026-09-09, on Viktar's request, the agent half became fifteen changes
+    the student invents: one worked example in the lesson, fourteen of their
+    own, one commit each, logged in the project README. The lesson gives a
+    method for inventing them, not a list — a list here would repeat 2d.
+    The old slug `pierwsze-okno` is retired — Viktar chose new slugs for both
+    halves. The `Welcome to Avalonia!` line in the diff example is the
+    template's real initial content, read from
+    AvaloniaUI/avalonia-dotnet-templates at templates/csharp/app (master,
+    2026-09-02, Avalonia 12.1.2), not invented. Sources checked 2026-09-09.
+    The brief `docs/content-briefs/02d-pierwsze-okno.md` still describes both
+    halves as one lesson and needs splitting into 02d/02e.
+    TO CONFIRM before this lesson is taught — course-structure-v2 open
+    decisions #1–#3: the training stack, the lab OS, and the account rules for
+    the class editors, since this is the first lesson where a student points an
+    agent at their own repository. */}
+
+Okno w `pierwsze-okno` ma twój tytuł, twój napis, twój rozmiar i twój motyw —
+piętnaście zmian, jedna po drugiej. Przy każdej było dokładnie wiadomo, co się
+zmieniło, bo zmiana szła przez twoją klawiaturę.
+
+Dziś między prośbą a wynikiem twojej klawiatury nie będzie. Prosisz o napis na
+środku okna, mija kilkanaście sekund i plik wygląda inaczej — a pytanie, które
+zostaje, brzmi: co dokładnie się w nim stało i skąd to wiesz?
+
+Zbudujesz drugie okno, w osobnym repozytorium, i wprowadzisz w nim piętnaście
+zmian — każdą rękami agenta, każdą osobno i każdą z osobnym commitem. Listy tych
+zmian nikt ci nie da: w poprzedniej lekcji piętnaście kroków było wypisanych, tu
+wymyślasz je sam. Po każdej przeczytasz zmianę w całości, linijka po linijce. Na
+pokazie takie zmiany przewijały się na rzutniku i nikt ich nie czytał; te będą
+twoje i będą do przeczytania.
+
+## Drugie repozytorium, od zera z terminala
+
+Drugie okno powstanie obok pierwszego, a nie w nim — i to nie jest formalność.
+`pierwsze-okno` ma zostać takie, jakie jest: punkt odniesienia zbudowany i
+zmieniony wyłącznie ludzkimi rękami. Wszystko, co dziś zrobi agent, będzie się
+działo gdzie indziej, więc na koniec lekcji będzie co z czym porównać.
+
+Wejdź w terminalu do folderu, w którym leży `pierwsze-okno` — tego umówionego
+dwie lekcje temu — i powtórz w nim całą drogę od zera, tym razem bez zaglądania
+do notatek:
+
+```bash
+mkdir drugie-okno
+cd drugie-okno
+git init
+dotnet new avalonia.app -o okno
+```
+
+`.gitignore` zakładamy tym razem od razu, bo wiadomo już, co się w tym folderze
+pojawi po pierwszym budowaniu: wpisz do niego `bin/` i `obj/`. Załóż też dla
+tego projektu puste repozytorium na GitHubie — tak samo jak poprzednio, bez
+żadnych plików — a potem zapisz punkt zerowy i podłącz jedno do drugiego:
+
+```bash
+git add .
+git commit -m "utworz drugi projekt okna z szablonu Avalonia"
+git remote add origin https://github.com/twoja-nazwa/drugie-okno.git
+git push -u origin main
+```
+
+To jest droga z dwóch poprzednich lekcji, przebyta drugi raz — tyle że w
+całości z terminala i za jednym razem: nowy folder, nowe repozytorium, projekt z
+szablonu, jeden commit, kopia na GitHubie. Osiem poleceń i projekt stoi.
+Dopiero teraz do gry wchodzi agent.
+
+## Agent zmienia jedną rzecz
+
+Otwórz `drugie-okno` w edytorze z agentem i otwórz panel agenta — i to jest cała
+różnica między dzisiejszą lekcją a pierwszym eksperymentem. Wtedy agent budował
+od zera i nie było jak sprawdzić, co zrobił. Dziś wchodzi do projektu, który już
+działa, i ma zrobić jedną rzecz.
+
+Zasada na tę część brzmi: **małymi krokami, jedna zmiana naraz, diff czytany po
+każdej**. Nie „zrób z tego aplikację do fiszek”, tylko jedno zdanie, którego
+wynik zmieści się na ekranie. W terminalu wejdź do folderu `okno` — stamtąd
+uruchamiasz program, a polecenia Gita działają tak samo jak wyżej, bo
+repozytorium jest jedno na cały folder.
+
+Poproś o zmianę widoczną gołym okiem i możliwie małą — na przykład o napis
+na środku okna. Dwa zdania wystarczą:
+
+```text
+Zastąp napis w oknie wyśrodkowanym napisem „Warsztat”.
+Zmień tylko plik MainWindow.axaml.
+```
+
+Kiedy agent skończy, **nie zgadzaj się od razu.** Poproś o pokazanie zmiany
+albo wpisz w terminalu:
+
+```bash
+git diff
+```
+
+To, co zobaczysz, nazywa się **diffem**:
+
+```diff
+ <Window ... Title="okno">
+-    Welcome to Avalonia!
++    <TextBlock Text="Warsztat" HorizontalAlignment="Center" />
+ </Window>
+```
+
+Linijka z `-` została usunięta. Linijka z `+` — dopisana. Linijki bez znaku są
+tylko po to, żeby było widać, w którym miejscu pliku to się dzieje. Powyżej
+masz kształt, nie kopię: u ciebie pierwsza linijka będzie dłuższa, a dopisana
+może wyglądać inaczej.
+
+Przeczytaj całość — tu naprawdę jest to możliwe, bo zmiana ma dwie linijki.
+Dopiero wtedy się zgódź, uruchom `dotnet run`, żeby zobaczyć wynik, i zapisz tę
+jedną zmianę osobno:
+
+```bash
+git add MainWindow.axaml
+git commit -m "wstaw wysrodkowany napis warsztat w oknie"
+```
+
+## Czternaście razy, po swojemu
+
+Pierwszą zmianę masz za sobą i przeszliśmy przez nią razem. Zostało czternaście
+— i tych nikt ci nie poda.
+
+To jest cała różnica między dzisiejszą lekcją a poprzednią. Tam piętnaście zmian
+było wypisanych po kolei i wystarczyło je przepisać. Tu masz okno prosto z
+szablonu, agenta, który zrobi prawie wszystko, o co go poprosisz, i czternaście
+pustych miejsc w historii. Co w nich stanie, zależy wyłącznie od ciebie.
+
+Pętla jest za każdym razem ta sama i to jedyna rzecz, która się dziś nie zmienia:
+
+1. Wymyśl **jedną** zmianę i zapisz ją sobie jednym zdaniem.
+2. Napisz to zdanie agentowi. Dodaj, w którym pliku ma pracować.
+3. `git diff` — przeczytaj całość, zanim się zgodzisz.
+4. `dotnet run` — zobacz wynik na ekranie.
+5. `git add` po nazwie pliku i `git commit` z opisem w trybie rozkazującym.
+6. Dopisz linijkę do `README.md`: czego dotyczyła prośba, ile linijek miał diff
+   i ile z nich rozumiesz.
+
+Dobra zmiana ma trzy cechy i każdą da się sprawdzić przed wysłaniem prośby. **Da
+się ją opisać jednym zdaniem** — jeśli w zdaniu pojawia się „i” albo „a potem”,
+to są dwie zmiany i idą osobno. **Widać ją po uruchomieniu** — zmiany, której
+nie widać, nie sprawdzisz inaczej niż czytaniem kodu, a dziś sprawdzamy oczami.
+**Jej diff mieści się na ekranie** — bo tylko taki naprawdę przeczytasz.
+
+Skąd brać pomysły, kiedy się skończą? Trzy źródła, w tej kolejności:
+
+- **Popatrz na swoje okno i dokończ zdanie „szkoda, że nie…”.** Szkoda, że nie
+  ma drugiego napisu. Szkoda, że nie da się w nic kliknąć. Szkoda, że tło jest
+  takie nudne.
+- **Zajrzyj do [spisu kontrolek](https://docs.avaloniaui.net/docs/reference/controls/)**
+  i wybierz jedną, której w twoim oknie jeszcze nie ma: przycisk, pole tekstowe,
+  suwak, obrazek. Nie musisz wiedzieć, jak się jej używa — od tego masz agenta.
+- **Weź rzecz, którą już masz, i przesuń ją o krok.** Napis jest — niech stanie
+  w innym miejscu. Przycisk jest — niech ma inny kolor albo inny napis.
+
+Trzy rzeczy, których nie rób. Nie proś o dwie zmiany naraz. Nie proś o
+„ładniejszy wygląd”, bo to nie jest zdanie, które da się sprawdzić. I nie
+przyjmuj zmiany, której diffu nie przeczytasz do końca — nawet jeśli wygląda
+niewinnie, a jest już późno.
+
+Im dalej, tym diffy będą dłuższe: w oknie z ośmioma kontrolkami zmiana rzadko
+mieści się w dwóch linijkach. Zanotuj numer zmiany, przy której pierwszy raz
+masz ochotę przewinąć diff zamiast go przeczytać. To jest dokładnie ta granica,
+o którą chodzi w całym następnym module.
+
+Jeśli agent zmienił więcej plików, niż wynikało z prośby, albo dopisał
+trzydzieści linijek zamiast dwóch — to też jest wynik, i to wart zanotowania.
+Wtedy właśnie te osobne commity się zwracają: masz stan sprzed tej prośby
+zapisany i opisany, więc jest dokąd wrócić.
+
+## Okno, które rozumiesz
+
+Pytanie z początku lekcji brzmiało: co dokładnie stało się w pliku i skąd to
+wiesz. Odpowiedź leży teraz w dwóch folderach na twoim dysku.
+
+- **Zgoda idzie po przeczytaniu, nie przed.** Diff dwóch linijek czyta się w
+  dziesięć sekund. To jest ta wielkość zmiany, o którą warto prosić, dopóki
+  czytanie ma być prawdziwe, a nie udawane.
+- **Prośba jest tym mniejsza, im bardziej chcesz ją sprawdzić.** „Zrób
+  aplikację do fiszek” daje diff, którego nikt nie przeczyta. „Zastąp napis w
+  oknie” daje dwie linijki i pewność.
+- **Osobny commit jest miejscem, do którego się wraca.** Kiedy któraś prośba
+  wyjdzie inaczej, niż miała, nie trzeba zgadywać, co ją poprzedzało — to jest
+  zapisane i opisane.
+- **Pomysł został po twojej stronie.** Piętnaście razy decyzja, co ma się
+  zmienić, była twoja; agent wykonał ją szybciej, niż zrobiłaby to twoja
+  klawiatura, ale nie wymyślił ani jednej.
+- **Historia jest zapisem obu lekcji.** W `pierwsze-okno` leżą trzy commity:
+  szablon, `.gitignore` i twoje piętnaście zmian. W `drugie-okno` — punkt zerowy
+  i piętnaście commitów, po jednym na każdą prośbę do agenta. Dwa repozytoria obok siebie to
+  pierwszy w tym kursie materiał do porównania: co powstało pod twoją ręką, a co
+  pod cudzą.
+
+Na tym kończy się moduł o warsztacie. Masz gdzie pracować, czym budować i jak
+przeczytać zmianę, zanim się na nią zgodzisz. Od następnego modułu zajmujemy się
+tym, co się do agenta mówi — bo od dziś to jedyna rzecz, która stoi między
+jednym twoim zdaniem a trzydziestoma linijkami w twoim pliku.
+
+## Ćwiczenia
+
+<Zadanie title="Okno zbudowane z agentem">
+
+Doprowadź `drugie-okno` do stanu, w którym projekt z szablonu uruchamia się, a
+agent wprowadził w nim **piętnaście** zmian. Pierwszą przeszliśmy razem w
+lekcji; pozostałe czternaście wymyślasz samodzielnie — dwie takie same nie liczą
+się jako dwie.
+
+Warunki są cztery i wszystkie widać w repozytorium:
+
+- każda zmiana ma **osobny commit**, z opisem w trybie rozkazującym mówiącym,
+  co ta zmiana robi;
+- każda została przeczytana w całości przez `git diff`, zanim ją przyjęto, i
+  uruchomiona przez `dotnet run` po przyjęciu;
+- `bin/` i `obj/` zostają poza repozytorium;
+- w `README.md` jest piętnaście linijek, po jednej na zmianę: czego dotyczyła
+  prośba, ile linijek miał diff i ile z nich rozumiesz.
+
+Kiedy repozytorium z aplikacją będzie umieszczone na GitHubie, wypełnij
+[formularz](https://docs.google.com/forms/d/e/1FAIpQLSc9Da0ossYyhSCMjnkMCqom2VQ9CYpB2L0Kvymb3yt_UYF6rw/viewform?usp=header),
+żeby nauczyciel sprawdził zadanie.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-09">
+
+<Zrodlo title="Install Avalonia" publisher="Avalonia Docs" date="2026-08-06" url="https://docs.avaloniaui.net/docs/get-started/install">polecenie `dotnet new install Avalonia.Templates` i tworzenie projektu przez `dotnet new`</Zrodlo>
+
+<Zrodlo title="Avalonia Templates for dotnet new" publisher="AvaloniaUI, GitHub" date="2026" url="https://github.com/AvaloniaUI/avalonia-dotnet-templates">szablon `avalonia.app` jako podstawowa aplikacja desktopowa; stąd komplet plików, które rozpakowuje, i jego początkowa treść `Welcome to Avalonia!` — ta sama, którą agent zastępuje w diffie z tej lekcji; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="git diff" publisher="Git Documentation" date="2026" url="https://git-scm.com/docs/git-diff">„Show changes between the working tree and the index or a tree” — czyli to, co widać po wpisaniu `git diff` przed dodaniem czegokolwiek do commita; strona bez własnej daty</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="dokumentacja" title="git diff" url="https://git-scm.com/docs/git-diff">pełny opis polecenia, którym dziś czyta się zmiany agenta — w tym `git diff --stat`, które zamiast treści pokazuje samą liczbę zmienionych plików i linijek</Lektura>
+
+<Lektura kind="dokumentacja" title="Avalonia: Controls" url="https://docs.avaloniaui.net/docs/reference/controls/">spis kontrolek, z których składa się okno — przycisk, pole tekstowe, suwak i trzydzieści innych. Przydaje się, kiedy szukasz następnej małej rzeczy, o którą można poprosić agenta</Lektura>
+
+</CzytajDalej>

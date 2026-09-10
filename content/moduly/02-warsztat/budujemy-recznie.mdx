@@ -1,0 +1,331 @@
+---
+title: "Budujemy okno ręcznie"
+order: 4
+summary: "Okno staje na ekranie bez udziału jakiegokolwiek modelu — stawia je szablon — a potem zmieniasz w nim piętnaście rzeczy własną ręką i po każdej sprawdzasz, co widać. Piętnaście razy z rzędu, bo raz to przypadek, a piętnaście razy to zasada."
+publish: true
+---
+
+{/* Split out of `pierwsze-okno.mdx` on 2026-09-09, on Viktar's request: that
+    lesson became two, „Budujemy okno ręcznie” (2d, this file) and „Budujemy
+    okno z agentem” (2e, `budujemy-z-agentem.mdx`). The cut falls where the
+    agent first appears; everything up to and including the hand-edit list
+    stays here, and this lesson gained its own ending. That list grew from four
+    changes to fifteen on 2026-09-09, on Viktar's request, and is now
+    „15 zmian własną ręką”; every property in it is sourced under `## Źródła`. The old slug
+    `pierwsze-okno` is retired — Viktar chose new slugs for both halves.
+    History of the source lesson: drafted 2026-09-01 from
+    docs/content-briefs/02d-pierwsze-okno.md; rewritten 2026-09-09 from
+    Viktar's in-file notes („Pliki, które są oknem” walks all seven template
+    files and carries four hand edits; „Zmień coś sam” merged into it). The
+    template file list, the initial `Welcome to Avalonia!` content and the
+    project-name substitution were read from AvaloniaUI/avalonia-dotnet-templates
+    at templates/csharp/app (master, 2026-09-02, Avalonia 12.1.2), not inferred.
+    Sources re-checked 2026-09-09. The brief still describes both halves as one
+    lesson and needs splitting into 02d/02e.
+    TO CONFIRM before this lesson is taught — course-structure-v2 open
+    decisions #1 and #4: the training stack (C# + Avalonia) and the lab OS.
+    If the lab is confirmed Windows-only and WinForms is chosen instead,
+    every section changes files and commands; the arc survives. Also assumes
+    per-user traps 2–3 handled: Avalonia templates installed and the NuGet
+    cache warmed, or „Szablon, nie magia” becomes thirty simultaneous
+    downloads. */}
+
+Folder `pierwsze-okno` jest pusty: README, zapisana wersja SDK, dwa commity i
+nic więcej. Dziś stanie w nim okno.
+
+Podczas pierwszego eksperymentu okno pojawiło się z niczego. Agent robił
+wszystko, a twoim zadaniem było notować, więc nie było jak rozdzielić, która
+część wyniku jest zasługą modelu, która gotowego wzoru, a która przypadku. Przez
+najbliższe dwie lekcje rozdzielamy to celowo — i zaczynamy od tej połowy, w
+której żaden model nie bierze udziału.
+
+Dziś okno postawi gotowy wzór projektu, w kilkanaście sekund i bez AI, a potem
+zmienisz w nim piętnaście rzeczy własną ręką, plik po pliku, aż zacznie wyglądać jak
+twoje. Agent dostanie swoją kolej w następnej lekcji i osobne repozytorium.
+Pytanie na dziś brzmi: skąd właściwie bierze się okno na ekranie — i czy umiesz
+wskazać plik, który je opisuje?
+
+## Stack na czas nauki
+
+Zanim cokolwiek uruchomimy, jedna decyzja postawiona otwarcie, bo za tydzień
+i tak by o nią ktoś zapytał.
+
+**Stack** to zestaw technologii, z których zbudowana jest aplikacja: język,
+biblioteki, narzędzia do budowania. Nasz na najbliższe tygodnie to **C# i
+Avalonia**, i jest wybrany **na czas nauki**, a nie na zawsze. C#, bo w tę
+stronę idzie cały kurs i bo SDK, które sprawdzaliśmy w poprzedniej lekcji, jest
+właśnie zestawem do budowania programów w tym języku. Avalonia, bo to
+biblioteka .NET do budowania okien, która [działa tak samo na Windowsie, na
+Linuksie i na macOS](https://docs.avaloniaui.net/docs/welcome) — a to znaczy,
+że polecenia z tej lekcji zadziałają i w pracowni, i na tym, co masz w domu.
+
+Czy to najlepszy możliwy wybór, nie da się dziś rozstrzygnąć uczciwie, bo nie
+ma z czym porównywać. Ten stack jest
+narzędziem do nauki, i rzeczy, których się na nim
+nauczysz — okno, układ, zdarzenia, stan — przenoszą się między technologiami
+prawie bez strat.
+
+## Szablon, nie magia
+
+**Szablon projektu** to gotowy wzór: komplet plików, które ktoś już napisał,
+żeby nikt nie musiał zaczynać od pustej kartki. W .NET rozpakowuje je polecenie
+`dotnet new`.
+
+Szablony Avalonii — [jest ich kilkanaście, od pustego okna po aplikację
+działającą także w przeglądarce i na telefonie](https://github.com/AvaloniaUI/avalonia-dotnet-templates)
+— instaluje się raz na koncie:
+
+```bash
+dotnet new install Avalonia.Templates
+```
+
+Polecenie albo je zainstaluje, albo odpowie, że szablony już są. Jeden i drugi
+wynik jest dobry. Teraz, będąc w folderze `pierwsze-okno`, utwórz z nich
+projekt:
+
+```bash
+dotnet new avalonia.app -o okno
+```
+
+`avalonia.app` to nazwa szablonu — tego najprostszego, „podstawowa aplikacja z
+oknem”. `-o okno` mówi, że projekt ma powstać w podfolderze `okno`. Zanim
+cokolwiek uruchomisz, zajrzyj, co przybyło, i zapisz to w historii osobno — za
+chwilę będzie ważne, że ten commit zawiera wyłącznie to, co zrobił szablon:
+
+```bash
+# co się zmieniło od ostatniego commita — teraz: cały nowy folder okno
+git status
+
+# bierzemy do commita wszystko, co wypisał git status
+git add .
+
+# zapisujemy punkt w historii; opis mówi, co zmiana robi, nie który plik ruszyła
+git commit -m "utworz projekt okna z szablonu Avalonia"
+```
+
+Nie ma tu `git init` i nie jest to przeoczenie: repozytorium już istnieje,
+powstało w poprzedniej lekcji razem z folderem. `git init` wykonuje się raz na
+projekt — i wróci przy następnym projekcie.
+
+Teraz uruchom:
+
+```bash
+cd okno
+dotnet run
+```
+
+Za pierwszym razem potrwa to dłużej, niż się spodziewasz: budowanie musi
+pobrać biblioteki. Potem na ekranie stanie okno: na pasku tytułu napis `okno`,
+a w środku jeden napis — `Welcome to Avalonia!`. **Nie zrobił tego żaden
+model.** Zrobił to wzór napisany przez ludzi i polecenie, które go rozpakowało.
+To jest podłoga, na której stanie wszystko, co zbuduje potem agent, i warto ją
+zobaczyć osobno, zanim cokolwiek na niej stanie.
+
+Zamknij okno i wpisz `git status` jeszcze raz. Nie jest już pusty: przybyły
+foldery `bin` i `obj`, których nie tworzył ani szablon, ani ty. To wynik
+budowania — powstaje na nowo przy każdym uruchomieniu, więc do repozytorium
+nie wchodzi. Załóż w `pierwsze-okno`, czyli w korzeniu repozytorium, plik
+`.gitignore` i wpisz do niego `bin/` i `obj/`, tak jak mówiła lekcja o Gicie z
+Modułu 0. Potem zrób commit — to drugi commit dzisiejszego dnia.
+
+## Pliki, które są oknem
+
+Okno stoi na ekranie, a w folderze `okno` leży siedem plików, których nikt ci
+jeszcze nie przedstawił — plus `bin` i `obj`, które przed chwilą trafiły do
+`.gitignore`. Nie musisz dziś rozumieć ani jednej linijki kodu C#. Chodzi o coś
+innego: o to, żeby zobaczyć, że **aplikacja to nie jeden plik z kodem, tylko
+kilka plików, z których każdy odpowiada na inne pytanie**. Pytania są cztery.
+
+**Od czego się zaczyna?** `Program.cs`. Każdy program ma jedno miejsce, w którym
+system operacyjny go uruchamia; tutaj nazywa się `Main` i robi dokładnie dwie
+rzeczy — składa aplikację i ją uruchamia. Nic więcej z tego pliku przez
+najbliższe tygodnie nie będzie potrzebne.
+
+**Czym jest sama aplikacja?** `App.axaml`, a obok niego `App.axaml.cs`. To opis
+całego programu, a nie pojedynczego okna: jaki motyw ma program i które okno
+otwiera jako pierwsze. Zapamiętaj ten plik — za chwilę zrobisz w nim zmianę,
+którą widać wszędzie naraz.
+
+**Co widać w oknie?** `MainWindow.axaml`. To plik, który opisuje okno — nie jego
+działanie, tylko wygląd i zawartość. Zapisany jest w języku znaczników (*XAML*),
+który działa na tej samej zasadzie co HTML: znaczniki w nawiasach ostrych,
+atrybuty w cudzysłowach, jedno zagnieżdżone w drugim. Jeśli umiesz przeczytać
+stronę HTML, ten plik też przeczytasz, choć znaczniki nazywają się inaczej.
+[Prawie wszystko](https://docs.avaloniaui.net/docs/get-started/test-drive/)
+w tym pliku leży między znacznikami `<Window>` i `</Window>` — bo wszystko, co
+widać, jest w środku okna. Obok leży `MainWindow.axaml.cs`, plik z kodem C#
+należącym do tego samego okna: znaczniki opisują, co widać, a kod obok opisuje,
+co się dzieje po kliknięciu. Dziś nie zaglądamy do niego głębiej.
+
+**Z czego się to buduje?** `okno.csproj`. Tu zapisane jest, w której wersji .NET
+projekt ma się zbudować i z jakich bibliotek korzysta — linijki z `Avalonia` w
+nazwie wskazują właśnie tę bibliotekę, którą pobierało pierwsze `dotnet run`.
+Ten plik jest czytany przez zestaw narzędzi, którego obecność wykazało polecenie
+`dotnet --list-sdks` w poprzedniej lekcji. Zostaje jeszcze `app.manifest` —
+drobne ustawienia dla Windowsa, których dziś nie ruszamy.
+
+Zwróć uwagę na jedno: nazwa `okno` jest w tych plikach w kilku miejscach, bo
+szablon wstawił ją wszędzie, gdzie potrzebna była nazwa projektu — w nazwie
+pliku `okno.csproj`, w kodzie i w pasku tytułu okna. Nic tu nie powstało samo.
+
+### 15 zmian własną ręką
+
+Skoro pliki opisują okno, to zmiana w pliku musi zmieniać okno. Sprawdzimy to
+piętnaście razy, bo raz to przypadek, a piętnaście razy to zasada. Każda zmiana
+siedzi w jednym miejscu i każdą widać gołym okiem. Po każdej rób to samo: zapisz
+plik, wpisz `dotnet run`, popatrz, zamknij okno. Pierwsze uruchomienie było
+wolne, bo pobierały się biblioteki — następne trwają sekundę albo dwie.
+
+Prowadź przy tym notatkę: numer zmiany i jedno zdanie o tym, co się stało. Nie
+z pamięci, tylko na bieżąco — po piętnastu zmianach z rzędu nikt nie pamięta,
+która co zrobiła.
+
+Pierwsze pięć zmian dotyczy ramy okna, czyli samego znacznika `<Window>` w
+`MainWindow.axaml`. Wszystkie są [właściwościami okna](https://docs.avaloniaui.net/docs/reference/controls/window)
+i wszystkie dopisuje się tam, gdzie już stoi `Title`.
+
+1. **Pasek tytułu.** Znajdź `Title="okno"` i wpisz w cudzysłowie coś swojego —
+   imię, nazwę projektu, cokolwiek. Napis na pasku jest inny. `Title` to
+   dosłownie „tekst wyświetlany na pasku tytułu”, i nic poza tym.
+2. **Rozmiar.** Dopisz `Width="500"` i `Height="300"`. Okno otwiera się w
+   zadanym rozmiarze zamiast w domyślnym, bo `Width` i `Height` to
+   [właściwości rozmiaru](https://docs.avaloniaui.net/docs/basics/user-interface/building-layouts/),
+   które układ bierze pod uwagę, zanim cokolwiek narysuje.
+3. **Miejsce na ekranie.** Dopisz `WindowStartupLocation="CenterScreen"`. Okno
+   przestaje pojawiać się tam, gdzie akurat chce system, i staje na środku
+   ekranu.
+4. **Bez rozciągania.** Dopisz `CanResize="False"` i spróbuj złapać krawędź
+   okna myszą. Nie da się. Usuń ten atrybut, zanim pójdziesz dalej — przy
+   kolejnych zmianach wygodniej mieć okno, które można powiększyć.
+5. **Na cały ekran.** Dopisz `WindowState="Maximized"`. Okno startuje
+   zmaksymalizowane. Potem też usuń: reszta lekcji wygląda czytelniej w małym
+   oknie.
+
+Kolejnych osiem zmian dotyczy napisu w oknie, czyli tego, co leży między
+`<Window …>` a `</Window>` — jedynej rzeczy, którą w tym oknie widać.
+
+6. **Własny tekst.** Zastąp `Welcome to Avalonia!` swoim zdaniem. Zmienił się
+   środek okna, a pasek tytułu pozostał taki, jaki był po pierwszej zmianie —
+   bo to dwa różne miejsca w tym samym pliku.
+7. **Napis jako kontrolka.** Zamień goły tekst na znacznik:
+   `<TextBlock Text="Twoje zdanie" />`. Na ekranie prawie nic się nie zmieniło i
+   o to chodzi: napis jest teraz [kontrolką](https://docs.avaloniaui.net/docs/reference/controls/textblock),
+   a kontrolka ma właściwości, które da się ustawiać. Sześć kolejnych zmian to
+   właśnie one.
+8. Wielkość liter: `FontSize="32"`.
+9. Grubość liter: `FontWeight="Bold"`.
+10. Pochylenie: `FontStyle="Italic"`. Zostaw albo usuń, jak wolisz; od tego
+    miejsca okno jest twoje także z wyglądu.
+11. Kolor liter: `Foreground="#C05621"` — albo nazwa koloru, na przykład
+    `Foreground="Tomato"`.
+12. Tło samego napisu: `Background="#FFF3C4"`. Dopiero teraz widać, że napis
+    nie unosi się w oknie: ma własne pudełko, a to pudełko jest szersze niż
+    litery.
+13. Na środku okna: `HorizontalAlignment="Center"` i `VerticalAlignment="Center"`.
+    Pudełko z poprzedniej zmiany kurczy się do liter i staje na środku okna — bo
+    [te dwie właściwości](https://docs.avaloniaui.net/docs/basics/user-interface/building-layouts/alignment-margins-and-padding)
+    mówią, gdzie w wolnym miejscu ma stanąć to, co je wypełnia.
+
+Dwie ostatnie zmiany są w zupełnie innym pliku — i to jest ich jedyny cel.
+
+14. **Motyw na ciemny.** Otwórz `App.axaml` i zmień
+    `RequestedThemeVariant="Default"` na `"Dark"`. Okno jest ciemne, a zmiana
+    zaszła w pliku, który o zawartości tego okna nie mówi nic.
+15. **Motyw na jasny, potem systemowy.** Zmień na `"Light"` i uruchom, potem na
+    `"Default"` i uruchom jeszcze raz.
+    [Dokumentacja](https://docs.avaloniaui.net/docs/guides/styles-and-resources/how-to-use-theme-variants)
+    wymienia dokładnie te trzy wartości. `Default` idzie za ustawieniem systemu,
+    więc na dwóch komputerach da dwa różne wyniki — to jedyna z piętnastu zmian,
+    której efekt zależy od czegoś poza twoim plikiem.
+
+Trzynaście zmian zmieściło się w `MainWindow.axaml`, dwie ostatnie w
+`App.axaml`. I właśnie dla tych dwóch warto było przejść przez wcześniejsze
+trzynaście: pokazują granicę między „to okno” a „ta aplikacja” — i pokazują ją
+tak, że widać ją na ekranie. Zapisz całość w historii, po nazwach plików, bo
+commit ma zawierać dokładnie te dwa pliki, w których coś się zmieniło:
+
+```bash
+git add MainWindow.axaml App.axaml
+git commit -m "zmien wyglad okna i motyw aplikacji"
+git push
+```
+
+Zajęło to kilkanaście minut i nikt tego nie zrobił za ciebie — i o to w tym
+kroku chodzi. Pliki są twoje: możesz je czytać, możesz je zmieniać i nie
+potrzebujesz do tego niczyjej zgody ani żadnego modelu. Każdy fragment tego
+kursu, który później będzie się nazywał *bez AI*, jest przedłużeniem tych
+kilkunastu minut.
+
+## Okno, które jest twoje
+
+Pytanie z początku lekcji brzmiało: skąd bierze się okno na ekranie i czy umiesz
+wskazać plik, który je opisuje. Odpowiedź leży teraz w folderze `pierwsze-okno`
+i nie wymaga wiary.
+
+- **Okno bierze się z pliku, który potrafisz wskazać.** `MainWindow.axaml`
+  opisuje, co widać; `App.axaml` — całą aplikację; `okno.csproj` — z czego to
+  się buduje. Piętnaście zmian w dwóch z tych plików powstało pod twoją ręką i
+  każdą było widać po uruchomieniu.
+- **Podłoga jest ludzka.** Okno postawił wzór napisany przez ludzi i polecenie,
+  które go rozpakowało — żaden model. Wszystko, co agent zbuduje później,
+  zbuduje na tym.
+- **Zmiana w pliku jest zmianą na ekranie.** Piętnaście razy z rzędu ten sam
+  rytm: zapisz plik, uruchom, popatrz. To jest dokładnie ten rytm, w którym w
+  następnej lekcji będziesz sprawdzać agenta — tyle że wtedy plik zmieni ktoś
+  inny.
+
+W następnej lekcji ten sam szablon rozpakuje się jeszcze raz, w osobnym
+repozytorium, i tam każdą zmianę wprowadzi agent. `pierwsze-okno` zostaje takie,
+jakie jest: punkt odniesienia zmieniony wyłącznie twoją ręką. Dzięki temu
+będzie potem co z czym porównać.
+
+## Ćwiczenia
+
+<Zadanie title="Okno zbudowane ręcznie">
+
+Doprowadź `pierwsze-okno` do stanu, w którym projekt z szablonu uruchamia się, a
+wszystkie piętnaście zmian z podrozdziału „15 zmian własną ręką” jest w plikach
+i widać je po `dotnet run`: własny tytuł na pasku, własny napis w środku, zadany
+rozmiar i położenie okna, wygląd samego napisu i motyw aplikacji. Historia ma opowiadać tę lekcję — osobny commit z
+szablonem, osobny z `.gitignore` i osobny z twoimi piętnastoma zmianami, opisy w
+trybie rozkazującym. Na koniec `git status` ma być pusty.
+
+Kiedy repozytorium z aplikacją będzie umieszczone na GitHubie, wypełnij
+[formularz](https://docs.google.com/forms/d/e/1FAIpQLSc9Da0ossYyhSCMjnkMCqom2VQ9CYpB2L0Kvymb3yt_UYF6rw/viewform?usp=header),
+żeby nauczyciel sprawdził zadanie.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-09">
+
+<Zrodlo title="Welcome to Avalonia" publisher="Avalonia Docs" date="2026-04-20" url="https://docs.avaloniaui.net/docs/welcome">Avalonia jako otwarta, wieloplatformowa biblioteka interfejsu dla .NET; lista wspieranych systemów, w tym Windows, macOS i desktopowy Linux</Zrodlo>
+
+<Zrodlo title="Install Avalonia" publisher="Avalonia Docs" date="2026-08-06" url="https://docs.avaloniaui.net/docs/get-started/install">polecenie `dotnet new install Avalonia.Templates`</Zrodlo>
+
+<Zrodlo title="Avalonia Templates for dotnet new" publisher="AvaloniaUI, GitHub" date="2026" url="https://github.com/AvaloniaUI/avalonia-dotnet-templates">lista nazw szablonów; `avalonia.app` opisany jako podstawowa aplikacja desktopowa; stąd też komplet plików, które ten szablon rozpakowuje, i jego początkowa treść `Welcome to Avalonia!`; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="Window" publisher="Avalonia Docs" date="2026-04-03" url="https://docs.avaloniaui.net/docs/reference/controls/window">właściwość `Title`: „The text displayed in the title bar”</Zrodlo>
+
+<Zrodlo title="Building Layouts" publisher="Avalonia Docs" date="2026" url="https://docs.avaloniaui.net/docs/basics/user-interface/building-layouts/">`Width` i `Height` wymienione wśród właściwości rozmiaru definiowanych na `Control` i uwzględnianych przy układaniu; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="How To Use Theme Variants" publisher="Avalonia Docs" date="2026" url="https://docs.avaloniaui.net/docs/guides/styles-and-resources/how-to-use-theme-variants">`RequestedThemeVariant` na elemencie `Application` oraz jego wartości `Default`, `Light` i `Dark`; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="TextBlock" publisher="Avalonia Docs" date="2026" url="https://docs.avaloniaui.net/docs/reference/controls/textblock">właściwości `Text`, `FontSize`, `FontWeight`, `FontStyle`, `Foreground` i `Background` kontrolki `TextBlock`; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="Alignment, Margins and Padding" publisher="Avalonia Docs" date="2026" url="https://docs.avaloniaui.net/docs/basics/user-interface/building-layouts/alignment-margins-and-padding">`HorizontalAlignment` i `VerticalAlignment` jako opis tego, gdzie w przydzielonym miejscu staje element; wartości `Left`/`Center`/`Right`/`Stretch` i `Top`/`Center`/`Bottom`/`Stretch`; strona bez własnej daty</Zrodlo>
+
+<Zrodlo title="Test Drive" publisher="Avalonia Docs" date="2026-03-07" url="https://docs.avaloniaui.net/docs/get-started/test-drive/">o tym, że prawie cała zawartość `MainWindow.axaml` leży między znacznikami `<Window>`</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="dokumentacja" title="Avalonia Docs" url="https://docs.avaloniaui.net/docs/welcome">dokumentacja biblioteki, w której będziemy pracować przez najbliższe tygodnie; rozdział „Test Drive” prowadzi przez tę samą drogę co ta lekcja, tylko dalej</Lektura>
+
+<Lektura kind="dokumentacja" title="dotnet new" url="https://learn.microsoft.com/dotnet/core/tools/dotnet-new">pełny opis polecenia, którym dziś powstał projekt, i sposób na wypisanie wszystkich szablonów dostępnych na twoim komputerze</Lektura>
+
+</CzytajDalej>

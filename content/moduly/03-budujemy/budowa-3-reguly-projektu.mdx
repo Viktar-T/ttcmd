@@ -1,7 +1,7 @@
 ---
 title: "Budowa 3: reguły zamiast powtarzania"
 order: 3
-summary: "Trzeci tydzień, trzeci projekt i te same osiem zdań przepisywanych do każdej nowej rozmowy. Lekcja o tym, gdzie zasady projektu mają mieszkać, żeby narzędzie dokładało je za ciebie — i dlaczego „wklej wszystko” nie jest odpowiedzią."
+summary: "Trzecia budowa, trzeci projekt i te same trzy zdania przepisywane do każdej nowej rozmowy. Lekcja o tym, gdzie zasady projektu mają mieszkać, żeby narzędzie dokładało je za ciebie — i dlaczego „wklej wszystko” nie jest odpowiedzią."
 publish: true
 ---
 
@@ -9,16 +9,23 @@ publish: true
     autonomous run — brief unapproved. TO CONFIRM on the lab machine before
     teaching: that the installed editor really reads AGENTS.md from the project
     root. If it uses only its own file name, section „Plik reguł” names that
-    file first and the open standard becomes its second paragraph. */}
+    file first and the open standard becomes its second paragraph.
+    Revised 2026-09-09 on Viktar's request: „tydzień” replaced by „budowa”
+    (Article V); a sentence printed twice in „Dlaczego «wklej wszystko» nie
+    działa” cut; the two references to 1f linked and given one name; the RAG
+    paper added to Źródła, where the body already cites it as evidence; the
+    four exercises became one hand-in Zadanie ending with the teacher's form,
+    as in 2d/2e — the recall moved into the closing section and the two
+    research exercises became lines of `README.md`. */}
 
-Policz, ile razy w ciągu dwóch ostatnich tygodni poszło do agenta zdanie
+Policz, ile razy w dwóch poprzednich budowach poszło do agenta zdanie
 „interfejs po polsku, nazwy w kodzie po angielsku”. Do tego „bez dodatkowych
 bibliotek” i format zapisu z notatnika. Trzy zdania, przepisywane do każdej
 nowej rozmowy, w dwóch projektach.
 
 Dlaczego tak jest, wiadomo od pierwszej lekcji tego modułu: model nie pamięta
 niczego między zapytaniami, a wątek, w którym te zasady padły, został w
-poprzednim tygodniu. Wyjaśnienie jest jednak tylko wyjaśnieniem. Przepisywanie
+poprzedniej budowie. Wyjaśnienie jest jednak tylko wyjaśnieniem. Przepisywanie
 w kółko nie może być odpowiedzią, bo dzisiejsza aplikacja ma trzy ekrany, czyli
 co najmniej trzy okazje, żeby te same trzy zdania napisać jeszcze raz.
 
@@ -43,7 +50,7 @@ Osada;2023;6
 Aplikacja ma trzy ekrany: lista pozycji, szczegóły wybranej pozycji i
 formularz dodawania nowej. Trzy ekrany to dzisiejsza miara skończonej roboty;
 usuwanie i wyszukiwanie są dodatkiem dla tych, którym zostanie czas. Jedna
-decyzja techniczna zapada z góry, żeby nie zjadła tygodnia: wszystko piszemy
+decyzja techniczna zapada z góry, żeby nie zjadła całej budowy: wszystko piszemy
 wprost w kodzie ekranu, bez żadnego automatycznego łączenia danych z
 kontrolkami, a przełączanie ekranów niech agent zrobi najprościej, jak umie —
 jednym oknem, w którym podmienia się zawartość. Porządny sposób budowania
@@ -51,9 +58,8 @@ okien jest tematem Modułu 5 i wtedy zobaczysz, czym się różni.
 
 Zbuduj pierwszy ekran tak jak dotąd, ale z jedną nową czynnością: **zapisuj
 każdą zasadę w momencie, w którym ją wypowiadasz.** Nie po lekcji, nie z
-pamięci — na bieżąco, w pliku tekstowym obok. Po pierwszym ekranie lista będzie
-miała u większości sześć do dziesięciu pozycji i będzie wyglądać mniej więcej
-tak: interfejs po polsku, nazwy w kodzie po angielsku, jeden plik na ekran,
+pamięci — na bieżąco, w pliku tekstowym obok. Po pierwszym ekranie lista ma
+zwykle sześć do dziesięciu pozycji i wygląda mniej więcej tak: interfejs po polsku, nazwy w kodzie po angielsku, jeden plik na ekran,
 żadnych dodatkowych bibliotek, dane wyłącznie z pliku w `dane/`, wszystko w
 kodowaniu UTF-8, bez zmian w plikach, o których nie było mowy.
 
@@ -76,8 +82,10 @@ przy Linux
 Foundation](https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation),
 razem z kilkoma innymi standardami tej branży. Praktyczny skutek jest taki, że
 ten sam plik rozumie więcej niż jedno narzędzie — a to dokładnie ta cecha, o
-którą chodziło w lekcji o tym, jak nie wypaść z obiegu, i to samo pytanie,
-które tamta lekcja kazała zadawać nowemu narzędziu: czy obsługuje pliki reguł.
+którą chodziło w lekcji
+[Jak nie wypaść z obiegu](/moduly/01-jak-powstaje-oprogramowanie/jak-nie-wypasc-z-obiegu),
+i to samo pytanie, które tamta lekcja kazała zadawać nowemu narzędziu: czy
+obsługuje pliki reguł.
 Sprawdź w dokumentacji **swojego** edytora, czy czyta akurat ten plik, czy
 własny o innej nazwie. Jest na to dzisiejsze ćwiczenie.
 
@@ -146,16 +154,15 @@ tym mniejszą częścią zapytania są twoje zasady i twoje pytanie. Ten sam
 rozwadniający efekt, który psuł długie rozmowy w pierwszej lekcji modułu,
 działa tu od pierwszej wiadomości.
 
-Narzędzia radzą sobie inaczej i każde po swojemu; szczegóły są u każdego
-producenta inne i zmieniają się co kilka miesięcy, więc nie ma sensu ich
-zapamiętywać. Wspólny schemat jest jednak od lat ten sam: zamiast wysyłać
-projekt w całości, najpierw poszukać w nim fragmentów pasujących do pytania i
-dołączyć do prośby tylko je. Ten schemat ma nazwę — [*RAG*, po angielsku
+Narzędzia radzą sobie inaczej i każde po swojemu. Wspólny schemat jest jednak od
+lat ten sam: zamiast wysyłać projekt w całości, najpierw poszukać w nim
+fragmentów pasujących do pytania i dołączyć do prośby tylko je. Ten schemat ma
+nazwę — [*RAG*, po angielsku
 *retrieval-augmented generation*](https://arxiv.org/abs/2005.11401), czyli
 generowanie wspomagane wyszukiwaniem; brzmi poważnie, a jest prosty: najpierw
-znajdź, potem wklej znalezione do prośby, potem generuj. Pytanie „czy
-indeksuje projekt”, które lekcja o niewypadaniu z obiegu kazała zadawać
-każdemu nowemu narzędziu, dotyczy właśnie tego.
+znajdź, potem wklej znalezione do prośby, potem generuj. Pytanie „czy indeksuje
+projekt”, które lekcja „Jak nie wypaść z obiegu” kazała zadawać każdemu nowemu
+narzędziu, dotyczy właśnie tego.
 
 Szczegóły są u każdego producenta inne i zmieniają się co kilka miesięcy,
 więc nie ma sensu ich zapamiętywać. Zapamiętaj konsekwencję: **wskazuj pliki,
@@ -234,7 +241,7 @@ metody muszą być identyczne, i że w środku metody wolno napisać wszystko, c
 umiesz.
 
 Commit z opisem `wlasna reka: przycisk policz` i linijka na karcie — ile
-minut, co było najtrudniejsze. Trzy tygodnie, trzy konstrukcje: lista, obsługa
+minut, co było najtrudniejsze. Trzy budowy, trzy konstrukcje: lista, obsługa
 błędu, zdarzenie. Jeśli na karcie masz przy nich trzy liczby minut, to jest
 twoja pierwsza miara tego, ile kosztuje zrobienie czegoś samemu — i ta miara
 będzie w tym kursie jeszcze potrzebna.
@@ -254,6 +261,10 @@ mówi każdemu, kto otworzy ten projekt, jak się w nim pracuje.
 - **Krótko.** Każda linijka jedzie do modelu za każdym razem, więc każda musi
   na to zasłużyć.
 
+Sprawdź się, zanim zamkniesz lekcję, bez zaglądania wyżej: po co jest plik
+reguł — w jednym zdaniu, w którym pada słowo „zapytanie”; dwie rzeczy, które do
+niego należą, i dwie, które należą do zwykłej prośby.
+
 Masz trzy aplikacje i trzy repozytoria. Umiesz powiedzieć, co dostaje model,
 jak go poprosić i gdzie trzymać to, czego nie chcesz powtarzać. Nie umiesz
 jeszcze jednego, i to jest jedyna rzecz z tej listy, której nie da się załatwić
@@ -262,40 +273,33 @@ ostatnia lekcja tego modułu.
 
 ## Ćwiczenia
 
-<Zadanie>
+<Zadanie title="Katalog na trzech ekranach i plik reguł">
 
-Z pamięci: po co jest plik reguł — w jednym zdaniu, w którym pada słowo
-„zapytanie”; dwie rzeczy, które do niego należą, i dwie, które należą do
-zwykłej prośby.
+Skończ katalog do trzech działających ekranów — lista, szczegóły, formularz
+dodawania — z plikiem `AGENTS.md` w repozytorium, w którym każda linijka została
+wcześniej wypowiedziana co najmniej dwa razy. Blok „Własną ręką: zdarzenie” jest
+częścią tego zadania: przycisk **Policz** ma być w aplikacji.
 
-</Zadanie>
+Warunki są cztery i wszystkie widać w repozytorium:
 
-<Zadanie title="Świeża sesja, drugi raz">
+- każda zmiana agenta jest **przeczytana, zanim ją przyjmiesz** — dziesięć minut
+  na czytanie zmian należy do każdej budowy w tym module;
+- drugi i trzeci ekran powstają w **świeżej rozmowie**, bez powtarzania choćby
+  jednej zasady, a poprawiony `AGENTS.md` ma swój commit;
+- w `README.md` są dwie liczby: ile reguł zostało złamanych przy pierwszym
+  sprawdzeniu świeżą sesją, a ile przy ostatnim, po przepisaniu tych, które
+  okazały się źle napisane;
+- w `README.md` jest też odpowiedź z dokumentacji **twojego** edytora: jak
+  nazywa się u niego plik z zasadami projektu, gdzie musi leżeć i czy czyta
+  `AGENTS.md` — z linkiem i datą. Porównaj ją z osobą, która pracuje w drugim
+  narzędziu; jeśli plik jest ten sam, macie odpowiedź, dlaczego warto było
+  uczyć się kategorii, a nie produktu.
 
-Po poprawieniu pliku reguł otwórz jeszcze jedną nową rozmowę i poproś o drobną
-zmianę w gotowym ekranie, znowu bez powtarzania czegokolwiek. Zaznacz przy
-każdej regule, czy została dotrzymana, i zapisz na karcie, ile ich było za
-pierwszym razem, a ile teraz.
+Na koniec wypchnij wszystko.
 
-</Zadanie>
-
-<Zadanie>
-
-Skończ katalog do trzech działających ekranów, z plikiem `AGENTS.md` w
-repozytorium, w którym każda linijka została wcześniej wypowiedziana co
-najmniej dwa razy. Każdą zmianę agenta przeczytaj, zanim ją przyjmiesz —
-dziesięć minut na czytanie zmian należy do każdego tygodnia tego modułu. Blok
-„Własną ręką: zdarzenie” jest częścią tego zadania — przycisk Policz ma być w
-aplikacji. Wypchnij wszystko.
-
-</Zadanie>
-
-<Zadanie title="Jak to nazywa twój edytor">
-
-Znajdź w dokumentacji swojego edytora, jak nazywa się u niego plik z zasadami
-projektu, gdzie musi leżeć i czy czyta `AGENTS.md`. Zapisz link i datę. Porównaj
-z osobą, która pracuje w drugim narzędziu — jeśli plik jest ten sam, macie
-odpowiedź, dlaczego warto było uczyć się kategorii, a nie produktu.
+Kiedy repozytorium z aplikacją będzie umieszczone na GitHubie, wypełnij
+[formularz](https://docs.google.com/forms/d/e/1FAIpQLSc9Da0ossYyhSCMjnkMCqom2VQ9CYpB2L0Kvymb3yt_UYF6rw/viewform?usp=header),
+żeby nauczyciel sprawdził zadanie.
 
 </Zadanie>
 
@@ -306,6 +310,8 @@ odpowiedź, dlaczego warto było uczyć się kategorii, a nie produktu.
 <Zrodlo title="AGENTS.md" publisher="agents.md / Agentic AI Foundation" date="2026-09-01" url="https://agents.md/">otwarty format instrukcji dla agentów kodujących, opisywany jako „a README for agents”; strona podaje, że jest używany przez ponad 60 tysięcy projektów otwartych i że opiekuje się nim Agentic AI Foundation; strona bez własnej daty</Zrodlo>
 
 <Zrodlo title="Linux Foundation Announces the Formation of the Agentic AI Foundation" publisher="The Linux Foundation" date="2025-12-09" url="https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation">powstanie fundacji i przekazanie jej `AGENTS.md` przez OpenAI; w tekście data pierwszej publikacji formatu — sierpień 2025</Zrodlo>
+
+<Zrodlo title="Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks" publisher="arXiv (Lewis i in.)" date="2020-05-22" url="https://arxiv.org/abs/2005.11401">praca, w której nazwano RAG: najpierw wyszukanie pasujących fragmentów, potem wygenerowanie odpowiedzi na ich podstawie</Zrodlo>
 
 </Zrodla>
 
