@@ -177,6 +177,40 @@ date belongs to which group. How the table gets there is the plan's to decide.
 - Nothing on the page identifies a student, and nothing records attendance,
   presence or a grade. The cells hold dates and the headers hold group codes.
 
+### 11. The schedule this slice ships with
+
+**Added 2026-09-10, after the plan.** The plan was written from this spec alone
+and reported that the seeded data was the one thing it could not recover from
+it — correctly, because it lived only in Viktar's message. It is written down
+here so the spec is what the plan needed it to be, and so criterion 17 has
+something to be checked against.
+
+Exactly this, and nothing more:
+
+| week | first day | last day |
+| ---: | --- | --- |
+| 1 | 2026-08-31 | 2026-09-04 |
+| 2 | 2026-09-07 | 2026-09-11 |
+
+| session | week | planned date | topics |
+| ---: | ---: | --- | --- |
+| 1 | 1 | *absent* | the first lesson of Moduł 0, then the whole of Moduł 1 |
+| 2 | 2 | *absent* | the first lesson of Moduł 2, then the second |
+
+**No planned date is seeded, and no group cell is filled.** Viktar's message
+gave one date for a session and introduced it as an example of the column's
+format, and gave no date at all for the second session. It also gave no group
+dates. An example date written into a public schedule is exactly the plausible
+guess Article V refuses, and both are one edit away from being right.
+
+The four week-bounds above are kept, because a week running Monday to Friday
+from 31 August is arithmetic rather than an institutional claim, and Article I
+already dates the course from 2026-09-01, which falls inside week 1.
+
+Every topic above resolves to something that exists in the content tree today.
+That is not a coincidence and it is the case for §4: Viktar wrote them by
+quoting the course's own titles, so the schedule can point at them instead.
+
 ## Out of scope
 
 Refused deliberately, not forgotten:
