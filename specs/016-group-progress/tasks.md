@@ -28,7 +28,7 @@ existing page touches nothing else.
   **Check:** the file parses, and every value in it is quoted back against
   `spec.md` §11 in `verification.md`. Criterion 17.
 
-- [ ] **T03 — The schedule's shape.**
+- [x] **T03 — The schedule's shape.**
   `lib/schedule-schema.ts`: `GROUPS` — the four codes of ADR-0014 in column
   order — and the Zod shape of the file, including `z.strictObject` for
   `groups` and the three-way topic union.
