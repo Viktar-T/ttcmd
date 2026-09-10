@@ -797,3 +797,57 @@ in the reflection sections.
   experiments restore saved bytes rather than running `git checkout`, which
   would have taken his uncommitted work with it. It is the first slice in this
   repo to run against a tree somebody else was writing to at the same time.
+
+---
+
+## Slice 020 — the table shows what happened
+
+**Agent notes** *(factual, appended by agents)*
+
+- **Numbered 020, not 017, and that is the interesting part.** Slice 016 took
+  the number `docs/roadmap.md` had reserved for the glossary, which forced the
+  three unbuilt slices up by two the same day. Taking 017 for this one would
+  have moved them again within the hour. Slice numbers are append-only but
+  nothing requires them to be contiguous, so the queue keeps 017 to 019 and the
+  gap is recorded in the spec's own header. Three slices have now been built
+  that the roadmap never planned — 012, 015 and 016 — which is the real finding:
+  reserving numbers for unbuilt work is what keeps colliding.
+- **The spec was amended between the plan and the first line of code**, when
+  Viktar asked for a group cell to read `03.09-T1` rather than `03.09.2026`.
+  That is not AGENTS.md §8's forbidden edit — nothing was built yet and the
+  requirement arrived before the implementation, not after it. The plan
+  subagent was sent back to extend its own plan rather than replaced, so the
+  fresh-context property survived the amendment.
+- **The amendment made the slice better than the request.** Removing the
+  planned-week column and printing each cell's own week are the same idea from
+  two directions: the week that matters is the one the class actually happened
+  in, and it is different per group. The seeded data proves it — 4Tc-1 and
+  4Tc-2 did session 1 in week 2 — and a reader now sees `T2` beside `T1`
+  instead of comparing four dates by hand.
+- **The extended plan caught a dependency the spec did not state.** Criterion 6
+  requires 4Ta-2's 2026-09-11 to resolve, and that date is week 2's `end`
+  exactly, so an exclusive upper bound in the week lookup would have failed a
+  criterion the spec never connected to a bounds decision. It is inclusive, and
+  now says so in a comment.
+- **A shell ate three values out of a committed spec.** The amendment was
+  written through `node -e "…"` inside double quotes, so the backticked example
+  cell values ran as command substitution and vanished. Committed damaged,
+  repaired in the next commit rather than amended away. The lesson is narrow
+  and worth keeping: file content with backticks does not go through a
+  double-quoted shell string.
+- **The closing review found the one thing T04 was for.** T04 was "the
+  stylesheet's comments catch up", and it missed a comment eighty lines below
+  the one it fixed, still explaining the breakpoint in terms of "the 624px the
+  seven columns need". Nothing failed. The review greps for the old arithmetic
+  are what found it.
+- **Two process deviations.** T06 and T07 share a commit — both are
+  evidence-only tasks whose whole product is one tick each in `tasks.md`, and
+  splitting them would be two commits that change one line. And the review's
+  fix arrived after T07 was already ticked, so the stylesheet has a second
+  comment-only commit inside T08.
+- **The tree still was not this run's alone.** Viktar deleted
+  `content/moduly/05-pod-maska/` mid-slice, part of a rename to `06-pod-maska`.
+  It was noticed because criterion 11's before/after page comparison suddenly
+  had two different content trees under it; both sides were rebuilt against the
+  same tree and the comparison redone. Forty-four pages, forty-three
+  byte-identical, one differing: `/postep`.

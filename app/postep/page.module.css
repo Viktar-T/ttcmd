@@ -175,9 +175,15 @@
  *
  * 41rem is derived, not chosen: .lane stops shrinking when the viewport
  * reaches --measure (39rem) plus the frame's two 1rem gutters, and that is
- * exactly where the 624px the seven columns need is guaranteed. It is the same
- * number app/nav.css already treats as the fold. A media query cannot read
+ * where the lane's full 624px is guaranteed. It is the same number
+ * app/nav.css already treats as the fold. A media query cannot read
  * var(--measure), so the literal is written with this sentence beside it.
+ *
+ * The number stays where it is after slice 020 even though the table now
+ * needs less: five columns want about 399px where seven wanted about 591px,
+ * so the wide layout would survive a breakpoint near 29rem. It is not moved.
+ * 41rem is where the rest of the site changes shape, and a page that reflowed
+ * at its own private width would be the one page on the site that does.
  * ------------------------------------------------------------------ */
 
 @media (min-width: 41rem) {

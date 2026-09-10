@@ -57,7 +57,7 @@ build in between.
   prerendered markup of every page other than `/postep` is byte-identical once
   the per-build id is normalised — the instrument slice 016 established.
 
-- [ ] **T08 — Close the slice.**
+- [x] **T08 — Close the slice.**
   `verification.md`, then the diff reviewed against `spec.md` in a fresh
   subagent context (AGENTS.md §3, criterion 13).
   **Check:** the review reports no gap. Criterion 12 is Viktar's eye and stays
