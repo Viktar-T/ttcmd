@@ -12,7 +12,7 @@ existing page touches nothing else.
 
 ---
 
-- [ ] **T01 — The content layer derives identity for every lesson, published or not.**
+- [x] **T01 — The content layer derives identity for every lesson, published or not.**
   `lib/numbering.ts` gains `lessonHref(moduleSlug, lessonSlug)`. `lib/content.ts`:
   `listLessons` returns its unpublished lessons as summaries rather than hrefs,
   `readCourse` derives `letter`, `id` and `href` for every lesson file, and

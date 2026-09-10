@@ -36,7 +36,13 @@ import {
   type LinkTargets,
   type LinkUse,
 } from "./links";
-import { lessonId, lessonLetter, moduleLabel, moduleNumber } from "./numbering";
+import {
+  lessonHref,
+  lessonId,
+  lessonLetter,
+  moduleLabel,
+  moduleNumber,
+} from "./numbering";
 import {
   lessonFrontmatterSchema,
   moduleFrontmatterSchema,
@@ -382,6 +388,32 @@ export interface CourseModule extends ModuleSummary {
   lessons: CourseLesson[];
 }
 
+/**
+ * Every lesson FILE in the tree, published or not, with the identity ADR-0003
+ * derives from its `order` and its slugs — and nothing else about it.
+ *
+ * `getCourse` is the course as a student can walk it, so it drops drafts. The
+ * schedule (slice 016) may name one: Moduł 4 and Moduł 5 are written and
+ * unpublished today, and a schedule that could not name them could not say what
+ * is planned. It renders such a lesson's letter and title without a link.
+ *
+ * Built by the walk in `readCourse`, from the same read, the same schema parse
+ * and the same derivation the published lessons go through. A second walk of
+ * `content/moduly/` would re-implement the module-prefix rule, the order → letter
+ * rule and the publish rule, and would disagree with the first implementation
+ * the day any of the three changed.
+ */
+export interface LessonIndexEntry {
+  moduleSlug: string;
+  slug: string;
+  title: string;
+  order: number;
+  letter: string;
+  id: string;
+  href: string;
+  published: boolean;
+}
+
 async function readModuleSlugs(): Promise<string[]> {
   const entries = await readdir(contentRoot, { withFileTypes: true });
   return entries
@@ -496,11 +528,17 @@ async function readLessonFrontmatterAndBody(
 async function listLessons(moduleSlug: string): Promise<{
   lessons: LessonSummary[];
   links: LinkUse[];
-  /** The hrefs of lesson files that exist and are not published — kept so a
-      link to one can be refused in its own words rather than as "there is no
-      such page" (spec, criterion 14). Derived here because this is where the
-      publish flag is read; nothing else re-reads the directory to find them. */
-  unpublished: string[];
+  /** The lesson files that exist and are not published — kept so a link to one
+      can be refused in its own words rather than as "there is no such page"
+      (slice 010, criterion 14). Derived here because this is where the publish
+      flag is read; nothing else re-reads the directory to find them.
+
+      Summaries rather than the hrefs this used to return. Slice 016's schedule
+      may name a draft, and to render one it needs the lesson's title and the
+      letter derived from its `order` — neither of which survives in an href.
+      `readCourse` maps them straight back to hrefs for `LinkTargets`, so that
+      set is exactly what it was. */
+  unpublished: LessonSummary[];
 }> {
   const slugs = await readLessonSlugs(moduleSlug);
   const read = await Promise.all(
@@ -527,7 +565,8 @@ async function listLessons(moduleSlug: string): Promise<{
   const links = read.flatMap((entry) => entry.links);
   const unpublished = read
     .filter((entry) => entry.lesson.publish === false)
-    .map((entry) => `/moduly/${moduleSlug}/${entry.lesson.slug}`);
+    .map((entry) => entry.lesson)
+    .sort((a, b) => a.order - b.order);
 
   /* The filter runs after every file on disk has been read, schema-parsed
      and compiled — the position is load-bearing. Filtering at the slug stage
@@ -571,7 +610,11 @@ async function listLessons(moduleSlug: string): Promise<{
  * is the only compile outside this walk.
  */
 const readCourse = cache(
-  async (): Promise<{ modules: CourseModule[]; targets: LinkTargets }> => {
+  async (): Promise<{
+    modules: CourseModule[];
+    targets: LinkTargets;
+    lessonIndex: LessonIndexEntry[];
+  }> => {
     const slugs = await readModuleSlugs();
 
     const walked = await Promise.all(
@@ -616,10 +659,43 @@ const readCourse = cache(
           moduleSlug: slug,
           letter: lessonLetter(lesson.order),
           id: lessonId(number, lesson.order),
-          href: `/moduly/${slug}/${lesson.slug}`,
+          href: lessonHref(slug, lesson.slug),
           exerciseOffset,
         };
       });
+
+      /* THE INDEX — beside the walk above, never through it.
+
+         The published half is copied from `lessons`, which has just derived
+         letter, id and href; the unpublished half runs the same three
+         derivations over the summaries `listLessons` set aside. Both halves
+         come from one read of the directory and one schema parse.
+
+         Sorted by `order`, which is not the same as sorted by letter's
+         appearance: module 0 holds `order: 1` and `order: 3` and no 2, so this
+         array is 0a then 0c, and nothing anywhere counts positions in it. */
+      const indexed: LessonIndexEntry[] = [
+        ...lessons.map((lesson) => ({
+          moduleSlug: slug,
+          slug: lesson.slug,
+          title: lesson.title,
+          order: lesson.order,
+          letter: lesson.letter,
+          id: lesson.id,
+          href: lesson.href,
+          published: true,
+        })),
+        ...listed.unpublished.map((lesson) => ({
+          moduleSlug: slug,
+          slug: lesson.slug,
+          title: lesson.title,
+          order: lesson.order,
+          letter: lessonLetter(lesson.order),
+          id: lessonId(number, lesson.order),
+          href: lessonHref(slug, lesson.slug),
+          published: false,
+        })),
+      ].sort((a, b) => a.order - b.order);
 
       return {
         module: {
@@ -633,7 +709,7 @@ const readCourse = cache(
           lessons,
         },
         links: [...moduleLinks, ...listed.links],
-        unpublished: listed.unpublished,
+        index: indexed,
       };
       })
     );
@@ -665,9 +741,16 @@ const readCourse = cache(
       moduleHrefs.add(item.href);
       for (const lesson of item.lessons) published.add(lesson.href);
     }
+    /* Exactly the set it was before slice 016 widened what `listLessons`
+       hands back: the hrefs of the lesson files that carry `publish: false`,
+       now read off the index instead of built beside it. One derivation of a
+       lesson's URL, in `lessonHref`. */
+    const lessonIndex = walked.flatMap((entry) => entry.index);
     const targets: LinkTargets = {
       published,
-      unpublished: new Set(walked.flatMap((entry) => entry.unpublished)),
+      unpublished: new Set(
+        lessonIndex.filter((entry) => !entry.published).map((entry) => entry.href)
+      ),
       modules: moduleHrefs,
     };
 
@@ -676,12 +759,17 @@ const readCourse = cache(
       targets
     );
 
-    return { modules, targets };
+    return { modules, targets, lessonIndex };
   }
 );
 
 export async function getCourse(): Promise<CourseModule[]> {
   return (await readCourse()).modules;
+}
+
+/** Every lesson file in the tree, drafts included — see `LessonIndexEntry`. */
+export async function getLessonIndex(): Promise<LessonIndexEntry[]> {
+  return (await readCourse()).lessonIndex;
 }
 
 export interface LessonPosition {

@@ -67,6 +67,21 @@ export function lessonId(moduleNumber: number, order: number): string {
 }
 
 /**
+ * Where a lesson lives: `02-warsztat` + `teraz-ty-pierwszy-agent` →
+ * "/moduly/02-warsztat/teraz-ty-pierwszy-agent".
+ *
+ * Here rather than beside the walk that used to spell it inline, because the
+ * schedule (slice 016) needs the URL of a lesson the course walk drops — an
+ * unpublished one — and a second template literal is how two parts of the site
+ * come to disagree about where a lesson is, which is what this module opens by
+ * warning about. `moduleHref` is deliberately absent: `/moduly/${slug}` is
+ * written once, in `readCourse`, and one caller is not a second opinion.
+ */
+export function lessonHref(moduleSlug: string, lessonSlug: string): string {
+  return `/moduly/${moduleSlug}/${lessonSlug}`;
+}
+
+/**
  * An exercise's public name: module 1, the seventh exercise **of the module**
  * → "1.7".
  *
