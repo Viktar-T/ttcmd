@@ -19,7 +19,7 @@ build in between.
   `Tydzień` would match the calendar above, which legitimately prints it
   seventeen times.
 
-- [ ] **T02 — `dd.mm` joins the site's date vocabulary.**
+- [x] **T02 — `dd.mm` joins the site's date vocabulary.**
   `lib/dates.ts` gains `formatDateDayMonth`, and its header comment gains the
   sentence saying why there is a fourth form and who may not reach it.
   Additive: the three existing formatters and `parseContentDate` are untouched.

@@ -14,6 +14,13 @@
  * spelled, once, rather than three times beside three components — which is how
  * the mixing happened in the first place.
  *
+ * THERE ARE FOUR FORMS NOW, NOT THREE. Slice 020 added `dd.mm` for the group
+ * cells on `/postep`. `docs/content-style.md` does not mention it and should
+ * not: it is the one form no author can reach, because nothing under `content/`
+ * and no MDX component renders it. It lives here anyway, for this module's own
+ * reason — a fourth form spelled beside the one component that uses it is
+ * exactly the arrangement the paragraph above exists to refuse.
+ *
  * THREE PRECISIONS, AND THE RENDERING NEVER INVENTS ONE. A source may show a
  * day, a month or only a year, and the corpus has all three: `18.04.2023`,
  * `sierpień 2026`, `1998`. A date model that stored a `Date` would have to
@@ -143,6 +150,31 @@ export function formatDateList(date: ContentDate): string {
   if (date.month === undefined) return String(date.year);
   if (date.day === undefined) return `${pad(date.month)}.${date.year}`;
   return `${pad(date.day)}.${pad(date.month)}.${date.year}`;
+}
+
+/**
+ * `03.09` — a day and a month, for the group cells on `/postep`.
+ *
+ * The fourth visible form, and the only one `docs/content-style.md` does not
+ * assign to a place, because it is not a form an author may choose: nothing
+ * under `content/` can reach it and no MDX component renders it. The progress
+ * page covers one school year, and the calendar above its table prints the year
+ * on every row, so the cells drop it (slice 020, decision 5) while the `<time>`
+ * element keeps `formatDateIso` as its machine-readable value.
+ *
+ * A coarser precision falls through to `formatDateList` rather than inventing a
+ * day: a month-precision date has no day to print, and `09` alone would be a
+ * month wearing a day's clothes.
+ */
+export function formatDateDayMonth(date: ContentDate): string {
+  /* Both tested, though `ContentDate` says a day cannot arrive without a month.
+     A cast asserting that would be a type telling the compiler something the
+     compiler cannot check, for no gain — this costs one comparison and needs
+     no assertion. */
+  if (date.month === undefined || date.day === undefined) {
+    return formatDateList(date);
+  }
+  return `${pad(date.day)}.${pad(date.month)}`;
 }
 
 /**
