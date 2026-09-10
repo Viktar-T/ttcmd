@@ -34,7 +34,7 @@ existing page touches nothing else.
   `groups` and the three-way topic union.
   **Check:** `npm run build`, `npm run lint`. Nothing renders it yet.
 
-- [ ] **T04 — The schedule's model.**
+- [x] **T04 — The schedule's model.**
   `lib/schedule.ts`: read, parse every date through `lib/dates.ts`, the five
   structural cross-checks, pointer resolution against the course, sorting, and
   the model the page renders. Wrapped in `cache()`, not a module constant.
