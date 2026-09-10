@@ -39,13 +39,18 @@ export type LinkKind =
   | { kind: "refused"; href: string; why: string };
 
 /**
- * The site's own routes that are not derived from content: `app/page.tsx` and
- * `app/moduly/page.tsx`. Everything else a link may point at is a module or a
- * lesson, and comes from the course model.
+ * The site's own routes that are not derived from content: `app/page.tsx`,
+ * `app/moduly/page.tsx` and `app/postep/page.tsx`. Everything else a link may
+ * point at is a module or a lesson, and comes from the course model.
  *
  * `/styleguide` is deliberately absent. It is a maintainer's instrument that
  * nothing links to, and a lesson linking to it is a mistake worth stopping.
  * Adding an entry here is a deliberate edit, not a pattern to widen.
+ *
+ * `/postep` was added by slice 016 and is the deliberate edit that sentence
+ * describes. No lesson links to it today, so no criterion of that slice needed
+ * it — but the schedule is a page a lesson may perfectly well point at, and
+ * leaving it out would refuse the first such link as "there is no such page".
  */
 export const SITE_ROUTES: readonly string[] = ["/", "/moduly", "/postep"];
 

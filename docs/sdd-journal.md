@@ -727,3 +727,73 @@ in the reflection sections.
   once. That single attempt closes both halves of what this run could not
   reach — whether the operating system delivers the event at all, and whether
   the refresh is invisible enough not to lose the line being edited.
+
+---
+
+## Slice 016 — the progress page
+
+**Agent notes** *(factual, appended by agents)*
+
+- **The slice began by hitting the constitution, and that was the useful part.**
+  Article VI said in as many words that the site does not model groups, and the
+  page asked for models four of them by name. Article I still said two groups
+  where the course has four. Neither could be edited by an agent (Article X), so
+  the run stopped and wrote ADR-0014 before any spec existed. Viktar accepted it
+  and the amendment was applied in its own commit, ahead of the slice.
+- **The ADR was wrong about its own blast radius, and the correction is visible
+  rather than tidied away.** Its §3 said "Article V itself is not amended".
+  Applying it showed that leaving Article V's not-settled list intact would have
+  had the constitution asserting, in the same commit that published the four
+  group codes, that those codes were undecided. Article V was amended after all,
+  minimally, and a dated correction note sits under the original sentence
+  instead of replacing it (Article II).
+- **The autonomous plan subagent earned its keep on the one thing it could not
+  do.** It produced a complete plan from `constitution.md`, `AGENTS.md` and
+  `spec.md` alone, and reported four gaps. Three it resolved itself. The fourth
+  it refused: the seeded data existed only in Viktar's chat message, and its
+  step 2 says *have the message or stop, do not reconstruct*. That is the fresh
+  -context test doing exactly what it is for — the spec was incomplete, and the
+  fix was to write the two weeks and two sessions into the spec rather than to
+  let the implementing session quietly fill them in from memory.
+- **Article V decided the seed by subtraction.** Viktar's message introduced one
+  planned date and the week ranges with the words "for instance". The week
+  ranges are Monday-to-Friday arithmetic and were kept; the planned date was
+  dropped, and no group cell was filled, because an example date rendered on a
+  public schedule is precisely the plausible guess the article refuses. The page
+  therefore ships with two empty columns' worth of blanks, which is the correct
+  state and looks like an unfinished feature. Worth knowing before reading it.
+- **A CSS specificity defect that the build could not see.** `.table tr {
+  display: block }` is a class plus an element and out-specified the bare
+  `.figures`, so the stacked layout's grid never applied and every value on a
+  phone stacked into one column, fourteen lines per session. Nothing failed. It
+  was found by looking at a screenshot at 375px, which is the only instrument
+  that could have found it.
+- **The closing review found a defect the criteria could not.**
+  `describeSchemaFailure` read a row index off the Zod path unconditionally, so
+  a failure about the `weeks` array itself rather than a row inside it produced
+  "week at position NaN". None of the eight refusals in the spec exercises that
+  path, so eight passing checks said nothing about it. The review also caught
+  two comments this run had itself written asserting that Moduł 4 and Moduł 5
+  are the unpublished lessons — they were published before the slice started,
+  and `00-start/git-i-github` is the only draft in the tree.
+- **One acceptance criterion had to be rewritten mid-run, and the reason is
+  another slice.** Criterion 7 asked for a seeded lesson to be temporarily
+  unpublished. Doing that fails the build, because a Moduł 3 lesson links to it
+  and slice 010 refuses a link to a draft. The criterion's real subject is a
+  schedule naming a lesson that is already unpublished, so the check became a
+  temporary topic pointing at the one draft in the tree. The substitution is in
+  `verification.md` rather than in the criterion, which is left as written.
+- **Three process deviations.** T05 and T06 share one commit: the stylesheet is
+  mobile-first, so the stacked layout is its base and the wide table is the
+  media query above it, and there is no order in which one exists without the
+  other. `016/T00` prefixes four commits — spec, plan, the spec's seed section,
+  and tasks — none of which `tasks.md` lists as a task. And `lib/links.ts` gained
+  `/postep` in `SITE_ROUTES`, which no acceptance criterion asked for; it is
+  argued at the point of use and named in the final report rather than
+  back-filled into the spec's `Decisions taken`.
+- **The tree was not this run's alone.** Viktar was editing content in the same
+  working directory throughout; two module folders appeared partway through the
+  slice. Every commit staged its own paths explicitly and the temporary
+  experiments restore saved bytes rather than running `git checkout`, which
+  would have taken his uncommitted work with it. It is the first slice in this
+  repo to run against a tree somebody else was writing to at the same time.

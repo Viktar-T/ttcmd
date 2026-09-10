@@ -393,9 +393,10 @@ export interface CourseModule extends ModuleSummary {
  * derives from its `order` and its slugs — and nothing else about it.
  *
  * `getCourse` is the course as a student can walk it, so it drops drafts. The
- * schedule (slice 016) may name one: Moduł 4 and Moduł 5 are written and
- * unpublished today, and a schedule that could not name them could not say what
- * is planned. It renders such a lesson's letter and title without a link.
+ * schedule (slice 016) may name one — a lesson that is written, planned and not
+ * yet published — and a schedule that could not name it could not say what is
+ * planned. It renders such a lesson's letter and title without a link.
+ * `content/moduly/00-start/git-i-github.mdx` is the case in the tree today.
  *
  * Built by the walk in `readCourse`, from the same read, the same schema parse
  * and the same derivation the published lessons go through. A second walk of

@@ -75,7 +75,7 @@ existing page touches nothing else.
   and criterion 11 additionally shows `git diff --stat` naming only the schedule
   file. Evidence only — no source change survives this task.
 
-- [ ] **T10 — Close the slice.**
+- [x] **T10 — Close the slice.**
   `verification.md` written, then the diff reviewed against `spec.md` in a fresh
   subagent context (AGENTS.md §3, criterion 19).
   **Check:** the review reports no gap affecting correctness or the criteria.

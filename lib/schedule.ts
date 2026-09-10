@@ -96,15 +96,28 @@ function describeSchemaFailure(error: z.ZodError, raw: unknown): never {
      when it is missing or is not a number, the position is what is left. */
   const kind = trail[0];
   const index = Number(trail[1]);
-  const declared = (
-    raw as Record<string, Array<{ number?: unknown }>> | null
-  )?.[String(kind)]?.[index]?.number;
+  /* `trail[1]` is an index only when the failure is INSIDE a row. A failure
+     about the array itself — an empty `weeks`, a missing `sessions` key — has
+     a path of length one, and reading an index off it gives NaN and a message
+     naming "week at position NaN". That is not one of spec §6's eight
+     refusals and is reachable from an ordinary edit, which is exactly the
+     evening this module exists to save. */
+  const inRow = Number.isInteger(index);
+  const declared = inRow
+    ? (raw as Record<string, Array<{ number?: unknown }>> | null)?.[
+        String(kind)
+      ]?.[index]?.number
+    : undefined;
   const row =
-    kind === "weeks" || kind === "sessions"
+    (kind === "weeks" || kind === "sessions") && inRow
       ? `${kind === "weeks" ? "week" : "session"} ${
           typeof declared === "number" ? declared : `at position ${index + 1}`
         }`
-      : "the file";
+      : kind === "weeks"
+        ? `"weeks"`
+        : kind === "sessions"
+          ? `"sessions"`
+          : "the file";
 
   if (issue.code === "unrecognized_keys" && trail.includes("groups")) {
     fail(
@@ -189,7 +202,8 @@ async function resolveTopic(
 
   /* Against the INDEX, not against the course: an unpublished lesson exists,
      and the schedule may say it is planned. `getCourse` drops drafts by
-     design, so resolving here would refuse Moduł 4 and Moduł 5 outright. */
+     design, so resolving against it would refuse every draft outright —
+     `00-start/git-i-github` is the one in the tree today. */
   const index = await getLessonIndex();
   const found = index.find(
     (entry) => `${entry.moduleSlug}/${entry.slug}` === topic.lesson
