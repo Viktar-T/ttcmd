@@ -119,8 +119,14 @@
 
 /* ONE VALUE, ONE LINE: the label at the start, the value at the end, the space
    between them holding them apart — the same shape the week list above uses,
-   and half the height of a label sitting above its value. Four groups, two
-   lines. */
+   and half the height of a label sitting above its value.
+
+   Since slice 020 dropped the planned week and the planned date, the two
+   columns above hold exactly the four groups, two per line: the 4Ta pair, then
+   the 4Tc pair. That is the pairing the two class codes already have, and it
+   is why the track count did not change when two cells left — one column
+   would lose the read-across, and four would give each group 66px at 375px
+   against a value wanting rather more than that. */
 .figures > * {
   display: flex;
   justify-content: space-between;

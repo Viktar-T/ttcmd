@@ -33,7 +33,7 @@ build in between.
   `03.09-T1`, `04.09-T1`, `08.09-T2`, `08.09-T2` and session 2 reads
   `10.09-T2`, `11.09-T2` and two blanks, each with its full `datetime`.
 
-- [ ] **T04 — The stylesheet's comments catch up.**
+- [x] **T04 — The stylesheet's comments catch up.**
   `app/postep/page.module.css`: comments only. The two-column stacked grid is
   now exactly the four groups two-by-two, and the comment says so.
   **Check:** `git diff` shows no selector, property or value changed. That the
