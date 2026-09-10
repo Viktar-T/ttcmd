@@ -47,7 +47,7 @@ export type LinkKind =
  * nothing links to, and a lesson linking to it is a mistake worth stopping.
  * Adding an entry here is a deliberate edit, not a pattern to widen.
  */
-export const SITE_ROUTES: readonly string[] = ["/", "/moduly"];
+export const SITE_ROUTES: readonly string[] = ["/", "/moduly", "/postep"];
 
 export function classifyLink(rawHref: string): LinkKind {
   const href = rawHref.trim();

@@ -1,0 +1,245 @@
+/*
+ * The progress page's own layout — slice 016.
+ *
+ * A CSS module beside the page rather than a sixth global import in
+ * app/layout.tsx, following app/styleguide/page.module.css: this is one page's
+ * furniture, not a site-wide concern.
+ *
+ * MOBILE FIRST, ONE BREAKPOINT. The base rules below are the stacked layout a
+ * phone gets; the table appears at 41rem. That order is deliberate — the
+ * stacked layout is the one that must never be wrong, because it is the one
+ * that carries the most information in the least room.
+ *
+ * Every colour here is a var() on a token that already exists. No token is
+ * added and none moves (spec §10), and Check B of
+ * scripts/check-design-invariants.mjs scans this directory for colour literals.
+ */
+
+.section {
+  display: grid;
+  gap: var(--gap-block);
+}
+
+/* Matches the reference page's section headings rather than inventing a size. */
+.heading {
+  margin: 0;
+  font-size: var(--text-xl);
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.5rem;
+}
+
+/* ------------------------------------------------------------------ *
+ * The calendar of weeks
+ * ------------------------------------------------------------------ */
+
+.weeks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  /* auto-fit rather than a media query, the idiom .moduleGrid already uses:
+     one column on a phone, several where there is room, and it stays right
+     when the twentieth week is written. */
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--gap-tight) 1rem;
+  font-size: var(--text-sm);
+}
+
+.weeks li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--rule-table);
+  padding-bottom: 0.35rem;
+}
+
+.weekNumber {
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+.weekDates {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ *
+ * The table of sessions — the stacked layout
+ *
+ * Below 41rem every table element becomes a block and each session's <tbody>
+ * is the card. The column headers are gone, so EVERY VALUE CARRIES ITS LABEL
+ * IN THE DOM: a real <span>, not generated content, so it reads identically to
+ * a sighted reader and to a screen reader.
+ *
+ * The cost is stated rather than hidden: changing `display` on table elements
+ * drops their native ARIA roles in every engine. That is not papered over with
+ * role="table"/role="row", because in this layout the column headers are
+ * display: none and therefore gone from the accessibility tree as well, and a
+ * restored role="cell" underneath no columnheader announces a position that
+ * means nothing. The in-DOM labels are the honest answer.
+ * ------------------------------------------------------------------ */
+
+.table {
+  display: block;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.table thead {
+  display: none;
+}
+
+.table tbody {
+  display: block;
+  border-top: 1px solid var(--rule-table);
+  padding-block: var(--gap-block);
+}
+
+.table tbody:first-of-type {
+  border-top: 0;
+  padding-block-start: 0;
+}
+
+.table tr {
+  display: block;
+}
+
+/* Written as `.table .figures` and not as `.figures`, which is not a flourish:
+   `.table tr` above is a class and an element and therefore out-specifies a
+   bare class, so `display: grid` would silently lose to `display: block` and
+   this whole layout would stack into one column. It did, once. */
+.table .figures {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.3rem 1.5rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+/* ONE VALUE, ONE LINE: the label at the start, the value at the end, the space
+   between them holding them apart — the same shape the week list above uses,
+   and half the height of a label sitting above its value. Four groups, two
+   lines. */
+.figures > * {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0;
+  text-align: start;
+  font-weight: 400;
+}
+
+/* The session's number opens the block and spans it, label and number on one
+   line as a heading rather than pushed apart as a value. */
+.figures > th {
+  display: block;
+  grid-column: 1 / -1;
+  font-size: var(--text-base);
+  margin-block-end: 0.2rem;
+}
+
+/* An empty group cell keeps its code and shows nothing after it — the reading
+   "this group has not got there yet". That is the column header moved inline
+   because the header row is gone, not a placeholder standing in for a date
+   (spec §5, criterion 8). */
+.label {
+  color: var(--text-muted);
+}
+
+.topicsRow > td {
+  display: block;
+  padding: 0;
+}
+
+.topics {
+  list-style: none;
+  margin: var(--gap-tight) 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.topicId {
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+/* ------------------------------------------------------------------ *
+ * The table of sessions — the wide layout
+ *
+ * 41rem is derived, not chosen: .lane stops shrinking when the viewport
+ * reaches --measure (39rem) plus the frame's two 1rem gutters, and that is
+ * exactly where the 624px the seven columns need is guaranteed. It is the same
+ * number app/nav.css already treats as the fold. A media query cannot read
+ * var(--measure), so the literal is written with this sentence beside it.
+ * ------------------------------------------------------------------ */
+
+@media (min-width: 41rem) {
+  .table {
+    display: table;
+    table-layout: auto;
+  }
+
+  .table thead {
+    display: table-header-group;
+  }
+
+  .table tbody {
+    display: table-row-group;
+    padding-block: 0;
+  }
+
+  .table tr {
+    display: table-row;
+  }
+
+  .table thead th {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-weight: 600;
+    text-align: start;
+    padding: 0.5rem;
+    /* The header underline carries meaning — it is what separates the header
+       from the body — so it takes --text-muted and clears WCAG 1.4.11's 3:1,
+       exactly as app/prose.css does for the one table in the corpus. */
+    border-bottom: 1px solid var(--text-muted);
+  }
+
+  .table .figures {
+    display: table-row;
+  }
+
+  .figures > * {
+    display: table-cell;
+    padding: 0.5rem;
+    vertical-align: top;
+    white-space: nowrap;
+  }
+
+  .figures > th {
+    font-size: var(--text-sm);
+  }
+
+  /* The column header already says what the label says. */
+  .label {
+    display: none;
+  }
+
+  .topicsRow {
+    display: table-row;
+  }
+
+  .topicsRow > td {
+    display: table-cell;
+    padding: 0 0.5rem 0.6rem;
+  }
+
+  .topics {
+    margin: 0;
+  }
+
+  /* The separator between sessions, on the row group rather than on a row —
+     which is the other half of why a session is a <tbody>. */
+  .table tbody + tbody > .figures > * {
+    border-top: 1px solid var(--rule-table);
+  }
+}

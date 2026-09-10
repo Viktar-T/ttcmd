@@ -40,19 +40,22 @@ existing page touches nothing else.
   the model the page renders. Wrapped in `cache()`, not a module constant.
   **Check:** `npm run build`, `npm run lint`.
 
-- [ ] **T05 — The page, wide layout.**
+- [x] **T05 — The page, wide layout.**
   `app/postep/page.tsx`, `app/postep/schedule-table.tsx`,
   `app/postep/page.module.css`.
   **Check:** `npm run build` succeeds **and lists `/postep` as a static route** —
   that line is the evidence that validation runs at build time at all.
   Criteria 2, 3, 4, 5, 6 and 8 read from the rendered markup.
 
-- [ ] **T06 — The stacked layout.**
+- [x] **T06 — The stacked layout.**
   The same stylesheet, mobile-first, one breakpoint at 41rem, labels in the DOM.
   **Check:** criteria 12 and 13. `scrollWidth − clientWidth` is zero at 320,
   375, 768, 1024, 1280 and 1585 px on `/postep`, the home page, a module page
   and a lesson page; and at 375 px every value in a row is readable beside the
   group code it belongs to.
+  *Committed with T05: the stylesheet is mobile-first, so the stacked layout is
+  its base and the table is the media query above it. There is no order in
+  which one of them exists without the other.*
 
 - [ ] **T07 — The way in.**
   `app/page.tsx` gains one link to `/postep`. Nothing else on that page moves.
