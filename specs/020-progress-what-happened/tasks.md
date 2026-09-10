@@ -39,7 +39,7 @@ build in between.
   **Check:** `git diff` shows no selector, property or value changed. That the
   diff is comment-only is itself the evidence for criterion 10.
 
-- [ ] **T05 — Measure.**
+- [x] **T05 — Measure.**
   **Check:** criterion 9, `scrollWidth − clientWidth` at 320, 375, 768, 1024,
   1280 and 1585 px on `/postep`, all zero; and criterion 10, each session at
   375 px still one block with every group's value beside its own code.
