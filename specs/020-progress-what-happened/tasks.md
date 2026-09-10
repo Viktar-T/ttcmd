@@ -44,13 +44,13 @@ build in between.
   1280 and 1585 px on `/postep`, all zero; and criterion 10, each session at
   375 px still one block with every group's value beside its own code.
 
-- [ ] **T06 — The refusals still refuse.**
+- [x] **T06 — The refusals still refuse.**
   **Check:** criterion 6b, one seeded date moved to a Saturday, and criterion 7,
   a session pointing at a week the calendar does not have. Two build failures,
   two messages, each naming its row. Reverted between, `git status` clean under
   `content/`. Evidence only — no source change.
 
-- [ ] **T07 — Nothing else moved.**
+- [x] **T07 — Nothing else moved.**
   **Check:** criteria 4, 5, 8 and 11. The calendar renders every week once,
   ascending; the topics still render in their own row with derived letters and
   titles; `content/schedule.json` is untouched by this slice; and the
