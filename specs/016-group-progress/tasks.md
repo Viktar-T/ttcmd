@@ -22,7 +22,7 @@ existing page touches nothing else.
   pre-slice baseline at 1280 px and 375 px. This task must move nothing, and it
   is the only one that could move something it did not intend to.
 
-- [ ] **T02 — Seed the schedule.**
+- [x] **T02 — Seed the schedule.**
   `content/schedule.json`: the two weeks and two sessions of `spec.md` §11.
   No planned date, no group date, no invented value of any kind.
   **Check:** the file parses, and every value in it is quoted back against

@@ -1,0 +1,26 @@
+{
+  "weeks": [
+    { "number": 1, "start": "2026-08-31", "end": "2026-09-04" },
+    { "number": 2, "start": "2026-09-07", "end": "2026-09-11" }
+  ],
+  "sessions": [
+    {
+      "number": 1,
+      "week": 1,
+      "topics": [
+        { "lesson": "00-start/jak-dziala-ten-kurs" },
+        { "module": "01-jak-powstaje-oprogramowanie" }
+      ],
+      "groups": {}
+    },
+    {
+      "number": 2,
+      "week": 2,
+      "topics": [
+        { "lesson": "02-warsztat/na-zywo-agent-buduje-aplikacje" },
+        { "lesson": "02-warsztat/teraz-ty-pierwszy-agent" }
+      ],
+      "groups": {}
+    }
+  ]
+}
