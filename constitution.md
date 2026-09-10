@@ -10,15 +10,15 @@
 | Owner | Viktar |
 | Ratified | 2026-08-27 |
 | Amended by | ADR only (Article X) |
-| Amendments | ADR-0003 (Art. VI) · ADR-0004 (Art. IX) · ADR-0005 (Art. III), all 2026-08-28 |
+| Amendments | ADR-0003 (Art. VI) · ADR-0004 (Art. IX) · ADR-0005 (Art. III), all 2026-08-28 · ADR-0014 (Art. I, V, VI), 2026-09-10 |
 
 ---
 
 ## Article I — What ttcmd is
 
 ttcmd is the **central source of information, lessons and tasks** for the course
-*Aplikacje desktopowe i mobilne*<!-- TO CONFIRM: official PL course title --> —
-4th year, Technikum Cyfrowe Szczecin, from **2026-09-01**, 8 h/week, two groups.
+*Aplikacje desktopowe i mobilne* — 4th year, Technikum Cyfrowe Szczecin, from
+**2026-09-01**, 8 h/week, **four groups** of two hours each.
 
 It is used in class every week. It is built and maintained to production
 quality: it must load fast, work on a phone, and never be broken on a Monday.
@@ -79,8 +79,13 @@ Third-party course material is used under citation, not by wholesale copying.
 
 ## Article V — Invent no institutional facts
 
-The timetable, class code, room, group names, roster, and the INF.03 / INF.04
-exam scope are **not settled** and are not this repo's to decide.
+The timetable, room, roster, and the INF.03 / INF.04 exam scope are
+**not settled** and are not this repo's to decide.
+
+**Settled, and only these:** the four teaching groups are `4Ta-1`, `4Ta-2`,
+`4Tc-1` and `4Tc-2`, and the two class codes they are halves of are `4Ta` and
+`4Tc` — ADR-0014. Nothing else on the list above has moved, and a fact leaving
+that list needs an ADR of its own.
 
 Where such a fact is unknown, the schema carries an optional field left empty
 and the page says nothing. A plausible guess rendered on a public site is worse
@@ -90,7 +95,9 @@ than a blank.
 
 - The axis is **module → lesson**. Folders are `content/moduly/NN-slug/`.
 - `week` is **optional metadata** on a lesson, filled in as the real timetable arrives. The timetable is never encoded in folder or file names.
-- **Both groups get identical content.** The site does not model groups.
+- **Every group gets identical content.** No lesson, exercise or page of
+  content varies by group. The site models groups in exactly one place: the
+  schedule, which records which group has reached which session, and when.
 - The site does **not** host student work, student repos, or student submissions.
 - Content is freely editable; the git history is the record of what changed and when.
   *(Consequence accepted knowingly: if a published task later counts toward a grade
