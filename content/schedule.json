@@ -1,26 +1,125 @@
 {
   "weeks": [
-    { "number": 1, "start": "2026-08-31", "end": "2026-09-04" },
-    { "number": 2, "start": "2026-09-07", "end": "2026-09-11" }
+    {
+      "number": 1,
+      "start": "2026-08-31",
+      "end": "2026-09-04"
+    },
+    {
+      "number": 2,
+      "start": "2026-09-07",
+      "end": "2026-09-11"
+    },
+    {
+      "number": 3,
+      "start": "2026-09-14",
+      "end": "2026-09-18"
+    },
+    {
+      "number": 4,
+      "start": "2026-09-21",
+      "end": "2026-09-25"
+    },
+    {
+      "number": 5,
+      "start": "2026-09-28",
+      "end": "2026-10-02"
+    },
+    {
+      "number": 6,
+      "start": "2026-10-05",
+      "end": "2026-10-09"
+    },
+    {
+      "number": 7,
+      "start": "2026-10-12",
+      "end": "2026-10-16"
+    },
+    {
+      "number": 8,
+      "start": "2026-10-19",
+      "end": "2026-10-23"
+    },
+    {
+      "number": 9,
+      "start": "2026-10-26",
+      "end": "2026-10-30"
+    },
+    {
+      "number": 10,
+      "start": "2026-11-02",
+      "end": "2026-11-06"
+    },
+    {
+      "number": 11,
+      "start": "2026-11-09",
+      "end": "2026-11-13"
+    },
+    {
+      "number": 12,
+      "start": "2026-11-16",
+      "end": "2026-11-20"
+    },
+    {
+      "number": 13,
+      "start": "2026-11-23",
+      "end": "2026-11-27"
+    },
+    {
+      "number": 14,
+      "start": "2026-11-30",
+      "end": "2026-12-04"
+    },
+    {
+      "number": 15,
+      "start": "2026-12-07",
+      "end": "2026-12-11"
+    },
+    {
+      "number": 16,
+      "start": "2026-12-14",
+      "end": "2026-12-18"
+    },
+    {
+      "number": 17,
+      "start": "2026-12-21",
+      "end": "2026-12-25"
+    }
   ],
   "sessions": [
     {
       "number": 1,
       "week": 1,
       "topics": [
-        { "lesson": "00-start/jak-dziala-ten-kurs" },
-        { "module": "01-jak-powstaje-oprogramowanie" }
+        {
+          "lesson": "00-start/jak-dziala-ten-kurs"
+        },
+        {
+          "module": "01-jak-powstaje-oprogramowanie"
+        }
       ],
-      "groups": {}
+      "groups": {
+        "4Ta-1": "2026-09-03",
+        "4Ta-2": "2026-09-04",
+        "4Tc-1": "2026-09-08",
+        "4Tc-2": "2026-09-08"
+      }
     },
     {
       "number": 2,
       "week": 2,
       "topics": [
-        { "lesson": "02-warsztat/na-zywo-agent-buduje-aplikacje" },
-        { "lesson": "02-warsztat/teraz-ty-pierwszy-agent" }
+        {
+          "lesson": "02-warsztat/na-zywo-agent-buduje-aplikacje"
+        },
+        {
+          "lesson": "02-warsztat/teraz-ty-pierwszy-agent"
+        }
       ],
-      "groups": {}
+      "groups": {
+        "4Ta-1": "2026-09-10",
+        "4Ta-2": "2026-09-11"
+      }
     }
   ]
 }
