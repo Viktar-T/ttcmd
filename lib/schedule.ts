@@ -85,15 +85,26 @@ function scheduleDate(value: string, row: string, field: string): ContentDate {
  * things a topic may be. Everything else falls through to Zod's text with the
  * path spelled out, which is worse than a sentence and better than nothing.
  */
-function describeSchemaFailure(error: z.ZodError): never {
+function describeSchemaFailure(error: z.ZodError, raw: unknown): never {
   const issue = error.issues[0];
   const trail = issue.path;
+
+  /* Named by the number the row itself declares, not by its position in the
+     array — that is the number the author counts in, and the two differ the
+     moment a week is appended out of order. Read off the RAW value, because
+     the parse that would have given it a type is the one that just failed;
+     when it is missing or is not a number, the position is what is left. */
+  const kind = trail[0];
+  const index = Number(trail[1]);
+  const declared = (
+    raw as Record<string, Array<{ number?: unknown }>> | null
+  )?.[String(kind)]?.[index]?.number;
   const row =
-    trail[0] === "weeks"
-      ? `week at position ${Number(trail[1]) + 1}`
-      : trail[0] === "sessions"
-        ? `session at position ${Number(trail[1]) + 1}`
-        : "the file";
+    kind === "weeks" || kind === "sessions"
+      ? `${kind === "weeks" ? "week" : "session"} ${
+          typeof declared === "number" ? declared : `at position ${index + 1}`
+        }`
+      : "the file";
 
   if (issue.code === "unrecognized_keys" && trail.includes("groups")) {
     fail(
@@ -225,7 +236,7 @@ const readSchedule = cache(async (): Promise<Schedule> => {
   }
 
   const parsed = scheduleFileSchema.safeParse(raw);
-  if (!parsed.success) describeSchemaFailure(parsed.error);
+  if (!parsed.success) describeSchemaFailure(parsed.error, raw);
   const file = parsed.data;
 
   /* THE WEEKS. Sorted by number rather than taken in file order, the same

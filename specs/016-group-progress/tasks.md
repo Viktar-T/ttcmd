@@ -62,7 +62,7 @@ existing page touches nothing else.
   **Check:** criterion 14. The home page's boxes measure what they measured at
   T01's baseline, and the link navigates.
 
-- [ ] **T08 — The build refuses eight malformed schedules.**
+- [x] **T08 — The build refuses eight malformed schedules.**
   One at a time, reverting between, per criterion 10.
   **Check:** eight build failures, eight messages, each naming its row. The
   messages go into `verification.md` verbatim. Evidence only — no source change.
