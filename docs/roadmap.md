@@ -8,7 +8,7 @@ What gets built, in what order, and what forces each step.
 | Binding?     | No. `constitution.md` is law; an accepted `spec.md` is a commitment; this file is a plan.                                                                         |
 | Scope        | **The application.** Not the curriculum.                                                                                                                          |
 | Owner        | Viktar                                                                                                                                                            |
-| Last revised | 2026-09-10 — **016 is now the group progress page**, built and closed; the three unbuilt slices renumbered up by two (search → 017, glossary → 018, discoverability → 019); **Done** brought up to date with 007–016 |
+| Last revised | 2026-09-10 — **020 closed** (the narrower progress table); **016 is now the group progress page**, built and closed; the three unbuilt slices renumbered up by two (search → 017, glossary → 018, discoverability → 019); **Done** brought up to date with 007–016 |
 
 **The course plan does not live here.** Lesson plans, task sheets, the program
 contract and anything student-facing belong in the vault (`30_work/TTC/`), per
@@ -47,7 +47,7 @@ Slice 001 was correctly sized. Keep that size.
 ---
 ## Where we are
 
-**Application** — sixteen slices closed, 001 through 016. See **Done** below.
+**Application** — seventeen slices closed: 001 through 016, and 020. See **Done** below.
 
 **Content** — the lane that matters (ADR-0004)
 
@@ -130,6 +130,7 @@ the record. One line each here, no more.
 | **014-module-contents** | the module page gets the same contents a lesson page has, opening with „Wstęp" |
 | **015-content-dev-refresh** | a content edit reaches the browser without restarting the dev server — unplanned by this file |
 | **016-group-progress** | `/postep`: four groups, week by week, each cell the date that group did that session. Amends Articles I, V and VI via ADR-0014 |
+| **020-progress-what-happened** | the progress table shows what happened, not what was planned: the two planned columns go, and a group cell reads 03.09-T1 — the date, and the week THAT date fell in |
 
 One finding from 003 is still live and is carried into 007 below: **`--rule`
 computes to 1.47:1 on dark.** Exempt while a rule is decorative; not exempt the
@@ -139,7 +140,12 @@ moment one becomes structural.
 and each of them took the number the queue below had reserved for something
 else. The unbuilt slices were therefore renumbered on 2026-09-10: search
 **015 → 017**, the glossary **016 → 018**, being found **017 → 019**. Nothing
-was removed. The prompts inside the *closed* slices below still say "search —
+was removed. **020 then took the next free number past that queue rather than
+taking 017**, so the queue keeps the numbers it was just given and the gap is
+recorded rather than paid for with a third renumbering. Slice numbers are
+append-only; nothing requires them to be contiguous.
+
+The prompts inside the *closed* slices below still say "search —
 that is slice 015", and they are left exactly as they were pasted: they are the
 record of what was planned on the day they ran, and a commit log that disagrees
 with a tidied plan is the worse of the two mistakes (Article II).
