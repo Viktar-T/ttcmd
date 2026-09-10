@@ -109,9 +109,9 @@ The calendar, the topics, the row group per session, the stacked layout below
    with a lesson's letter and title derived from the content tree and linked
    when the lesson is published.
 6. The group cells still hold a value or nothing, and the real dates now in the
-   seeded file render **in the new form**: session 1 reads ,
-   , , ; session 2 reads , 
-   and two blanks. The two  cells carrying  against a session planned
+   seeded file render **in the new form**: session 1 reads `03.09-T1`,
+   `04.09-T1`, `08.09-T2`, `08.09-T2`; session 2 reads `10.09-T2`, `11.09-T2`
+   and two blanks. The two `4Tc` cells carrying `T2` against a session planned
    for week 1 is the criterion, not an accident.
 6a. The element carrying each of those still exposes the full machine-readable
    date, year included.
@@ -150,7 +150,7 @@ The calendar, the topics, the row group per session, the stacked layout below
    group; and printing nothing, which is what made the two 4Tc groups' being a
    week behind invisible until someone compared dates by hand.
 5. **The year is dropped from the cell and kept on the element.** Rejected:
-   , which spends ten characters of a narrow column on a year
+   `03.09.2026-T1`, which spends ten characters of a narrow column on a year
    that is the same on every row of the table and is printed seventeen times in
    the calendar above it.
 6. **A date in no listed week fails the build.** Rejected: falling back to the
