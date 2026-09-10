@@ -67,7 +67,7 @@ existing page touches nothing else.
   **Check:** eight build failures, eight messages, each naming its row. The
   messages go into `verification.md` verbatim. Evidence only — no source change.
 
-- [ ] **T09 — The four temporary experiments.**
+- [x] **T09 — The four temporary experiments.**
   A lesson's title changed (criterion 6), a seeded lesson set `publish: false`
   (criterion 7), a group date moved two weeks past its week (criterion 9), and a
   week plus a session plus a group date added (criterion 11).
