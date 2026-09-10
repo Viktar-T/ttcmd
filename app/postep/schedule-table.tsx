@@ -8,12 +8,12 @@ import styles from "./page.module.css";
  * The table of sessions — the substance of `/postep`.
  *
  * ONE `<tbody>` PER SESSION, TWO ROWS INSIDE IT, and that is the one
- * structural decision of this slice. The seven numeric columns cost about
- * 591px at --text-sm in the mono face, and the lane is 624px: they fit with
- * 33px to spare. A topics column does not fit at any width this site has —
- * the shortest seeded topic wants some 340px — and every arrangement that
- * makes it try costs either the site's single left edge, or the date format,
- * or the readability of the thing a student came for.
+ * structural decision here. Slice 020 dropped the planned week and the planned
+ * date, so five columns cost about 399px at --text-sm in the mono face against
+ * a 624px lane — 225px of slack. That is still not a topics column: the
+ * shortest seeded topic wants some 340px, and every arrangement that makes it
+ * try costs either the site's single left edge, or the date format, or the
+ * readability of the thing a student came for.
  *
  * A row group is what HTML has for *these rows are one thing*. It is also the
  * natural boundary for the separator between sessions and for the block the
@@ -63,10 +63,6 @@ export function ScheduleTable({ sessions }: { sessions: ScheduleSession[] }) {
       <thead>
         <tr>
           <th scope="col">Nr</th>
-          {/* The only abbreviation on the page. "Tydzień" in full costs 30 of
-              the 33px of slack the seven columns leave. */}
-          <th scope="col">Tydz.</th>
-          <th scope="col">Data</th>
           {GROUPS.map((group) => (
             <th scope="col" key={group}>
               {group}
@@ -82,14 +78,6 @@ export function ScheduleTable({ sessions }: { sessions: ScheduleSession[] }) {
               <span className={styles.label}>Zajęcia</span>{" "}
               {session.number}
             </th>
-            <td>
-              <span className={styles.label}>Tydzień</span>
-              {session.week}
-            </td>
-            <td>
-              <span className={styles.label}>Data</span>
-              <Cell date={session.date} />
-            </td>
             {/* Driven by GROUPS, which is also what the schema validates
                 against — so a column and a refusal cannot disagree about which
                 four groups this course has. */}
@@ -101,7 +89,10 @@ export function ScheduleTable({ sessions }: { sessions: ScheduleSession[] }) {
             ))}
           </tr>
           <tr className={styles.topicsRow}>
-            <td colSpan={3 + GROUPS.length}>
+            {/* Derived, never restated: the session's number plus one cell per
+                group. A literal here and the header row would disagree the
+                first time a column moved. */}
+            <td colSpan={1 + GROUPS.length}>
               <ul className={styles.topics}>
                 {session.topics.map((topic, index) => (
                   <li key={index}>

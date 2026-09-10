@@ -10,7 +10,7 @@ build in between.
 
 ---
 
-- [ ] **T01 — The two planned columns leave the table.**
+- [x] **T01 — The two planned columns leave the table.**
   `app/postep/schedule-table.tsx`: the `Tydz.` and `Data` header cells and their
   two body cells removed, the topics row's `colSpan` re-derived from `GROUPS`
   rather than restated, the file's doc comment corrected to the new arithmetic.
