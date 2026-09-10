@@ -8,7 +8,7 @@ What gets built, in what order, and what forces each step.
 | Binding?     | No. `constitution.md` is law; an accepted `spec.md` is a commitment; this file is a plan.                                                                         |
 | Scope        | **The application.** Not the curriculum.                                                                                                                          |
 | Owner        | Viktar                                                                                                                                                            |
-| Last revised | 2026-09-09 — 016 (a term explained where the reader meets it, and `/slownik`, the page that holds every term) added; discoverability renumbered again, to 017 |
+| Last revised | 2026-09-10 — **016 is now the group progress page**, built and closed; the three unbuilt slices renumbered up by two (search → 017, glossary → 018, discoverability → 019); **Done** brought up to date with 007–016 |
 
 **The course plan does not live here.** Lesson plans, task sheets, the program
 contract and anything student-facing belong in the vault (`30_work/TTC/`), per
@@ -36,8 +36,9 @@ content, whatever this roadmap says.
 
 This is priority 5 work. AgriRobot outranks it for deep-work blocks until its
 wniosek is in or killed (`30_work/TTC/AGENTS.md`, rule 1), and the teaching load
-itself is 8 h/week across two groups. Both groups get identical content, so the
-app never models groups.
+itself is 8 h/week across **four** groups, two hours with each. Every group gets
+identical content — and since **ADR-0014** the app models the groups in exactly
+one place, the progress page, and nowhere else.
 
 Therefore: **small slices, small windows.** A slice that cannot be specced,
 planned and executed inside a few short sessions is too big and must be split.
@@ -46,7 +47,7 @@ Slice 001 was correctly sized. Keep that size.
 ---
 ## Where we are
 
-**Application** — six slices closed, 001 through 006. See **Done** below.
+**Application** — sixteen slices closed, 001 through 016. See **Done** below.
 
 **Content** — the lane that matters (ADR-0004)
 
@@ -61,7 +62,9 @@ Slice 001 was correctly sized. Keep that size.
 - **Moduł 5 — Pod maską** — index and 5a–5h drafted, `publish: false` (autonomous run of 2026-09-02; briefs `docs/content-briefs/05-*.md` unapproved; the by-hand code built in the untracked `tmp-modul5-build/`, delete when done)
   (v2.5); no lesson yet
 
-The remaining queue is 007 through 017, and everything in it is a proposal.
+The remaining queue is **017 through 019** — search, the glossary, being found —
+and everything in it is a proposal. The sections for 007 through 016 are kept
+below rather than removed: they are the prompts that actually ran those slices.
 
 ## What the real content actually needs
 
@@ -117,10 +120,29 @@ the record. One line each here, no more.
 | **004-lesson-typography** | a lesson written in plain Markdown reads properly |
 | **005-code-blocks** | fenced code: highlighting, copy, filename, line highlighting |
 | **006-navigation** | lettered scheme, chevron breadcrumbs, pagers, module page, module grid |
+| **007-contents-panel** | a module's lessons listed, the current one expanded to its own sections, the active one highlighted as the reader scrolls |
+| **008-publish-flag** | `publish: false` keeps a lesson out of every route, listing, pager and the build output |
+| **009-mdx-components** | the elements the written lessons actually asked for, and no others |
+| **010-sources-and-figures** | a claim a reader can check: quotations, sources, figures, and an internal link the build refuses when it is wrong |
+| **011-lesson-columns** | the contents becomes a real column of the lesson page's grid rather than a passenger in the gutter |
+| **012-one-left-edge** | every page on the site begins its content where a lesson's article begins — one left edge, unplanned by this file |
+| **013-presentation-mode** | a second mode for the projector: the marked fragments lit, the prose around them stepped back |
+| **014-module-contents** | the module page gets the same contents a lesson page has, opening with „Wstęp" |
+| **015-content-dev-refresh** | a content edit reaches the browser without restarting the dev server — unplanned by this file |
+| **016-group-progress** | `/postep`: four groups, week by week, each cell the date that group did that session. Amends Articles I, V and VI via ADR-0014 |
 
 One finding from 003 is still live and is carried into 007 below: **`--rule`
 computes to 1.47:1 on dark.** Exempt while a rule is decorative; not exempt the
 moment one becomes structural.
+
+**Three slices were built that this file never planned** — 012, 015 and 016 —
+and each of them took the number the queue below had reserved for something
+else. The unbuilt slices were therefore renumbered on 2026-09-10: search
+**015 → 017**, the glossary **016 → 018**, being found **017 → 019**. Nothing
+was removed. The prompts inside the *closed* slices below still say "search —
+that is slice 015", and they are left exactly as they were pasted: they are the
+record of what was planned on the day they ran, and a commit log that disagrees
+with a tidied plan is the worse of the two mistakes (Article II).
 
 ---
 
@@ -820,7 +842,7 @@ Finish with a report: what you built, the decisions you took, what you could
 not verify yourself, and what you deliberately left out.
 ```
 
-## 015 — Finding the thing you half-remember
+## 017 — Finding the thing you half-remember
 
 Seven lessons, just over fifteen thousand words, **fifty-six `##` sections.** A
 student who remembers that one of them quoted a study where the developers came
@@ -862,7 +884,7 @@ Read in full, in this order:
 - then content/moduly/02-warsztat/na-zywo-agent-buduje-aplikacje.mdx
   — the longest lesson, and the one it is hardest to find anything in
 
-Slice 015-search.
+Slice 017-search.
 
 Scope: search across every published lesson, reachable from every page. It matches a
 lesson's title, its lede, its headings and its prose. A result names the module and
@@ -882,7 +904,7 @@ redesigned to make room for it, and no existing rule, colour or spacing is touch
 
 Constraints:
 - A lesson with `publish: false` is not searchable **and its text must not reach the
-  browser at all.** The same rule the sitemap gets in slice 017, and a stricter one:
+  browser at all.** The same rule the sitemap gets in slice 019, and a stricter one:
   an index is the text.
 - No backend, no API route, no third-party search service (Articles VIII and IV).
   The index is produced when the site is built.
@@ -935,7 +957,7 @@ not verify yourself, and what you deliberately left out.
 ```
 
 
-## 016 — The word you were told once
+## 018 — The word you were told once
 
 Twenty-seven rows in `docs/content-style.md`, one per lesson that owns a piece
 of the course's vocabulary, each term homed to the lesson that owns it —
@@ -1018,7 +1040,7 @@ suspended.** This carries the first inline element, a client component with
 pointer, touch, keyboard and screen-reader behaviour, a build-time store with
 its own checks, and a new destination in the route tree — more than 001's
 worth. If the spec cannot hold all four inside a few short sessions, split it
-at the seam the two halves already name: the marker and the gloss as 016, the
+at the seam the two halves already name: the marker and the gloss as 018, the
 destination as a slice of its own, and say so in the report rather than running
 long and calling it one.
 
@@ -1063,7 +1085,7 @@ Read in full, in this order:
   — XAML told once in a published lesson that does not own it, and once under
   its own heading in the unpublished lesson the table homes it to
 
-Slice 016-terms-and-glossary.
+Slice 018-terms-and-glossary.
 
 Scope: a reader who meets a term gets one sentence about it without leaving the
 paragraph, and every term the course has recorded has one destination.
@@ -1100,14 +1122,14 @@ paragraph, and every term the course has recorded has one destination.
   course model twice — `getLessonNeighbours` flattens it, `getModuleNeighbours`
   walks the module list — so the last lesson of the last module and the last
   module page both end in nothing today: decide what previous and next do at
-  both ends and on the glossary itself. Record also whether slice 015's index —
+  both ends and on the glossary itself. Record also whether slice 017's index —
   scoped to published lessons — reaches a page that is not one, or skips it.
 - A specimen of the marker, the gloss and one topic group goes on /styleguide.
 
-Out of scope: search — that is slice 015, and no control is added to the
+Out of scope: search — that is slice 017, and no control is added to the
 header, which holds two and says why a third would move both. The contents
 panel, the scroll-spy and back-to-top slice 007 settled, and the columns slices
-011, 012 and 014 settled. A sitemap entry for `/slownik` — that is slice 017;
+011, 012 and 014 settled. A sitemap entry for `/slownik` — that is slice 019;
 leave it a note in the spec's Out of scope, as slice 008 did. Footnotes, a
 bibliography and inline citation markers, refused by name in slice 010 and
 still refused. Changing what the quotation element renders. Writing the Polish
@@ -1246,7 +1268,7 @@ not verify yourself, and what you deliberately left out.
 ```
 
 
-## 017 — Being found
+## 019 — Being found
 
 *Decided 2026-08-28: the site is permanently open and searchable.* Choosing that
 is not the same as achieving it — a site with almost no inbound links is not
@@ -1262,7 +1284,7 @@ Read in full, in this order:
 - AGENTS.md
 - docs/adr/0006-temporary-no-index.md — the decision and its history
 
-Slice 017-discoverability.
+Slice 019-discoverability.
 
 Scope: make the site actually findable — a sitemap, a permissive robots.txt, and a
 real title and description per page. Assert that nothing in the app serves
@@ -1312,7 +1334,7 @@ not verify yourself, and what you deliberately left out.
 ## Settled — the indexing decision
 
 The site is **public and searchable, permanently.** Not a temporary posture, so
-there is nothing to remember and nothing to undo. Slice 017 is what makes it
+there is nothing to remember and nothing to undo. Slice 019 is what makes it
 true rather than merely permitted.
 
 Why it was not a difficult call: **Article IV already forbids student names,
@@ -1347,13 +1369,13 @@ made.
 
 Ordered by when the pain arrives, not by number.
 
-- ~~**Search**~~ — numbered **015** above, 2026-08-31. The judgement here was
+- ~~**Search**~~ — numbered **017** above, 2026-08-31. The judgement here was
   "worthless under ~15 lessons, obvious above ~30, wait for the pain". What
   changed is that the pain turns out not to be lesson *count*: seven lessons
   already carry fifty-six sections and fifteen thousand words, and nothing
   crosses a file.
 - **A footer, and a link to each page's source.** The two scraps of the
-  reference's chrome left over after 011, 015 and 017. A footer would carry what
+  reference's chrome left over after 011, 017 and 019. A footer would carry what
   *Not doing* below already refuses — partners, a licence block, a challenge —
   and "propose changes to material" serves contributors this repo does not
   have. Both are cheap the day either has something to say.
@@ -1381,7 +1403,8 @@ Not scheduled. Each needs something that does not exist yet.
 
 | Candidate | Blocked on |
 | --- | --- |
-| Week / schedule view | A confirmed timetable. Article V forbids inventing one, and `week` stays optional metadata until the school supplies it. |
+| ~~Week / schedule view~~ | **Delivered as 016**, 2026-09-10 — and not by inventing a timetable. Viktar writes the weeks he actually has into `content/schedule.json`, and the page renders only those. `week` on a lesson stays optional metadata and stays unread: the schedule is the source of truth for when anything happens. |
+| Per-group content | An amendment to Article VI. ADR-0014 lets the site *report* where each group is; content stays identical for every group, and a lesson that varies by group is a new decision with its own ADR. |
 | Student project pages | An amendment to Article VI, which currently states the site does not host student work. Would need an ADR and a hard look at Article IV — student work means student names on a public site. |
 | Progress tracking, submissions, accounts | An amendment to Article VIII (no backend in v1) **and** a privacy answer good enough for minors' data on a public deployment. Do not start this because it is technically interesting. |
 | Publishing the SDD artifacts as course material | A deliberate reversal — the repo is currently *not* classroom material (Article II). If that changes, it changes on purpose, in an ADR. |
