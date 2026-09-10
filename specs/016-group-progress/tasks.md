@@ -57,7 +57,7 @@ existing page touches nothing else.
   its base and the table is the media query above it. There is no order in
   which one of them exists without the other.*
 
-- [ ] **T07 — The way in.**
+- [x] **T07 — The way in.**
   `app/page.tsx` gains one link to `/postep`. Nothing else on that page moves.
   **Check:** criterion 14. The home page's boxes measure what they measured at
   T01's baseline, and the link navigates.

@@ -30,6 +30,18 @@ export default async function HomePage() {
             Zacznij kurs
           </Link>
         )}
+        {/* The way to the progress page — here rather than in the site header,
+            which has carried no navigation since slice 006. Adding the first
+            item to it is a change to the look of the site and Viktar's to
+            make, not this slice's; this is one link and one commit either way.
+
+            .heroLede rather than a bare <p>: .hero is a grid with its own gap
+            and .heroLede is the paragraph style in it that carries margin: 0,
+            so a default margin here would put a second gap in a grid that
+            already has one. */}
+        <p className="heroLede">
+          <Link href="/postep">Postęp grup — gdzie jest twoja grupa</Link>
+        </p>
       </section>
 
       <ModuleGrid modules={course} />
