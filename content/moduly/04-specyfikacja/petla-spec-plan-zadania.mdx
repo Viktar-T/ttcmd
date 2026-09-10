@@ -2,7 +2,7 @@
 title: "Pętla: specyfikacja → plan → zadania → kod"
 order: 3
 summary: "Cztery pliki, cztery pytania — i specyfikacja notatnika napisana w całości, od celu do kryteriów akceptacji. Lekcja o zdaniu, które da się sprawdzić, o dwóch sposobach, na jakie specyfikacja psuje się najczęściej, i o teście, który zdaje tylko dobra: ktoś, kto nie widział twojej rozmowy, umie z niej zaplanować budowę."
-publish: false
+publish: true
 ---
 
 {/* Drafted 2026-09-02 from docs/content-briefs/04c-petla-spec-plan-zadania.md,
@@ -11,7 +11,16 @@ publish: false
     differed writes their own criteria (said in the build exercise). The peer
     swap is a classroom arrangement; the fallback (a fresh agent session as the
     reviewer) is in the exercise text. Intra-module references are plain text:
-    a link to an unpublished lesson fails the build. */}
+    a link to an unpublished lesson fails the build. 
+
+    Exercises rewritten 2026-09-10 on Viktar's request into the hand-in
+    shape of Moduł 2 and Moduł 3 — one Zadanie element, the finished repository
+    state, four conditions visible in the repository, and the closing form
+    sentence. The rule is docs/content-style.md, „The hand-in assignment”.
+    The recall exercise was dropped; the five sentences of „Pięć zdań do
+    przepisania” and „Pokaz, jeszcze raz” became conditions, the five kept as
+    a list inside the same <Zadanie>.
+*/}
 
 Wróć do pliku napisanego wstecz dla minutnika. Niektóre zdania w nim dało
 się sprawdzić od razu: „czas pokazywany jako `mm:ss`” — uruchamiasz i patrzysz.
@@ -356,25 +365,41 @@ wynik i sposób sprawdzenia, a każde zadanie ma swoje „gotowe, gdy”.
 - **Zadanie kończy się na sprawdzeniu.** Jeden commit, numer w opisie, „gotowe,
   gdy” — i miara: jedno zdanie zmiany to za mało na specyfikację.
 
-Twoja specyfikacja notatnika powstaje w ćwiczeniach — i zanim zostanie zbudowana,
+Twoja specyfikacja notatnika powstaje w zadaniu — i zanim zostanie zbudowana,
 przeczyta ją ktoś, kto nie zna twojej rozmowy. Następna lekcja kładzie te cztery
 pliki obok narzędzi, które w 2025 roku wbudowały tę samą pętlę w edytory, a
 lekcja po niej buduje notatnik.
 
 ## Ćwiczenia
 
-<Zadanie>
+<Zadanie title="Specyfikacja notatnika i jej pierwszy czytelnik">
 
-Z pamięci: cztery pliki i pytanie, na które odpowiada każdy z nich; dwa sposoby,
-na jakie ten proces psuje się najczęściej, po jednym przykładzie.
+Napisz `specs/001-notatnik/spec.md` w `notatnik-v2` — z twoim formatem z
+Budowy 2 i twoimi kryteriami, nie przepisany z lekcji — i daj go przeczytać
+komuś, kto nie widział twojej rozmowy. Ta specyfikacja jest budowana za dwie
+lekcje, więc wszystko, czego dziś w niej zabraknie, dopowie za ciebie agent.
 
-</Zadanie>
+Warunki są cztery i wszystkie widać w repozytorium:
 
-<Zadanie title="Pięć zdań do przepisania">
+- `spec.md` ma sześć części z lekcji — cel, dla kogo, co robi, czego nie robi,
+  kryteria akceptacji, do ustalenia — a każde kryterium ma sytuację, wynik i
+  sposób sprawdzenia. Nazwa pliku z kodem w specyfikacji to wyciek: przenieś ją
+  do planu, zanim zrobisz commit;
+- są **dwa commity**: pierwszy z twoją wersją, drugi po przeglądzie. Przegląd
+  robi druga osoba, czytając wyłącznie twoją konstytucję i specyfikację:
+  wypisuje pliki, które by utworzyła, i zaznacza każdy wyciek oraz każde
+  pytanie, na które nie ma odpowiedzi w pliku. Jeśli nie ma z kim się zamienić,
+  tę rolę odgrywa agent w świeżej sesji z dwoma dołączonymi plikami;
+- w `README.md` jest pięć zdań z listy poniżej przepisanych na kryterium w
+  formie „Kiedy …, to …” z dopisanym „Sprawdzenie: …”. Jeśli któregoś nie da
+  się przepisać bez podjęcia decyzji, napisz, jakiej — i przenieś ją do „Do
+  ustalenia” w specyfikacji;
+- w `README.md` jest też prompt z pokazu rozsortowany do czterech plików —
+  konstytucja, spec, plan, zadania — z jednym zdaniem o tym, którego pliku
+  prompt nie miał wcale i co to kosztowało, sądząc po plikach `DECISIONS.md`
+  trzech agentów.
 
-Przepisz każde z poniższych na kryterium akceptacji w formie „Kiedy …, to …”,
-z dopisanym „Sprawdzenie: …”. Jeśli zdanie nie da się przepisać bez podjęcia
-decyzji, napisz, jakiej.
+Zdania do przepisania:
 
 1. Program obsługuje polskie znaki.
 2. Lista notatek jest zawsze aktualna.
@@ -382,26 +407,11 @@ decyzji, napisz, jakiej.
 4. Pusta notatka nie jest zapisywana.
 5. Program działa po ponownym uruchomieniu.
 
-</Zadanie>
+Na koniec wypchnij wszystko.
 
-<Zadanie>
-
-Napisz własny `specs/001-notatnik/spec.md` w `notatnik-v2` — z twoim formatem z
-Budowy 2 i twoimi kryteriami, nie przepisany z lekcji — i zrób commit. Potem
-zamień się z kimś z klasy: druga osoba, czytając tylko twoją konstytucję i
-specyfikację, wypisuje pliki, które by utworzyła, i zaznacza każdy wyciek i każde
-pytanie, na które nie ma odpowiedzi w pliku. Popraw, zrób drugi commit. Jeśli
-nie ma z kim się zamienić, tę samą rolę odgrywa agent w świeżej sesji z dwoma
-dołączonymi plikami. Ta specyfikacja jest budowana za dwie lekcje.
-
-</Zadanie>
-
-<Zadanie title="Pokaz, jeszcze raz">
-
-Wróć do promptu z pokazu z pierwszego modułu i rozsortuj jego linie do czterech
-plików: konstytucja, spec, plan, zadania. Napisz, którego pliku prompt nie miał
-wcale — i co to kosztowało na pokazie, sądząc po plikach `DECISIONS.md` trzech
-agentów.
+Kiedy repozytorium z aplikacją będzie umieszczone na GitHubie, wypełnij
+[formularz](https://docs.google.com/forms/d/e/1FAIpQLSc9Da0ossYyhSCMjnkMCqom2VQ9CYpB2L0Kvymb3yt_UYF6rw/viewform?usp=header),
+żeby nauczyciel sprawdził zadanie.
 
 </Zadanie>
 

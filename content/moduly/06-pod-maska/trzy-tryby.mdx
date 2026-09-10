@@ -2,16 +2,28 @@
 title: "Trzy tryby: ta sama funkcja bez AI, z podpowiadaniem, z agentem"
 order: 8
 summary: "Jedna funkcja twojego własnego notatnika, opisana jednym zdaniem, zbudowana trzy razy na trzech gałęziach — bez AI w Visual Studio, tylko z podpowiadaniem, z agentem — każda na czas i z wpisem w dzienniku. Potem wersja agenta czytana czterema pytaniami z czterech poprzednich lekcji: kto to wywołuje, jaki układ, gdzie stan, co z plikiem."
-publish: false
+publish: true
 ---
 
-{/* Drafted 2026-09-02 from docs/content-briefs/05h-trzy-tryby.md, autonomous
+{/* Drafted 2026-09-02 from docs/content-briefs/06h-trzy-tryby.md, autonomous
     run — brief unapproved. No new compiled code: the feature is the student's
     own, in their notatnik-v2; the lesson fixes the spec sentence and the
     procedure. Mode 2 assumes a class editor can run with the agent panel
     closed and Tab completion on (TO CONFIRM under the school's
     accounts). The pooled class table is counts on the board, never a file in
-    any repository (Article IV). */}
+    any repository (Article IV). 
+
+    Exercises rewritten 2026-09-10 on Viktar's request into the hand-in
+    shape of Moduł 2 and Moduł 3 — one Zadanie element, the finished repository
+    state, four conditions visible in the repository, and the closing form
+    sentence. The rule is docs/content-style.md, „The hand-in assignment”.
+    The recall exercise and the week-later follow-up („zmień treść napisu pod
+    listą”) were dropped — the second cannot be handed in with the module;
+    restore it as a separate Zadanie if it is wanted. The git diff --stat
+    comparison and the card became conditions of „Wersja, której bronisz”.
+    This assignment names notatnik-v2 like the rest of the lesson, so it is
+    one more string the owed running-example rewrite must update.
+*/}
 
 Na karcie masz siedem liczb: minuty czterech bloków z tego modułu i trzech z
 budów — lista, obsługa błędu, zdarzenie. Każda z nich mówi, ile kosztowało
@@ -212,34 +224,35 @@ kosztuje.
 
 ## Ćwiczenia
 
-<Zadanie>
-
-Z pamięci: trzy tryby i warstwa z mapy, której każdy odpowiada; cztery
-pytania, którymi czyta się diff w skali funkcji.
-
-</Zadanie>
-
-<Zadanie>
-
-`git diff --stat main..tryb-3-agent` i to samo dla `tryb-1-bez-ai`. Wpisz
-obie liczby linijek na kartę i jedno zdanie o tym, w których plikach jest
-różnica.
-
-</Zadanie>
-
 <Zadanie title="Wersja, której bronisz">
 
-Scal wybraną gałąź do `main` z opisem, w którym stoi „bo”. Wpis w dzienniku
-z czterema odpowiedziami i werdyktem. Karta z dziesięcioma liczbami minut —
-commit i push.
+Doprowadź repozytorium notatnika do stanu, w którym ta sama funkcja stoi na
+trzech gałęziach — `tryb-1-bez-ai`, `tryb-2-podpowiadanie`, `tryb-3-agent` — a
+na `main` leży ta, której umiesz bronić. Dwie pozostałe gałęzie zostają:
+historia, z której da się odczytać, co wypróbowano, jest warta więcej niż
+czysta.
 
-</Zadanie>
+Warunki są cztery i wszystkie widać w repozytorium:
 
-<Zadanie>
+- funkcja jest na wszystkich trzech gałęziach **ta sama** — jedno zdanie do
+  sprawdzenia, dopisane do `specs/001-notatnik/spec.md` **zanim** powstała
+  pierwsza wersja — a każda gałąź ma commit z nazwą trybu w opisie;
+- scalenie do `main` ma w opisie zdanie z „bo”: dlaczego ta wersja, a nie dwie
+  pozostałe. Bez „bo” to opinia, a nie przegląd kodu;
+- w `dziennik.md` są cztery pytania tej lekcji zadane wersji agenta — kto to
+  wywołuje i na którym wątku, jaki układ, gdzie jest stan, co z plikiem — z
+  numerami linijek i werdyktem. Do tego dwie liczby, z `git diff --stat` dla
+  `main..tryb-3-agent` i dla `main..tryb-1-bez-ai`, z jednym zdaniem o tym, w
+  których plikach jest różnica;
+- karta ma dziesięć liczb minut — siedem sprzed tej lekcji i trzy z dzisiaj —
+  w trzech kolumnach: minuty, zmienione linijki, linijki, które rozumiesz. Idzie
+  do repozytorium razem z resztą.
 
-Za tydzień otwórz scaloną wersję i zmień treść napisu pod listą — na przykład
-na „Wpisów: N”. Zapisz, ile czasu zajęło znalezienie miejsca i czy do jego
-znalezienia trzeba było otworzyć agenta.
+Na koniec wypchnij wszystko.
+
+Kiedy repozytorium z aplikacją będzie umieszczone na GitHubie, wypełnij
+[formularz](https://docs.google.com/forms/d/e/1FAIpQLSc9Da0ossYyhSCMjnkMCqom2VQ9CYpB2L0Kvymb3yt_UYF6rw/viewform?usp=header),
+żeby nauczyciel sprawdził zadanie.
 
 </Zadanie>
 

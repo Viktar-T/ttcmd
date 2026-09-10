@@ -1,0 +1,413 @@
+---
+title: "Bezpieczeństwo: sekrety, dane, prompt injection"
+order: 6
+summary: "Trzy rzeczy, które działają bez ciebie i o których jeszcze nie myślałeś: historia twojego publicznego repozytorium, której nie da się cofnąć; miejsce, w którym ma mieszkać klucz, zanim go dostaniesz; i powód, dla którego agent czytający cudzy tekst trzyma w tym samym momencie twoje hasła."
+publish: true
+---
+
+{/* Drafted 2026-09-10 from docs/content-briefs/07f-bezpieczenstwo.md,
+    semi-supervised run — brief unapproved.
+
+    Deliberately narrow, and it says so: one thing already true (the history),
+    one habit (where a secret lives), one mechanism (prompt injection). Two
+    hours. A half-taught security survey is worse than a narrow honest one.
+
+    NOT INCLUDED, on purpose: SQL injection and XSS (9 of 12 do not know what
+    SQL is — reader file), OWASP as a list, the CVE timeline from research-07
+    §5.5 (accurate and a catalogue), and Google Antigravity's November 2025
+    findings — excellent, but Antigravity is a tool this course told students
+    to install, so it would read as a warning about the tool rather than about
+    the mechanism. Module brief, open question 3: Viktar to confirm.
+
+    NOTHING ABOUT POLISH LAW or the age of a minor: outside GitHub's own
+    documentation, Article V.
+
+    ASSUMES personal-account public repositories. Push protection's default
+    differs for organisation-owned repositories — if the school owns the
+    students' repos, section 4 is wrong for this class and must be rewritten
+    to „someone has to switch it on — check”. Brief, open question 2. */}
+
+Ten moduł polegał na budowaniu rzeczy, które działają, kiedy ciebie nie ma.
+Test uruchamia się sam. Bramka blokuje sama. Model czyta w nocy. Wczoraj
+doszedł ktoś, kto ma na twoim dysku kopię cudzego projektu, a w swoim —
+twój kod.
+
+Jest jeszcze jedna rzecz, która działa bez ciebie od początku września i o
+której nie było ani jednej lekcji: **twoje repozytorium jest publiczne.** Każdy
+commit, który wypchnąłeś od pierwszych zajęć, jest widoczny dla wszystkich, ma
+adres i zostanie tam, kiedy ty o nim zapomnisz.
+
+Ta lekcja jest krótka i celowo wąska. Nie będzie tu przeglądu bezpieczeństwa —
+na to potrzeba osobnego przedmiotu. Będą trzy rzeczy: jedna, która jest już
+prawdą i której nie cofniesz, jeden nawyk, który warto mieć **zanim** będzie
+potrzebny, i jeden mechanizm, przez który narzędzie, którego używasz codziennie,
+może zadziałać przeciwko tobie.
+
+## To, co raz wypchnięte, jest wypchnięte
+
+Zacznijmy od rzeczy, w którą najtrudniej uwierzyć, dopóki nie przeczyta się jej
+u źródła. Kiedy do repozytorium trafi coś, co nie powinno tam trafić, **usunięcie
+tego nie pomaga.** Ani kolejny commit, ani skasowanie pliku, ani skasowanie
+całego repozytorium.
+
+<Cytat author="GitHub Docs" source="Remediating a leaked secret — strona bez daty, sprawdzona 10 września 2026" date="2026-09-10" url="https://docs.github.com/en/code-security/tutorials/remediate-leaked-secrets/remediating-a-leaked-secret">
+
+Simply removing the secret from the codebase, pushing a new commit, or deleting
+and recreating the repository do not prevent the secret from being exploited.
+
+</Cytat>
+
+Powód jest mechaniczny, nie prawny. Commit zostaje osiągalny przez swój
+identyfikator, nawet gdy żadna gałąź już na niego nie wskazuje, i zostaje w
+każdej kopii, którą ktoś zdążył zrobić. GitHub wymienia trzy miejsca wprost:
+[w klonach i kopiach repozytorium, pod adresem samego identyfikatora commita w
+podglądzie na GitHubie, oraz przez pull requesty, które się do niego
+odwołują](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository).
+
+Kopie masz od wczoraj. Twój partner zrobił fork twojego repozytorium i ma je u
+siebie. I tu jest zdanie, które zaskakuje wszystkich:
+
+<Cytat author="GitHub Docs" source="Deleting a repository — strona bez daty, sprawdzona 10 września 2026" date="2026-09-10" url="https://docs.github.com/en/repositories/creating-and-managing-repositories/deleting-a-repository">
+
+Deleting a public repository will not delete any forks of the repository.
+
+</Cytat>
+
+Zmiana repozytorium na prywatne też nie pomoże, bo
+[publiczne kopie zostają publiczne](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/setting-repository-visibility).
+
+Zrób więc teraz jedną rzecz, na którą warto poświęcić dziesięć minut: **przejrzyj
+własną historię i poszukaj tego, czego nie powiesiłbyś na korytarzu.** Ścieżki z
+twoim nazwiskiem, nazwa komputera, prawdziwy adres, plik testowy z czyimiś
+danymi, zrzut ekranu z otwartą skrzynką pocztową. Poszukaj konkretnie, nie „na
+oko”:
+
+```bash
+git log --all --name-only --pretty=format: | sort -u | less
+```
+
+To wypisze każdą nazwę pliku, która kiedykolwiek była w tym repozytorium — także
+tych dawno usuniętych. Zapisz w `dziennik.md`, czego szukałeś i co znalazłeś.
+„Nic nie znalazłem” jest dobrą odpowiedzią tylko wtedy, gdy stoi obok listy
+rzeczy, których szukałeś.
+
+## Klucz, którego jeszcze nie masz — i dlaczego to kwestia czasu
+
+Dziś w twoim repozytorium prawdopodobnie nie ma żadnego hasła ani klucza,
+bo twoja aplikacja z niczym się nie łączy. Za dwa miesiące, przy module o
+wydaniu, to się zmieni; przy pierwszej aplikacji, która pobiera pogodę albo
+cokolwiek innego z internetu, dostaniesz **klucz API** — długi ciąg znaków,
+który jest jednocześnie twoją nazwą i twoim hasłem dla cudzej usługi.
+
+Nawyk buduje się teraz, bo pierwszy klucz zawsze trafia do repozytorium tego
+dnia, w którym się spieszysz.
+
+Skala jest zmierzona i większa, niż brzmi. Firma skanująca publiczne
+repozytoria naliczyła
+[28,65 miliona nowych zaszytych w kodzie sekretów w publicznych commitach w
+2025 roku, o 34% więcej niż rok wcześniej](https://blog.gitguardian.com/the-state-of-secrets-sprawl-2026/)
+(GitGuardian, 17 marca 2026 — to raport firmy, która sprzedaje narzędzie do
+wykrywania sekretów, oparty na jej własnych skanerach). W tym samym raporcie
+jest liczba, która mówi więcej: **64% sekretów wyciekniętych w 2022 roku było w
+styczniu 2026 nadal aktywnych.** Cztery lata później. Nikt ich nie unieważnił,
+bo nikt nie zauważył.
+
+Jak szybko taki klucz zostaje użyty? Badacze z Unit 42 śledzili kampanię, która
+polowała na klucze do usług chmurowych, i opisali czas reakcji:
+[operacja wydobywcza ruszała w ciągu pięciu minut od pojawienia się klucza w
+publicznym repozytorium](https://unit42.paloaltonetworks.com/malicious-operations-of-exposed-iam-keys-cryptojacking/)
+(30 października 2023; badanie firmowe, jedna kampania, sprzed trzech lat).
+W tym samym opisie jest szczegół, który mówi o tym najwięcej: dostawca usługi
+zablokował klucz w dwie minuty, a atakujący i tak zdążył zacząć — cztery minuty
+po tej blokadzie.
+
+Wniosek jest jednozdaniowy i wart zapamiętania na całe życie: **klucz, który raz
+znalazł się w publicznym repozytorium, jest spalony.** Nie usuwa się go —
+unieważnia się go i generuje nowy. To jest odruch, którego wszyscy uczą się raz,
+zwykle drogo.
+
+## Gdzie sekret ma mieszkać
+
+Odpowiedź brzmi: **poza repozytorium**, i .NET ma na to gotowe miejsce. Zanim
+tam dojdziemy, upewnij się, że masz plik `.gitignore` i że jest wygenerowany, a
+nie wymyślony:
+
+```bash
+dotnet new gitignore
+```
+
+Ten szablon wie o `bin/`, `obj/` i kilkudziesięciu innych rzeczach, o których ty
+nie wiesz. Jest w SDK od dawna i nie ma powodu pisać go z głowy.
+
+Uwaga na pułapkę, w którą wpada każdy dokładnie raz:
+[wpisy w `.gitignore` dotyczą wyłącznie plików nieśledzonych](https://learn.microsoft.com/azure/devops/repos/git/ignore-files).
+Jeśli plik został już raz zatwierdzony, dopisanie go do `.gitignore` **nie robi
+nic** — git nadal go śledzi. Trzeba go najpierw usunąć ze śledzenia
+(`git rm --cached <plik>`), a jeśli był w nim sekret, wracamy do poprzedniej
+sekcji: unieważnij, nie usuwaj.
+
+Sam sekret trzymaj natomiast tam, gdzie git w ogóle nie sięga — .NET ma na to
+osobne polecenie:
+
+```bash
+dotnet user-secrets init
+dotnet user-secrets set "Pogoda:Klucz" "wartosc-klucza"
+```
+
+Pierwsze polecenie dopisuje do pliku projektu identyfikator, drugie zapisuje
+wartość — ale **nie w projekcie**. Plik ląduje w twoim profilu użytkownika:
+`%APPDATA%\Microsoft\UserSecrets\<identyfikator>\secrets.json` na Windowsie,
+`~/.microsoft/usersecrets/<identyfikator>/secrets.json` na Linuksie i macOS.
+Git go nie widzi, bo jest poza katalogiem repozytorium.
+
+I od razu uczciwe zastrzeżenie, które Microsoft pisze o własnym narzędziu:
+
+<Cytat author="Microsoft Learn" source="Safe storage of app secrets in development — strona bez daty, sprawdzona 10 września 2026" date="2026-09-10" url="https://learn.microsoft.com/aspnet/core/security/app-secrets#use-the-secret-manager-tool">
+
+Secret Manager doesn't encrypt the stored secrets and shouldn't be treated as a
+trusted store. It's for development purposes only.
+
+</Cytat>
+
+To nie jest sejf. To jest rozwiązanie jednego konkretnego problemu — **żeby
+sekret nie znalazł się w repozytorium** — i tego problemu nie rozwiązuje ani
+plik obok kodu, ani zmienna wpisana na sztywno.
+
+## Maszyna, która już cię pilnuje
+
+Dobra wiadomość na środek lekcji: coś już stoi po twojej stronie i pewnie o tym
+nie wiesz. GitHub skanuje to, co wypychasz, i **domyślnie blokuje wypchnięcie,
+w którym rozpozna sekret** — dla pushy do publicznych repozytoriów jest to
+włączone bez pytania
+([dokumentacja push protection](https://docs.github.com/en/code-security/concepts/secret-security/push-protection),
+sprawdzona 10 września 2026). Zobaczysz wtedy odmowę z nazwą typu klucza i
+wskazaniem pliku oraz linijki.
+
+Da się to ominąć — trzeba wejść pod podany adres i wybrać powód. Warto wiedzieć,
+co się wtedy dzieje, zanim ktoś kliknie „naprawię później” o dwudziestej trzeciej:
+takie ominięcie tworzy wpis w zakładce **Security**, **trafia do dziennika
+zdarzeń konta** i wysyła powiadomienie z linkiem do sekretu oraz z podanym przez
+ciebie powodem. Ominięcie jest możliwe i jest zapisane.
+
+Druga rzecz jest ciekawsza. Kiedy GitHub rozpozna klucz należący do jednego z
+partnerskich dostawców, nie ogranicza się do powiadomienia ciebie:
+
+<Cytat author="GitHub Docs" source="About secret scanning — strona bez daty, sprawdzona 10 września 2026" date="2026-09-10" url="https://docs.github.com/en/code-security/secret-scanning/introduction/about-secret-scanning">
+
+When a partner secret is detected, we notify the provider so they can take
+action, such as revoking the credential.
+
+</Cytat>
+
+Wśród partnerów są między innymi Amazon AWS, OpenAI i Anthropic. Czyli: jeśli
+wypchniesz klucz do jednej z tych usług, jest realna szansa, że przestanie
+działać, zanim zdążysz zauważyć, że go wypchnąłeś. To jest wygodne i to jest
+też dowód na tezę z drugiej sekcji: **wszyscy zachowują się tak, jakby każdy
+klucz w publicznym repozytorium był spalony, bo jest.**
+
+## Trzy rzeczy, które nigdy nie powinny spotkać się w jednym miejscu
+
+Zostaje trzecia część i dotyczy narzędzia, którego używasz codziennie. Model
+nie ma oddzielnych kanałów na „polecenia od użytkownika” i „dane do
+przeczytania”. Wszystko trafia do niego jako tekst i wszystko wygląda tak samo.
+Jeśli więc agent przeczyta plik, stronę albo zgłoszenie, w którym ktoś napisał
+zdanie w trybie rozkazującym, to zdanie ma szansę zadziałać jak twoje
+polecenie. Nazywa się to **prompt injection** — po polsku najbliżej byłoby
+„wstrzyknięcie polecenia”, ale nazwa angielska jest tą, którą spotkasz.
+
+Simon Willison nazwał układ, w którym staje się to groźne, **śmiertelną
+trójcą**: dostęp do twoich prywatnych danych, kontakt z tekstem, którego nie
+kontrolujesz, i możliwość wysłania czegoś na zewnątrz. Każde z osobna jest
+nieszkodliwe. Razem wystarczą.
+
+<Cytat author="Simon Willison" source="The lethal trifecta for AI agents: private data, untrusted content, and external communication" date="2025-06-16" url="https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/">
+
+LLMs are unable to reliably distinguish the importance of instructions based on
+where they came from.
+
+</Cytat>
+
+W [tym samym tekście](https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/)
+stoi zdanie, którego się nie lubi cytować, a które jest najuczciwszą częścią
+sprawy: „we still don't know how to 100% reliably prevent this from happening”.
+To nie jest błąd, który ktoś załata w przyszłym wydaniu.
+
+Sprawdź teraz swoją sytuację. Twój agent ma dostęp do twoich plików — to jest
+pierwsza rzecz. Umie pobrać stronę, przeczytać zgłoszenie i przeczytać kod z
+cudzego repozytorium, który od wczoraj masz na dysku — to jest druga. Umie
+uruchamiać polecenia i wypychać commity — to jest trzecia. Masz komplet.
+
+## Dwa razy, kiedy to się stało naprawdę
+
+**Maj 2025, GitHub.** Badacze pokazali, że wystarczy założyć zgłoszenie w
+publicznym repozytorium i wpisać w nim odpowiedni tekst. Kiedy właściciel prosił
+później swojego agenta o coś tak zwyczajnego jak „zerknij na otwarte
+zgłoszenia”, agent czytał to zdanie, sięgał do **prywatnych** repozytoriów tego
+samego użytkownika i publikował ich zawartość w pull requeście w repozytorium
+publicznym. Sami badacze podkreślili rzecz, która czyni to poważnym:
+[„This is not a flaw in the GitHub MCP server code itself, but rather a
+fundamental architectural issue”](https://invariantlabs.ai/blog/mcp-github-vulnerability)
+(Invariant Labs, 26 maja 2025). Nie było czego załatać.
+
+Zwróć uwagę, jak blisko jest to tego, co robiłeś wczoraj: zgłoszenie w cudzym
+publicznym repozytorium i agent proszony o przeczytanie go.
+
+**Sierpień 2025, ekosystem npm.** Do popularnego narzędzia trafiły spreparowane
+wydania ze skryptem uruchamianym automatycznie przy instalacji. Skrypt szukał na
+dysku portfeli, plików `.env`, kluczy SSH i tokenów — a do przeszukiwania
+**użył zainstalowanych lokalnie narzędzi AI, uruchamiając je z wyłączonymi
+pytaniami o zgodę**. Zebrane dane wypychał do publicznych repozytoriów.
+GitGuardian naliczył
+[2 349 różnych sekretów z 1 079 komputerów w ciągu kilkunastu godzin](https://blog.gitguardian.com/the-nx-s1ngularity-attack-inside-the-credential-leak/)
+(27 sierpnia 2025), a w drugiej fazie skradzione tokeny posłużyły do
+[przestawienia ponad 5 500 prywatnych repozytoriów na publiczne](https://www.wiz.io/blog/s1ngularity-supply-chain-attack)
+(Wiz). Sam producent narzędzia opisał później przyczynę: przepływ pracy, który
+wstawiał nieoczyszczony tytuł pull requesta do polecenia powłoki
+([Nx, 5 września 2025](https://nx.dev/blog/s1ngularity-postmortem)).
+
+Tu warto się zatrzymać. Narzędzie AI nie zostało w tym ataku zaatakowane —
+zostało **użyte**. Było najszybszym sposobem na przeszukanie cudzego dysku,
+bo już tam stało, już miało dostęp do plików i dawało się uruchomić z
+wyłączonymi pytaniami.
+
+## Co z tego wynika dla twojego warsztatu
+
+Cztery nawyki, każdy przypięty do czegoś, co masz już zainstalowane. Żaden nie
+sprawia, że jesteś bezpieczny; każdy zamyka jedną z konkretnych dróg wyżej.
+
+**Zostaw pytania o zgodę włączone.** To jest jedyny moment, w którym widzisz,
+co narzędzie zamierza uruchomić. Producent pisze o tym bez owijania: „Skipping
+permission prompts removes your opportunity to review tool calls before they
+run”
+([Anthropic, dokumentacja kontenerów deweloperskich](https://code.claude.com/docs/en/devcontainer),
+sprawdzona 10 września 2026). W ataku z sierpnia 2025 to właśnie te wyłączone
+pytania były narzędziem pracy.
+
+**Nie mieszaj cudzego tekstu z własnymi kluczami w jednej sesji.** Kiedy każesz
+agentowi czytać cudze repozytorium, cudze zgłoszenie albo stronę z internetu,
+rozdziel to od pracy, w której ma dostęp do twoich rzeczy. To jest dokładnie ta
+trójca, rozbijana w najprostszy dostępny sposób.
+
+**Czytaj, co narzędzie chce uruchomić, zanim klikniesz.** Zwłaszcza polecenia,
+które pobierają coś z sieci albo instalują pakiety. Nowy pakiet z nieznanego
+miejsca to obcy kod, który wykona się na twoim koncie.
+
+**Pamiętaj, kto odpowiada.** Producenci piszą to sami, w dokumentacji, a nie w
+regulaminie:
+
+<Cytat author="Anthropic" source="Security, dokumentacja Claude Code — strona bez daty, sprawdzona 10 września 2026" date="2026-09-10" url="https://code.claude.com/docs/en/security">
+
+You're responsible for reviewing proposed code and commands for safety before
+approval.
+
+</Cytat>
+
+## Granica, nie zamek
+
+Na pytanie z początku lekcji — co jeszcze działa bez ciebie i czego nie da się
+cofnąć — odpowiedź jest krótka: twoja historia. Reszta to nawyki, które warto
+mieć, zanim będą potrzebne.
+
+- **Sekret, który raz trafił do publicznego repozytorium, unieważnia się, a nie
+  usuwa.** Kasowanie pliku, commit, a nawet skasowanie całego repozytorium nie
+  robią nic — kopie zostają, a kopia twojego repozytorium istnieje od wczoraj.
+- **Sekret mieszka poza repozytorium.** `dotnet new gitignore` i
+  `dotnet user-secrets`. I pamiętaj, że `.gitignore` nie działa wstecz na pliki,
+  które już są śledzone.
+- **Agent ma komplet śmiertelnej trójcy: twoje pliki, cudzy tekst i możliwość
+  działania na zewnątrz.** Rozdzielaj te sesje, w których czyta cudze rzeczy,
+  od tych, w których ma dostęp do twoich.
+- **Pytania o zgodę to nie jest przeszkoda w pracy, tylko jedyny moment, w
+  którym widzisz, co się zaraz stanie.** Kiedy zaczniesz je wyłączać, wróć do
+  tej lekcji.
+
+I jedno zdanie o tym, czego ta lekcja **nie** zrobiła. Nie było tu ani słowa o
+bezpieczeństwie danych użytkowników, o szyfrowaniu, o tym, jak atakuje się
+aplikacje przez ich własne wejścia, ani o połowie rzeczy, które składają się na
+ten temat. Dwie godziny wystarczyły na trzy rzeczy, które dotyczą ciebie dziś,
+w repozytorium, które masz otwarte. Reszta jest osobnym przedmiotem i warto
+wiedzieć, że istnieje.
+
+## Ćwiczenia
+
+<Zadanie title="Przejrzyj własną historię">
+
+Doprowadź repozytorium do stanu, w którym `.gitignore` da się sprawdzić bez
+ciebie, a w `dziennik.md` stoi zapis tego, co jest w twojej historii.
+
+Warunki są cztery i wszystkie widać w repozytorium:
+
+- `.gitignore` istnieje i jest wygenerowany poleceniem, nie napisany z pamięci,
+  a `bin/`, `obj/` i wszelkie pliki lokalnych ustawień **naprawdę nie są**
+  w repozytorium — nie wystarczy, że są wymienione;
+- w `dziennik.md` jest zapis przeglądu historii: **czego szukałeś** (wypisz) i
+  co znalazłeś. „Nic nie znalazłem” liczy się tylko razem z listą tego, czego
+  szukałeś. Jeśli coś znalazłeś, dopisz jedno zdanie o tym, co z tym zrobisz —
+  i pamiętaj, że dla sekretu jedyną poprawną odpowiedzią jest unieważnienie;
+- jedna rzecz sprawdzona poza kursem, z linkiem i datą: sprawdź na własnym
+  koncie, czy blokada wypychania sekretów jest u ciebie włączona, i zapisz,
+  gdzie to sprawdzałeś oraz co zobaczyłeś. Jeśli nie udało ci się znaleźć tego
+  ustawienia — napisz gdzie szukałeś;
+- w `README.md` jedno zdanie **własnymi słowami**: czego nie pozwolisz zrobić
+  agentowi w tym repozytorium bez patrzenia. Jedno zdanie, twoje, nie przepisane
+  z tej lekcji.
+
+Na koniec wypchnij wszystko.
+
+Kiedy repozytorium z aplikacją będzie umieszczone na GitHubie, wypełnij
+[formularz](https://docs.google.com/forms/d/e/1FAIpQLSc9Da0ossYyhSCMjnkMCqom2VQ9CYpB2L0Kvymb3yt_UYF6rw/viewform?usp=header),
+żeby nauczyciel sprawdził zadanie.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-10">
+
+<Zrodlo title="Remediating a leaked secret" publisher="GitHub Docs" date="2026-09-10" url="https://docs.github.com/en/code-security/tutorials/remediate-leaked-secrets/remediating-a-leaked-secret">o tym, że usunięcie sekretu nie zapobiega jego wykorzystaniu; strona bez daty publikacji</Zrodlo>
+
+<Zrodlo title="Removing sensitive data from a repository" publisher="GitHub Docs" date="2026-09-10" url="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository">trzy miejsca, w których commit zostaje osiągalny; zalecenie unieważnienia jako pierwszego kroku</Zrodlo>
+
+<Zrodlo title="Deleting a repository" publisher="GitHub Docs" date="2026-09-10" url="https://docs.github.com/en/repositories/creating-and-managing-repositories/deleting-a-repository">skasowanie publicznego repozytorium nie kasuje jego kopii</Zrodlo>
+
+<Zrodlo title="Setting repository visibility" publisher="GitHub Docs" date="2026-09-10" url="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/setting-repository-visibility">publiczne kopie zostają publiczne po zmianie repozytorium na prywatne</Zrodlo>
+
+<Zrodlo title="Push protection" publisher="GitHub Docs" date="2026-09-10" url="https://docs.github.com/en/code-security/concepts/secret-security/push-protection">domyślne włączenie dla pushy do repozytoriów publicznych; co się dzieje przy ominięciu blokady</Zrodlo>
+
+<Zrodlo title="About secret scanning" publisher="GitHub Docs" date="2026-09-10" url="https://docs.github.com/en/code-security/secret-scanning/introduction/about-secret-scanning">powiadamianie dostawcy o wykrytym kluczu partnerskim</Zrodlo>
+
+<Zrodlo title="The State of Secrets Sprawl 2026" publisher="GitGuardian" date="2026-03-17" url="https://blog.gitguardian.com/the-state-of-secrets-sprawl-2026/">28,65 mln nowych sekretów w publicznych commitach w 2025, +34%; 64% sekretów z 2022 nadal aktywnych. Raport firmy sprzedającej narzędzie do wykrywania sekretów, oparty na jej własnych skanerach</Zrodlo>
+
+<Zrodlo title="CloudKeys in the Air: Tracking Malicious Operations of Exposed IAM Keys" publisher="Unit 42, Palo Alto Networks" date="2023-10-30" url="https://unit42.paloaltonetworks.com/malicious-operations-of-exposed-iam-keys-cryptojacking/">pięć minut od wycieku do użycia; blokada dostawcy w dwie minuty i atak cztery minuty po niej. Badanie firmowe, jedna kampania</Zrodlo>
+
+<Zrodlo title="Safe storage of app secrets in development" publisher="Microsoft Learn" date="2026-09-10" url="https://learn.microsoft.com/aspnet/core/security/app-secrets#use-the-secret-manager-tool">`dotnet user-secrets`, położenie pliku na Windowsie i Linuksie, oraz zastrzeżenie o braku szyfrowania</Zrodlo>
+
+<Zrodlo title="Ignore file changes with Git" publisher="Microsoft Learn" date="2026-09-10" url="https://learn.microsoft.com/azure/devops/repos/git/ignore-files">wpisy w `.gitignore` dotyczą wyłącznie plików nieśledzonych</Zrodlo>
+
+<Zrodlo title="The lethal trifecta for AI agents" publisher="Simon Willison" date="2025-06-16" url="https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/">definicja trójcy i zdanie o tym, że modele nie odróżniają wiarygodnie, skąd pochodzi polecenie</Zrodlo>
+
+<Zrodlo title="GitHub MCP Exploited: Accessing private repositories via MCP" publisher="Invariant Labs" date="2025-05-26" url="https://invariantlabs.ai/blog/mcp-github-vulnerability">zgłoszenie w publicznym repozytorium jako wektor; ocena badaczy, że to problem architektury, nie kodu serwera</Zrodlo>
+
+<Zrodlo title="The Nx s1ngularity attack: inside the credential leak" publisher="GitGuardian" date="2025-08-27" url="https://blog.gitguardian.com/the-nx-s1ngularity-attack-inside-the-credential-leak/">2 349 sekretów z 1 079 komputerów; użycie lokalnych narzędzi AI z wyłączonymi pytaniami o zgodę</Zrodlo>
+
+<Zrodlo title="s1ngularity supply chain attack" publisher="Wiz" date="2025-08-27" url="https://www.wiz.io/blog/s1ngularity-supply-chain-attack">ponad 5 500 prywatnych repozytoriów przestawionych na publiczne w drugiej fazie</Zrodlo>
+
+<Zrodlo title="s1ngularity postmortem" publisher="Nx" date="2025-09-05" url="https://nx.dev/blog/s1ngularity-postmortem">opis przyczyny przez producenta: nieoczyszczony tytuł pull requesta w poleceniu powłoki</Zrodlo>
+
+<Zrodlo title="Security" publisher="Anthropic, dokumentacja Claude Code" date="2026-09-10" url="https://code.claude.com/docs/en/security">zabezpieczenia przed wstrzyknięciem polecenia i zdanie o odpowiedzialności użytkownika; strona bez daty publikacji</Zrodlo>
+
+<Zrodlo title="Development containers" publisher="Anthropic, dokumentacja Claude Code" date="2026-09-10" url="https://code.claude.com/docs/en/devcontainer">ostrzeżenie o pomijaniu pytań o zgodę; strona bez daty publikacji</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="artykul" title="Prompt injection — cały cykl tekstów" url="https://simonwillison.net/tags/prompt-injection/">Simon Willison pisze o tym od 2022 roku i jest to najlepsze miejsce, żeby zobaczyć, jak problem się rozwijał i dlaczego nadal nie ma rozwiązania</Lektura>
+
+<Lektura kind="dokumentacja" title="Sekrety w GitHub Actions" url="https://docs.github.com/en/actions/concepts/security/secrets">gdzie wpisać hasło, którego potrzebuje twój przepływ pracy, żeby nie leżało w pliku — przyda się w module o wydaniu; jest tam też akapit o tym, dlaczego pull request z cudzej kopii repozytorium sekretów nie dostaje</Lektura>
+
+<Lektura kind="artykul" title="MCP Tool Poisoning Attacks" url="https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks">jeśli kiedyś podłączysz agentowi zewnętrzne narzędzia: opis ataku, w którym złośliwe jest nie narzędzie, tylko jego opis — ten, którego użytkownik nigdy nie widzi</Lektura>
+
+</CzytajDalej>

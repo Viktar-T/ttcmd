@@ -1,0 +1,254 @@
+---
+title: "Od pomysłu do specyfikacji"
+order: 3
+summary: "Pierwszy raz piszesz specyfikację czegoś, czego nie da się obejrzeć — nie ma starego folderu, do którego można zajrzeć po odpowiedź. Lekcja zamienia cztery zdania w sześć części, uczy pisać kryteria dla programu, którego nikt nie widział, i kończy commitem, w którym nie ma kodu."
+publish: true
+---
+
+{/* Drafted 2026-09-10 from docs/content-briefs/05c-od-pomyslu-do-specyfikacji.md,
+    autonomous run — brief unapproved. Re-derived from the deleted „Wspólna
+    aplikacja” row 6a (course-structure-v2 v2.9); no v2.4 brief ever existed.
+
+    Procedure with a narrative frame — four hours, deliverable a committed
+    repository. Sections 1, 4 and 7 are the narrative ones. Trips the
+    one-sentence-paragraph count by design, as 4e does.
+
+    No application code anywhere: the code fences carry Markdown and git
+    commands. The specimen where a shape has to be shown is the domestic
+    example carried from 5a, always labelled as not the reader's application.
+
+    FOR VIKTAR (brief's open question): repository visibility for this project —
+    public, or private with you as collaborator. The draft says „tak jak w 0c”
+    and decides nothing; the same answer decides how 5g's classmate obtains the
+    application. Intra-module references are plain text. */}
+
+Otwórz folder, w którym powstanie twoja aplikacja. Nie ma go jeszcze — i to jest
+dzisiejsza różnica. Kiedy pisałeś specyfikację notatnika, obok stał stary
+notatnik z Budowy 2: cokolwiek było niejasne, dawało się otworzyć i sprawdzić na
+ekranie, jak to działało wtedy, kiedy nikt niczego nie zapisywał.
+
+Twój wybrany pomysł nie ma takiego folderu. Ma cztery zdania, listę „czego nie
+robi” po wczorajszym cięciu i `pozniej.md` z tym, co odpadło. Wszystko, czego nie
+napiszesz dziś, będzie musiało zostać zgadnięte — przez agenta w przyszłym
+tygodniu albo przez ciebie w środę, kiedy nie będziesz już pamiętać, co miałeś na
+myśli.
+
+Pytanie tej lekcji brzmi więc: **jak zamienić cztery zdania w specyfikację, z
+której obca sesja umie zaplanować pracę — kiedy nie ma czego obejrzeć?**
+
+## Repozytorium, które zaczyna się bez kodu
+
+Zaczynasz tak samo jak przy notatniku i z tego samego powodu: pierwszy commit
+jest zapisem tego, co ma być prawdą, a nie tego, co już działa.
+
+```bash
+mkdir nazwa-projektu
+cd nazwa-projektu
+git init
+```
+
+Nazwa jest pierwszą decyzją i warto jej nie odkładać. Ma być krótka, bez polskich
+znaków, w rodzaju `kto-ma-moj-kabel` — będzie w adresie repozytorium, w ścieżce
+na dysku i w tytule zgłoszeń, które za dwa tygodnie ktoś ci napisze. Repozytorium
+na GitHubie zakładasz od razu, na zasadach z lekcji o Gicie z modułu startowego;
+`.gitignore` dopisujesz, zanim pojawi się cokolwiek, co się buduje.
+
+Potem, przed jakimkolwiek plikiem z kodem, powstaje `konstytucja.md` — sześć do
+ośmiu linijek w kształcie z [lekcji o konstytucji](/moduly/04-specyfikacja/konstytucja-i-reguly).
+Większość z nich przepiszesz z notatnika, bo dotyczą sposobu pracy, a nie
+programu: jeden commit na zadanie, żadnych plików wynikowych w repozytorium,
+polski w tym, co widzi użytkownik. Jedna linijka jest jednak wyłącznie twoja i
+nikt jej za ciebie nie napisze — **czego twoja aplikacja nigdy nie zrobi osobie,
+która ją otworzy.** Nie skasuje bez pytania. Nie wyśle niczego na zewnątrz. Nie
+zapomni tego, co ktoś wpisał wczoraj. Wybierz jedną rzecz, o którą naprawdę ci
+chodzi, i zapisz ją tak, żeby dało się kiedyś powiedzieć, że specyfikacja ją
+łamie.
+
+Commit `konstytucja` i tyle na razie. Repozytorium z jednym plikiem wygląda
+niepoważnie i jest to złudzenie warte przełamania: to jest jedyny plik w całym
+projekcie, który stoi ponad wszystkim innym.
+
+## Cztery zdania rosną w sześć części
+
+Specyfikacja ma sześć części i każda z nich ma źródło w czymś, co już masz
+napisane. To jest cała robota tej lekcji — nie wymyślanie od nowa, tylko
+rozwinięcie czterech zdań do rozmiaru, w którym nie da się ich przeczytać na dwa
+sposoby.
+
+| Część specyfikacji | Skąd się bierze | Czego w niej nie ma |
+| --- | --- | --- |
+| Cel | pierwsze zdanie wpisu: czynność, którą program zastępuje | opisu, jak program to robi |
+| Dla kogo | drugie zdanie wpisu: konkretna osoba albo rodzaj osoby | „każdy” |
+| Co robi | pierwsze zdanie rozpisane na trzy do sześciu zdań | nazw plików, bibliotek, okien |
+| Czego nie robi | lista po wczorajszym cięciu | żalu; to jest decyzja, nie strata |
+| Kryteria | trzecie zdanie wpisu, rozpisane na pięć do dziewięciu | zdań, których nie da się sprawdzić |
+| Do ustalenia | wszystko, czego jeszcze nie wiesz | pytań o *jak* — te idą do planu |
+
+Największą pracą jest wiersz „Co robi”. Jedno zdanie z wpisu trzeba rozpisać
+tak, żeby ktoś, kto nie zna twojego pomysłu, umiał powiedzieć, co ten program
+robi i czego od niego nie oczekiwać. Trzy do sześciu zdań wystarczy; jeśli piszesz
+dziesiąte, prawdopodobnie opisujesz już ekran, a nie zachowanie.
+
+Wiersz „Czego nie robi” przepisujesz z wczorajszego wpisu bez zmiękczania.
+Zdanie „na razie nie robi” zamienia się w praktyce w „zrobi w środę”, więc pisz
+„nie robi” i trzymaj to, co odpadło, w `pozniej.md`, gdzie ma swoje miejsce.
+
+## Kryteria, kiedy nie ma czego naśladować
+
+Kryterium akceptacji ma kształt z [lekcji o pętli](/moduly/04-specyfikacja/petla-spec-plan-zadania):
+„Kiedy …, to …” plus „Sprawdzenie: …”. Ten kształt znasz. Nowa jest sytuacja, w
+której go używasz: piszesz zdania o programie, którego nikt nigdy nie uruchomił,
+więc nie ma jak sprawdzić, czy zdanie jest prawdziwe — można tylko sprawdzić, czy
+da się je kiedykolwiek sprawdzić.
+
+Stąd jedna zasada, która ratuje najwięcej: **kryterium mówi, co jest prawdą, a
+nie jak jest zrobione.** Prawdą po zamknięciu programu, po ponownym otwarciu, po
+wpisaniu czegoś głupiego. Kryterium, którego nie da się sprawdzić bez zaglądania w
+kod, nie jest kryterium, tylko notatką dla siebie.
+
+```markdown title="specs/001-.../spec.md — fragment „Kryteria”"
+K1. Kiedy zapiszę trzy pozycje i zamknę program, to po ponownym otwarciu
+    widać te same trzy.
+    Sprawdzenie: zapisuję trzy, zamykam, otwieram, liczę.
+
+K2. Kiedy zostawię pole puste i spróbuję zapisać, to program nie zapisuje
+    nic i mówi, czego brakuje.
+    Sprawdzenie: pusta próba; plik z danymi ma tę samą datę modyfikacji
+    co przed próbą.
+
+K3. Kiedy w tekście będą polskie znaki, to po ponownym otwarciu wyglądają
+    tak samo.
+    Sprawdzenie: wpisuję „Żółć”, zamykam, otwieram, porównuję.
+```
+
+Pięć do dziewięciu takich zdań to zwykły rozmiar. Mniej niż pięć prawie zawsze
+znaczy, że „co robi” zostało przepisane z kropką na końcu zamiast rozłożone na
+sprawdzenia. Więcej niż dziewięć zwykle znaczy, że któreś kryterium opisuje trzy
+rzeczy naraz i chce być rozdzielone.
+
+Jedna wskazówka na start, która działa dla każdej aplikacji, niezależnie od tego,
+co robi. Napisz najpierw kryterium na to, co program **pamięta po zamknięciu**, i
+kryterium na to, co się dzieje, kiedy **użytkownik zrobi coś nie tak**. Te dwa
+zdania są w tym module obowiązkowe u wszystkich i lepiej, żeby stały w
+specyfikacji od pierwszego dnia niż żeby dopisywać je w drugim tygodniu.
+
+## Trzy sposoby, na jakie ta specyfikacja się psuje
+
+Dwa z nich znasz z notatnika, trzeci pojawia się dopiero wtedy, gdy piszesz o
+czymś, czego nie widziałeś.
+
+**Wyciek do planu.** W specyfikacji pada nazwa pliku, biblioteki albo okna:
+„zapisuje do `dane.json`”. To zdanie mówi *jak*, a nie *co*, i za tydzień będzie
+kłamać, bo plik będzie się nazywał inaczej. Poprawka: „zapisuje na dysku tak, że
+przeżywa zamknięcie programu”.
+
+**Kryterium bez sprawdzenia.** „Program działa szybko”, „interfejs jest
+wygodny”. Poprawka jest zawsze tego samego rodzaju: co dokładnie robi człowiek i
+co dokładnie ma z tego wyjść. Jeśli nie umiesz napisać drugiej połowy, kryterium
+nie jest jeszcze twoje — jest życzeniem.
+
+**Kryterium, które opisuje ekran.** To jest nowe. „Na liście po prawej widać
+zaznaczone pozycje” brzmi konkretnie i jest sprawdzalne, tylko przestaje być
+prawdą w dniu, w którym przesuniesz listę na lewo. Kryteria mają przeżyć zmianę
+układu okna, bo w dwóch tygodniach budowy układ zmieni się przynajmniej raz.
+Poprawka: „widać, które pozycje są zaznaczone”, bez „po prawej”.
+
+## Co wolno zostawić otwarte
+
+Nie wszystko da się rozstrzygnąć dziś i udawanie, że się da, kosztuje więcej niż
+przyznanie się. Sekcja „Do ustalenia” istnieje właśnie po to, ale ma granicę,
+która przebiega dokładnie tam gdzie w notatniku.
+
+Wolno zostawić otwarte pytanie o *jak*: gdzie dokładnie leży plik z danymi, jak
+wygląda okno, w jakiej kolejności są pozycje na liście. Te odpowiedzi znajdą się
+w planie i nie blokują niczego.
+
+Nie wolno zostawić otwartego pytania o *co*: czy program pamięta dane między
+uruchomieniami, czy użytkownik może coś usunąć, co się dzieje z pustym wpisem.
+Bez tych odpowiedzi nie da się napisać planu — i to jest test, czy pytanie jest z
+pierwszej grupy, czy z drugiej. Spróbuj sobie wyobrazić plan, który je omija;
+jeśli się nie da, odpowiadasz dziś.
+
+## Przegląd kolegi: kryteria, nie pomysł
+
+Ostatnia godzina to wymiana. Dajesz komuś z klasy trzy rzeczy — konstytucję,
+specyfikację i wpis z `pomysly.md` — i dostajesz tyle samo. Zasada jest jedna i
+w tym module jest ważniejsza niż zwykle: **czytasz kryteria, nie pomysł.**
+
+Powód jest praktyczny. W klasie powstanie kilkadziesiąt różnych aplikacji i
+gdyby każdy przegląd był rozmową o tym, czy pomysł jest dobry, to byłoby
+kilkadziesiąt sporów o gust zamiast jednej godziny pracy. Pomysł został wybrany
+wczoraj przez osobę, która go zbuduje. Twoim zadaniem jest sprawdzić, czy to, co
+napisała, da się sprawdzić.
+
+Odpowiadasz na trzy pytania i zapisujesz odpowiedzi w cudzym pliku:
+
+1. Czy przy każdym kryterium umiem sam wykonać to, co jest po słowie
+   „Sprawdzenie”? Jeśli nie umiem, zaznaczam to kryterium.
+2. Czy któreś kryterium da się przeczytać na dwa sposoby? Jeśli tak, wypisuję
+   oba.
+3. Czy w specyfikacji pada nazwa pliku, biblioteki albo miejsca na ekranie?
+   Jeśli tak, cytuję to zdanie.
+
+Dwa zdania są poza zakresem przeglądu i warto je sobie darować: „a nie lepiej
+byłoby zrobić…” oraz „to jest za małe”. Pierwsze dotyczy pomysłu, o którym nie
+decydujesz. Drugie zostało rozstrzygnięte na poprzedniej lekcji, przy pomocy
+miary, której ty w tej chwili nie znasz — bo nie widziałeś, co autor wyciął.
+
+Uwagi kolegi poprawiasz od razu, jeszcze na lekcji, i dopiero potem robisz
+commit `spec: po przeglądzie`.
+
+## Specyfikacja czegoś, czego nikt nie zbudował
+
+Pytanie z początku brzmiało, jak napisać specyfikację, kiedy nie ma czego
+obejrzeć. Odpowiedź okazała się nudniejsza, niż mogło się wydawać: zamiast
+patrzenia jest pisanie zdań, które da się sprawdzić — i sprawdzanie ich cudzą
+ręką, zanim powstanie kod.
+
+- **Repozytorium zaczyna się od konstytucji**, a w niej jedna linijka jest twoja:
+  czego ta aplikacja nigdy nie zrobi osobie, która ją otworzy.
+- **Cztery zdania rosną w sześć części**, i najwięcej pracy jest w „Co robi” —
+  tam, gdzie jedno zdanie musi wystarczyć obcemu człowiekowi.
+- **Kryterium mówi, co jest prawdą, nie jak jest zrobione**, i przeżywa zmianę
+  układu okna. Dwa z nich są w tym module u wszystkich takie same: pamięć po
+  zamknięciu i zachowanie przy błędzie użytkownika.
+- **Przegląd dotyczy kryteriów, nie pomysłu.** „A nie lepiej byłoby” nie jest
+  uwagą do specyfikacji.
+
+W repozytorium masz teraz dwa commity i ani jednej linijki kodu. Następna lekcja
+zamienia ten plik w plan i listę zadań — i to ona pokaże, czy specyfikacja
+wystarczy komuś, kto nie zna twojego pomysłu, bo obca sesja dostanie tylko ją i
+konstytucję.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: sześć części specyfikacji i dwie połowy kryterium. Do tego jedno
+zdanie o tym, co wolno zostawić w „Do ustalenia”, a czego nie.
+
+</Zadanie>
+
+<Zadanie title="Kryterium, którego nie sprawdzasz okiem">
+
+Weź jedno ze swoich kryteriów i przepisz je tak, żeby sprawdzeniem było
+polecenie albo plik, a nie spojrzenie na ekran. Zapisz obie wersje obok siebie
+i jedno zdanie o tym, co się zmieniło.
+
+</Zadanie>
+
+<Zadanie title="Pierwszy commit bez kodu">
+
+Załóż repozytorium, napisz `konstytucja.md` i `specs/001-…/spec.md`, przeprowadź
+przegląd z kimś z klasy, popraw i wypchnij. W historii mają być dwa albo trzy
+commity i zero plików z kodem.
+
+</Zadanie>
+
+<Zadanie title="Czego nie umiem sprawdzić">
+
+W `dziennik.md` jeden akapit: które ze swoich kryteriów nie umiesz sprawdzić bez
+zaglądania w kod i co musiałoby się w nim zmienić, żeby dało się je sprawdzić z
+zewnątrz. Jeśli takiego nie masz — napisz, które było najbliżej.
+
+</Zadanie>

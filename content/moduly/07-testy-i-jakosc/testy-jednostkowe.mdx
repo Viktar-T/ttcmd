@@ -1,0 +1,428 @@
+---
+title: "Pierwszy test: jedno kryterium, jedno zdanie"
+order: 2
+summary: "Osobny projekt bez okna, `dotnet test`, i jedno zdanie z twojej specyfikacji zamienione w sprawdzenie, które samo mówi „zielone” albo „czerwone” — najpierw czerwone. Dlaczego to się w ogóle udaje tylko dlatego, że w poprzednim module wyprowadziłeś stan z kontrolek, i co się stanie, kiedy o drugi test poprosisz agenta."
+publish: true
+---
+
+{/* Drafted 2026-09-10 from docs/content-briefs/07b-testy-jednostkowe.md,
+    semi-supervised run — brief unapproved.
+
+    BUILD STATUS — read before publishing.
+    Verified by execution on .NET SDK 10.0.112 (Ubuntu 24.04), 2026-09-10:
+      · `dotnet new nunit` exists, default TFM net10.0, no --test-runner option;
+      · the generated .csproj pins NUnit 4.3.2, NUnit3TestAdapter 5.0.0,
+        NUnit.Analyzers 4.7.0, Microsoft.NET.Test.Sdk 17.14.0, coverlet 6.0.4,
+        and declares <Using Include="NUnit.Framework" />;
+      · `dotnet reference add X` WITHOUT --project FAILS with
+        „Could not find project or directory ``” — measured. The form printed in
+        this lesson (with --project) works, and so does the old
+        `dotnet add reference X`. This is why the lesson prints the long form;
+      · the whole test file below COMPILES (0 warnings, 0 errors) against a
+        NUnit-4-shaped surface, with ImplicitUsings on.
+    NOT verified — NuGet is unreachable from the drafting container
+    (research-07 §6): no restore, so `dotnet test` was never run and the
+    FAILURE OUTPUT BLOCK IN „Najpierw czerwone” IS A PLACEHOLDER. Run the
+    sequence once on a lab machine on SDK 10.0.4xx and paste the real output
+    over it. Until then this lesson stays publish: false.
+
+    Running example: `Magazyn` is the TEACHER'S reference shape from
+    tmp-modul5-build/, not a feature of any student's application. Per the
+    Moduł 5 rule, no zadanie or code block here names a feature — the student
+    finds the shape in their own repository. Say so in class.
+
+    Tryb pracy: sections 1–5 bez AI, section 6 z agentem, on purpose. */}
+
+Wpisałeś do własnej aplikacji pozycję ze średnikiem, zamknąłeś ją, otworzyłeś
+ponownie — i wróciło coś innego, niż wpisałeś. Albo pusta lista wróciła z jedną
+pustą pozycją. Cokolwiek u ciebie wyszło, liczby są w twoim dzienniku razem z
+kryterium ze specyfikacji, które ten błąd łamie.
+
+Znalazłeś to, bo poświęciłeś na to trzy minuty i miałeś na to pomysł. Za
+tydzień nie będziesz mieć ani jednego, ani drugiego — a plik, w którym siedzi
+ten błąd, będzie zmieniany dalej.
+
+Dziś zbudujesz coś, co zadaje to samo pytanie za ciebie: **jedno zdanie z
+twojej specyfikacji zamienione w sprawdzenie, które samo mówi „zielone” albo
+„czerwone”, w ćwierć sekundy, ilekroć ktokolwiek dotknie tego kodu.** Pierwszy
+napiszesz z palca. Dopiero na końcu lekcji o drugi poprosisz agenta — i to
+porównanie jest osobnym powodem, dla którego ta kolejność jest właśnie taka.
+
+## Projekt, który nie ma okna
+
+Test to zwykły kod w C#, tylko że mieszka w osobnym projekcie obok twojej
+aplikacji i nigdy nie otwiera okna. Ten projekt umie jedną rzecz, której twoja
+aplikacja nie umie: uruchomić się sam, wywołać kilkanaście metod, porównać
+wyniki z tym, czego się spodziewano, i wypisać jedną liczbę.
+
+Wejdź do katalogu, w którym leży twój projekt aplikacji, i utwórz projekt
+testowy obok niego — nie w środku:
+
+```bash
+dotnet new nunit -o Notatnik.Testy
+```
+
+`nunit` to nazwa jednej z trzech bibliotek do pisania testów, które są w SDK od
+razu. Wybraliśmy ją świadomie i powód wart jest jednego zdania, bo w tym kursie
+nie zmienia się narzędzia bez uzasadnienia: **z trzech dostępnych szablonów
+tylko ten daje projekt, który uruchamia się bez żadnej dodatkowej konfiguracji
+i którego pakiety nie są oznaczone jako porzucone.** Szablon `xunit`, który
+podpowie ci połowa internetu, tworzy dziś projekt na
+[pakiecie oznaczonym na nuget.org jako „legacy and… no longer maintained”](https://www.nuget.org/packages/xunit)
+(sprawdzone 10 września 2026). Trzeci, `mstest`, jest w porządku, ale nie ma
+wersji współpracującej z Avalonią, gdyby kiedyś przyszło ci testować samo okno.
+
+Teraz powiedz projektowi testowemu, gdzie jest aplikacja, którą ma testować.
+Wejdź do katalogu z testami i dopisz odwołanie:
+
+```bash
+cd Notatnik.Testy
+dotnet reference add ../Notatnik/Notatnik.csproj --project Notatnik.Testy.csproj
+```
+
+Ta komenda ma pułapkę, na którą wpadniesz, jeśli ją skrócisz: **bez
+`--project` kończy się błędem** `Could not find project or directory ``
+(sprawdzone na SDK 10.0.112, 10 września 2026). Starsza postać,
+`dotnet add reference ../Notatnik/Notatnik.csproj`, działa bez żadnych dodatków
+i to ją zobaczysz w każdym poradniku napisanym przed listopadem 2025 —
+[obie są poprawne, ale nowsza jest tą zalecaną](https://learn.microsoft.com/dotnet/core/tools/dotnet-reference-add).
+Wybierz jedną i trzymaj się jej.
+
+I uruchom:
+
+```bash
+dotnet test
+```
+
+Za pierwszym razem pobiorą się pakiety, co potrwa. Skończy się na zielono, bo
+szablon dołożył jeden pusty test, który nic nie sprawdza. To nie jest sukces —
+to jest linia startu. Zielony wynik znaczy tylko tyle, że maszyna umie
+uruchomić twoje testy.
+
+Otwórz `Notatnik.Testy.csproj` i zobacz, co szablon do niego wpisał. Będą tam
+pakiety z numerami wersji — u ciebie prawdopodobnie inne niż u kolegi obok, bo
+zależą od wersji SDK na twoim komputerze. Zapamiętaj, że to jest miejsce, w
+którym się je sprawdza; wrócimy do tego w zadaniu.
+
+## Co właściwie da się przetestować — i dlaczego akurat to
+
+Test wywołuje metodę i patrzy, co zwróciła. Nie umie kliknąć przycisku, nie
+umie zobaczyć okna i nie umie stwierdzić, że napis jest za blisko krawędzi.
+Wszystko, co chcesz sprawdzić, musi więc dać się **wywołać z kodu**.
+
+To jest ten moment, w którym poprzedni moduł się spłaca. W
+[lekcji o stanie poza kontrolkami](/moduly/06-pod-maska/stan-poza-kontrolkami)
+wyprowadziłeś dane z kontrolek do osobnej klasy, a okno zostawiłeś przy jednym
+zadaniu: pokazywać. Wtedy brzmiało to jak reguła porządkowa — coś, co robi się,
+bo tak wypada. Dziś okazuje się, że to jest **warunek istnienia dzisiejszej
+lekcji**. Gdyby twoja lista pozycji nadal mieszkała w kontrolce, a zapis do
+pliku siedział w obsłudze kliknięcia, nie byłoby czego wywołać: żeby sprawdzić
+zapis, trzeba by uruchomić okno i kliknąć. Mówi to wprost dokumentacja samej
+Avalonii:
+
+<Cytat author="Dokumentacja Avalonii" source="The MVVM pattern, ostatnia zmiana 25 sierpnia 2026" date="2026-08-25" url="https://docs.avaloniaui.net/docs/fundamentals/the-mvvm-pattern/">
+
+Because the view model has no reference to the view or to Avalonia types, it
+can be unit tested like any other code.
+
+</Cytat>
+
+Znajdź teraz u siebie klasę, w której mieszka to, czego dotyczy twoje
+kryterium. Szukaj po nazwie metody, nie po numerze linijki — u każdego w klasie
+nazywa się inaczej. Jeśli okaże się, że tej klasy nie ma i wszystko siedzi w
+pliku obok okna, to jest pierwsza rzecz do zrobienia dzisiaj: wytnij samą
+logikę do osobnej klasy, tak jak w szóstej lekcji poprzedniego modułu, i dopiero
+potem wracaj tutaj. To nie jest obchodzenie zadania — to jest zadanie.
+
+Kod, który zobaczysz niżej, pochodzi z aplikacji nauczyciela i pokazuje
+**kształt**, nie twoją funkcję. Dwie metody, jedna zapisuje listę do pliku,
+druga ją odczytuje:
+
+```csharp title="Notatnik/Magazyn.cs — kształt, nie twoja funkcja"
+public static class Magazyn
+{
+    public static void Zapisz(string plik, List<string> pozycje)
+        => File.WriteAllText(plik, string.Join(";", pozycje));
+
+    public static List<string> Wczytaj(string plik)
+        => File.Exists(plik)
+            ? new List<string>(File.ReadAllText(plik).Split(';'))
+            : new List<string>();
+}
+```
+
+To jest ta sama wersja, która w poprzedniej lekcji zgubiła dane. Zostaje na
+razie zepsuta — celowo.
+
+## Najpierw czerwone
+
+Test piszesz przeciwko kodowi, o którym już wiesz, że jest zły. Ma być czerwony
+zanim będzie zielony, i to jest jedyny moment, w którym dowiadujesz się czegoś
+o samym teście: **test, który nigdy nie był czerwony, nie udowodnił, że w ogóle
+cokolwiek sprawdza.**
+
+Otwórz plik, który szablon utworzył w projekcie testowym, i zastąp jego
+zawartość tym:
+
+```csharp title="Notatnik.Testy/MagazynTesty.cs"
+namespace Notatnik.Testy;
+
+public class MagazynTesty
+{
+    private string plik = "";
+
+    [SetUp]
+    public void PrzygotujPlik()
+    {
+        plik = Path.Combine(Path.GetTempPath(), $"test-{Guid.NewGuid()}.txt");
+    }
+
+    [TearDown]
+    public void SprzatnijPlik()
+    {
+        if (File.Exists(plik)) File.Delete(plik);
+    }
+
+    [Test]
+    public void Zapisane_pozycje_wracaja_w_calosci()
+    {
+        var wejscie = new List<string> { "mleko; chleb", "ser" };
+
+        Magazyn.Zapisz(plik, wejscie);
+        var wyjscie = Magazyn.Wczytaj(plik);
+
+        Assert.That(wyjscie, Is.EqualTo(wejscie));
+    }
+}
+```
+
+Cztery rzeczy warto tu zobaczyć, zanim to uruchomisz. `[Test]` mówi, że ta metoda jest testem — bez tego jest zwykłą metodą i nikt
+jej nie uruchomi. `[SetUp]` i `[TearDown]` uruchamiają się przed każdym testem
+i po nim; tu robią miejsce na plik tymczasowy i sprzątają po sobie, żeby jeden
+test nie zostawiał śmieci drugiemu. **Nazwa metody jest zdaniem, nie skrótem** —
+to ona pojawi się w wyniku, kiedy test padnie, i to ona ma ci wtedy powiedzieć,
+co przestało działać, bez zaglądania w kod. I wreszcie `Assert.That(wyjscie,
+Is.EqualTo(wejscie))` — to jest asercja, zdanie o świecie, które albo jest
+prawdziwe, albo cały test jest czerwony.
+
+Nie ma tu linijki `using NUnit.Framework;` i to nie jest przeoczenie: szablon
+wpisał ją do pliku projektu jako wspólną dla wszystkich plików. Jeśli tworzysz
+plik testowy w projekcie, którego nie zrobił szablon, musisz ją dopisać ręcznie.
+
+Uruchom:
+
+```bash
+dotnet test
+```
+
+{/* PLACEHOLDER — paste the real console output from a lab run on SDK
+    10.0.4xx here. Microsoft Learn documents exit codes and prose but not the
+    summary line, and NuGet was unreachable while drafting, so an invented
+    block would be a guess. research-07 §7.6. */}
+
+Przeczytaj wynik do końca, nie do pierwszej czerwonej linijki. Będzie tam nazwa
+metody, która padła, zdanie o tym, czego się spodziewano i co przyszło, oraz
+numer linijki. To jest teraz twój błąd z poprzedniej lekcji, opisany
+maszynowo — i od tej chwili opisany tak samo za każdym razem.
+
+## Potem zielone
+
+Teraz napraw kod. **Kod, nie test.** To jest reguła, o którą się potykają
+wszyscy, i warto ją mieć wypowiedzianą, zanim się o nią potkniesz: kiedy test i
+kod się nie zgadzają, rozstrzyga specyfikacja. Jeśli specyfikacja mówi, że
+pozycja ma wrócić taka sama, to zły jest kod. Jeśli okaże się, że specyfikacja
+mówi coś innego, niż myślałeś — poprawiasz specyfikację, jak w
+[lekcji o pełnej pętli](/moduly/04-specyfikacja/pelna-petla), i dopiero potem
+test. Czego nie wolno nigdy: poprawić testu tak, żeby przechodził, i uznać
+sprawę za zamkniętą.
+
+Naprawa tego akurat błędu jest krótka. Zamiast sklejać wszystko jednym znakiem,
+zapisz każdą pozycję w osobnej linijce — wtedy średnik w środku pozycji
+przestaje cokolwiek znaczyć — i przy odczycie pomiń linijki puste, co załatwia
+przypadek pustej listy:
+
+```csharp title="Notatnik/Magazyn.cs — po naprawie"
+public static class Magazyn
+{
+    public static void Zapisz(string plik, List<string> pozycje)
+        => File.WriteAllLines(plik, pozycje);
+
+    public static List<string> Wczytaj(string plik)
+        => File.Exists(plik)
+            ? File.ReadAllLines(plik).Where(l => l.Length > 0).ToList()
+            : new List<string>();
+}
+```
+
+Uruchom `dotnet test` ponownie. Zielone. Zatwierdź to jako **osobny commit** —
+najpierw był commit z czerwonym testem, teraz jest commit z naprawą. Dwa
+commity w tej kolejności to jedyny sposób, żeby ktokolwiek, kto później otworzy
+twoją historię, zobaczył, że ten test kiedykolwiek cokolwiek złapał.
+
+## Pięć zielonych to nie „działa”
+
+Naprawiona wersja przechodzi. Sprawdziłem ją na pięciu zestawach danych —
+zwykłe pozycje, pozycja ze średnikiem, pusta lista, pozycja ze spacjami na
+brzegach, polskie znaki — i wszystkie pięć wróciły identyczne (SDK 10.0.112,
+10 września 2026). Kusi, żeby powiedzieć „działa”.
+
+Nie działa. **Ma pięć prawdziwych zdań na swój temat.** Ta naprawa pomija przy
+odczycie puste linijki, więc pozycja, która jest pustym napisem, przepadnie po
+zapisie i odczycie. Jeśli w twojej aplikacji nie da się dodać pustej pozycji, to
+nie jest błąd, tylko decyzja — i wtedy warto ją mieć w specyfikacji. Jeśli da
+się dodać, to jest to następny błąd, którego jeszcze nie znalazłeś.
+
+Dokładanie kolejnych przypadków jest tanie i po to jest `[TestCase]`: jedna
+metoda uruchamiana kilka razy, za każdym razem z innym argumentem.
+
+```csharp title="Notatnik.Testy/MagazynTesty.cs — dopisz do klasy"
+[TestCase("mleko")]
+[TestCase("mleko; chleb")]
+[TestCase("  mleko  ")]
+[TestCase("żółć")]
+public void Jedna_pozycja_wraca_taka_sama(string pozycja)
+{
+    var wejscie = new List<string> { pozycja };
+
+    Magazyn.Zapisz(plik, wejscie);
+
+    Assert.That(Magazyn.Wczytaj(plik), Is.EqualTo(wejscie));
+}
+
+[Test]
+public void Pusta_lista_wraca_pusta()
+{
+    Magazyn.Zapisz(plik, new List<string>());
+
+    Assert.That(Magazyn.Wczytaj(plik), Is.Empty);
+}
+```
+
+Pięć testów, cztery linijki nowego kodu. Dorzuć jeszcze jeden przypadek —
+taki, o którym podejrzewasz, że padnie. Jeśli padnie, właśnie zarobiłeś na tę
+lekcję drugi raz.
+
+## Teraz agent — i pułapka z 2023 roku
+
+Do tej pory pracowałeś bez agenta, celowo. Teraz go włącz i poproś o jedną
+konkretną rzecz: **drugi test, do innego kryterium z twojej specyfikacji.**
+Podaj mu kryterium dosłownie, tak jak stoi w `spec.md`.
+
+Przeczytaj, co napisał, i porównaj ze swoim. Zwróć uwagę na jedną rzecz w
+szczególności — jest spora szansa, że w jego teście stoi coś takiego:
+
+```csharp
+Assert.AreEqual(wejscie, wyjscie);
+```
+
+To jest kod poprawny i naturalny. Był poprawny przez kilkanaście lat i tak
+napisana jest większość poradników o NUnit w internecie. **Nie skompiluje się w
+twoim projekcie.** W NUnit 4 klasyczne asercje —
+`Assert.AreEqual`, `Assert.IsTrue` i reszta —
+[zostały przeniesione do osobnej przestrzeni nazw `NUnit.Framework.Legacy`, a
+zalecaną postacią jest `Assert.That(…, Is.EqualTo(…))`](https://docs.nunit.org/articles/nunit/release-notes/Nunit4.0-MigrationGuide.html)
+(przewodnik migracji NUnit, sprawdzony 10 września 2026).
+
+Zatrzymaj się przy tym na chwilę, bo to jest dokładnie ten rodzaj błędu, o
+którym mówiła lekcja o halucynacjach, tylko w czystszej postaci. Model niczego
+nie zmyślił. Napisał kod, który był prawdziwy — i który przestał być prawdziwy
+w konkretnym dniu, o którym on nie wie, a ty możesz sprawdzić. **Wyłapał to
+kompilator, nie twoje wyczucie**, i to jest dobra wiadomość: to jest właśnie
+klasa błędów, której nie musisz łapać sam.
+
+Zadaj wersji agenta cztery pytania z
+[ostatniej lekcji poprzedniego modułu](/moduly/06-pod-maska/trzy-tryby) i dopisz
+piąte, dzisiejsze: **czy ten test padnie, jeśli zepsuję kod?** Sprawdź to
+naprawdę — zepsuj metodę na jedną chwilę, uruchom testy, cofnij zmianę. Test,
+który przechodzi zawsze, jest gorszy niż brak testu, bo daje spokój, którego
+nikt nie kupił.
+
+## Zdanie, które samo się sprawdza
+
+Na początku lekcji miałeś zdanie w specyfikacji i błąd w dzienniku. Teraz masz
+jedno i drugie połączone czymś, co uruchamia się w ćwierć sekundy i nie zależy
+od tego, czy tego dnia jesteś uważny.
+
+- **Jedno kryterium, jeden test, jedna nazwa, która jest zdaniem.** Nazwa
+  metody to jedyna rzecz, którą zobaczysz, kiedy coś padnie za miesiąc.
+- **Czerwone przed zielonym, i widać to w historii.** Dwa commity: ten, który
+  dokłada padający test, i ten, który naprawia kod. Test, który nigdy nie był
+  czerwony, niczego nie udowodnił.
+- **Naprawia się kod, nie test.** A kiedy kod i test się nie zgadzają,
+  rozstrzyga specyfikacja — i czasem to ona jest do poprawienia.
+- **Zielone nie znaczy „poprawne”, znaczy „te zdania są prawdziwe”.** Umiej
+  wymienić, czego twoje testy nie sprawdzają. To zdanie jest warunkiem zadania,
+  bo jest trudniejsze i ważniejsze niż same testy.
+
+W następnej lekcji ten sam diff — twoja naprawa i twój test — dostanie drugiego
+czytelnika, który nigdy się nie nudzi i czasem zmyśla.
+
+## Ćwiczenia
+
+<Zadanie title="Trzy kryteria, trzy testy, jedna czerwona historia">
+
+Doprowadź repozytorium do stanu, w którym obok aplikacji stoi projekt testowy,
+`dotnet test` uruchamia co najmniej trzy testy sprawdzające trzy nazwane
+kryteria z twojej specyfikacji, wszystkie są zielone — a w historii widać, że
+przynajmniej jeden z nich był najpierw czerwony.
+
+Warunki są cztery i wszystkie widać w repozytorium:
+
+- projekt testowy istnieje, ma odwołanie do projektu aplikacji, a jego
+  `.csproj` jest w repozytorium — natomiast `bin/` i `obj/` **nie są**;
+  sprawdź `.gitignore`, zanim wypchniesz;
+- **historia pokazuje czerwone przed zielonym**: jeden commit dokładający
+  padający test, późniejszy commit naprawiający kod. Dwa commity, w tej
+  kolejności, z numerem kryterium w opisie. Jeśli twój kod był akurat poprawny,
+  zepsuj go na jeden commit celowo i napisz w opisie, że to celowo;
+- w `dziennik.md` są: znalezisko z poprzedniej lekcji, numer kryterium, które
+  sprawdza każdy test, oraz **jedno zdanie o tym, czego te testy nie
+  udowadniają**. To ostatnie zdanie jest tu najważniejsze;
+- jedna rzecz znaleziona poza kursem, z linkiem i datą: wersja NUnit, którą
+  wpisał ci szablon do `.csproj`, i najnowsza wersja dziś na nuget.org. Jeśli
+  się różnią, jedno zdanie o tym, o ile. Jeśli nie udało ci się tego ustalić —
+  napisz, czego szukałeś i gdzie; brak odpowiedzi też jest wynikiem.
+
+Na koniec wypchnij wszystko.
+
+Kiedy repozytorium z aplikacją będzie umieszczone na GitHubie, wypełnij
+[formularz](https://docs.google.com/forms/d/e/1FAIpQLSc9Da0ossYyhSCMjnkMCqom2VQ9CYpB2L0Kvymb3yt_UYF6rw/viewform?usp=header),
+żeby nauczyciel sprawdził zadanie.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-10">
+
+<Zrodlo title="Default templates for dotnet new" publisher="Microsoft Learn" date="2026-09-10" url="https://learn.microsoft.com/dotnet/core/tools/dotnet-new-sdk-templates">lista szablonów testowych w SDK 10 i ich opcje; potwierdzone uruchomieniem `dotnet new nunit --help` na SDK 10.0.112</Zrodlo>
+
+<Zrodlo title="NuGet Gallery — xunit" publisher="NuGet" date="2026-09-10" url="https://www.nuget.org/packages/xunit">strona pakietu z adnotacją o wycofaniu: „legacy and is no longer maintained”</Zrodlo>
+
+<Zrodlo title="dotnet reference add" publisher="Microsoft Learn" date="2026-09-10" url="https://learn.microsoft.com/dotnet/core/tools/dotnet-reference-add">nowa postać polecenia wprowadzona w .NET 10; starsza nadal działa</Zrodlo>
+
+<Zrodlo title="NUnit 4.0 Migration Guide" publisher="NUnit" date="2026-09-10" url="https://docs.nunit.org/articles/nunit/release-notes/Nunit4.0-MigrationGuide.html">przeniesienie klasycznych asercji do `NUnit.Framework.Legacy` i zalecana postać `Assert.That`</Zrodlo>
+
+<Zrodlo title="The MVVM pattern" publisher="Dokumentacja Avalonii" date="2026-08-25" url="https://docs.avaloniaui.net/docs/fundamentals/the-mvvm-pattern/">o testowaniu modelu widoku bez uruchamiania interfejsu</Zrodlo>
+
+<Zrodlo title="dotnet test" publisher="Microsoft Learn" date="2026-09-10" url="https://learn.microsoft.com/dotnet/core/tools/dotnet-test">co robi polecenie i czym różnią się dwa sposoby uruchamiania testów w SDK 10; ta lekcja używa domyślnego, więc nie potrzebujesz `global.json`</Zrodlo>
+
+</Zrodla>
+
+Polecenia, wersje pakietów i zachowanie `dotnet reference add` opisane w tej
+lekcji zostały uruchomione na .NET SDK 10.0.112 dnia 10 września 2026; plik
+testowy z tej lekcji skompilował się bez ostrzeżeń. Sam `dotnet test` nie
+został na tej maszynie uruchomiony — dlatego wynik czerwonego przebiegu
+zobaczysz dopiero na swoim ekranie.
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="dokumentacja" title="Testy bezokienne w Avalonii (Headless)" url="https://docs.avaloniaui.net/docs/concepts/headless/">jeśli kiedyś będziesz chciał sprawdzić samo okno — kliknięcie, wpisany tekst — Avalonia ma tryb bez wyświetlacza; ta lekcja go celowo nie używa, bo logika wyprowadzona z okna testuje się prościej</Lektura>
+
+<Lektura kind="dokumentacja" title="TestCase — jedna metoda, wiele przypadków" url="https://docs.nunit.org/articles/nunit/writing-tests/attributes/testcase.html">dokumentacja atrybutu, którego użyłeś w piątej sekcji, z wariantami, o których lekcja nie mówiła</Lektura>
+
+<Lektura kind="artykul" title="Stan poza kontrolkami — lekcja z modułu szóstego" url="/moduly/06-pod-maska/stan-poza-kontrolkami">warto przeczytać ponownie teraz, kiedy widać, po co to było: reguła z 1979 roku okazała się warunkiem tego, żeby cokolwiek dało się dziś przetestować</Lektura>
+
+</CzytajDalej>

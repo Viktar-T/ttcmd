@@ -2,14 +2,42 @@
 title: "Pod maską: aplikacja własną ręką"
 ---
 
-{/* Drafted 2026-09-02 from docs/content-briefs/05-index.md, autonomous run —
+{/* Drafted 2026-09-02 from docs/content-briefs/06-index.md, autonomous run —
     the brief is a proposal, not an approved spec. Stack inside the module:
-    C# + Avalonia (Viktar, 2026-09-02; open decision #12). Lessons 5d–5g
+    C# + Avalonia (Viktar, 2026-09-02; open decision #12). Lessons 6d–6g
     contain code the student types; every block was built as a stage of
-    tmp-modul5-build/ — see the briefs' Deviations for the build status. The
-    whole module stays publish: false until that status says „built and tests
-    green”. Windows-only observations (the „Nie odpowiada” ghost window,
-    Visual Studio) assume lab list A; TO CONFIRM against open decisions #1 and #9. */}
+    tmp-modul5-build/ (the folder keeps its name — it is the teacher's
+    reference build, not a module number) — see the briefs' Deviations for the
+    build status. The whole module stays publish: false until that status says
+    „built and tests green”. Windows-only observations (the „Nie odpowiada”
+    ghost window, Visual Studio) assume lab list A; TO CONFIRM against open
+    decisions #1 and #9.
+
+    RENUMBERED 5 → 6 by course-structure-v2 v2.9 (2026-09-10): the module now
+    runs after „Twoja aplikacja”, so a student arrives having already built an
+    application of their own. This change moved the files and the brief paths
+    and nothing else. TWO REWRITES ARE STILL OWED and are deliberately not in
+    this change:
+      1. The running example. v2.9 puts 6d–6g and 6h on the student's own
+         application instead of `spis` / `notatnik-v2`; `tmp-modul5-build/`
+         stays as the teacher's reference implementation and as the fallback
+         for a student whose own application cannot carry a lesson. Every code
+         block in 6d–6g must then be written against a capability the
+         application has, never against a screen it happens to contain.
+      2. The counts and the framing in this introduction and in 6a — „przez
+         jedenaście tygodni”, „masz cztery działające aplikacje”, and 6a's
+         „Uruchom notatnik-v2, ten z modułu o specyfikacji” — all date from
+         when this module was Moduł 5.
+    Seven published sentences in Moduł 2 and Moduł 3 still promise this
+    material „w Module 5”; they are listed in the v2.9 changelog entry and are
+    untouched here. 
+
+    2026-09-10, on Viktar's request: one sentence added saying which lessons end
+    in a hand-in assignment (6a, 6b, 6c, 6h). 6d–6g get theirs when the owed
+    running-example rewrite lands — writing them against spis / notatnik-v2
+    today would only have to be rewritten with the lessons. See
+    docs/content-style.md, „The hand-in assignment”.
+*/}
 
 Przez jedenaście tygodni okna budował agent, a twoją pracą było czytanie tego, co zbudował. Masz
 cztery działające aplikacje, trzy commity z napisem „wlasna reka” i przy
@@ -51,6 +79,8 @@ podpowiadaniem, z agentem — i w tym module domyślnym trybem jest „bez AI”
 agent jest wyjątkiem, który trzeba nazwać. Kod, który wpisujesz, jest krótki,
 kompletny i został zbudowany i uruchomiony, zanim trafił do lekcji. Każdy
 blok kończy się tak samo: commitem w twoich słowach i linijką na karcie z
-liczbą minut. To nie jest moduł o tym, „jak się kiedyś robiło”. Dwie godziny
-rezerwy leżą przy czwartej i szóstej lekcji, bo to one najczęściej się
-przeciągają.
+liczbą minut. Cztery lekcje — pierwsza, druga, trzecia i ostatnia — kończą
+się zadaniem oddawanym nauczycielowi: robotę widać w repozytorium na
+GitHubie, nie w opowieści o tym, że się udało. To nie jest moduł o tym, „jak
+się kiedyś robiło”. Dwie godziny rezerwy leżą przy czwartej i szóstej lekcji,
+bo to one najczęściej się przeciągają.

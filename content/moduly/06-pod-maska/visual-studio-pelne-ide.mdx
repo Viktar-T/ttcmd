@@ -2,17 +2,26 @@
 title: "Visual Studio: pełne IDE"
 order: 3
 summary: "Edytory, w których dotąd pisaliśmy, były jednym rodzajem programu w różnych płaszczach. Visual Studio nim nie jest — i różnica nie polega na agencie, tylko na tym, co się dzieje po naciśnięciu F5. Solution, plik projektu, punkt przerwania w metodzie obsługi zapisu notatnika i okno, które pokazuje, kto wywołał twoją metodę."
-publish: false
+publish: true
 ---
 
-{/* Drafted 2026-09-02 from docs/content-briefs/05c-visual-studio-pelne-ide.md,
+{/* Drafted 2026-09-02 from docs/content-briefs/06c-visual-studio-pelne-ide.md,
     autonomous run — brief unapproved. Assumes lab list A: Visual Studio 2026
     Community with the „.NET desktop development” workload, launched once per
     profile (per-user trap 4); Windows only — open decision #9. No screenshots
     by design: every UI element is a „znajdź u siebie” sentence with its menu
     path and a dated link. Menu labels are given in English as Visual Studio
     shows them under an English install; a Polish install shows translated
-    labels in the same places — TO CONFIRM which language the lab has. */}
+    labels in the same places — TO CONFIRM which language the lab has. 
+
+    Exercises rewritten 2026-09-10 on Viktar's request into the hand-in
+    shape of Moduł 2 and Moduł 3 — one Zadanie element, the finished repository
+    state, four conditions visible in the repository, and the closing form
+    sentence. The rule is docs/content-style.md, „The hand-in assignment”.
+    The recall exercise was dropped; the breakpoint reading, the Call Stack
+    line (moved from the card to README.md, where a marker can see it) and the
+    Marketplace lookup became conditions of „Solution w repozytorium”.
+*/}
 
 W tym kursie pisaliśmy dotąd w dwóch edytorach z agentem — a jeśli znasz
 VS Code, to ten sam rodzaj programu, bo wszystkie trzy należą do jednej
@@ -199,37 +208,35 @@ je celowo.
 
 ## Ćwiczenia
 
-<Zadanie>
+<Zadanie title="Solution w repozytorium i pierwszy punkt przerwania">
 
-Z pamięci: trzy rzeczy, które Visual Studio ma w środku, a edytor z
-rozszerzeniami doczepia; co robią klawisze F9, F5 i F10; co pokazuje okno
-Call Stack, co w nim trzeba odsłonić i czego w nim nie ma.
+Otwórz `notatnik-v2` w Visual Studio i doprowadź repozytorium do stanu, w
+którym widać w nim jedną świadomą decyzję o pliku solution i jeden odczyt z
+debuggera. Blok „Punkt przerwania: program stoi, ty patrzysz” jest częścią
+tego zadania.
 
-</Zadanie>
+Warunki są cztery i wszystkie widać w repozytorium:
 
-<Zadanie>
+- Visual Studio przy zamykaniu proponuje zapisanie pliku solution obok
+  projektu. Zdecyduj, czy trafia do repozytorium, i **uzasadnij to w opisie
+  commita** — jednym zdaniem o tym, po co komuś ten plik albo dlaczego jest
+  zbędny. Jeśli zostaje poza repozytorium, wpis w `.gitignore` jest tą decyzją
+  zapisaną i ma ten sam commit;
+- w `README.md` jest odczyt z debuggera: punkt przerwania w metodzie, która
+  wczytuje plik na starcie, nazwa zmiennej trzymającej treść pliku odczytana w
+  oknie Watch, a po jednym kroku F10 — jak zmieniła się jej długość;
+- w `README.md` jest też liczba wierszy, które stały pod twoją metodą w oknie
+  Call Stack po odsłonięciu cudzego kodu, i nazwa najniższego z nich;
+- w `README.md` jest też najniższa wersja Visual Studio, której dziś wymaga
+  rozszerzenie Avalonia for Visual Studio, i data ostatniego wydania tego
+  rozszerzenia — ze strony w Marketplace, z linkiem i datą odczytania —
+  porównane z wersją zainstalowaną w pracowni (**Help › About**).
 
-Postaw punkt przerwania w metodzie notatnika, która wczytuje plik na
-starcie. Uruchom, odczytaj w oknie Watch zmienną, która trzyma treść pliku,
-zrób jeden krok F10 i zapisz, jak zmieniła się jej długość.
+Na koniec wypchnij wszystko.
 
-</Zadanie>
-
-<Zadanie title="Solution w repozytorium">
-
-Visual Studio przy zamykaniu proponuje zapisanie obok projektu pliku
-solution. Zdecyduj, czy trafia do repozytorium, i uzasadnij w opisie commita — jednym zdaniem, po co komuś ten
-plik albo dlaczego jest zbędny. Dopisz na karcie linijkę z liczbą wierszy w
-Call Stack pod twoją metodą.
-
-</Zadanie>
-
-<Zadanie>
-
-Na stronie rozszerzenia Avalonia for Visual Studio w Marketplace znajdź
-najniższą wersję Visual Studio, której ono dziś wymaga, i datę ostatniego
-wydania rozszerzenia. Porównaj z wersją zainstalowaną w pracowni (**Help ›
-About**). Zapisz obie z dzisiejszą datą.
+Kiedy repozytorium z aplikacją będzie umieszczone na GitHubie, wypełnij
+[formularz](https://docs.google.com/forms/d/e/1FAIpQLSc9Da0ossYyhSCMjnkMCqom2VQ9CYpB2L0Kvymb3yt_UYF6rw/viewform?usp=header),
+żeby nauczyciel sprawdził zadanie.
 
 </Zadanie>
 

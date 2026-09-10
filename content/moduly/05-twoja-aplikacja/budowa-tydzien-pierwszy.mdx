@@ -1,0 +1,226 @@
+---
+title: "Budowa: tydzień pierwszy"
+order: 5
+summary: "Pętla, którą znasz z notatnika, na programie, którego nikt przed tobą nie zbudował — bez drugiego folderu, do którego można zajrzeć. Rytm jedno zadanie, jeden commit; trzy pytania do diffu w nieznanej bibliotece; co robić, kiedy zadanie stoi od godziny; i dlaczego w środę się tnie."
+publish: true
+---
+
+{/* Drafted 2026-09-10 from docs/content-briefs/05e-budowa-tydzien-pierwszy.md,
+    autonomous run — brief unapproved. Re-derived from the deleted „Wspólna
+    aplikacja” row 6c (course-structure-v2 v2.9).
+
+    Procedure with a narrative frame, six hours — the longest lesson of the
+    module. Trips the one-sentence-paragraph count by design, as 4e does.
+
+    Section 6 („Co ma być gotowe”) is the module's rubric applied: every
+    sentence in it was checked against „could this be true of an application
+    that has no list, no window layout and no file format”. No application
+    code, no framework, no named control anywhere in the lesson.
+
+    FOR VIKTAR (brief's open question): whether the mid-week gate should be a
+    checkpoint run in class — a short round of „ile masz odhaczonych” — which
+    the draft only hints at. Article V: the draft says „w połowie tygodnia” and
+    „w środę” as a figure of speech in one place only, never a timetable.
+    Intra-module references are plain text. */}
+
+Otwórz `tasks.md` i policz puste kwadraty. Obok, w tym samym repozytorium, są
+cztery pliki i zero kodu. Przez najbliższy tydzień te dwie liczby będą się
+zmieniać w przeciwne strony i to jest cała treść tygodnia.
+
+Jedna rzecz jest inna niż w tygodniu notatnika, i warto ją nazwać, zanim zacznie
+przeszkadzać. Wtedy w folderze obok leżał gotowy notatnik z Budowy 2: kiedy coś
+było niejasne, dawało się zajrzeć i zobaczyć, jak wyglądało to poprzednim razem.
+Teraz nie ma dokąd zajrzeć. Jedyną rzeczą, która mówi, jak twój program ma się
+zachować, jest plik, który sam napisałeś.
+
+Stąd pytanie na ten tydzień: **czy pętla, którą przeszedłeś na notatniku,
+wytrzyma program, którego nikt przed tobą nie zbudował?**
+
+## Rytm: jedno zadanie, jeden commit
+
+Rytm znasz i nie zmienia się ani trochę. Wklejasz do rozmowy treść jednego
+zadania — tylko jednego, razem z jego „gotowe, gdy” — i odsyłasz agenta do planu
+i specyfikacji w folderze, zamiast opisywać je jeszcze raz. Kiedy skończy,
+czytasz diff. Uruchamiasz sprawdzenie. Jeśli przechodzi, odhaczasz kwadrat i
+robisz commit z numerem zadania w opisie. Jeśli nie przechodzi, nie odhaczasz i
+nie robisz commitu.
+
+Zmienia się tempo, a razem z nim jedna pokusa. Przy notatniku każde zadanie
+kończyło się szybko, więc sprawdzanie było tanie. Tutaj któreś zadanie zajmie
+trzy razy więcej, niż myślałeś, i pojawi się myśl, żeby odhaczyć dwa naraz, bo
+„i tak razem działają”. Historia, w której jeden commit zawiera dwa zadania,
+przestaje być listą do czytania — a będziesz ją czytać w drugim tygodniu,
+szukając momentu, w którym coś się zepsuło.
+
+Wpis do dziennika też jest na zadanie, nie na dzień. Jedna linijka wystarczy,
+jeśli zawiera dowód: polecenie i to, co zwróciło, albo fragment pliku. Zdanie
+„sprawdziłem, działa” jest wpisem o tobie, nie o programie.
+
+## Dziesięć minut na diff, kiedy nie znasz biblioteki
+
+Dziesięć minut na czytanie zmian przed przyjęciem zostaje z poprzednich modułów,
+ale trafia w nową sytuację. W notatniku umiałeś powiedzieć, czego się spodziewasz.
+Tutaj agent użyje rzeczy, których nie znasz — i to jest normalne, bo twoja
+aplikacja robi coś, czego nie robiła żadna z poprzednich. Trzy pytania poniżej
+działają nawet wtedy, kiedy nie rozumiesz połowy linijek.
+
+**Co ta zmiana ruszyła poza tym, o co prosiłem?** Diff pokazuje wszystkie
+zmienione pliki. Jeśli zadanie dotyczyło jednej rzeczy, a zmienionych plików jest
+pięć, chcesz wiedzieć dlaczego, zanim to przyjmiesz. Nie musisz rozumieć zmian —
+musisz wiedzieć, że tam są.
+
+**Którędy wchodzą dane i którędy wychodzą?** Znajdź w zmianie miejsce, w którym
+coś jest wczytywane, i miejsce, w którym coś jest zapisywane albo pokazywane. To
+są dwa punkty, w których program spotyka się ze światem, i prawie każdy błąd,
+który zgłosi ci kolega za dwa tygodnie, siedzi w jednym z nich.
+
+**Co się stanie, jeśli to się nie uda?** Wskaż linijkę, która może zawieść —
+plik, którego nie ma, pole, które jest puste, liczba, której nie da się
+odczytać — i sprawdź, czy w kodzie jest napisane, co wtedy. Jeśli nie ma nic,
+zapisz to w dzienniku. Nie musisz tego dziś naprawiać; masz to zauważyć, bo w
+drugim tygodniu będzie o to kryterium.
+
+Jeżeli po dziesięciu minutach nadal nie umiesz odpowiedzieć na pierwsze pytanie,
+poproś w tej samej rozmowie o wyjaśnienie zmiany w trzech zdaniach — i przeczytaj
+je z diffem obok, nie zamiast.
+
+## Trzy rzeczy pójdą nie tak
+
+Te same trzy co przy notatniku, więc tylko krótko — i z jedną różnicą, przez
+którą są w tym tygodniu trudniejsze.
+
+**Agent zrobił więcej, niż mówiło zadanie.** Cofasz i wysyłasz zadanie jeszcze
+raz, z dopisanym zdaniem o zakresie.
+
+**Zadanie okazało się za duże.** Dzielisz; druga połowa dostaje nowy numer i
+trafia na koniec listy, nie w środek.
+
+**Budowa pokazała, że specyfikacja się myli.** Poprawiasz `spec.md`, robisz
+commit, dopiero potem kończysz zadanie.
+
+Różnica jest taka, że przy notatniku istniała druga wersja tego samego programu i
+w razie wątpliwości dawało się sprawdzić, jak „powinno być”. Tutaj nie ma z czym
+porównać, więc jedynym punktem odniesienia jest twoja specyfikacja — i zdanie
+„chyba tak miało być” przestaje być odpowiedzią. Albo w specyfikacji jest
+napisane, albo dopisujesz to teraz i robisz commit.
+
+## Zadanie stoi od godziny
+
+To się zdarzy i lepiej mieć na to procedurę niż determinację. Cztery ruchy, w tej
+kolejności, i dopiero po nich piąty.
+
+Zmniejsz. Znajdź najmniejszy przypadek, w którym błąd nadal występuje.
+Usuwaj z próby wszystko, co się da: mniej danych, jedno pole zamiast trzech,
+jedna czynność zamiast czterech. Połowa błędów znika w trakcie zmniejszania i
+wtedy już wiesz, gdzie były.
+
+Zacznij od nowa w świeżej sesji. Nowa rozmowa, dołączona specyfikacja i ten
+jeden plik, którego dotyczy problem. Bez historii wcześniejszych prób. Sesja,
+która trzy razy próbowała czegoś, co nie działa, będzie próbować tego czwarty raz
+— a świeża zaczyna od tego, co jest w plikach.
+
+Daj to komuś na dwie minuty. Kolega z klasy patrzy na diff, nie znając twojej
+aplikacji. Nie mów mu, co miało się stać, dopóki nie powie, co widzi. To jest
+najtańszy sposób znalezienia miejsca, w którym twoje założenie różni się od
+tego, co jest napisane.
+
+**Zapisz w dzienniku, na czym stoisz** — po godzinie, nie po trzech. Wpis „T05
+stoi: zapis kończy się bez błędu, ale po ponownym otwarciu nie ma danych;
+sprawdzone: plik powstaje i jest pusty” jest wart dwudziestu minut jutro rano.
+
+Piąty ruch jest ostatnią deską i wygląda tak: **tniesz kryterium.** Najpierw
+poprawiasz `spec.md` — kryterium schodzi albo maleje, z datą i jednym zdaniem
+dlaczego — potem commit, potem zmieniasz listę zadań. W tej kolejności, nigdy
+odwrotnie. Kryterium wycięte po cichu jest tym samym co kryterium niespełnione,
+tylko trudniej to potem zauważyć.
+
+## W połowie tygodnia liczysz, a nie przyspieszasz
+
+W środku tygodnia zatrzymujesz się na pięć minut i liczysz odhaczone kwadraty. To
+jedyny moment, w którym warto patrzeć na całość, a nie na zadanie.
+
+Jeśli odhaczona jest mniej więcej połowa, idziesz dalej i nic nie zmieniasz. Jeśli
+odhaczona jest jedna trzecia albo mniej, masz do wyboru dwie rzeczy i tylko
+jedna z nich działa. Można postanowić, że nadrobi się w weekend; wiesz z
+notatnika, ile takie postanowienie jest warte. Można też **przyciąć zakres** —
+tak samo jak przy pomyśle, tylko na mniejszym poziomie: wybierasz zadania, które
+dowożą kryteria, i przesuwasz resztę do `pozniej.md`, a specyfikacja dostaje o
+jedno albo dwa kryteria mniej, z datą i powodem.
+
+Cięcie w połowie tygodnia jest decyzją: masz jeszcze czas, żeby skończyć to, co
+zostało. Cięcie w ostatniej godzinie jest tylko nazwaniem tego, co i tak się nie
+udało. Ta sama czynność, dwie różne wartości — i cała różnica leży w tym, kiedy
+usiądziesz i policzysz.
+
+## Co ma być gotowe na koniec tygodnia
+
+Bramka jest u wszystkich taka sama, choć za każdą stoi inna aplikacja. Cztery
+rzeczy, wszystkie sprawdzalne bez wiedzy o tym, co twój program robi.
+
+1. **Aplikacja uruchamia się z folderu, a nie z edytora.** Zamknij edytor,
+   uruchom ją tak, jak uruchomiłby ją ktoś, kto go nie ma, i zapisz w dzienniku,
+   co zrobiłeś.
+2. **Co najmniej połowa kryteriów przechodzi, z dowodem.** Dowód to polecenie i
+   jego wynik albo fragment pliku, jeden wpis na kryterium.
+3. **Każdy commit ma numer swojego zadania** i żaden nie zawiera dwóch zadań.
+   `git log --oneline` ma się czytać jak lista, którą odhaczałeś, bo nią jest.
+4. **Dziennik ma jeden wpis na zadanie**, nie jeden na tydzień, i przy każdym
+   stoi liczba — ile zajęło.
+
+Piąta rzecz nie jest wymagana, ale jest tania i przydaje się za dwa tygodnie:
+zapisz jedno zdanie o tym, czego się w tym tygodniu nauczyłeś o swojej
+specyfikacji. Nie o programowaniu — o specyfikacji.
+
+## Pierwsza połowa
+
+Pytanie z początku brzmiało, czy pętla wytrzyma program, którego nikt przed tobą
+nie zbudował. Odpowiedź, jaką masz po tygodniu, jest zwykle taka: pętla wytrzymuje,
+a to, co się kruszy, to specyfikacja — i dobrze, bo po to się ją pisze przed
+kodem, a nie po nim.
+
+- **Jedno zadanie, jeden commit, jedno sprawdzenie** — również wtedy, a zwłaszcza
+  wtedy, kiedy tempo kusi, żeby odhaczyć dwa naraz.
+- **Trzy pytania do diffu** działają bez znajomości biblioteki: co ruszyło poza
+  zadaniem, którędy wchodzą i wychodzą dane, co się stanie przy niepowodzeniu.
+- **Zadanie, które stoi godzinę**, ma cztery ruchy przed sobą — zmniejsz, świeża
+  sesja, cudze oczy, wpis w dzienniku — i dopiero potem cięcie kryterium, zawsze
+  przez `spec.md`.
+- **W połowie tygodnia się liczy**, a jeśli wynik jest zły, tnie się zakres, a
+  nie dodaje weekendu.
+
+Teraz wiesz, które z twoich kryteriów były zdaniami o programie, a które
+życzeniami. Drugi tydzień jest właśnie o tym: o drugiej połowie listy, w której
+zostały te trudniejsze, i o tym, co robisz, kiedy budowa udowodni, że plik miał
+rację, ale nie ta, o którą ci chodziło.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: cztery ruchy przy zadaniu, które stoi, w kolejności — i co robisz
+przed wycięciem kryterium.
+
+</Zadanie>
+
+<Zadanie title="Trzy pytania do własnego diffu">
+
+Weź diff ostatniego zadania i odpowiedz na piśmie na trzy pytania z tej lekcji.
+Zapisz jedną rzecz, którą agent zmienił, a której żadne zadanie nie kazało.
+
+</Zadanie>
+
+<Zadanie title="Tydzień">
+
+Pierwsza połowa listy odhaczona: jedno zadanie, jeden commit, jeden wpis w
+dzienniku z dowodem i liczbą minut. Aplikacja uruchamia się z folderu przy
+zamkniętym edytorze. Wypchnięte.
+
+</Zadanie>
+
+<Zadanie title="Kryterium, które było życzeniem">
+
+Jeden akapit w `dziennik.md`: które z twoich kryteriów okazało się życzeniem, po
+czym to poznałeś i jak brzmiałoby napisane dziś. Jeśli żadne — napisz, które było
+najbliżej.
+
+</Zadanie>

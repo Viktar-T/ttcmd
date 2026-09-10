@@ -1,0 +1,334 @@
+---
+title: "CI: bramka, która nie przepuszcza zepsutego kodu"
+order: 4
+summary: "Dziewięć linijek pliku sprawia, że twoje testy uruchamiają się na cudzym komputerze przy każdym wypchnięciu, a jedno ustawienie zamienia czerwony znaczek w „nie da się scalić”. Plus dwa udokumentowane sposoby, na które bramka przepuszcza wszystko i nadal świeci na zielono."
+publish: true
+---
+
+{/* Drafted 2026-09-10 from docs/content-briefs/07d-ci-bramka.md,
+    semi-supervised run — brief unapproved.
+
+    Procedure with a narrative frame (content-style.md, three shapes). The
+    narrative section that carries the lesson is „Bramka, która przepuszcza
+    wszystko” — both of its failure modes are documented, not cautionary.
+
+    VERSIONS: actions/checkout@v7 and actions/setup-dotnet@v6 are the current
+    majors on the actions' own repositories, checked 2026-09-10. Their release
+    YEARS could not be read off the pages (research-07 §7), so the lesson gives
+    the tags and makes re-checking a condition of the assignment. GitHub's own
+    starter workflow is stale (v4/v4/8.0.x) — verified, and said in the lesson.
+
+    THE RULESET LABEL: GitHub's own docs give two different wordings for the
+    status-check rule (research-07 §7.5). The lesson therefore gives the PATH
+    and describes the rule, and prints no checkbox label as if quoted. One
+    screenshot would make this section much better — module brief, 7d open
+    question 1.
+
+    NOT EXECUTED: the workflow has not been run on GitHub from this session.
+    Assembled from the actions' own current documentation. */}
+
+Masz testy i wiesz, co sprawdzają. Masz też przegląd, który potrafi przeczytać
+twój diff o trzeciej w nocy. Obydwa mają tę samą wadę i już ją znasz: **uruchamiasz
+je ty.** `dotnet test` działa wtedy, kiedy o nim pamiętasz, a pamiętasz o nim
+wtedy, kiedy się nie spieszysz.
+
+Nazwij dzień, w którym nie będziesz pamiętać. U większości ludzi to jest ten,
+w którym poprawka jest jednolinijkowa i oczywista, a do oddania zostały dwie
+godziny.
+
+Dziś przestaniesz być tym, kto pamięta. Dziewięć linijek w jednym pliku sprawi,
+że przy każdym wypchnięciu twoje testy uruchomią się na maszynie, której nie
+znasz — a potem jedno ustawienie sprawi, że czerwony wynik przestanie być
+informacją i stanie się przeszkodą.
+
+## Czym jest cudzy komputer, który buduje twój kod
+
+Skrót **CI** — *continuous integration*, ciągła integracja — padł raz, w
+[lekcji o vibe codingu](/moduly/01-jak-powstaje-oprogramowanie/vibe-coding-kontra-inzynieria),
+jako słowo na liście. Rzecz, którą oznacza, jest prostsza niż nazwa.
+
+Gdzieś stoi komputer, który nie jest twój. Kiedy wypchniesz commit, ten
+komputer dostaje sygnał, pobiera świeżą kopię twojego repozytorium, instaluje
+to, czego potrzebuje, uruchamia polecenia, które mu podałeś, i zapisuje jedną
+rzecz: czy wszystkie się udały. Wynik pojawia się przy twoim commicie jako
+znaczek — zielony albo czerwony.
+
+Wynika z tego jedna rzecz, o której trzeba pamiętać przy pisaniu pliku: **ta
+maszyna nie ma nic z twojego komputera.** Nie ma twojego SDK, twoich ustawień,
+twoich plików spoza repozytorium ani twojego systemu — domyślnie jest to Linux,
+nawet jeśli ty pracujesz na Windowsie. Wszystko, czego potrzebuje, musi być
+albo w repozytorium, albo wypisane w pliku wprost. Dlatego wersję SDK podaje
+się tam głośno, choć u siebie nigdy jej nie podajesz.
+
+Kosztuje to zero, o ile repozytorium jest publiczne. GitHub mówi to jednym
+zdaniem:
+
+<Cytat author="GitHub Docs" source="About billing for GitHub Actions — strona bez daty, sprawdzona 10 września 2026" date="2026-09-10" url="https://docs.github.com/en/billing/concepts/product-billing/github-actions">
+
+GitHub Actions usage is free for self-hosted runners and for public
+repositories that use standard GitHub-hosted runners.
+
+</Cytat>
+
+Twoje repozytorium jest publiczne, więc ta lekcja nic cię nie kosztuje. Gdyby
+było prywatne, liczyłyby się minuty i rozmowa wyglądałaby inaczej.
+
+## Dziewięć linijek
+
+Utwórz w repozytorium katalog `.github/workflows` — dokładnie tak, z kropką na
+początku — i w nim plik `ci.yml`:
+
+```yaml title=".github/workflows/ci.yml"
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Build
+        run: dotnet build
+
+      - name: Test
+        run: dotnet test
+```
+
+Linijka po linijce, bo za tydzień będziesz to debugować i musisz wiedzieć, co
+usunąć:
+
+`on: [push, pull_request]` — kiedy to ma się uruchomić. Przy każdym
+wypchnięciu i przy każdym pull requeście. Bez tego plik nie zrobi nigdy nic.
+
+`runs-on: ubuntu-latest` — na czym. Linux, świeży za każdym razem.
+
+`actions/checkout@v7` — pobierz moje repozytorium. Bez tego kroku maszyna
+startuje w pustym katalogu, a `dotnet build` mówi, że nie widzi projektu; to
+jest najczęstszy pierwszy błąd i wygląda tajemniczo, dopóki się nie wie, czego
+brakuje.
+
+`actions/setup-dotnet@v6` z `dotnet-version: '10.0.x'` — zainstaluj SDK.
+`10.0.x` znaczy „najnowsza łatka dziesiątki”, więc plik nie zestarzeje się przy
+następnej aktualizacji.
+
+`dotnet build` i `dotnet test` — te same dwa polecenia, które wpisujesz u
+siebie. Nie ma tu `dotnet restore`, choć zobaczysz go w wielu przykładach:
+[pobranie pakietów uruchamia się samo w każdym poleceniu, które go
+potrzebuje](https://learn.microsoft.com/dotnet/core/tools/dotnet-restore).
+Linijka, która nie robi nic widocznego, to linijka, którą będziesz przepisywać
+przez następne dziesięć lat, nie wiedząc po co.
+
+Dwie uwagi o wersjach, i obie są treścią, nie formalnością. Numery `v7` i `v6`
+to najnowsze duże wersje tych dwóch kroków, sprawdzone w ich własnych
+repozytoriach 10 września 2026. **Gotowy szablon, który GitHub sam podpowiada
+dla projektów .NET, ma dziś w środku `v4`, `v4` i `8.0.x`** — czyli jest
+starszy niż narzędzia, do których się odwołuje (sprawdzone tego samego dnia).
+To nie jest złośliwość; szablony starzeją się szybciej, niż ktokolwiek je
+poprawia. Wniosek jest praktyczny: numer wersji sprawdza się w źródle, nie w
+poradniku, także w tej lekcji, także dziś.
+
+## Pierwszy przebieg — i pierwsza porażka, która jest normalna
+
+Zatwierdź plik i wypchnij. Wejdź na swoje repozytorium na GitHubie i otwórz
+zakładkę **Actions**. Zobaczysz przebieg — najpierw żółty, potem zielony albo
+czerwony. Kliknij w niego i przeczytaj log do końca, nawet jeśli jest zielony:
+to jedyny moment, w którym zobaczysz, jak wygląda budowanie twojego projektu
+od zera.
+
+Jest spora szansa, że pierwszy przebieg padnie. Trzy powody wyczerpują
+większość przypadków.
+
+Nie ta wersja SDK. Log mówi, że projekt wymaga nowszej wersji, niż jest
+zainstalowana. Popraw `dotnet-version` na tę, którą masz u siebie — sprawdzisz
+ją poleceniem `dotnet --version`.
+
+Ścieżka, która działa na Windowsie i nie działa na Linuksie. Linux
+rozróżnia wielkość liter w nazwach plików, a Windows nie. `Magazyn.cs`
+dopisany w kodzie jako `magazyn.cs` u ciebie zadziała, a tam nie. To jest
+najbardziej mylący z tych trzech błędów, bo u siebie nie da się go zobaczyć.
+
+`bin/` albo `obj/` w repozytorium. Jeśli wypchnąłeś skompilowane pliki,
+budowanie potrafi się o nie oprzeć w sposób trudny do odczytania. Sprawdź
+`.gitignore`; jeśli te katalogi już są w historii, usuń je z repozytorium
+osobnym commitem.
+
+Naprawiaj po jednej rzeczy naraz i za każdym razem patrz na log. Człowiek,
+który umie czytać log przebiegu, jest w tej klasie rzadszy niż człowiek, który
+umie napisać ten plik.
+
+## Zepsuj to celowo
+
+Zielony znaczek nie znaczy jeszcze nic, dopóki nie zobaczyłeś czerwonego. Zrób
+to teraz, na osobnej gałęzi:
+
+```bash
+git switch -c psuje-celowo
+```
+
+Cofnij naprawę z lekcji o pierwszym teście — wystarczy zmienić jedną linijkę w
+metodzie zapisu z powrotem na sklejanie średnikiem. Zatwierdź, wypchnij, wejdź
+w **Actions**.
+
+Czerwony. Wejdź w log i znajdź w nim nazwę swojej metody testowej. Zatrzymaj
+się na chwilę przy tym, co się właśnie stało: **maszyna, której nie znasz,
+przeczytała twoje zdanie ze specyfikacji, sprawdziła je na twoim kodzie i
+powiedziała ci, że jest nieprawdziwe** — a ty nic w tej sprawie nie zrobiłeś
+poza wypchnięciem commita.
+
+Otwórz z tej gałęzi pull request do `main`. Zobaczysz czerwony znaczek przy
+zmianie. I zobaczysz też, że przycisk scalania nadal działa.
+
+## Od czerwonego do „nie da się scalić”
+
+Czerwony znaczek jest na razie informacją. Żeby stał się bramką, trzeba
+GitHubowi powiedzieć, że ten konkretny przebieg jest wymagany.
+
+W repozytorium wejdź w **Settings**, w lewym menu znajdź **Rules** →
+**Rulesets**, utwórz nowy zestaw reguł dla gałęzi, ustaw go jako **Active** i
+wskaż jako cel swoją gałąź główną. Wśród reguł do zaznaczenia jest ta, która
+wymaga, by testy stanu (*status checks*) przeszły przed scaleniem — zaznacz ją
+i dodaj do niej swój przebieg po nazwie.
+
+Nazwę tej reguły podaję opisowo, nie dosłownie, i to jest celowe: **dokumentacja
+GitHuba nazywa ją dziś na dwa różne sposoby na dwóch swoich stronach**. Etykieta
+w interfejsie zmienia się częściej niż sam mechanizm. Szukaj reguły o *status
+checks*; jeśli nazwa u ciebie brzmi inaczej niż w jakimkolwiek poradniku,
+poradnik jest starszy, nie ty się mylisz.
+[Zestawy reguł działają w publicznych repozytoriach na darmowym koncie](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/creating-rulesets-for-a-repository),
+więc nie potrzebujesz do tego niczego płatnego.
+
+Wróć do swojego pull requesta i odśwież. Przycisk scalania jest teraz wyłączony,
+a przy nim stoi zdanie o tym, że wymagany test stanu nie przeszedł. To jest
+bramka. Napraw kod z powrotem, wypchnij, poczekaj na zielone — i dopiero teraz
+da się scalić.
+
+## Bramka, która przepuszcza wszystko
+
+Teraz najważniejsza część tej lekcji, bo dotyczy tego, w co za chwilę
+zaczniesz wierzyć.
+
+Zielony znaczek nie mówi „kod jest dobry”. Mówi dokładnie tyle: **to, co
+uruchomiono, przeszło.** Jeśli nie uruchomiono nic, też jest zielony. Są na to
+dwa udokumentowane sposoby i obydwa spotkasz w życiu.
+
+**Pierwszy: `dotnet test`, który nie znalazł żadnego testu, kończy się
+sukcesem.** Nie ostrzeżeniem widocznym na czerwono — sukcesem. Microsoft
+zapisuje to wprost:
+[„When discovery finds no matching tests, the run prints a warning rather than
+an error and still returns `0` by default”](https://learn.microsoft.com/dotnet/core/tools/dotnet-test-vstest)
+(sprawdzone 10 września 2026). Jeśli więc ktoś — ty za trzy tygodnie, albo
+agent porządkujący projekt — usunie projekt testowy albo zepsuje jego
+odwołanie, bramka będzie świecić na zielono nad repozytorium bez ani jednego
+testu.
+
+**Drugi: krok pominięty raportuje się jako sukces.** GitHub mówi to równie
+wprost:
+
+<Cytat author="GitHub Docs" source="About status checks — strona bez daty, sprawdzona 10 września 2026" date="2026-09-10" url="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/about-status-checks">
+
+A job that is skipped will report its status as 'Success'. It will not prevent
+a pull request from merging, even if it is a required check.
+
+</Cytat>
+
+Sprawdź to sam, bo inaczej w to nie uwierzysz. Na osobnej gałęzi usuń z
+repozytorium projekt testowy — albo tylko jego odwołanie — wypchnij i popatrz
+na znaczek. Zielony. Bramka na miejscu, reguła włączona, testów zero.
+
+Nie ma na to sprytnego zabezpieczenia w dziewięciu linijkach i nie będziemy
+udawać, że jest. Jest za to nawyk, który wystarcza na tym etapie: **kiedy
+patrzysz na zielony znaczek, zerknij w log i sprawdź, ile testów się
+uruchomiło.** Liczba, nie kolor. To jest ta sama zasada, która przewija się
+przez cały kurs — dowód, nie wrażenie — tylko że tym razem wrażenie jest
+zielone i wygląda wyjątkowo przekonująco.
+
+## Sprawdzenie, które nie zależy od twojej pamięci
+
+Na pytanie z początku — co uruchomi twoje testy w środę o drugiej w nocy —
+odpowiedź to plik na dziewięć linijek i jedno ustawienie. Ale wynik jest
+większy niż sam plik: od dziś twoje repozytorium mówi coś o sobie **komuś, kto
+nie jest tobą.**
+
+- **Wersję SDK, system i wszystko inne pisze się wprost.** Maszyna nie ma nic z
+  twojego komputera, więc „u mnie działa” przestaje być argumentem — i to jest
+  główna korzyść, nie skutek uboczny.
+- **Numery wersji sprawdza się w źródle, nie w poradniku.** Gotowy szablon
+  GitHuba jest dziś starszy od narzędzi, które w sobie wymienia.
+- **Czerwone musi coś blokować, inaczej jest ozdobą.** Reguła dla gałęzi
+  zamienia informację w przeszkodę, i dopiero wtedy bramka jest bramką.
+- **Zielone znaczy „to, co uruchomiono, przeszło”.** Nic więcej. Zerkaj na
+  liczbę uruchomionych testów, nie tylko na kolor — puste uruchomienie i
+  pominięty krok wyglądają dokładnie tak samo jak sukces.
+
+Zostało jedno sprawdzenie, którego nie da się zautomatyzować: ktoś, kto nie zna
+twojej aplikacji, a mimo to ma o niej zdanie. Następna lekcja jest o tym — i
+jest to jedyna lekcja w tym kursie, którą robi się w dwie osoby.
+
+## Ćwiczenia
+
+<Zadanie title="Bramka, która raz była czerwona">
+
+Doprowadź repozytorium do stanu, w którym przy każdym wypchnięciu i każdym pull
+requeście budują się i uruchamiają twoje testy, a czerwony wynik blokuje
+scalenie do gałęzi głównej.
+
+Warunki są cztery i wszystkie widać w repozytorium:
+
+- `.github/workflows/ci.yml` istnieje, a w zakładce **Actions** widać **co
+  najmniej jeden przebieg zielony i co najmniej jeden czerwony**;
+- czerwony przebieg pochodzi z commita, którego opis mówi, co zostało zepsute
+  celowo, a naprawa jest osobnym, późniejszym commitem;
+- w `dziennik.md` są: która z trzech typowych porażek pierwszego przebiegu
+  trafiła się tobie (albo „żadna”), **numery wersji obu kroków, których użyłeś,
+  wraz z datą sprawdzenia**, oraz jedno zdanie o tym, czego twój zielony znaczek
+  nie dowodzi;
+- reguła dla gałęzi jest włączona, a pull request, w którym zobaczyłeś wyłączony
+  przycisk scalania, **został w repozytorium** — nie usuwaj go. Zamknięty pull
+  request jest zapisem, tak samo jak commit.
+
+Na koniec wypchnij wszystko.
+
+Kiedy repozytorium z aplikacją będzie umieszczone na GitHubie, wypełnij
+[formularz](https://docs.google.com/forms/d/e/1FAIpQLSc9Da0ossYyhSCMjnkMCqom2VQ9CYpB2L0Kvymb3yt_UYF6rw/viewform?usp=header),
+żeby nauczyciel sprawdził zadanie.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-10">
+
+<Zrodlo title="About billing for GitHub Actions" publisher="GitHub Docs" date="2026-09-10" url="https://docs.github.com/en/billing/concepts/product-billing/github-actions">zdanie o darmowych przebiegach w repozytoriach publicznych; strona bez daty publikacji, data jest dniem sprawdzenia</Zrodlo>
+
+<Zrodlo title="About status checks" publisher="GitHub Docs" date="2026-09-10" url="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/about-status-checks">pominięty krok raportowany jako sukces, także gdy jest wymagany</Zrodlo>
+
+<Zrodlo title="Creating rulesets for a repository" publisher="GitHub Docs" date="2026-09-10" url="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/creating-rulesets-for-a-repository">ścieżka w ustawieniach i dostępność w publicznych repozytoriach na darmowym koncie</Zrodlo>
+
+<Zrodlo title="dotnet test — opcje VSTest" publisher="Microsoft Learn" date="2026-09-10" url="https://learn.microsoft.com/dotnet/core/tools/dotnet-test-vstest">zerowy kod wyjścia, gdy nie znaleziono żadnego testu</Zrodlo>
+
+<Zrodlo title="dotnet restore" publisher="Microsoft Learn" date="2026-09-10" url="https://learn.microsoft.com/dotnet/core/tools/dotnet-restore">o tym, że pobranie pakietów uruchamia się samo w poleceniach, które go potrzebują</Zrodlo>
+
+<Zrodlo title="actions/setup-dotnet" publisher="GitHub" date="2026-09-10" url="https://github.com/actions/setup-dotnet">bieżąca duża wersja kroku i przykład z `10.0.x`; wersję sprawdź ponownie w dniu, w którym piszesz swój plik</Zrodlo>
+
+<Zrodlo title="actions/checkout" publisher="GitHub" date="2026-09-10" url="https://github.com/actions/checkout">bieżąca duża wersja kroku pobierającego repozytorium</Zrodlo>
+
+<Zrodlo title="Building and testing .NET" publisher="GitHub Docs" date="2026-09-10" url="https://docs.github.com/en/actions/tutorials/build-and-test-code/net">gdzie musi leżeć plik przepływu pracy; ta sama strona pokazuje starsze numery wersji niż same kroki</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="dokumentacja" title="Zdarzenia, które uruchamiają przepływ pracy" url="https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows">pełna lista tego, co jeszcze może uruchomić twój plik — harmonogram, etykieta na zgłoszeniu, ręczne kliknięcie; przyda się przy następnej lekcji, bo jest tam też akapit o pull requestach z cudzych kopii repozytorium</Lektura>
+
+<Lektura kind="dokumentacja" title="dotnet format" url="https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-format">druga bramka, jednolinijkowa: `dotnet format --verify-no-changes` kończy się błędem, jeśli kod nie jest sformatowany. Warto dołożyć, kiedy w repozytorium zacznie pisać więcej niż jedna osoba</Lektura>
+
+</CzytajDalej>

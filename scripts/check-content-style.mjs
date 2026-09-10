@@ -99,6 +99,11 @@ const STORIES = [
   { name: "Ronacher", re: /Ronacher/g, home: "vibe-coding-kontra-inzynieria" },
   { name: "dogoni front w dwa tygodnie", re: /dwa tygodnie|dwutygodniow/g, home: "jak-nie-wypasc-z-obiegu" },
   { name: "the four rankings", re: /TIOBE|Octoverse|IEEE/g, home: "jak-nie-wypasc-z-obiegu" },
+  // Moduł 5 „Twoja aplikacja”, added 2026-09-10 with the appendix rows.
+  { name: "„ktoś prawdziwy ma tego używać”", re: /kto[śs] prawdziwy/gi, home: "wybieramy-co-zbudujemy" },
+  { name: "Singer's appetite against the estimate (Shape Up)", re: /Singer|Shape Up|apetyt/gi, home: "ile-to-jest-male" },
+  { name: "`pozniej.md`", re: /pozniej\.md/g, home: "ile-to-jest-male" },
+  { name: "Spolsky's three parts of a report", re: /Spolsky|zgloszenia\.md/g, home: "pierwszy-uzytkownik" },
 ];
 
 /* ------------------------------------------------------------------ *

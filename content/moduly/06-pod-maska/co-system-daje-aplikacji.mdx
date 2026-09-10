@@ -2,15 +2,24 @@
 title: "Co system naprawdę daje aplikacji"
 order: 1
 summary: "Twój notatnik wygląda tak samo w pracowni i na laptopie w domu — kto właściwie rysuje to okno? Lekcja rozbiera je na to, co daje system, co biblioteka, a co ty, kładzie na mapie czterech rodzin narzędzi i nazywa pięć rzeczy, które nie zmieniły się od 1984 roku."
-publish: false
+publish: true
 ---
 
-{/* Drafted 2026-09-02 from docs/content-briefs/05a-co-system-daje-aplikacji.md,
+{/* Drafted 2026-09-02 from docs/content-briefs/06a-co-system-daje-aplikacji.md,
     autonomous run — brief unapproved. Observations 1 and 4 describe Windows
     (Explorer's frame, the „Nie odpowiada” ghost window); on an Ubuntu lab the
     shell's own dialog replaces them — TO CONFIRM against open decision #1.
     The iOS sentence from the brief was dropped, not guessed (no page checked
-    today). Every number is linked where it is used. */}
+    today). Every number is linked where it is used. 
+
+    Exercises rewritten 2026-09-10 on Viktar's request into the hand-in
+    shape of Moduł 2 and Moduł 3 — one Zadanie element, the finished repository
+    state, four conditions visible in the repository, and the closing form
+    sentence. The rule is docs/content-style.md, „The hand-in assignment”.
+    The recall exercise's three-point definition became the second condition;
+    the Explorer observation and the Task Manager reading became the third and
+    fourth, and „Rodziny na twoim pasku zadań” became the assignment.
+*/}
 
 Uruchom `notatnik-v2`, ten z modułu o specyfikacji. Stoi na ekranie, ma pasek
 tytułu, pole na tytuł, pole na treść, listę. Jeśli masz Linuksa w domu i
@@ -201,35 +210,37 @@ Następna lekcja jest tą decyzją.
 
 ## Ćwiczenia
 
-<Zadanie>
-
-Z pamięci: cztery rodziny bibliotek do okien, po jednym programie z twojego
-komputera na każdą; i trzy rzeczy, które ma każda aplikacja desktopowa.
-
-</Zadanie>
-
-<Zadanie>
-
-Uruchom `notatnik-v2` i Eksplorator plików obok siebie. Zapisz trzy rzeczy,
-które system robi dla obu okien tak samo, i dwie, które Avalonia robi tylko w
-środku notatnika. Jeśli pracujesz na Linuksie, zrób to samo z dowolnym oknem
-systemu i zanotuj, co różni się od opisu w lekcji.
-
-</Zadanie>
-
 <Zadanie title="Rodziny na twoim pasku zadań">
 
-W `notatnik-v2` załóż plik `docs/rodziny.md`: każdy program, który masz na
-pasku zadań, przypisany do rodziny A–D, z jedną linijką dowodu — stroną
-producenta albo oknem „O programie” — i dzisiejszą datą. Commit.
+Dopisz do `notatnik-v2` plik `docs/rodziny.md` i zrób z niego osobny commit, z
+opisem w trybie rozkazującym. Dzisiejsza lekcja nie zmienia w kodzie ani
+jednej linijki, więc całą jej robotę widać w tym jednym pliku — i w niczym,
+czego nie da się pokazać palcem na własnym ekranie.
 
-</Zadanie>
+Warunki są cztery i wszystkie widać w repozytorium:
 
-<Zadanie>
+- każdy program z twojego paska zadań jest przypisany do rodziny A–D, a przy
+  każdym stoi jedna linijka dowodu — strona producenta albo okno „O programie”
+  — z dzisiejszą datą. Program, którego rodziny nie da się ustalić, zostaje w
+  pliku z dopiskiem, gdzie szukasz odpowiedzi i czego w tym miejscu nie ma:
+  brak odpowiedzi też jest wynikiem;
+- jeden program z tej listy jest sprawdzony trzema punktami definicji z
+  lekcji — okno, pętla zdarzeń, jeden wątek — z zapisem, czy przechodzi
+  wszystkie trzy. Wybierz taki, który wygląda na aplikację desktopową, a co do
+  którego masz wątpliwość;
+- są trzy rzeczy, które system robi dla `notatnik-v2` i dla Eksploratora
+  plików tak samo, i dwie, które Avalonia robi tylko w środku notatnika. Na
+  Linuksie to samo z dowolnym oknem systemu, z zapisem, co różni się od opisu
+  w lekcji;
+- są dwie liczby z Menedżera zadań — ile pamięci zajmuje twój edytor z agentem,
+  a ile notatnik — z datą i jednym zdaniem o tym, czego to porównanie **nie**
+  dowodzi.
 
-W Menedżerze zadań odczytaj, ile pamięci zajmuje twój edytor z agentem, a
-ile notatnik. Zapisz obie liczby z datą i jedno zdanie o tym, czego to
-porównanie **nie** dowodzi — to dwa różne programy i jeden pomiar.
+Na koniec wypchnij wszystko.
+
+Kiedy repozytorium z aplikacją będzie umieszczone na GitHubie, wypełnij
+[formularz](https://docs.google.com/forms/d/e/1FAIpQLSc9Da0ossYyhSCMjnkMCqom2VQ9CYpB2L0Kvymb3yt_UYF6rw/viewform?usp=header),
+żeby nauczyciel sprawdził zadanie.
 
 </Zadanie>
 

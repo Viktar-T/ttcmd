@@ -1,0 +1,277 @@
+---
+title: "Przegląd kodu: model czyta twój diff"
+order: 3
+summary: "Ten sam diff przeczytany trzy razy: przez ciebie czterema pytaniami, przez model, i przez ciebie jeszcze raz z jego uwagami w ręku. Trzy kubełki — trafione, nieistotne, zmyślone — i dwie opublikowane liczby, które się ze sobą nie zgadzają."
+publish: true
+---
+
+{/* Drafted 2026-09-10 from docs/content-briefs/07c-ai-code-review.md,
+    semi-supervised run — brief unapproved.
+
+    The evidence section is deliberately built like 1c's: two measurements that
+    disagree, each with its limitation, and the reader asked which they would
+    trust. Printing either alone would be propaganda in one direction.
+
+    ACCOUNTS: this lesson assumes the student can either verify a GitHub
+    Student account or already runs Claude Code. Open decision #2. Both paths
+    are written to stand alone — if one is unavailable, the lesson still works.
+
+    NOT TAUGHT, on purpose: CodeRabbit, Graphite, Bugbot, Qodo. Their free-tier
+    eligibility rules are not published in any form that could be verified
+    (research-07 §7.8), and this course does not print a condition a vendor
+    does not state. Named once in Czytaj dalej.
+
+    NOT CLAIMED: precision or recall for Copilot code review — GitHub publishes
+    none (research-07 §7.10). */}
+
+Twój test złapał błąd z round tripu, bo w poprzedniej lekcji ktoś ten błąd
+najpierw znalazł — ty, trzy minuty, przy własnej klawiaturze. Test nie znalazł
+niczego. Sprawdza dokładnie to jedno zdanie, które kazałeś mu sprawdzać, i
+będzie je sprawdzał wiernie do końca świata.
+
+Zostaje pytanie o całą resztę. W twojej naprawie jest jakieś dwadzieścia
+linijek. Sprawdzone są z nich trzy zdania. Co z tym, o czym nikt jeszcze nie
+pomyślał — i kto to przeczyta, skoro w tym projekcie jesteś tylko ty?
+
+Dziś ten sam diff dostanie drugiego czytelnika: taki, który nigdy się nie
+nudzi, przeczyta go o trzeciej w nocy i za dziesiątym razem tak samo uważnie
+jak za pierwszym — i który czasem opisze błąd, którego nie ma.
+
+## Przeczytaj swój diff jeszcze raz, czterema pytaniami
+
+Zanim włączysz cokolwiek, zrób to sam. Otwórz swoją zmianę z poprzedniej
+lekcji:
+
+```bash
+git diff HEAD~2
+```
+
+Daj sobie dwie minuty i zadaj jej cztery pytania z
+[ostatniej lekcji poprzedniego modułu](/moduly/06-pod-maska/trzy-tryby): kto to
+wywołuje i na którym wątku, jaki jest układ, gdzie jest stan, co się dzieje z
+plikiem. Zapisz w `dziennik.md` wszystko, co ci się nie spodobało — nawet
+drobiazgi, nawet niepewne.
+
+Ta lista jest **twoim wynikiem odniesienia** i cała reszta lekcji będzie do
+niej porównywana. Bez niej każda uwaga modelu wygląda jak znalezisko, bo nie ma
+z czym jej zestawić.
+
+## Ten sam diff, drugi czytelnik
+
+Są dwie drogi i wystarczy jedna. Wybierz tę, która działa na twoim koncie
+i na komputerze, przy którym siedzisz.
+
+**Droga pierwsza — na pull requeście, w GitHubie.** Wypchnij swoją zmianę na
+gałąź, otwórz pull request do `main` we własnym repozytorium i poproś Copilota
+o przegląd, tak jak poprosiłbyś człowieka: w panelu **Reviewers** wybierz
+Copilota. Po chwili pojawią się komentarze przy konkretnych linijkach.
+Przegląd Copilota jest częścią planu dla zweryfikowanych uczniów
+([tabela planów GitHuba](https://docs.github.com/en/copilot/get-started/plans),
+sprawdzona 10 września 2026) — ale strony GitHuba nie mówią o tym jednym
+głosem, więc **sprawdź to na własnym koncie i zapisz datę**; to jest jeden z
+warunków zadania w następnej lekcji.
+
+**Droga druga — lokalnie, bez GitHuba.** Jeśli używasz Claude Code, w katalogu
+projektu wpisz `/code-review`. Przeczyta zmiany, których jeszcze nie wypchnąłeś,
+i wypisze uwagi w terminalu
+([dokumentacja](https://code.claude.com/docs/en/code-review), sprawdzona 10
+września 2026). Nie potrzebujesz do tego niczego na GitHubie.
+
+Jeśli masz obie, użyj obu i porównaj — będą się różnić, i to samo w sobie jest
+informacją.
+
+## Co znalazł, czego nie znalazłeś — i odwrotnie
+
+Weź swoją listę i jego listę i rozłóż wszystkie uwagi do trzech kubełków. Nie
+w głowie — w `dziennik.md`, w tabeli, po jednej linijce na uwagę.
+
+| kubełek | co tu trafia |
+| --- | --- |
+| **trafione** | uwaga opisuje coś, co naprawdę jest w kodzie i naprawdę jest problemem |
+| **nieistotne** | uwaga jest prawdziwa, ale nic z niej nie wynika: styl, nazwa zmiennej, „można by rozważyć” |
+| **zmyślone** | uwaga opisuje kod, którego nie ma, albo problem, którego nie ma |
+
+Trzeci kubełek jest tym, po co robimy tę tabelę. Żeby coś do niego wrzucić,
+musisz **sprawdzić** uwagę, a nie ją ocenić — przeczytać wskazaną linijkę,
+uruchomić kod, spojrzeć w dokumentację. „Wygląda dziwnie” nie kwalifikuje.
+To jest ta sama robota, którą lekcja o
+[halucynacjach i weryfikacji](/moduly/03-budujemy/halucynacje-i-weryfikacja)
+kazała ci wykonywać na kodzie od agenta. Dziś wykonujesz ją na jego opiniach o
+twoim kodzie, i to jest trudniejsze, bo opinia nie kompiluje się na czerwono.
+
+Zwróć uwagę na czwartą rzecz, która nie ma kubełka: **czego on nie znalazł, a
+ty tak.** Jeśli twoja dwuminutowa lista zawiera coś, czego w jego liście nie
+ma, zapisz to osobno. Za chwilę okaże się, dlaczego to jest przewidywalne.
+
+## Dwie liczby, które się nie zgadzają
+
+Ile jest wart taki przegląd? Są na to dwie opublikowane odpowiedzi i różnią się
+tak bardzo, że warto je zobaczyć obok siebie.
+
+**Pierwsza pochodzi od GitHuba.** W marcu 2026 firma podała, że przeglądy
+Copilota to
+[ponad jeden na pięć przeglądów kodu na całym GitHubie, że w 71% przeglądów
+narzędzie zgłasza uwagi „wymagające działania”, a w pozostałych 29% nie mówi
+nic, przy średnio 5,1 komentarza na przegląd](https://github.blog/ai-and-ml/github-copilot/60-million-copilot-code-reviews-and-counting/)
+(GitHub, 5 marca 2026). To są dane producenta o własnym produkcie, „wymagające
+działania” definiuje sam producent, i nikt z zewnątrz tego nie sprawdzał.
+
+**Druga pochodzi z niezależnego badania**, które porównało pięć modeli na dwóch
+rodzajach materiału: na błędach wstawionych do kodu specjalnie po to, żeby je
+znaleźć, i na prawdziwych pull requestach z prawdziwych projektów. Na
+spreparowanych błędach modele radziły sobie świetnie. Na prawdziwych zmianach
+[najlepszy z nich osiągnął wynik F1 równy 0,066 — „ledwie powyżej losowego” —
+a fałszywych alarmów było ponad dwa razy więcej niż trafień (56 trafień, 116
+fałszywych)](https://arxiv.org/abs/2606.15689) (9 kwietnia 2026; autorzy w
+Źródłach). To jest preprint, więc praca nierecenzowana; prawdziwych pull requestów
+było tylko pięćdziesiąt, a oceniał je inny model. Wszystkie trzy zastrzeżenia
+są istotne.
+
+Nie ma tu wersji, w której jedna z tych liczb jest prawdziwa, a druga
+kłamstwem. Mierzą co innego: pierwsza mówi, **jak często narzędzie coś
+powiedziało**, druga — **jak często to, co powiedziało, było prawdą o
+prawdziwym kodzie.** Producent ma powód, żeby mierzyć to pierwsze. Ty masz
+powód, żeby pytać o drugie. Twoja tabela z trzema kubełkami jest trzecim
+pomiarem, na próbie wielkości jeden — i dlatego warto ją zrobić.
+
+## Dlaczego duży diff psuje przegląd — komu- i czemukolwiek
+
+To samo badanie wyjaśnia, skąd bierze się przepaść między jednym pomiarem a
+drugim, i jest to wyjaśnienie, które da się wykorzystać jeszcze dziś.
+[Przy zmianach krótszych niż dziesięć linijek wyniki modeli mieściły się w
+przedziale 0,657–0,800; przy zmianach na 150–600 linijek spadały do
+0,043–0,070](https://arxiv.org/html/2606.15689) — piętnastokrotnie. Spreparowane
+błędy siedziały w zmianach o medianie pięciu linijek. Prawdziwe pull requesty
+miały medianę stu siedemnastu.
+
+Czyli: to nie modele są dobre na jednych zmianach i złe na innych. **Zmienną
+jest rozmiar zmiany.**
+
+I to samo dotyczy ludzi, co warto wiedzieć, zanim uzna się to za wadę maszyny.
+Klasyczne zalecenie z badań nad przeglądem kodu mówi, że
+[człowiek nie powinien czytać naraz więcej niż 200–400 linijek, a przegląd
+takiego kawałka przez 60–90 minut wykrywa 70–90% defektów](https://smartbear.com/learn/code-review/best-practices-for-peer-code-review/)
+(SmartBear, streszczenie starszego badania; strona sprawdzona 10 września 2026
+sama nie podaje wielkości próby, więc czytaj to jako regułę kciuka, a nie jako
+pomiar). Powyżej tego trafność spada — u człowieka też.
+
+Jest jeszcze druga liczba stamtąd, którą warto usłyszeć teraz, a nie za dwa
+tygodnie: modele znajdują różne rzeczy z bardzo różną skutecznością. W tym
+samym badaniu
+[czułość na problemy bezpieczeństwa sięgała 69,6%, na błędy logiczne 24,5%, a
+na problemy z wydajnością wynosiła 0,0%](https://arxiv.org/html/2606.15689).
+Model jest niezłym czytelnikiem jednej klasy problemów i praktycznie ślepy na
+inną. Nie „ogólnie pomaga” — pomaga w konkretnych miejscach.
+
+Wniosek jest praktyczny i wraca w tym module dwa razy: **rób małe zmiany.** Nie
+dlatego, że tak wypada, tylko dlatego, że przegląd — czyjkolwiek — działa
+wtedy, kiedy jest co przeczytać na raz.
+
+## Przegląd, którego nie przeczytałeś, nie jest przeglądem
+
+Jest wynik, do którego to wszystko zmierza i który jest łatwiejszy do
+zignorowania niż każda liczba wyżej. Kiedy narzędzie kilka razy z rzędu ma
+rację, przestaje się je sprawdzać.
+
+Firma doradcza Thoughtworks prowadzi listę technik, na której każda pozycja ma
+przypisane zalecenie. To zjawisko trafiło u niej do kategorii **Hold** — czyli
+„nie róbcie tego” — pod nazwą „complacency with AI-generated code”:
+
+<Cytat author="Thoughtworks, Technology Radar Vol. 33" source="Complacency with AI-generated code, pierścień Hold" date="2025-11-05" url="https://www.thoughtworks.com/radar/techniques/complacency-with-ai-generated-code">
+
+It's all too tempting to be less vigilant when reviewing AI suggestions after a
+few positive experiences with an assistant.
+
+</Cytat>
+
+W tę samą stronę idzie zasada, którą Simon Willison zapisał wprost jako
+antywzorzec pracy z agentem:
+
+<Cytat author="Simon Willison" source="Agentic engineering patterns — Anti-patterns" date="2026-03-04" url="https://simonwillison.net/guides/agentic-engineering-patterns/anti-patterns/">
+
+Don't file pull requests with code you haven't reviewed yourself.
+
+</Cytat>
+
+Zielony komentarz od robota nie jest werdyktem. Jest materiałem do werdyktu —
+tak samo jak diff od agenta w poprzednim module był materiałem, a nie decyzją.
+Reguła z tamtej lekcji obowiązuje bez zmian: bez „bo” to opinia, z „bo” to
+przegląd kodu. Zmienia się tylko to, że teraz opinia bywa cudza.
+
+## Drugi czytelnik, nie drugi autor
+
+Na pytanie z początku — kto przeczyta resztę — odpowiedź brzmi: ktoś, kto
+czyta inaczej niż ty i myli się inaczej niż ty. To jest wartość, i to jest cała
+wartość.
+
+- **Najpierw przeczytaj sam.** Bez własnej listy nie masz jak odróżnić
+  znaleziska od szumu, a każde zdanie modelu brzmi jak znalezisko.
+- **Trzy kubełki, i trzeci jest obowiązkowy.** Uwagę wrzuca się do „zmyślone”
+  po sprawdzeniu, nie po ocenie. Jeśli po całym przeglądzie ten kubełek jest
+  pusty, prawdopodobnie nie sprawdzałeś, tylko czytałeś.
+- **Rozmiar zmiany decyduje o jakości przeglądu — także twojego.** Piętnaście
+  razy gorzej przy zmianie na kilkaset linijek. Dlatego commity mają być małe;
+  to nie jest estetyka.
+- **Model widzi jedne rzeczy i jest ślepy na inne.** Pytaj o dane, o brzegi, o
+  błędy — nie oczekuj, że powie ci, że twoja aplikacja robi nie to, co obiecuje
+  specyfikacja. Tego nie wie.
+
+Ten przegląd i twoje testy mają jednak wspólną wadę, o której następna lekcja
+jest w całości: obydwa uruchamiasz ty, wtedy, kiedy o nich pamiętasz.
+
+## Ćwiczenia
+
+<Zadanie title="Trzy kubełki dla własnego diffa">
+
+Rozłóż uwagi z przeglądu swojego diffa do trzech kubełków w `dziennik.md` — po
+jednej linijce na uwagę, z krótkim uzasadnieniem przy każdej z kubełka
+„zmyślone”.
+
+Dopisz osobno to, co znalazłeś sam, a czego model nie zgłosił. Jeśli w kubełku
+„zmyślone” nie ma nic, napisz jedno zdanie o tym, jak sprawdzałeś — brak
+fałszywych alarmów jest możliwy i jest wynikiem, ale tylko wtedy, kiedy widać,
+że ktoś ich szukał.
+
+</Zadanie>
+
+<Zadanie title="Którą liczbę byś podał">
+
+Napisz w `dziennik.md` jedno zdanie: którą z dwóch opublikowanych liczb — 71%
+albo 0,066 — podałbyś komuś, kto pyta, czy przegląd kodu przez AI działa, i co
+musiałbyś do tego zdania dołożyć, żeby nie wprowadzało w błąd.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-10">
+
+<Zrodlo title="60 million Copilot code reviews and counting" publisher="GitHub" date="2026-03-05" url="https://github.blog/ai-and-ml/github-copilot/60-million-copilot-code-reviews-and-counting/">71%, 5,1 komentarza, „ponad jeden na pięć przeglądów”; dane producenta o własnym produkcie, „wymagające działania” zdefiniowane przez producenta</Zrodlo>
+
+<Zrodlo title="Bigger Isn't Always Better: A Comparative Evaluation of LLMs for Automated Code Review" publisher="Kumar, Bararia, Raj, arXiv:2606.15689" date="2026-04-09" url="https://arxiv.org/abs/2606.15689">F1 = 0,066 na prawdziwych pull requestach, spadek przy dużych zmianach, czułość zależna od rodzaju błędu; preprint, 50 prawdziwych pull requestów, oceniane przez model</Zrodlo>
+
+<Zrodlo title="Best Practices for Code Review — studium przypadku w Cisco" publisher="SmartBear" date="2026-09-10" url="https://smartbear.com/learn/code-review/best-practices-for-peer-code-review/">200–400 linijek, 70–90% wykrytych defektów; strona producenta streszczająca badanie z 2006 roku, bez podanej wielkości próby</Zrodlo>
+
+<Zrodlo title="Introducing uReview" publisher="Uber Engineering" date="2025-08-12" url="https://www.uber.com/en-US/blog/ureview/">dwa źródła fałszywych alarmów opisane przez zespół, który zbudował własne narzędzie; dane wewnętrzne jednej firmy</Zrodlo>
+
+<Zrodlo title="Complacency with AI-generated code" publisher="Thoughtworks, Technology Radar Vol. 33" date="2025-11-05" url="https://www.thoughtworks.com/radar/techniques/complacency-with-ai-generated-code">pierścień Hold; opinia rady doradczej firmy, nie pomiar</Zrodlo>
+
+<Zrodlo title="Agentic engineering patterns — Anti-patterns" publisher="Simon Willison" date="2026-03-04" url="https://simonwillison.net/guides/agentic-engineering-patterns/anti-patterns/">zasada o pull requestach z nieprzeczytanym kodem</Zrodlo>
+
+<Zrodlo title="Copilot plans" publisher="GitHub Docs" date="2026-09-10" url="https://docs.github.com/en/copilot/get-started/plans">tabela planów; strony GitHuba nie są w tej sprawie zgodne, dlatego lekcja każe sprawdzić własne konto</Zrodlo>
+
+<Zrodlo title="Code Review" publisher="Anthropic, dokumentacja Claude Code" date="2026-09-10" url="https://code.claude.com/docs/en/code-review">polecenie `/code-review` i to, czego dotyczy; strona bez daty publikacji, data jest dniem sprawdzenia</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="artykul" title="I still care about the code" url="https://martinfowler.com/articles/exploring-gen-ai/i-still-care-about-the-code.html">Birgitta Böckeler o tym, kiedy warto czytać kod, a kiedy wystarczy sprawdzić wynik — i jedno zdanie o halucynacjach, które warto zapamiętać: nazywamy je tak tylko wtedy, gdy wynik nam nie pasuje</Lektura>
+
+<Lektura kind="artykul" title="Orchestrating AI Code Review at scale" url="https://blog.cloudflare.com/ai-code-review/">jak to wygląda w firmie, która robi to na 48 tysiącach zmian miesięcznie: ile kosztuje jeden przegląd, ile trwa i co inżynierowie z nim robią</Lektura>
+
+<Lektura kind="artykul" title="Inne narzędzia do przeglądu kodu" url="https://www.coderabbit.ai/pricing">CodeRabbit, Graphite, Qodo i Cursor Bugbot robią to samo co narzędzia z tej lekcji; nie ma ich tu, bo żadne z nich nie podaje wprost, na jakich warunkach jest darmowe dla ucznia — jeśli będziesz je sprawdzać, zacznij od tego pytania</Lektura>
+
+</CzytajDalej>

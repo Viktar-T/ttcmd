@@ -1,0 +1,318 @@
+---
+title: "Pull request do repozytorium kolegi"
+order: 5
+summary: "Jedna zmiana w cudzym repozytorium, od kopii do scalenia albo odmowy: dodajesz test do kryterium, które ktoś inny napisał, czytasz jego zmianę u siebie, rozwiązujesz konflikt i wypowiadasz werdykt z „bo”. Jedyna lekcja w tym kursie, której nie da się zrobić samemu."
+publish: true
+---
+
+{/* Drafted 2026-09-10 from docs/content-briefs/07e-pull-request-do-kolegi.md,
+    semi-supervised run — brief unapproved.
+
+    WHY THIS LESSON EXISTS: it is the replacement for the deleted „Wspólna
+    aplikacja” module (course-structure v2.9) and the answer to open decision
+    #16, which Viktar settled on 2026-09-10 — its own lesson, one hour taken
+    from 7a–7d. The survey is what makes it load-bearing: 7 of 12 have never
+    worked on the same files as another person, nobody has resolved a conflict
+    or reviewed a change, and „no group projects” was raised twice, unprompted.
+
+    BLOCKS TEACHING: pairing is not decided. The draft assumes teacher-assigned
+    pairs inside a group, fixed for the lesson, with the teacher's reference
+    build as the partner for anyone left over. If that changes, sections 1 and
+    the zadanie change with it. Module brief, open question 1.
+
+    ARTICLE IV: the assignment puts one student's repository URL into another
+    student's dziennik.md. Public repositories they already own, student to
+    student — but it is a disclosure decision and it is Viktar's.
+
+    The survey counts are the REASON for this lesson and are never said back to
+    the reader as facts about them (content-style.md: a lesson does not tell
+    the reader who they are). */}
+
+Twoje repozytorium ma teraz trzy sprawdzenia. Testy pilnują zdań ze
+specyfikacji. Model czyta diff i czasem coś w nim widzi. Bramka nie przepuszcza
+czerwonego. Wszystkie trzy działają bez ciebie i to jest ich zaleta.
+
+Mają też coś wspólnego, czego nie widać, dopóki się o tym nie powie: **wszystkie
+trzy zostały ustawione przez ciebie.** Testy sprawdzają to, o czym pomyślałeś.
+Bramka pilnuje testów, które napisałeś. Model czyta kod, ale nie wie, po co ta
+aplikacja istnieje, i nigdy nie zapyta, czy nazwa przycisku ma sens. Twoje
+sprawdzenia dzielą z tobą pole widzenia — i dzielą też miejsca, w których go
+nie masz.
+
+Dziś dochodzi czwarte i jest innego rodzaju: **ktoś, kto twojej aplikacji nie
+zna.** Wyślesz zmianę do repozytorium kolegi z klasy, przeczytasz jego zmianę u
+siebie i podejmiesz decyzję o cudzej pracy. Po raz pierwszy w tym kursie nie da
+się tego zrobić samemu.
+
+## Cudze repozytorium na twoim dysku
+
+Dostaniesz osobę i adres jej repozytorium. Zacznij od zrobienia sobie własnej
+kopii na GitHubie — przycisk „Fork” na stronie jej repozytorium. Kopia
+wygląda jak zwykłe repozytorium i jest twoja, ale GitHub pamięta, skąd
+pochodzi; to dzięki temu będziesz mógł zaproponować zmianę z powrotem.
+
+Potem sklonuj swoją kopię na dysk i utwórz gałąź z własną nazwą, tak jak
+robisz to u siebie:
+
+```bash
+git clone <adres-twojej-kopii>
+cd <katalog>
+git switch -c test-kryterium-K4
+```
+
+I teraz pierwsza rzecz do zrobienia, zanim cokolwiek napiszesz: uruchom to.
+`dotnet build`, potem `dotnet test`, potem sama aplikacja.
+
+Jest niemała szansa, że nie zadziała za pierwszym razem. Zabraknie pliku,
+ścieżka będzie z wielkiej litery, projekt będzie wymagał innej wersji SDK,
+albo aplikacja podniesie się i wysypie przy pierwszym kliknięciu. To nie
+znaczy, że twój kolega jest gorszy od ciebie, i nie znaczy, że coś zepsułeś.
+To jest informacja o repozytorium — dokładnie ta sama, którą twoje repozytorium
+mówi teraz o sobie komuś obcemu.
+
+Zapisz, ile czasu zajęło doprowadzenie tego do stanu, w którym się buduje, i co
+musiałeś zgadnąć. Wrócimy do tego na końcu lekcji, bo to jest najcenniejsza
+rzecz, jaką z niej wyniesiesz.
+
+## Jedna zmiana, nie dwie
+
+Twoja zmiana jest z góry ustalona i dla wszystkich taka sama:
+
+**Dopisz jeden test do jednego kryterium z jego specyfikacji, które testu
+jeszcze nie ma.** Nic więcej. Bez poprawiania nazw, bez porządkowania układu, bez „przy okazji
+zmieniłem”. Są trzy powody i wszystkie są praktyczne.
+
+Po pierwsze, w tej klasie jest sześćdziesiąt różnych aplikacji i nie ma
+funkcji, którą miałyby wspólną — a test pasuje do każdej, bo każda ma
+specyfikację z kryteriami. Po drugie, test niczego nie psuje: dokłada
+sprawdzenie, nie zmienia zachowania. Nikt nie dostanie z powrotem aplikacji,
+która przestała działać na tydzień przed końcem semestru. Po trzecie, i to
+wynika z rzeczy zmierzonej w poprzedniej lekcji: **zmiana ma być mała, żeby
+dało się ją przeczytać.** Trafność przeglądu spada piętnastokrotnie między
+zmianą na dziesięć linijek a zmianą na kilkaset — i dotyczy to zarówno modelu,
+jak i człowieka.
+
+Otwórz więc `specs/001-*/spec.md` w jego repozytorium, przeczytaj kryteria i
+wybierz jedno, którego nikt jeszcze nie sprawdza. Napisz test dokładnie tak,
+jak pisałeś swoje: nazwa metody jest zdaniem, `Assert.That`, i przed
+wypchnięciem sprawdź, że test **naprawdę może paść** — zepsuj na chwilę kod,
+uruchom, cofnij.
+
+Zatwierdź i wypchnij do swojej kopii:
+
+```bash
+git add <plik-testu>
+git commit -m "test: kryterium K4 — pozycja z przecinkiem wraca w calosci"
+git push -u origin test-kryterium-K4
+```
+
+## Pull request, który da się przeczytać
+
+Wejdź na swoją kopię na GitHubie. Pojawi się propozycja otwarcia pull requesta
+do repozytorium źródłowego — kliknij ją. Pull request to prośba: „proponuję ci
+te zmiany, weź je albo nie”. Decyzja należy do właściciela, nie do ciebie.
+
+Opis to trzy zdania i nic więcej:
+
+- **które kryterium** ten test sprawdza — numer i cytat z jego specyfikacji;
+- **co dokładnie test sprawdza** i przy jakich danych;
+- **jak go uruchomić** — jedno polecenie.
+
+Trzy zdania, bo osoba po drugiej stronie ma trzydzieści innych rzeczy do
+zrobienia i twoja propozycja konkuruje z nimi o dziesięć minut jej uwagi.
+
+Jedna rzecz cię tu zaskoczy i lepiej wiedzieć o niej wcześniej. Kiedy pull
+request przychodzi z cudzej kopii repozytorium, przebieg CI **może nie ruszyć
+od razu** — właściciel musi go zatwierdzić, bo GitHub domyślnie nie uruchamia
+przy pierwszym razie cudzego kodu na własnym koncie:
+
+<Cytat author="GitHub Docs" source="Events that trigger workflows — strona bez daty, sprawdzona 10 września 2026" date="2026-09-10" url="https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows">
+
+When a first-time contributor submits a pull request to a public repository, a
+maintainer with write access may need to approve running workflows on the pull
+request.
+
+</Cytat>
+
+Jeśli więc przy twoim pull requeście nic się nie dzieje, nie znaczy to, że coś
+zepsułeś — znaczy, że ktoś ma coś do kliknięcia. Napisz do niego.
+
+## Przegląd, który mówi o kryteriach, nie o stylu
+
+W tym samym czasie w twoim repozytorium pojawi się pull request od twojego
+partnera. Twoja kolej.
+
+Cudzy kod czyta się inaczej niż własny i większość ludzi robi to źle za
+pierwszym razem — zaczyna od tego, co rzuca się w oczy, czyli od nazw
+zmiennych, wcięć i tego, że „ja bym to napisał inaczej”. To nie jest przegląd,
+tylko odruch. Zadaj tej zmianie trzy pytania, w tej kolejności:
+
+1. **Czy to sprawdza to, co obiecuje?** Test ma nazwę i opis. Czy metoda robi
+   to, co mówi nazwa — czy może sprawdza coś obok, albo nie sprawdza nic?
+2. **Czy to może paść?** Zepsuj u siebie na chwilę kod, którego ten test
+   dotyczy, uruchom testy, cofnij. Test, który przechodzi zawsze, jest gorszy
+   niż jego brak.
+3. **Czy zrozumiem to za rok?** Nazwa, dane w teście, jedno zdanie w opisie —
+   czy wystarczą komuś, kto nie ma pod ręką autora?
+
+Czego **nie** jest na tej liście: czy napisałbyś to tak samo. To jest
+najtrudniejsze do odpuszczenia i najważniejsze. Reguła jest ta sama, którą znasz
+z [ostatniej lekcji poprzedniego modułu](/moduly/06-pod-maska/trzy-tryby): bez
+„bo” to opinia, z „bo” to przegląd kodu. Zmieniło się tylko tyle, że twoje „bo”
+przeczyta teraz człowiek, który się z nim może nie zgodzić.
+
+Napisz co najmniej jedną uwagę przy konkretnej linijce — nawet jeśli zmiana jest
+dobra, coś zawsze da się zapytać — i jedno zdanie werdyktu.
+
+## Konflikt: dwie osoby, ta sama linijka
+
+Prędzej czy później dwie osoby zmienią tę samą linijkę tego samego pliku i git
+odmówi zgadywania, która wersja jest właściwa. To jest konflikt scalenia i
+wygląda jak awaria, choć jest przeciwieństwem awarii: git zatrzymał się, zamiast
+po cichu wyrzucić czyjąś pracę.
+
+W pliku zobaczysz coś takiego:
+
+```text
+<<<<<<< HEAD
+    var wynik = Magazyn.Wczytaj(plik);
+=======
+    var wynik = Magazyn.Wczytaj(sciezka);
+>>>>>>> test-kryterium-K4
+```
+
+Między pierwszym a drugim znacznikiem jest wersja z gałęzi, na której stoisz.
+Między drugim a trzecim — wersja z gałęzi, którą dokładasz. Rozwiązanie polega
+na tym, że **usuwasz wszystkie trzy linijki ze znacznikami i zostawiasz kod,
+który ma sens** — czasem jedną wersję, czasem drugą, czasem coś złożonego z
+obu. Potem `git add` na ten plik i `git commit`.
+
+Reguła, która oszczędza sporo kłopotu: **konflikt rozwiązuje się przez
+decyzję, nie przez wybór dłuższej wersji.** Jeśli nie wiesz, co robi którakolwiek
+z dwóch wersji, to nie jest moment na zgadywanie — to jest moment na
+zapytanie autora, który siedzi dwa rzędy dalej. W opisie commita napisz jednym
+zdaniem, która wersja została i dlaczego.
+
+Jeśli w waszej parze konflikt nie wyjdzie sam z siebie, zróbcie go celowo:
+obydwoje zmieńcie tę samą linijkę w `README.md` swojego repozytorium i
+spróbujcie scalić. Ta umiejętność jest zbyt drobna, żeby jej się uczyć wtedy,
+kiedy naprawdę zależy od niej czyjaś praca.
+
+## Zgoda, prośba o zmianę, odmowa
+
+Pull request kończy się jedną z trzech rzeczy i wszystkie trzy są w porządku:
+
+- **biorę** — scalasz;
+- **poprawiam i biorę** — piszesz, co ma się zmienić, i czekasz;
+- **nie biorę, bo** — odrzucasz, z jednym zdaniem uzasadnienia.
+
+To jest ten sam kształt decyzji, który poznałeś przy pierwszym zgłoszeniu od
+użytkownika w [lekcji o pierwszym użytkowniku](/moduly/05-twoja-aplikacja/pierwszy-uzytkownik):
+naprawiam, nie naprawiam, to nie błąd tylko brak w specyfikacji. Zmieniło się
+to, że tym razem po drugiej stronie stoi ktoś, kto włożył w to godzinę i
+zobaczy twoją odpowiedź.
+
+Odmowa jest legalna i warto ją raz w życiu napisać. Nie jest nią jednak
+milczenie: pull request, na który nikt nie odpowiedział, jest gorszy od
+odrzuconego, bo autor nie wie, czy jego praca była zła, czy tylko niezauważona.
+
+## Ile znajduje normalny przegląd
+
+Zanim napiszesz swoją uwagę, jedna liczba dla kalibracji, żeby nikt nie wyszedł
+z tej lekcji z poczuciem, że zawiódł.
+
+W Uberze, gdzie przeglądy kodu robi się zawodowo i na dużą skalę, zmierzono
+uwagi pisane przez ludzi:
+[tylko 51% komentarzy napisanych przez człowieka autor uznał za błąd i poprawił
+w tej samej zmianie](https://www.uber.com/en-US/blog/ureview/) (Uber, 12
+sierpnia 2025; dane wewnętrzne jednej firmy, a „poprawił” jest tylko przybliżeniem
+„miał rację”). Czyli mniej więcej co druga uwaga doświadczonego inżyniera
+okazuje się nietrafiona.
+
+Warto też wiedzieć, jak wyglądają prawdziwe przeglądy w dużym projekcie: w
+badaniu w Google
+[mediana zmiany to 24 linijki, ponad 10% zmian dotyczy jednej linijki, a mniej
+niż jedna czwarta zmian ma więcej niż jednego recenzenta](https://sback.it/publications/icse2018seip.pdf)
+(Sadowski i inni, 2018 — czyli sprzed modeli piszących kod).
+
+Z obu tych rzeczy wynika ta sama zasada: **przegląd, który znalazł jedną
+prawdziwą rzecz, jest normalnym przeglądem, a nie słabym.** Celem nie jest
+lista dwudziestu uwag. Celem jest jedno zdanie, którego autor by sam nie
+napisał.
+
+## Czytelnik, którego nie da się zastąpić
+
+Na pytanie z początku lekcji — co powiesz o kodzie, którego nie pisałeś —
+odpowiedź okazała się mniej ważna od pytania odwrotnego: co ktoś obcy powiedział
+o twoim.
+
+- **Twoje sprawdzenia mają twoje pole widzenia.** Test sprawdza to, o czym
+  pomyślałeś; model nie wie, po co ta aplikacja istnieje. Człowiek, który jej nie
+  zna, jest jedynym czytelnikiem, który zapyta „a po co to?”.
+- **Mała zmiana, trzy zdania opisu.** Nie dlatego, że tak wypada — dlatego, że
+  duża zmiana nie zostanie przeczytana ani przez człowieka, ani przez model.
+- **Przegląd mówi o kryteriach, nie o stylu.** Trzy pytania: czy sprawdza to,
+  co obiecuje; czy może paść; czy zrozumie to ktoś za rok. „Ja bym to napisał
+  inaczej” nie jest żadnym z nich.
+- **Konflikt to nie awaria, tylko pytanie.** Git zatrzymał się, żeby ktoś
+  zdecydował. Decyzja idzie do opisu commita.
+- **Najcenniejsze, co dziś dostałeś, to nie cudzy test.** To lista rzeczy,
+  których ktoś nie zrozumiał w twoim repozytorium — i przynajmniej jedna z nich
+  jest do poprawienia dziś.
+
+## Ćwiczenia
+
+<Zadanie title="Jedna zmiana tam, jedna decyzja u siebie">
+
+Doprowadź do stanu, w którym w repozytorium partnera stoi twój pull request, a
+w twoim jego — obydwa zamknięte, w jakikolwiek sposób, z zapisanym werdyktem.
+
+Warunki są cztery i wszystkie widać w repozytoriach:
+
+- **w repozytorium partnera:** pull request z gałęzi, której nazwa zawiera twoje
+  imię, dokładający **jeden test do jednego nazwanego kryterium jego
+  specyfikacji**, z opisem na trzy zdania: które kryterium, co test sprawdza,
+  jak go uruchomić;
+- **w twoim repozytorium:** jego pull request z twoim przeglądem — co najmniej
+  jedna uwaga przy konkretnej linijce, odnosząca się do kryterium, i zdanie
+  werdyktu zawierające „bo”. Sam „ok” się nie liczy, uwaga o wcięciach też nie;
+- **konflikt, rozwiązany.** Jeśli praca sama go nie wywołała, zróbcie go celowo
+  na `README.md`. Rozwiązanie to commit, którego opis mówi, która wersja została
+  i dlaczego;
+- w `dziennik.md`: ile czasu zajęło zbudowanie jego aplikacji u ciebie, czego
+  nie dało się zrozumieć bez pytania autora, i **jedna rzecz w twoim własnym
+  repozytorium, którą zmieniłeś dlatego, że ktoś inny nie mógł się w nim
+  połapać.** Ta ostatnia ma być zmianą, którą widać w historii, nie
+  postanowieniem.
+
+Na koniec wypchnij wszystko.
+
+Kiedy repozytorium z aplikacją będzie umieszczone na GitHubie, wypełnij
+[formularz](https://docs.google.com/forms/d/e/1FAIpQLSc9Da0ossYyhSCMjnkMCqom2VQ9CYpB2L0Kvymb3yt_UYF6rw/viewform?usp=header),
+żeby nauczyciel sprawdził zadanie.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-10">
+
+<Zrodlo title="Events that trigger workflows" publisher="GitHub Docs" date="2026-09-10" url="https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows">zatwierdzanie przebiegów przy pierwszym pull requeście od nowej osoby; strona bez daty publikacji, data jest dniem sprawdzenia</Zrodlo>
+
+<Zrodlo title="Introducing uReview" publisher="Uber Engineering" date="2025-08-12" url="https://www.uber.com/en-US/blog/ureview/">51% uwag pisanych przez ludzi uznanych przez autora za błąd; dane wewnętrzne jednej firmy</Zrodlo>
+
+<Zrodlo title="Modern Code Review: A Case Study at Google" publisher="Sadowski, Söderberg i inni, ICSE-SEIP '18" date="2018-05-27" url="https://sback.it/publications/icse2018seip.pdf">mediana 24 zmienionych linijek, liczba recenzentów; jedna firma, dane sprzed modeli piszących kod</Zrodlo>
+
+<Zrodlo title="Bigger Isn't Always Better: A Comparative Evaluation of LLMs for Automated Code Review" publisher="Kumar, Bararia, Raj, arXiv:2606.15689" date="2026-04-09" url="https://arxiv.org/abs/2606.15689">piętnastokrotny spadek trafności przy dużych zmianach — powód, dla którego dzisiejsza zmiana jest mała; preprint</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="dokumentacja" title="Rozwiązywanie konfliktów scalania" url="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/about-merge-conflicts">to, co zrobiłeś raz ręcznie, opisane z wariantami — także jak rozwiązać prosty konflikt bez schodzenia do terminala</Lektura>
+
+<Lektura kind="artykul" title="What is happening with code reviews?" url="https://newsletter.pragmaticengineer.com/p/what-is-happening-with-code-reviews">Gergely Orosz o tym, co się dzieje z przeglądami kodu w firmach, w których agenci wysyłają więcej zmian, niż ktokolwiek jest w stanie przeczytać — problem, którego w klasie jeszcze nie masz, ale będziesz mieć</Lektura>
+
+</CzytajDalej>

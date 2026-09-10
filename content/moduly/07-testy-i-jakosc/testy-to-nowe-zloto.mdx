@@ -1,0 +1,300 @@
+---
+title: "Testy to nowe złoto"
+order: 1
+summary: "Zepsuj własną aplikację danymi, których nigdy jej nie dałeś, i zobacz, że coś, co działa od trzech tygodni, gubi twoje dane po cichu. Potem: dlaczego tego nie widziałeś, jak cała branża sprawdza, czy model naprawił błąd, i dlaczego pierwszy test napiszesz sam, a nie poprosisz o niego agenta."
+publish: true
+---
+
+{/* Drafted 2026-09-10 from docs/content-briefs/07a-testy-to-nowe-zloto.md,
+    semi-supervised run — brief unapproved. No new code the student types.
+    The measured defect in „Zepsuj to sam” was built and run on .NET SDK
+    10.0.112 on 2026-09-10; the log is in
+    docs/content-research/research-07-testy-jakosc-przeglad.md §6.2.
+    Every figure and quotation here comes from that file's §1, with the link
+    repeated at the point of use.
+
+    DELIBERATELY ABSENT: any regression rate („AI breaks working code N% of the
+    time”). No such study exists publicly — research §7.2. The SWE-bench
+    definition replaces it and is a better argument anyway.
+
+    FALLBACK for a student whose application saves nothing (5b's cut may have
+    removed persistence for the weakest): the same exercise on any criterion
+    whose input can be made awkward. Named in the lesson, section 1. */}
+
+Przez ostatnie tygodnie sprawdzałeś swoją aplikację tak, jak sprawdza się coś,
+co się zna: uruchamiałeś ją, klikałeś, dopisywałeś pozycję, zamykałeś,
+otwierałeś ponownie. Działało. Zapisywałeś w dzienniku, co sprawdziłeś i co
+wyszło. To był uczciwy dowód — twardszy niż „wygląda dobrze”.
+
+Ma jedną wadę, której nie widać, dopóki się o niej nie powie na głos:
+sprawdzałeś ją **swoimi danymi**. Wpisywałeś „mleko”, „chleb”, „zadanie na
+poniedziałek”. Nigdy nie wpisałeś nic dziwnego, bo po co miałbyś. I nigdy nie
+uruchomiłeś aplikacji, która nie miała jeszcze ani jednej pozycji, bo zanim
+zacząłeś ją sprawdzać, dawno już coś w niej było.
+
+Ta lekcja zaczyna się od trzech minut przy klawiaturze, po których będziesz
+wiedzieć o swojej aplikacji coś, czego nie wiedziałeś przez trzy tygodnie. A
+potem odpowiada na pytanie, które z tego wyniknie: co sprawdzi twoją aplikację
+w środę o drugiej w nocy, kiedy agent zmieni jeden plik, a ciebie przy tym nie
+będzie.
+
+## Zepsuj to sam, w trzy minuty
+
+Uruchom swoją aplikację. Znajdź miejsce, w którym coś wpisujesz — pozycję na
+liście, nazwę, notatkę, cokolwiek, co aplikacja ma zapamiętać po zamknięciu.
+Zrób trzy rzeczy, w tej kolejności, i po każdej zamknij aplikację i otwórz ją
+z powrotem.
+
+1. **Wpisz dwie zwykłe pozycje.** Tak, jak zawsze.
+2. **Wpisz pozycję, w której jest średnik, przecinek albo znak nowej linii** —
+   coś w rodzaju `mleko; chleb`. Jedną pozycję, nie dwie.
+3. **Usuń wszystko.** Zamknij aplikację z pustą listą i otwórz ponownie.
+
+Zapisz w `dziennik.md`, co wpisałeś i co zobaczyłeś po ponownym otwarciu. Nie
+opisuj wrażeń — policz. Ile pozycji wpisałeś, ile widzisz.
+
+Jeśli twoja aplikacja niczego nie zapisuje do pliku, zrób to samo z dowolnym
+innym kryterium ze swojej specyfikacji, tylko podaj mu dane, których nigdy mu
+nie dawałeś: puste pole, bardzo długą linijkę, polskie znaki, tę samą rzecz
+dodaną dwa razy. Znalezisko jest treścią tego ćwiczenia, nie plik.
+
+## Dlaczego tego nie widziałeś
+
+Sprawdziłem to na kodzie o kształcie, który agenci produkują najczęściej — i
+który jest prawdopodobnie u ciebie, bo jest najkrótszy z możliwych. Zapis
+skleja pozycje jednym znakiem, odczyt rozdziela je z powrotem:
+
+```csharp title="tak to zwykle wygląda"
+public static void Zapisz(string plik, List<string> pozycje)
+    => File.WriteAllText(plik, string.Join(";", pozycje));
+
+public static List<string> Wczytaj(string plik)
+    => File.Exists(plik)
+        ? new List<string>(File.ReadAllText(plik).Split(';'))
+        : new List<string>();
+```
+
+Uruchomiony 10 września 2026 na .NET SDK 10.0.112, z trzema zestawami danych
+z poprzedniej sekcji, wypisał to:
+
+```text
+zwykle:   wpisano 2, odczytano 2
+z ';':    wpisano 2, odczytano 3
+          pierwsza pozycja po odczycie: "mleko"
+pusta:    wpisano 0, odczytano 1
+```
+
+Pierwsza linijka jest w porządku i to ona jest problemem: **to jest jedyny
+przypadek, który kiedykolwiek uruchomiłeś.** Dwie następne to dwa różne błędy
+w tych samych sześciu linijkach. Pozycja ze średnikiem wraca jako dwie, a jej
+pierwsza połowa jest ucięta — z `mleko; chleb` zostaje `mleko`. A pusta lista
+wraca z jedną pustą pozycją, bo `"".Split(';')` daje jeden pusty napis; to
+znaczy, że **pierwsze uruchomienie twojej aplikacji u kogoś obcego pokazuje
+pozycję, której nikt nie dodał.**
+
+Żadnego z nich nie widać w oknie, dopóki się w nie nie wejdzie danymi, których
+nie masz odruchu wpisywać. Kod nie rzuca wyjątkiem, nic się nie zawiesza, plik
+jest zapisany. To jest ten rodzaj błędu, o którym mówiła lekcja o
+[halucynacjach i weryfikacji](/moduly/03-budujemy/halucynacje-i-weryfikacja) —
+biegłość to nie poprawność — tylko że tym razem nie chodzi o kod, który
+wygląda dobrze. Chodzi o kod, który **działa** dobrze w każdym scenariuszu,
+jaki przyszedł ci do głowy.
+
+Zauważ, czego tu nie ma: nikt nie zawinił. Nie przeoczyłeś tego przez
+nieuwagę. Przeoczyłeś, bo sprawdzanie ręką sprawdza to, o czym się pomyślało,
+a średnik w nazwie pozycji nie przychodzi do głowy nikomu, kto właśnie
+skończył walczyć z układem okna.
+
+## Jak cała branża sprawdza, czy model naprawił błąd
+
+Jest miejsce, w którym pytanie „czy ta zmiana naprawiła błąd i niczego nie
+zepsuła” zadaje się kilka tysięcy razy dziennie, w sposób ustalony i taki sam
+dla wszystkich. To zestaw zadań, na którym mierzy się modele piszące kod:
+bierze się prawdziwy błąd z prawdziwego projektu, każe modelowi go naprawić i
+sprawdza wynik. Sprawdza się go tak:
+
+<Cytat author="OpenAI wraz z autorami SWE-bench" source="Introducing SWE-bench Verified" date="2024-08-13" url="https://openai.com/index/introducing-swe-bench-verified/">
+
+A proposed edit is evaluated by running both the `FAIL_TO_PASS` and
+`PASS_TO_PASS` tests. If the `FAIL_TO_PASS` tests pass, this means the edit
+solves the issue. If the `PASS_TO_PASS` tests pass, then the edit has not
+inadvertently broken unrelated sections of the codebase.
+
+</Cytat>
+
+Dwa zestawy testów, dwa różne pytania. Pierwszy — te, które **przed** poprawką
+były czerwone, a po niej mają być zielone — odpowiada na pytanie „czy
+naprawił”. Drugi — te, które były zielone i mają zielone zostać — odpowiada na
+pytanie **„czy przy okazji czegoś nie zepsuł”**. I to jest tu najciekawsze:
+połowa całego kryterium istnieje wyłącznie po to, żeby wyłapać szkodę uboczną.
+
+Nie potrzebujesz z tego żadnej liczby ani żadnego rankingu. Wystarczy sam
+kształt: **kiedy trzeba było ustalić, w sposób, na który wszyscy się zgodzą,
+czy model naprawił kod, jedyną odpowiedzią, jaką znaleziono, było uruchomienie
+testów, które ktoś napisał wcześniej.** Nie przeczytanie diffa. Nie ocena
+eksperta. Testy, które już tam były.
+
+Twój round trip — zapisz, zamknij, otwórz, sprawdź, czy wróciło to samo — jest
+dokładnie testem z drugiej grupy. Takim, którego nikt nie napisał.
+
+To samo mówią producenci narzędzi, tylko że tobie, a nie rankingowi:
+
+<Cytat author="Anthropic" source="Best practices for Claude Code — strona bez daty, sprawdzona 10 września 2026" date="2026-09-10" url="https://code.claude.com/docs/en/best-practices">
+
+Give Claude a check it can run: tests, a build, a screenshot to compare. It's
+the difference between a session you watch and one you walk away from.
+
+</Cytat>
+
+## „Napisz mi testy” — i dlaczego to nie ta lekcja
+
+Skoro test jest tak potrzebny, a modele piszą kod szybko, to nasuwa się jedno
+oczywiste rozwiązanie: poprosić agenta, żeby napisał testy. Będzie ich dużo i
+będą za darmo.
+
+Wynik takiej prośby jest zmierzony i jest gorszy, niż brzmi. Najlepiej opisany
+przypadek pochodzi z Meta, gdzie narzędzie oparte na modelu nie pisało testów
+od zera, tylko **dopisywało przypadki do już istniejących**, i przechodziło
+przez filtr, zanim człowiek je w ogóle zobaczył. Z tego, co model wyprodukował:
+[75% kodu testów w ogóle się skompilowało, 57% przechodziło powtarzalnie, a 25%
+zwiększyło pokrycie](https://arxiv.org/abs/2402.09171) — i dopiero to, co
+zostało po tym sicie, inżynierowie przyjęli do produkcji w 73% przypadków
+(Alshahwan i inni, Meta, 14 lutego 2024). Ta ostatnia liczba krąży sama i brzmi
+świetnie. Czytana razem z trzema poprzednimi mówi coś innego: z czterech
+napisanych testów jeden nadaje się do użycia, a wybiera go maszyna, nie
+człowiek.
+
+Jest też problem poważniejszy niż odsetek. Jeśli model dostanie kod, w którym
+jest błąd, i poprosisz go o testy, to napisze testy, które ten błąd
+**zatwierdzą** — bo z jego punktu widzenia kod jest opisem tego, co ma się
+dziać. Zbadano to i nazwano: [obecność błędu w kodzie jednocześnie zwiększa
+liczbę testów utrwalających złe zachowanie i tłumi te, które błąd by
+wykryły](https://arxiv.org/abs/2607.22883) (ISSTA 2026, 24 lipca 2026). Gdybyś
+poprosił agenta o testy do kodu z poprzedniej sekcji, dostałbyś sprawdzenie,
+że pusta lista wraca z jedną pustą pozycją.
+
+Najkrócej ujęła to Birgitta Böckeler, która przez kilka tygodni mierzyła, co
+daje zmuszanie agenta do pisania testów przed kodem:
+
+<Cytat author="Birgitta Böckeler, Thoughtworks" source="TDD inside the agent loop — theater or actual value?" date="2026-08-10" url="https://martinfowler.com/articles/exploring-gen-ai/tdd-in-the-agent-loop.html">
+
+Watching a test go red is only proof of anything if someone is checking *why*
+it went red.
+
+</Cytat>
+
+Dlatego pierwszy test w następnej lekcji napiszesz sam. Nie dlatego, że
+ręcznie jest szlachetniej — to jest ten sam powód, dla którego cały poprzedni
+moduł kazał ci wpisywać układ okna z palca. Żeby móc powiedzieć o cudzej
+wersji, że jest zła, trzeba raz zrobić dobrą.
+
+## Co się zmienia, kiedy kod pisze agent
+
+Testy nie są nowym pomysłem i nikt ich nie wymyślił dla AI. Zmieniło się coś
+innego: **ile kodu powstaje między jednym twoim spojrzeniem a drugim.**
+
+Widać to w danych o tym, co dzieje się z kodem w projektach, w których weszły
+narzędzia AI. Firma mierząca zmiany w repozytoriach porównała 623 miliony
+zmian z lat 2023–2026 i pokazała dwie rzeczy naraz: [powielonych bloków kodu
+jest o 81% więcej niż w 2023 roku, a przenoszenia i porządkowania kodu — tego,
+co robi się, kiedy się do niego wraca — spadło z 21% zmienianych linijek w 2022
+roku do 3,8%](https://www.gitclear.com/the_ai_code_quality_maintainability_gap)
+(GitClear, styczeń 2026; to pomiar z własnego produktu firmy, korelacja, i nie
+mierzy błędów w ogóle). Kodu przybywa, a wracania do niego ubywa.
+
+Duże badanie ankietowe mówi to samo z drugiej strony i jest w tym uczciwie
+niewygodne: [wyższe wykorzystanie AI wiąże się jednocześnie ze wzrostem tempa
+dostarczania i ze wzrostem niestabilności](https://dora.dev/insights/balancing-ai-tensions/)
+(DORA, raport z 23 września 2025, analiza z 10 marca 2026; ankieta wśród około
+pięciu tysięcy osób, więc korelacja, nie przyczyna — i sam raport nie podaje
+tego jako procentu, tylko jako kierunek). Szybciej i mniej stabilnie, naraz.
+
+Nie ma badania, które by powiedziało „AI psuje działający kod w N procentach
+przypadków”. Szukałem i takiego nie znalazłem; gdyby ktoś ci taką liczbę podał,
+warto spytać skąd. Ale nie trzeba jej, żeby wyciągnąć wniosek, który wystarcza:
+jeżeli w tydzień powstaje więcej kodu, a mniej osób do niego wraca, to rośnie
+liczba zmian, których **nikt nie przeczytał ze zrozumieniem** — i maleje szansa,
+że akurat ty będziesz patrzeć wtedy, kiedy trzeba.
+
+Twoje oczy są sprawdzeniem doskonałym i niepowtarzalnym. Mają jedną wadę:
+jest ich jedna para, męczą się i muszą być w tym samym pokoju co kod. Test tej
+wady nie ma. Jest głupszy od ciebie w każdym możliwym sensie — sprawdza
+dokładnie to jedno, co ktoś kazał mu sprawdzić — ale sprawdza to za każdym
+razem, w ćwierć sekundy, także wtedy, kiedy śpisz, i także wtedy, kiedy zmianę
+wprowadził ktoś inny.
+
+## Sprawdzenie, które działa bez ciebie
+
+Na pytanie z początku lekcji — co sprawdzi twoją aplikację w środę — odpowiedź
+brzmi: nic, dopóki tego nie zbudujesz. I to jest cała treść tego modułu.
+
+- **Sprawdzasz to, o czym pomyślałeś.** Twoja aplikacja gubiła dane od trzech
+  tygodni i nic w niej nie było zepsute na tyle, żeby to było widać. Dane, od
+  których pęka, są dziwne tylko dla ciebie — dla kogoś obcego są zwykłe.
+- **Kiedy trzeba rozstrzygnąć „czy nie zepsuł czegoś przy okazji”, odpowiedzią
+  są testy napisane wcześniej.** Tak działa najbardziej rozpoznawalny sposób
+  mierzenia modeli i tak samo mówi dokumentacja narzędzi, których używasz.
+- **Nie proś agenta o testy do kodu, w którym może być błąd.** Dostaniesz
+  sprawdzenie, że błąd jest na miejscu. Pierwszy napisz sam — potem porównasz.
+- **Nie chodzi o to, żeby testów było dużo.** Chodzi o to, żeby zdanie z twojej
+  specyfikacji miało swój odpowiednik, który sam mówi „zielone” albo „czerwone”.
+  Jedno zdanie, jedno sprawdzenie. Od tego zaczyna się następna lekcja.
+
+## Ćwiczenia
+
+<Zadanie title="Zepsuj własną aplikację">
+
+Zrób trzy próby z pierwszej sekcji na swojej aplikacji i zapisz wynik w
+`dziennik.md`: co wpisałeś, ile pozycji wpisałeś, ile zobaczyłeś po ponownym
+otwarciu, i czy okno pokazało cokolwiek niepokojącego. Liczby, nie wrażenia.
+
+Jeśli wszystkie trzy próby wypadły dobrze, to też jest wynik — zapisz go i
+dopisz jedno zdanie o tym, jakich danych **jeszcze** nie próbowałeś.
+
+</Zadanie>
+
+<Zadanie title="Które zdanie zostało złamane">
+
+Otwórz `specs/001-*/spec.md` i znajdź kryterium akceptacji, które twoje
+znalezisko łamie. Zacytuj je w `dziennik.md` i dopisz jedno zdanie: które
+kryterium sprawdzi twój pierwszy test w następnej lekcji.
+
+Jeśli **żadne** kryterium tego nie obejmuje, to jest właśnie znalezisko dnia.
+Napisz „specyfikacja o tym milczy”, a potem dopisz brakujące zdanie do
+specyfikacji — w kształcie „Kiedy …, to …”, jak w
+[lekcji o pętli specyfikacja → plan → zadania](/moduly/04-specyfikacja/petla-spec-plan-zadania).
+Specyfikację zmienia się przed kodem, nie po nim.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-10">
+
+<Zrodlo title="Introducing SWE-bench Verified" publisher="OpenAI" date="2024-08-13" url="https://openai.com/index/introducing-swe-bench-verified/">definicja dwóch zestawów testów, `FAIL_TO_PASS` i `PASS_TO_PASS`; zaktualizowana 24.02.2025</Zrodlo>
+
+<Zrodlo title="Automated Unit Test Improvement using Large Language Models at Meta" publisher="Alshahwan i inni, arXiv:2402.09171" date="2024-02-14" url="https://arxiv.org/abs/2402.09171">75% / 57% / 25% i dopiero potem 73%; recenzowane, ale narzędzie ulepsza istniejące testy, nie pisze ich od zera</Zrodlo>
+
+<Zrodlo title="Evaluating and Mitigating the Misguidance Effect of Buggy Code in LLM-Generated Unit Tests" publisher="arXiv:2607.22883, ISSTA 2026" date="2026-07-24" url="https://arxiv.org/abs/2607.22883">kierunek zjawiska; dokładnych procentów nie udało się odczytać i dlatego nie ma ich w tej lekcji</Zrodlo>
+
+<Zrodlo title="TDD inside the agent loop — theater or actual value?" publisher="Birgitta Böckeler, Thoughtworks" date="2026-08-10" url="https://martinfowler.com/articles/exploring-gen-ai/tdd-in-the-agent-loop.html">pomiar na pięciu partiach zadań; jakość oceniał model, więc wynik trzeba czytać z tym zastrzeżeniem</Zrodlo>
+
+<Zrodlo title="The Maintainability Gap: 2026 AI Code Quality Research" publisher="GitClear" date="2026-01" url="https://www.gitclear.com/the_ai_code_quality_maintainability_gap">623 mln zmian, 2023–2026; telemetria własnego produktu firmy, korelacja, bez pomiaru błędów. Strona podaje tylko miesiąc</Zrodlo>
+
+<Zrodlo title="Balancing the tensions of AI-assisted software development" publisher="DORA, Google Cloud" date="2026-03-10" url="https://dora.dev/insights/balancing-ai-tensions/">analiza raportu z 23.09.2025; ankieta, ~5000 osób, efekt podany jako kierunek, nie jako procent</Zrodlo>
+
+<Zrodlo title="Best practices for Claude Code" publisher="Anthropic" date="2026-09-10" url="https://code.claude.com/docs/en/best-practices">strona bez daty publikacji, zmieniana na bieżąco; data jest dniem sprawdzenia</Zrodlo>
+
+<Zrodlo title="Augmented Coding: Beyond the Vibes" publisher="Kent Beck" date="2025-06-25" url="https://newsletter.kentbeck.com/p/augmented-coding-beyond-the-vibes">m.in. o agencie, który wyłącza albo kasuje testy, żeby przeszły</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="artykul" title="First run the tests — wzorce pracy z agentem" url="https://simonwillison.net/guides/agentic-engineering-patterns/first-run-the-tests/">krótki wzorzec: pierwsze polecenie dla agenta w nowym projekcie brzmi „uruchom testy”, i dlaczego to jedno zdanie zmienia całą resztę sesji</Lektura>
+
+<Lektura kind="artykul" title="Halucynacje i weryfikacja — lekcja z modułu trzeciego" url="/moduly/03-budujemy/halucynacje-i-weryfikacja">warto wrócić teraz: „biegłość to nie poprawność” miało wtedy przykład z cudzego kodu, a dziś masz własny</Lektura>
+
+</CzytajDalej>

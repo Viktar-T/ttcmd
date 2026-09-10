@@ -1,0 +1,250 @@
+---
+title: "Pierwszy użytkownik i pierwsze zgłoszenie"
+order: 7
+summary: "Wszystkie twoje kryteria sprawdziła jedna osoba — ta, która je napisała. Ostatnia lekcja modułu daje programowi kogoś innego: kolega instaluje go u siebie, używa i pisze jedno zgłoszenie w trzech częściach, a ty je odtwarzasz i rozstrzygasz na piśmie."
+publish: true
+---
+
+{/* Drafted 2026-09-10 from docs/content-briefs/05g-pierwszy-uzytkownik.md,
+    autonomous run — brief unapproved. Re-derived from the deleted „Wspólna
+    aplikacja” row 6e, widened per course-structure-v2 v2.9.
+
+    VIKTAR'S DECISION, 2026-09-10: the report is an entry in a file in the
+    author's own repository, not an issue. Rejected with him: an issue (needs
+    the repository public or the reporter invited, and leaves a login on a
+    public artifact) and a pull request — the pull request into a classmate's
+    repository is Moduł 7's promoted move and this lesson must not spend it.
+
+    OPEN, for Viktar (brief): whether the reporter signs the entry, and with
+    what. The draft uses „Zgłosił: …” with a first name and says the author
+    decides — the repository may be public.
+
+    Reader position: 8 of 12 have never had a user who was not themselves; a
+    release, a bug report and installing on someone else's machine are all on
+    the reader file's „not done” list, so all three are built inside the lesson
+    before they are relied on. No application code, no framework. Intra-module
+    references are plain text. */}
+
+Otwórz `dziennik.md` i przeczytaj wpisy przy kryteriach. Wszystkie przechodzą
+albo mają zapisane, dlaczego brzmią dziś inaczej. Dowody są prawdziwe: polecenia,
+pliki, liczby.
+
+I wszystkie sprawdziła jedna osoba — ta sama, która napisała kryteria, wiedząc,
+co miało być prawdą, klikając w tej samej kolejności co zawsze i omijając odruchowo
+te miejsca, o których wie, że są delikatne. To jest cała słabość ostatnich dwóch
+tygodni w jednym zdaniu i nie da się jej naprawić większą starannością.
+
+Pytanie tej lekcji: **co się dzieje z twoim programem, kiedy otworzy go ktoś,
+kto nie nazywa się tak jak ty?**
+
+## Przegląd przed użytkownikiem
+
+Najpierw przegląd, który znasz z notatnika, w świeżym kontekście: ktoś z klasy
+albo agent w nowej rozmowie dostaje specyfikację, konstytucję i diff całych dwóch
+tygodni, i szuka luk w kryteriach, nie w stylu. Prośba brzmi tak samo jak w
+[lekcji o pełnej pętli](/moduly/04-specyfikacja/pelna-petla), z tego samego
+powodu: recenzent poproszony o znalezienie usterek znajdzie jakieś nawet w
+poprawnej pracy, więc mówi mu się, czego ma szukać.
+
+Nowa jest jedna rzecz. **Ten recenzent także uruchamia program.** Do tej pory
+każdy przegląd w tym kursie dotyczył plików; teraz ktoś ma przed sobą działającą
+aplikację i pierwsze pytanie brzmi, czy w ogóle da się ją uruchomić.
+
+## Uruchomienie u kogoś innego
+
+Pierwsza rzecz, która się psuje, jest zawsze ta sama i nie ma nic wspólnego z
+twoim pomysłem: program działał u ciebie. Trzy warunki decydują, czy zadziała u
+kogoś innego, i wszystkie trzy da się sprawdzić w pięć minut, zanim ktokolwiek
+cokolwiek pobierze.
+
+**Startuje z folderu, który nie jest twój.** Skopiuj projekt do zupełnie innego
+katalogu — innej nazwy, innego miejsca na dysku — i uruchom stamtąd. Jeśli
+program szuka czegoś po ścieżce, która istnieje tylko u ciebie, dowiesz się tego
+teraz, a nie od kolegi.
+
+**Nie potrzebuje pliku, który masz tylko ty.** Zmień nazwę pliku z danymi i
+uruchom program od nowa. Ma się otworzyć pusty, a nie zniknąć — u kogoś innego
+ten plik nie istnieje w ogóle i pierwsze uruchomienie jest zawsze takie.
+
+**Mówi, czego mu brakuje.** Jeśli czegoś potrzebuje — zainstalowanego środowiska,
+uprawnień, pierwszego wpisu — ma to powiedzieć zdaniem po polsku, a nie zniknąć
+albo pokazać komunikat z nazwą pliku źródłowego.
+
+Potem przekazujesz aplikację. Najprościej: kolega klonuje repozytorium i
+uruchamia u siebie tak, jak to opisałeś w `README.md` — a jeśli `README.md` nie
+istnieje albo ma jedno zdanie, to właśnie się okazało, że jest pierwszym
+zadaniem na dziś. Wersja awaryjna, kiedy klonowanie nie wchodzi w grę: skopiowany
+folder.
+
+## Zgłoszenie ma trzy części
+
+Kolega używa twojego programu przez dziesięć minut — nie jak recenzent, tylko jak
+osoba z drugiego zdania twojego wpisu: robi tę czynność, do której program jest.
+Potem pisze jedno zgłoszenie.
+
+Kształt zgłoszenia jest starszy niż wy wszyscy i nie zmienił się przez ćwierć
+wieku. Wypisał go Joel Spolsky w 2000 roku, w tekście o tym, dlaczego zespoły
+naprawiają w kółko te same rzeczy — zwróć uwagę, że wszystkie trzy części mówią
+o tym, co widać z zewnątrz, i żadna nie mówi o kodzie:
+
+<Cytat author="Joel Spolsky" source="Painless Bug Tracking" date="2000-11-08" url="https://www.joelonsoftware.com/2000/11/08/painless-bug-tracking/">
+
+Kroki, żeby to powtórzyć; co spodziewałem się zobaczyć; co zobaczyłem zamiast
+tego.
+
+</Cytat>
+
+Spolsky pisał o zespołach, ale te trzy części działają tak samo, kiedy autorem i
+zgłaszającym są dwie osoby z jednej klasy. Trzecia jest tą, którą wszyscy
+pomijają, i tą, która decyduje: „nie działa zapisywanie” nie jest zgłoszeniem,
+bo autor nie wie, czy program się zawiesił, czy zapisał w złym miejscu, czy
+zapisał dobrze, a lista się nie odświeżyła. Trzy różne błędy, jedno zdanie, zero
+informacji.
+
+Zgłoszenie nie jest też trzema innymi rzeczami, a wszystkie trzy same się
+napraszają. Nie jest diagnozą — „chyba źle otwierasz plik” jest zgadywaniem o
+kodzie, którego nie czytałeś. Nie jest propozycją poprawki — o tym decyduje autor.
+I nie jest oceną pomysłu; ten temat został zamknięty przy specyfikacji i nie wraca
+dlatego, że program już działa.
+
+## `zgloszenia.md`
+
+Zgłoszenie pisze osoba, która je znalazła, i przekazuje autorowi; autor wkleja je
+do pliku `zgloszenia.md` we własnym repozytorium i robi commit. Plik jest jeden,
+wpisy dopisuje się na końcu.
+
+```markdown title="zgloszenia.md"
+## Z-01 · Puste pole zapisuje się jako pusta pozycja
+
+Kroki: otwieram program, nie wpisuję nic w pierwszym polu, klikam zapis.
+Spodziewałem się: program nie zapisuje i mówi, że pole jest puste.
+Zobaczyłem: na liście pojawiła się pozycja bez nazwy; po zamknięciu i
+otwarciu nadal tam jest i nie da się jej usunąć.
+Zgłosił: Kuba, rrrr-mm-dd
+
+Odtworzone: tak, za pierwszym razem.
+Decyzja: naprawiam, bo konstytucja mówi, że aplikacja nie traci tego, co
+ktoś wpisał — a pozycja, której nie da się usunąć, to strata miejsca na
+liście. Zadanie T09.
+```
+
+Dlaczego plik, a nie wysłanie zmiany do cudzego repozytorium? Bo wysyłanie zmian
+do czyjegoś projektu ma własne mechanizmy, własne zasady i własną lekcję — dostaniesz
+ją w module o testach i przeglądach. Dziś chodzi o coś prostszego i wcześniejszego:
+o to, żeby czyjeś zdanie o twoim programie stało się rzeczą w repozytorium, a nie
+uwagą rzuconą na przerwie.
+
+## Odtwarzam, potem decyduję
+
+Kolejność jest ważna i łatwo ją odwrócić, bo pierwsza reakcja na zgłoszenie jest
+zawsze odruchem obronnym albo odruchem naprawczym — oba prowadzą prosto do kodu.
+
+Najpierw odtwarzasz. Wykonujesz kroki dokładnie tak, jak są napisane, i zapisujesz
+w pliku, czy błąd wystąpił. „Nie umiem tego powtórzyć” jest pełnoprawnym wynikiem
+i zostaje w pliku — mówi, że w krokach czegoś brakuje, i jest zaproszeniem do
+jednego pytania, a nie do dyskusji.
+
+Dopiero potem decydujesz — jednym z trzech zdań, i każde ma „bo”, bo werdykt bez
+powodu nie mówi zgłaszającemu niczego, czego sam by się nie domyślił.
+
+**Naprawiam, bo…** — zgłoszenie dotyczy czegoś, co twoja specyfikacja obiecuje.
+Poprawka jest zwykłym zadaniem: jeden numer, jeden commit, jedno sprawdzenie,
+wpis w dzienniku.
+
+**Nie naprawiam, bo…** — program zachowuje się tak, jak miał, a osoba spodziewała
+się czegoś innego. To jest uprawniona decyzja i nie wymaga przeprosin; wymaga
+zdania, które mówi, czego program nie robi i dlaczego tak zostało postanowione.
+Warto wtedy sprawdzić, czy to „czego nie robi” jest naprawdę napisane w
+specyfikacji — jeśli nie jest, dopisujesz.
+
+**To nie błąd, to brak w specyfikacji, bo…** — najciekawszy z trzech. Program
+robi dokładnie to, co napisałeś, i mimo to zachowuje się źle. Nie ma czego
+naprawiać w kodzie, dopóki nie zmieni się zdanie: najpierw `spec.md` z nowym
+kryterium i datą, commit, dopiero potem zadanie. Ten werdykt jest jedynym
+miejscem w całym module, w którym cudza osoba wpływa na twoją specyfikację — i
+dlatego jest wart tej całej lekcji.
+
+## Ktoś prawdziwy, wreszcie
+
+Moduł zaczął się od miary: ktoś prawdziwy ma tego używać, a ty się liczysz.
+Przez sześć lekcji ta miara była obietnicą; dziś została zapłacona raz i wiadomo
+już, ile kosztuje.
+
+- **Program musi się uruchomić u kogoś innego**, zanim ktokolwiek powie o nim
+  cokolwiek mądrego: inny folder, brak twojego pliku, zdanie o tym, czego mu
+  brakuje.
+- **Zgłoszenie ma trzy części** — kroki, czego się spodziewałem, co zobaczyłem
+  zamiast tego — i to trzecia jest tą, którą się pomija.
+- **Odtwarzasz, zanim zdecydujesz.** „Nie umiem powtórzyć” to wynik, nie
+  wykręt.
+- **Trzy werdykty, każdy z „bo”**, a trzeci — brak w specyfikacji — wraca do
+  pliku, nie do kodu.
+
+Masz aplikację, którą wymyśliłeś, przyciąłeś, opisałeś, zbudowałeś i oddałeś
+komuś do zepsucia. Wiesz o niej rzeczy, których nie da się przeczytać w cudzym
+kodzie: gdzie twoja specyfikacja się myliła i którego fragmentu nie umiesz
+wytłumaczyć. Ten drugi punkt jest miejscem, w którym zaczyna się następny moduł —
+otwiera maskę dokładnie tej aplikacji i każe zbudować własną ręką to, co przez
+dwa tygodnie budował agent.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: trzy części zgłoszenia i trzy werdykty. Do tego jedno zdanie o tym,
+co robisz, zanim zdecydujesz.
+
+</Zadanie>
+
+<Zadanie title="Trzy warunki uruchomienia">
+
+Skopiuj projekt do innego folderu, zmień nazwę pliku z danymi i uruchom stamtąd.
+Zapisz w `dziennik.md`, co się stało w obu przypadkach, i popraw to, co się
+zepsuło, zanim ktokolwiek dostanie twój program.
+
+</Zadanie>
+
+<Zadanie title="Cudzy program przez dziesięć minut">
+
+Zainstaluj aplikację kogoś z klasy i używaj jej dziesięć minut jak osoba z
+drugiego zdania jego wpisu — nie szukaj błędów, po prostu zrób tę czynność.
+Napisz jedno zgłoszenie w trzech częściach i przekaż autorowi.
+
+</Zadanie>
+
+<Zadanie title="Odtworzenie i werdykt">
+
+Wklej otrzymane zgłoszenie do `zgloszenia.md`, odtwórz je i dopisz pod nim dwie
+linijki: czy się odtworzyło i który z trzech werdyktów wybierasz, z „bo”. Jeśli
+naprawiasz — jedno zadanie, jeden commit. Jeśli to brak w specyfikacji — najpierw
+`spec.md`. Wypchnij.
+
+</Zadanie>
+
+<Zadanie title="Kryterium a skarga">
+
+Jeden akapit w `dziennik.md`: czym różniło się to, co usłyszałeś od
+użytkownika, od tego, co sam wpisałeś w kryteria — i które zdanie dopisałbyś do
+specyfikacji, gdybyś zaczynał te dwa tygodnie jeszcze raz.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-10">
+
+<Zrodlo title="Painless Bug Tracking" publisher="Joel Spolsky, Joel on Software" date="2000-11-08" url="https://www.joelonsoftware.com/2000/11/08/painless-bug-tracking/">rozdział „Three Parts To Every Good Bug Report”: „1. Steps to reproduce, 2. What you expected to see, and 3. What you saw instead”. Tłumaczenie cytatu własne</Zrodlo>
+
+<Zrodlo title="Bug Writing Guidelines" publisher="Bugzilla, Mozilla" date="2026-09-10" url="https://bugzilla.mozilla.org/page.cgi?id=bug-writing.html">te same trzy części pod nazwami Steps to Reproduce, Expected Results, Actual Results, z uwagą, że kroki są najważniejszą częścią zgłoszenia; strona bez daty — data to dzień sprawdzenia</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="artykul" title="Painless Bug Tracking" url="https://www.joelonsoftware.com/2000/11/08/painless-bug-tracking/">cztery strony z 2000 roku o tym, po co w ogóle spisuje się zgłoszenia i dlaczego zespoły, które tego nie robią, naprawiają w kółko te same rzeczy; napisane, zanim istniały narzędzia, których dziś się do tego używa, więc opisuje mechanizm, a nie program</Lektura>
+
+<Lektura kind="dokumentacja" title="Bug Writing Guidelines" url="https://bugzilla.mozilla.org/page.cgi?id=bug-writing.html">instrukcja pisania zgłoszeń dla projektu, do którego zgłoszenia przychodzą od nieznajomych z całego świata — zwróć uwagę na wskazówkę o tytule krótszym niż sześćdziesiąt znaków i na to, co robić, kiedy błąd występuje raz na dziesięć prób</Lektura>
+
+</CzytajDalej>

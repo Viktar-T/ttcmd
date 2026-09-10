@@ -1,0 +1,237 @@
+---
+title: "Ile to jest „małe”"
+order: 2
+summary: "Wybrany pomysł nie ma jeszcze ceny, a ty nie masz czym wyceniać — twój największy program jest za mały, żeby służyć za miarę. Lekcja odwraca kolejność: zaczyna od czasu, który masz, i pokazuje trzy sposoby, na jakie pomysł bywa za duży, oraz cięcie na każdy z nich."
+publish: true
+---
+
+{/* Drafted 2026-09-10 from docs/content-briefs/05b-ile-to-jest-male.md,
+    autonomous run — brief unapproved. New lesson; the module's gate.
+
+    The measuring rod is notatnik-v2, not a line count: a line count would be a
+    claim the course cannot source and a size a student cannot judge before
+    building. The one evidence claim is Singer's appetite/estimate pair; the
+    page carries no publication date, so the date on the quote is the day it was
+    checked, as 4e does with the Anthropic documentation.
+
+    FOR VIKTAR, both in the brief: (1) the sentence that states the survey's
+    modal largest program („około stu linijek”) is the class reading about
+    itself — aggregate and nameless, but your call; it is the paragraph
+    beginning „Nie masz czym mierzyć” and can be cut without touching the
+    argument. (2) Whether „pierwsza wersja na jeden ekran to zaliczenie” should
+    be said out loud to students, as it is in „Cięcie”.
+
+    No application code, no framework, no feature: everything concrete in this
+    lesson is either notatnik-v2 or the domestic example from the previous
+    lesson. Intra-module references are plain text. */}
+
+Notatnik zajął ci tydzień i umiesz powiedzieć, co w tym tygodniu było: jedna
+strona specyfikacji, siedem kryteriów, sześć do ośmiu zadań, jeden commit na
+każde. To jest jedyny program, o którym wiesz nie tylko, że działa, ale też ile
+kosztował.
+
+Twój wybrany pomysł ma cztery zdania i nie ma żadnej z tych liczb. Zdanie „w
+sobotę pokazuje listę zakupów” jest równie krótkie jak „w sobotę zamawia zakupy
+w trzech sklepach i porównuje ceny”, a między nimi leży różnica kilku miesięcy,
+której z samego zdania nie widać.
+
+Pytanie tej lekcji jest więc jedno: **skąd wiesz, że to, co wybrałeś, zmieści się
+w czasie, który masz — zanim zaczniesz to budować?**
+
+## Dlaczego wycena ci nie wyjdzie
+
+Naturalny odruch brzmi: oszacuj. Rozpisz, co trzeba zrobić, oceń każdy kawałek i
+zsumuj. Ten odruch zawodzi tutaj z powodu, który nie ma nic wspólnego z brakiem
+talentu.
+
+Nie masz czym mierzyć. Oszacowanie działa przez porównanie: „to jest mniej
+więcej jak tamto, a tamto zajęło mi trzy dni”. Największy program, jaki napisała
+większość tej klasy, ma około stu linijek — to za mało, żeby był miarą
+czegokolwiek, a `notatnik-v2` jest w tej roli dopiero od tygodnia. Rozpiszesz
+więc kawałki, których nigdy nie robiłeś, ocenisz je z sufitu i zsumujesz z
+przekonaniem, że suma jest mądrzejsza od składników.
+
+Zamiast tego odwracamy kolejność. W zespołach, które ten sposób opisały,
+nazywa się to *apetytem* i odróżnia od wyceny jednym zdaniem:
+
+<Cytat author="Ryan Singer" source="Shape Up, rozdział „Set Boundaries”" date="2026-09-10" url="https://basecamp.com/shapeup/1.2-chapter-03">
+
+Wyceny zaczynają się od projektu i kończą liczbą. Apetyty zaczynają się od
+liczby i kończą projektem.
+
+</Cytat>
+
+Wycena pyta: ile to zajmie? Apetyt pyta: mam tyle a tyle czasu — co da się w nim
+zrobić tak, żeby było skończone? Druga wersja jest tą, którą umiesz odpowiedzieć,
+bo liczba jest w niej znana od początku, a przycinanie pomysłu jest czynnością, a
+nie przepowiednią. Regułę, o którą chodzi, Singer nazywa w tym samym rozdziale
+*fixed time, variable scope* — czas stoi, zakres się rusza. U ciebie czas stoi
+tym mocniej, że tygodnie budowania są policzone i nie ma z czego dobrać.
+
+## Miara, którą już masz
+
+Apetyt potrzebuje jednostki, a ty masz dokładnie jedną: notatnik. Nie dlatego, że
+jest wzorem czegokolwiek, tylko dlatego, że jest jedynym programem, którego
+rozmiar policzyłeś w czterech miejscach naraz.
+
+| Co liczysz | `notatnik-v2` | Twój pomysł |
+| --- | --- | --- |
+| ile stron zajmuje specyfikacja | jedna | ? |
+| ile kryteriów trzeba sprawdzić | siedem | ? |
+| ile zadań na jeden commit | sześć do ośmiu | ? |
+| ile ekranów widzi użytkownik | jeden | ? |
+
+Trzeci wiersz wypełnisz dopiero za dwie lekcje, ale trzy pozostałe da się
+oszacować dziś, siedząc nad czterema zdaniami. Zrób to na piśmie, bo liczba
+napisana zachowuje się inaczej niż liczba pomyślana.
+
+Wynik czytasz prosto. Jeśli twoje trzy liczby są w okolicach notatnikowych,
+pomysł jest na dwa tygodnie i możesz iść dalej. Jeśli któraś jest dwa razy
+większa, masz materiał na rozmowę o cięciu. Jeśli któraś jest pięć razy większa —
+a najczęściej jest to liczba kryteriów — trzymasz w ręku nie pomysł, tylko
+rodzinę pomysłów, i wybierzesz z niej jeden.
+
+## Trzy sposoby, na jakie pomysł jest za duży
+
+Powiększenie nie bierze się z niczego i prawie zawsze ma jedną z trzech przyczyn.
+Każda ma inny sygnał i inne cięcie, więc warto je rozróżniać, zamiast ogólnie
+„zrobić mniej”.
+
+**Pomysł potrzebuje drugiego programu.** Sygnał: w opisie pada zdanie o
+telefonie, o stronie, o czymś, co działa, kiedy twojej aplikacji nie ma
+włączonej. Domowy przykład z poprzedniej lekcji jest właśnie taki — odhaczanie
+w telefonie i lista na komputerze to dwie aplikacje, które muszą się jeszcze
+dogadać. Cięcie: zostaje ten program, w którym dzieje się czynność najczęstsza,
+a drugi zastępuje najprostsza rzecz na świecie — ten sam plik otwierany ręcznie,
+albo po prostu wpisanie tego samego na jednym ekranie.
+
+**Pomysł potrzebuje cudzych danych.** Sygnał: żeby program był użyteczny, musi
+skądś wziąć rozkład, ceny, wyniki, pogodę, cokolwiek, czego sam nie wpiszesz.
+Wtedy zaczynasz od cudzego formatu, cudzej awarii i cudzego limitu, zanim
+zaczniesz od swojego programu. Cięcie: pierwsza wersja pracuje na danych, które
+wpisuje albo wkleja człowiek. Jeśli program jest bezużyteczny bez danych z
+zewnątrz, to nie jest pomysł na ten moduł.
+
+**Pomysł potrzebuje użytkownika, do którego nie masz dostępu.** Sygnał: w drugim
+zdaniu stoi ktoś, kogo nie zapytasz w piątek — klienci sklepu, „ludzie z
+osiedla”, uczestnicy czegoś, co się jeszcze nie odbyło. Bez tej osoby nie ma jak
+sprawdzić, czy program robi to, co miał, i cały moduł rozstrzyga się twoim
+zdaniem o sobie samym. Cięcie: znajdź osobę bliżej. Ta sama czynność prawie
+zawsze ma wersję domową albo klasową, a użytkownik, który siedzi obok, odpowie
+w minutę zamiast nigdy.
+
+Zdarza się, że pomysł jest za duży na dwa sposoby naraz. Wtedy tnij po kolei i
+po każdym cięciu przeczytaj cztery zdania od nowa — bo drugie cięcie bywa
+niepotrzebne, kiedy pierwsze już wystarczyło.
+
+## Zdanie, które kupuje rozmiar
+
+Czwarte zdanie wpisu — „czego nie robi” — było dotąd jedną linijką. Po dzisiejszym
+przymierzaniu staje się listą i to jest cały mechanizm tej lekcji: rozmiar kupuje
+się zdaniami o tym, czego program nie robi, a nie postanowieniem, że będzie się
+pracować szybciej.
+
+To, co wycinasz, nie znika. Zakładasz obok `pomysly.md` drugi plik i wpisujesz
+tam wszystko, co odpadło — z jednym zdaniem, dlaczego odpadło.
+
+```markdown title="pozniej.md"
+# Poza pierwszą wersją
+
+- Odhaczanie w telefonie — druga aplikacja; w pierwszej wersji odhaczam na
+  komputerze.
+- Ceny i porównywanie sklepów — cudze dane; nie wchodzi w ten moduł.
+- Kilka list naraz — mieści się w pomyśle, ale dokłada ekran; wraca, kiedy
+  pierwsza wersja będzie skończona.
+```
+
+Plik ma dwa zadania. Pierwsze: uspokaja. Pomysł, który wycinasz „na zawsze”,
+wraca w środę i będzie się o siebie upominał; pomysł, który ma zapisane miejsce i
+powód, zwykle daje spokój. Drugie: za dwa tygodnie ten plik jest gotową listą
+tego, co zrobisz dalej, jeśli będzie z czego.
+
+## Cięcie
+
+Reszta lekcji to robota, nie czytanie. Cztery kroki, w tej kolejności.
+
+Przymierz — trzy liczby z tabeli, wpisane obok twojego wpisu. Rozpoznaj — który
+z trzech sposobów bycia za dużym dotyczy twojego pomysłu; jeśli żaden, napisz to,
+bo to też jest wynik. Potnij — przepisz wpis: dwa pierwsze zdania zostają bez
+zmian, „czego nie robi” rośnie do co najmniej trzech linijek, reszta idzie do
+`pozniej.md`. Powiedz na głos — całość jednym zdaniem, bez „i jeszcze”; jeśli się
+nie da, cięcie było za małe.
+
+Na koniec jedna rzecz, którą warto usłyszeć wprost, zanim zaczniesz się porównywać
+z resztą klasy: **pierwsza wersja na jeden ekran, skończona i sprawdzona, jest
+pełnym wynikiem tego modułu.** Program, który robi jedną czynność i robi ją do
+końca, ma użytkownika. Program, który miał robić pięć i nie robi żadnej, nie ma
+nikogo — a piąta część klasy ma już za sobą dokładnie taki, opisany jako „nikt,
+nieskończony”.
+
+## Pomysł wyceniony
+
+Pytanie z początku brzmiało, skąd wiesz, że wybrany pomysł zmieści się w czasie,
+który masz. Odpowiedź nie jest liczbą godzin — jest zestawem czynności, które
+wykonałeś dziś na własnym wpisie.
+
+- **Nie wyceniasz, tylko przycinasz.** Czas jest znany od początku; ruchomy jest
+  zakres.
+- **Miarą jest notatnik**, w trzech liczbach: strony specyfikacji, kryteria,
+  ekrany. Pięciokrotność którejkolwiek to nie pomysł, tylko rodzina pomysłów.
+- **Trzy przyczyny, trzy cięcia**: drugi program → jeden program; cudze dane →
+  dane wpisywane ręcznie; niedostępny użytkownik → użytkownik bliżej.
+- **Rozmiar kupuje się zdaniem „czego nie robi”**, a wycięte rzeczy mają swój
+  plik i swoje powody.
+
+Twój wpis ma teraz cenę i wygląda skromniej niż wczoraj. Następna lekcja zamienia
+go w specyfikację i w pierwszy commit repozytorium, w którym nie będzie ani
+jednej linijki kodu — a nikt jej nie zaczyna z pomysłem, którego nie przymierzył.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: trzy sposoby, na jakie pomysł bywa za duży, i cięcie na każdy z nich.
+Do tego jedno zdanie o różnicy między wyceną a apetytem.
+
+</Zadanie>
+
+<Zadanie title="Trzy liczby">
+
+Przymierz swój wpis do notatnika i zapisz trzy liczby: ile stron zajęłaby
+specyfikacja, ile kryteriów trzeba by sprawdzić, ile ekranów widzi użytkownik.
+Przy każdej dopisz, ile ma notatnik.
+
+</Zadanie>
+
+<Zadanie title="Cięcie">
+
+Przepisz wpis w `pomysly.md`: dwa pierwsze zdania bez zmian, „czego nie robi” na
+co najmniej trzy linijki. Załóż `pozniej.md` i przenieś tam wszystko, co
+odpadło, z powodem przy każdej pozycji. Commit i push.
+
+</Zadanie>
+
+<Zadanie title="Cudze zdanie o twoim rozmiarze">
+
+Daj przycięty wpis komuś z klasy z jednym pytaniem: „zbudowałbyś to w dwa
+tygodnie?”. Zapisz odpowiedź, a jeśli brzmi „nie” — zapisz też jedną rzecz,
+którą ta osoba wycięłaby jako następną. Nie musisz się zgodzić; masz to mieć
+zapisane.
+
+</Zadanie>
+
+## Źródła
+
+<Zrodla checked="2026-09-10">
+
+<Zrodlo title="Shape Up — rozdział „Set Boundaries”" publisher="Ryan Singer, Basecamp" date="2026-09-10" url="https://basecamp.com/shapeup/1.2-chapter-03">„Estimates start with a design and end with a number. Appetites start with a number and end with a design”; apetyt jako „a time budget for a standard team size”; zasada nazwana w tekście „fixed time, variable scope”. Strona bez daty publikacji — data to dzień sprawdzenia; tłumaczenie cytatu własne</Zrodlo>
+
+</Zrodla>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="artykul" title="Shape Up — „Set Boundaries”" url="https://basecamp.com/shapeup/1.2-chapter-03">rozdział, z którego pochodzi dzisiejszy cytat, ma sześć stron i jest napisany dla zespołów, ale mechanizm jest ten sam co u ciebie: najpierw budżet czasu, potem zakres — i „nie” jako podstawowe narzędzie projektowe</Lektura>
+
+</CzytajDalej>

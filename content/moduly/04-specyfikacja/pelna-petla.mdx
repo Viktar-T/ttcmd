@@ -2,7 +2,7 @@
 title: "Pełna pętla: notatnik od nowa"
 order: 5
 summary: "Tydzień budowania: ten sam notatnik, tym razem od specyfikacji — poprawka po przeglądzie, plan ze świeżej sesji, zadania z własnym „gotowe, gdy”, jeden commit na zadanie, każde kryterium sprawdzone z dowodem. Na koniec dwa repozytoria obok siebie i uczciwe pytanie, czym się różnią."
-publish: false
+publish: true
 ---
 
 {/* Drafted 2026-09-02 from docs/content-briefs/04e-pelna-petla.md, autonomous
@@ -11,7 +11,21 @@ publish: false
     „Wariant awaryjny”) is the fallback for students behind by mid-week and
     counts as finishing the loop. Assumes the class editors let a fresh session
     attach exactly two files (both do, via @-references). Intra-module
-    references are plain text: a link to an unpublished lesson fails the build. */}
+    references are plain text: a link to an unpublished lesson fails the build.
+
+    course-structure-v2 v2.9 (2026-09-10): this is now the last lesson of the
+    module — „Zbieramy pomysły” left for Moduł 5 — so the closing pointer says
+    „pierwsza lekcja następnego modułu” where it said „ostatnia lekcja tego
+    modułu”. Nothing else in the lesson changed. 
+
+    Exercises rewritten 2026-09-10 on Viktar's request into the hand-in
+    shape of Moduł 2 and Moduł 3 — one Zadanie element, the finished repository
+    state, four conditions visible in the repository, and the closing form
+    sentence. The rule is docs/content-style.md, „The hand-in assignment”.
+    The recall exercise was dropped; „Dowód na każde kryterium” and „Gdzie
+    specyfikacja się pomyliła” became conditions, and the class round stayed
+    inside the fourth.
+*/}
 
 Otwórz obok siebie dwa foldery: stary notatnik z Budowy 2 i `notatnik-v2`. W
 pierwszym wpisz `git log --oneline`. Zobaczysz wpisy od `runda 1` do `runda 5`
@@ -230,47 +244,44 @@ rozmowy i po czym to widać. Widać to nie w oknie — w repozytorium.
   nie jest gorszą wersją — jest dowodem, że specyfikacja mówiła *co*, nie *jak*.
 
 Masz notatnik, który wie, czym jest, i repozytorium, które umie powiedzieć,
-dlaczego wygląda tak, a nie inaczej. Ostatnia lekcja tego modułu pyta, co
-zbudować następne — i każe zapisać pomysły tak, jak ten moduł uczy zapisywać
+dlaczego wygląda tak, a nie inaczej. Pierwsza lekcja następnego modułu pyta, co
+zbudujesz dalej — i każe zapisać pomysły tak, jak ten moduł uczy zapisywać
 wszystko inne.
 
 ## Ćwiczenia
 
-<Zadanie>
+<Zadanie title="Notatnik-v2 skończony, z dowodem na każde kryterium">
 
-Z pamięci: kroki pętli — cztery pliki i sprawdzenie na końcu — a przy każdym
-to, co jest jego sprawdzeniem. Do
-tego jedno zdanie o tym, co znaczy „gotowe” dla zadania, a co dla całej
-specyfikacji.
+Skończ `notatnik-v2`: wszystkie zadania z listy odhaczone, program uruchamia
+się i zapisuje notatki, a specyfikacja jest poprawiona wszędzie tam, gdzie
+budowa pokazała błąd. Wariant konsolowy liczy się tak samo — jest dowodem, że
+specyfikacja mówiła *co*, nie *jak*.
 
-</Zadanie>
+Warunki są cztery i wszystkie widać w repozytorium:
 
-<Zadanie title="Dowód na każde kryterium">
+- **jedno zadanie, jeden commit**, z numerem zadania w opisie; zadanie
+  odhaczasz po sprawdzeniu, nie po napisaniu, a commit, który robi więcej niż
+  jedno zadanie, cofasz;
+- każda poprawka specyfikacji ma **swój commit i jest wcześniejsza niż kod**,
+  którego dotyczy — pytanie agenta, błąd znaleziony przy budowie, uwaga
+  recenzenta. Historia ma pokazywać tę kolejność;
+- w `dziennik.md` jest jeden wpis na kryterium: polecenie albo fragment pliku,
+  nie zdanie „działa”. Kryteria, które nie przechodzą, są zaznaczone, a przy
+  każdym stoi, co poprawiasz najpierw — specyfikację czy kod;
+- w `dziennik.md` jest też jeden akapit o tym, w którym miejscu twoja
+  specyfikacja okazała się błędna albo niepełna, jak to wyszło na jaw i co
+  napiszesz inaczej następnym razem. Akapit powstaje po rundzie w klasie:
+  przeczytaj cudzą specyfikację i cudzy `notatki.md` i powiedz, czy plik
+  spełnia kryteria.
 
-Przejdź przez każde kryterium swojej specyfikacji i zapisz w `dziennik.md` jeden
-wpis na kryterium — polecenie albo fragment pliku, nie zdanie „działa”. Zaznacz
-te, które nie przechodzą, i przy każdym napisz, co poprawiasz najpierw:
-specyfikację czy kod.
+Jeśli skończysz wcześniej, napisz `specs/002-…/spec.md` dla jednej funkcji
+katalogu, na przykład wyszukiwania, i przejdź pętlę jeszcze raz.
 
-</Zadanie>
+Na koniec wypchnij wszystko.
 
-<Zadanie>
-
-Skończ `notatnik-v2`: wszystkie zadania odhaczone, jeden commit na zadanie z
-numerem w opisie, specyfikacja poprawiona wszędzie tam, gdzie budowa pokazała
-błąd, luki z drugiego przeglądu poprawione. Wypchnij. Wariant konsolowy liczy
-się tak samo. Jeśli skończysz wcześniej — napisz `specs/002-…/spec.md` dla
-jednej funkcji katalogu, na przykład wyszukiwania, i przejdź pętlę jeszcze raz.
-
-</Zadanie>
-
-<Zadanie title="Gdzie specyfikacja się pomyliła">
-
-Jeden akapit w `dziennik.md`: w którym miejscu twoja specyfikacja okazała się
-błędna albo niepełna, jak to wyszło na jaw — pytanie agenta, sprawdzenie, uwaga
-recenzenta — i co napiszesz inaczej następnym razem. Potem runda w klasie:
-przeczytaj cudzą specyfikację i cudzy `notatki.md` i powiedz, czy plik spełnia
-kryteria.
+Kiedy repozytorium z aplikacją będzie umieszczone na GitHubie, wypełnij
+[formularz](https://docs.google.com/forms/d/e/1FAIpQLSc9Da0ossYyhSCMjnkMCqom2VQ9CYpB2L0Kvymb3yt_UYF6rw/viewform?usp=header),
+żeby nauczyciel sprawdził zadanie.
 
 </Zadanie>
 

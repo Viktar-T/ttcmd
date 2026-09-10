@@ -1,0 +1,196 @@
+---
+title: "Plan i lista zadań"
+order: 4
+summary: "Obca sesja dostaje twoją konstytucję i specyfikację, i nic więcej — to pierwszy prawdziwy test tego, co wczoraj napisałeś. Lekcja o trzech pytaniach do planu, o tym, jak duże jest zadanie na jedno posiedzenie, i o kolejności, która ratuje tydzień: najpierw to, czego jesteś najmniej pewien."
+publish: true
+---
+
+{/* Drafted 2026-09-10 from docs/content-briefs/05d-plan-i-lista-zadan.md,
+    autonomous run — brief unapproved. Re-derived from the deleted „Wspólna
+    aplikacja” row 6b (course-structure-v2 v2.9).
+
+    Procedure with a narrative frame, two hours, deliverable two committed
+    files. No task count is given as a rule (the notatnik's six-to-eight was the
+    notatnik's, not a law) and the first task is described rather than written
+    out — a ready-made T01 line would name a template and therefore a stack,
+    which the module's rule forbids.
+
+    INVEST and SMART (research-06 §2.4) deliberately not introduced: two
+    acronyms would cost this short lesson its name budget, and the course's own
+    rule is stricter and simpler. Assumes the class editors let a fresh session
+    attach exactly two files, as 4e does. Intra-module references are plain
+    text. */}
+
+Plan notatnika nie mógł cię zaskoczyć. Program już raz istniał, w folderze obok,
+więc kiedy agent proponował kolejność, umiałeś ją sprawdzić pamięcią: mniej
+więcej tak to szło poprzednim razem.
+
+Dziś obca sesja dostanie dwa pliki, których nikt poza tobą i jednym kolegą nie
+czytał, i zaproponuje kolejność pracy nad programem, którego nie ma. To jest
+pierwszy moment, w którym twoja specyfikacja pracuje na siebie, a nie na twoją
+pamięć — bo cokolwiek w niej pominąłeś, wróci teraz jako pytanie albo, gorzej,
+jako cicho przyjęte założenie.
+
+Pytanie tej lekcji: **ile zadań ma twoja aplikacja, w jakiej kolejności — i po
+czym poznasz, że któreś jest za duże, zanim je zaczniesz?**
+
+## Plan ze świeżej sesji, dwa pliki
+
+Procedura jest ta sama co przy notatniku i warto ją zrobić dokładnie tak samo,
+bo różnica w wyniku będzie pochodzić z twojej specyfikacji, a nie ze sposobu
+pytania. Nowa rozmowa. Dwa dołączone pliki: `konstytucja.md` i
+`specs/001-…/spec.md`. Nic więcej — ani notatnika, ani `pomysly.md`, ani
+wcześniejszych rozmów. Prośba w kształcie z [lekcji o pętli](/moduly/04-specyfikacja/petla-spec-plan-zadania):
+jakie pliki powstaną, w jakiej kolejności, które kryteria zamyka każdy krok, co
+zostaje poza planem i czy któryś punkt konstytucji jest zagrożony.
+
+Jedna rzecz będzie inna niż przy notatniku i lepiej wiedzieć o niej wcześniej:
+**pytań będzie więcej.** Notatnik był programem, jakich model widział tysiące, a
+twoja aplikacja jest zwykle o pół kroku dalej od tego, co typowe. Każde pytanie
+jest informacją o dziurze w specyfikacji — i każde ma tę samą obsługę, którą już
+znasz: odpowiedź idzie do `spec.md`, dostaje commit, a plan prosisz od nowa.
+Odpowiedź wpisana w rozmowę umiera razem z rozmową, a ty będziesz tę rozmowę
+zamykać jeszcze dziś.
+
+Jeśli pytań jest więcej niż pięć, nie odpowiadaj po kolei. Przeczytaj je wszystkie
+naraz i zobacz, czy nie pytają o to samo — bardzo często cała piątka wynika z
+jednego zdania, którego nie napisałeś.
+
+## Trzy pytania do planu
+
+Plan czytasz sam, zanim cokolwiek z nim zrobisz. Trzy pytania, te same co
+poprzednio, bo psuje się zawsze w tych samych miejscach.
+
+Czy plan nazywa każdy plik, który utworzy? Plan, który mówi „warstwa danych”,
+nie mówi nic — a ty masz za chwilę odhaczać zadania i musisz wiedzieć, czego
+szukać w diffie.
+
+Czy plan gdzieś cię przekonuje, że aplikacja jest potrzebna? Jeśli tak, to zdanie
+wykreślasz. Należy do specyfikacji i jego obecność w planie znaczy, że model
+uzupełniał sobie kontekst, zamiast planować.
+
+Czy sprawdzenie z konstytucją wygląda na przeczytane? „Zgodne z konstytucją”
+napisane jednym zdaniem to formalność. Zdanie „punkt o niekasowaniu bez pytania
+dotyczy kroku 4, dlatego krok 4 dostaje potwierdzenie” to sprawdzenie.
+
+Poprawiony plan zapisujesz jako `specs/001-…/plan.md` i robisz commit.
+
+## Ile zadań i jak dużych
+
+Teraz lista zadań, w tej samej rozmowie: każde na jeden commit, każde z własnym
+„gotowe, gdy”, każde wskazujące kryteria, które zamyka. Listę poprawiasz ręcznie,
+bo to ty będziesz ją odhaczać.
+
+Rozmiar zadania ma w tym module jedną miarę i jest nią **jedno posiedzenie**:
+zadanie, którego nie umiesz skończyć i sprawdzić, zanim będziesz musiał wstać od
+komputera, jest w rzeczywistości dwoma zadaniami. Miara jest praktyczna, a nie
+estetyczna. Zadanie przerwane w połowie wraca jako kod, którego nie pamiętasz, i
+jako commit, którego nie umiesz opisać.
+
+Ile ich będzie? Notatnik miał sześć do ośmiu i nie jest to prawo — twoja
+aplikacja może mieć pięć albo dwanaście. Warto natomiast przeczytać wynik. Trzy
+zadania na dwa tygodnie znaczą, że każde z nich jest tygodniem pracy w
+przebraniu i nie da się na nich niczego odhaczyć. Dwadzieścia pięć znaczy, że
+lista zeszła do poziomu kroków, a nie zadań, i będziesz ją odhaczać zamiast
+budować. W obu przypadkach nie chodzi o dopasowanie do liczby, tylko o to, że
+liczba daleko od notatnikowej jest pytaniem, na które warto sobie odpowiedzieć.
+
+Pierwsze zadanie jest u wszystkich w tym samym miejscu, choć u każdego znaczy coś
+innego: **pusty szkielet, który się uruchamia i zamyka.** Nic nie robi, niczego
+nie zapisuje, ale startuje z folderu i kończy się bez błędu. Jest pierwsze,
+ponieważ jest jedynym zadaniem, którego sprawdzenie nie zależy od niczego, co
+napisałeś w specyfikacji — a dzień, w którym się okazuje, że projekt się nie
+buduje, ma być pierwszym dniem, nie ósmym.
+
+## „Gotowe, gdy” dla aplikacji, której nikt nie zna
+
+Druga połowa zadania jest ważniejsza od pierwszej i to ona najczęściej jest
+napisana źle. „Gotowe, gdy: działa poprawnie” nie jest sprawdzeniem, bo nie mówi,
+kto co robi i co ma z tego wyjść.
+
+Sprawdzenie, które daje się wykonać, ma w tym module jeden z trzech kształtów —
+i te trzy wystarczają, niezależnie od tego, co robi twoja aplikacja.
+
+| Kształt | Jak wygląda | Kiedy się nadaje |
+| --- | --- | --- |
+| polecenie i jego wynik | „`…` kończy się bez błędu i wypisuje …” | budowanie, uruchamianie, wszystko, co ma wyjście tekstowe |
+| plik przed i po | „pliku nie ma; po wykonaniu … istnieje i zawiera …” | wszystko, co program zapamiętuje |
+| czynność i to, co widać | „klikam …, wpisuję …, zamykam; po ponownym otwarciu widać …” | zachowanie okna, które trzeba obejrzeć |
+
+Trzeci kształt jest najsłabszy, bo wymaga człowieka, i dlatego używa się go
+wtedy, kiedy pierwsze dwa nie dają rady. Warto zauważyć, że drugi kształt
+sprawdza to samo co trzeci w połowie przypadków — jeśli program coś pamięta, to
+gdzieś to leży, a plik da się obejrzeć bez patrzenia na okno.
+
+## Kolejność, która ratuje tydzień
+
+Zostaje ustawienie listy, i tu jest jedyna nowa reguła tej lekcji. Odruch mówi:
+zacznij od tego, co umiesz, żeby się rozpędzić. W dwutygodniowej budowie ten
+odruch kosztuje najwięcej.
+
+**Po szkielecie idzie to zadanie, co do którego masz najmniej pewności.** Nie
+najtrudniejsze — najmniej pewne: to, przy którym nie wiesz, czy w ogóle się da,
+albo nie wiesz, ile zajmie. Jeżeli okaże się niewykonalne, dowiadujesz się o tym
+w poniedziałek, kiedy masz jeszcze dwa tygodnie na cięcie i przepisanie
+kryterium. Jeżeli zostawisz je na koniec, dowiesz się w piątek drugiego
+tygodnia, kiedy jedyne, co da się z tym zrobić, to oddać program bez tej części
+i bez wyjaśnienia.
+
+Które to zadanie? Zwykle to, którego „gotowe, gdy” najtrudniej ci było napisać.
+Miejsce, w którym nie umiałeś powiedzieć, co ma wyjść, jest zwykle miejscem, w
+którym nie wiesz, jak to zrobić.
+
+Poprawioną listę zapisujesz jako `specs/001-…/tasks.md` i robisz commit. Od tej
+chwili plik jest zapisem tego, co postanowiłeś — zmiany dopisuje się na końcu, z
+datą, a nie wpisuje po cichu w środek.
+
+## Lista, którą będziesz odhaczać
+
+Pytanie z początku dotyczyło liczby zadań i ich rozmiaru. Odpowiedź nie jest
+liczbą, tylko trzema testami i jedną kolejnością.
+
+- **Zadanie to jedno posiedzenie.** Jeśli nie zdążysz go sprawdzić, zanim
+  wstaniesz — to są dwa zadania.
+- **Sprawdzenie ma jeden z trzech kształtów**: polecenie i wynik, plik przed i
+  po, czynność i to, co widać. „Działa poprawnie” nie jest żadnym z nich.
+- **Najpierw szkielet, potem najmniej pewne.** Zła wiadomość w poniedziałek
+  kosztuje kryterium, w piątek kosztuje program.
+- **Pytania świeżej sesji trafiają do specyfikacji**, nie do rozmowy — a jeśli
+  jest ich pięć, prawie zawsze mają jedno źródło.
+
+W repozytorium masz cztery pliki i nadal ani jednej linijki kodu. Od jutra
+zaczyna się odhaczanie: jedno zadanie, jeden commit, jedno sprawdzenie — przez
+dwa tygodnie, na programie, którego nikt przed tobą nie zbudował.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: trzy kształty sprawdzenia i test na rozmiar zadania. Do tego jedno
+zdanie o tym, co robisz z pytaniem, które zadaje świeża sesja.
+
+</Zadanie>
+
+<Zadanie title="Najmniej pewne na górę">
+
+Wskaż na swojej liście zadanie, co do którego masz najmniej pewności, napisz mu
+„gotowe, gdy” w kształcie polecenia albo pliku i przesuń je zaraz za szkielet.
+Jeśli nie umiesz napisać sprawdzenia — to jest właśnie to zadanie.
+
+</Zadanie>
+
+<Zadanie title="Plan i zadania">
+
+`specs/001-…/plan.md` i `specs/001-…/tasks.md` w repozytorium, każdy z własnym
+commitem, wypchnięte. Każde zadanie ma „gotowe, gdy” i wskazuje kryteria, które
+zamyka.
+
+</Zadanie>
+
+<Zadanie title="Cudzą listą">
+
+Zamień się listą zadań z kimś z klasy. Nie rozmawiajcie o aplikacjach — zaznacz
+tylko te zadania, których sprawdzenia nie umiałbyś wykonać sam, czytając samo
+zdanie. Autor decyduje, co z tym zrobi.
+
+</Zadanie>

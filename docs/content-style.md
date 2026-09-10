@@ -491,6 +491,63 @@ line inside the element before and after the body, and an optional `title`
 derived from the module at build time and never written by hand. Module 1's
 lists stay as they are until they are migrated in the content lane.
 
+### The hand-in assignment
+
+From Moduł 2 on, a lesson whose work ends in a repository carries **one
+hand-in assignment** — the `<Zadanie>` the teacher marks — and it is that
+lesson's only exercise. The other three kinds are folded into its conditions
+or dropped: a fact worth recalling becomes a line in a file, a research
+exercise becomes a link with a date, and anything that cannot be shown in the
+repository does not survive the fold.
+
+Which lessons have one: those whose work ends in a **new repository, or in
+named changes to a repository the student already has**. A demo, a reading
+lesson and a reflection lesson have none and keep the four kinds. A lesson
+does not get one for the sake of the pattern; the work has to land in a
+repository on its own.
+
+The shape, established by 2d, 2e, 3a, 3b and 3c:
+
+1. **The finished state**, in a paragraph. Name the repository, say what runs
+   or what is in it when the work is done, and name the „Własną ręką” block or
+   the in-lesson procedure that belongs to the assignment.
+2. **`Warunki są cztery i wszystkie widać w repozytorium:`** — four bullets, no
+   more, each of them a fact a reader of the repository can confirm without the
+   student in the room. Across the corpus they cover: what had to be read or
+   decided before a change was accepted; the shape of the history (one commit
+   per change, imperative mood, the order the work really happened in); an
+   artefact in the repository carrying the lesson's numbers or records —
+   usually `README.md`, `dziennik.md` or a file the lesson creates; and one
+   thing found outside the course — a vendor page, a document, a classmate's
+   answer — with a link and a date. A number that could not be found is
+   recorded as not found: an absent answer is a result too.
+3. **`Na koniec wypchnij wszystko.`**
+4. **The hand-in sentence, verbatim:**
+
+```text
+Kiedy repozytorium z aplikacją będzie umieszczone na GitHubie, wypełnij
+[formularz](https://docs.google.com/forms/d/e/1FAIpQLSc9Da0ossYyhSCMjnkMCqom2VQ9CYpB2L0Kvymb3yt_UYF6rw/viewform?usp=header),
+żeby nauczyciel sprawdził zadanie.
+```
+
+The same words and the same link every time, so that the student recognises
+the end of an assignment without reading it — and so that
+`docs/assignment-checking.md` can resolve the repository by convention from
+the project name the assignment gives. „Repozytorium z aplikacją” holds even
+where the repository has no code yet (4b): it is the application's repository,
+named on the day it is created.
+
+Long lists a condition refers to — sentences to sort, sentences to rewrite —
+stay inside the same `<Zadanie>`, after the conditions and before
+„Na koniec wypchnij wszystko.”
+
+The module introduction says how many of the module's lessons end this way,
+in one sentence, as Moduł 3's does.
+
+An assignment that would end in a screenshot, a spoken answer or a file on the
+student's own disk is not written: it is turned into something the repository
+can carry, or it stops being an assignment.
+
 ### The summary
 
 The `summary` in the frontmatter is student-facing: it is what the lesson
@@ -790,6 +847,15 @@ introduction and 1b's opening stop relying on it.
 | The four failures of a file (missing, read-only, locked, interrupted) and the one that changes type with the operation (`File.Move` over a locked file → `UnauthorizedAccessException`) | 5g | 5h's fourth question, one clause |
 | The three modes on three branches (bez AI → podpowiadanie → agent), the card's three columns (minuty · zmienione linijki · linijki, które rozumiesz) and the feature-scale *Rozbierz to* (four questions) | 5h | Moduł 6 reads its diffs with the four questions |
 
+| The round trip *zapisz → zamknij → otwórz* and its two measured defects (item with the separator: 2 in / 3 out; empty list: 0 in / 1 out), built on SDK 10.0.112 | **7a** | 7b turns it into the first test; 7c reviews that diff; 7d breaks it again on purpose |
+| SWE-bench Verified's `FAIL_TO_PASS` / `PASS_TO_PASS` definition — „the industry decides by running tests somebody wrote earlier” | 7a | — |
+| Meta's TestGen-LLM chain (75 / 57 / 25, then 73%) and the misguidance effect — why the first test is not asked for | 7a | 7b, one clause, when the agent writes the second test |
+| GitHub's 71% „actionable” against the preprint's F1 = 0,066 on real pull requests; the 15× drop with diff size | **7c** | 7e recalls the diff-size finding in one clause, as the reason its change is small |
+| The 51% of human review comments the author agrees with (Uber) | **7e** | 7c, one clause, as the human baseline |
+| „Zielone znaczy: to, co uruchomiono, przeszło” — the skipped job reported as Success, and `dotnet test` returning 0 on zero tests | **7d** | — |
+| GitHub's „removing the secret… does not prevent it from being exploited”; the fork that outlives the repository | **7f** | 7e points forward in one clause when the fork is created |
+| The lethal trifecta (private data · untrusted content · external communication); the GitHub MCP exploit of 26.05.2025 and Nx „s1ngularity” of August 2025 | 7f | — |
+
 ### Terms
 
 | Term | Home |
@@ -821,6 +887,12 @@ introduction and 1b's opening stop relying on it.
 | stan, model widoku, wiązanie danych (`{Binding …}`), `DataContext`, `x:DataType`, `ObservableCollection`, `INotifyPropertyChanged` / `PropertyChanged`, MVVM jako reguła z datą, „okno tylko pokazuje”, „gdzie jest stan” | 5f |
 | wyjątek jako typ (`FileNotFoundException`, `UnauthorizedAccessException`, `IOException`, `DirectoryNotFoundException`), kolejność `catch` i CS0160, zapis przez plik tymczasowy (`File.Move` z `overwrite`), `finally`, `Closing`, UTF-8 bez BOM | 5g |
 | trzy tryby pracy (bez AI / tylko podpowiadanie / agent), gałąź na tryb, trzy kolumny karty, *Rozbierz to* w skali funkcji (cztery pytania), werdykt z „bo” | 5h |
+| regresja, test jako mechaniczne sprawdzenie, „zielone / czerwone” | 7a |
+| test jednostkowy, projekt testowy, asercja, `dotnet new nunit`, `dotnet reference add`, `dotnet test`, `[Test]`, `[TestCase]`, `Assert.That` / `Is.EqualTo`, czerwone przed zielonym | 7b |
+| przegląd kodu przez model, fałszywy alarm, trzy kubełki (trafione · nieistotne · zmyślone), `/code-review`, rozmiar zmiany jako zmienna | 7c |
+| CI (its home — 1e only named it), workflow, `.github/workflows`, runner, przebieg, zestaw reguł (ruleset), wymagany status, bramka | 7d |
+| fork, pull request do cudzego repozytorium, konflikt scalenia i jego znaczniki, przegląd wg kryteriów, trzy werdykty (biorę / poprawiam i biorę / nie biorę, bo) | 7e |
+| sekret, rotacja klucza, blokada wypychania (push protection), skanowanie sekretów, `dotnet user-secrets`, prompt injection, śmiertelna trójca | 7f |
 
 **Moduł 5's rows were added on 2026-09-02 (evening)** from the autonomous drafts under `content/moduly/05-pod-maska/`, all `publish: false`; three terms left 1a's row for their practical homes (5d, 5f). `scripts/check-content-style.mjs` still reports Delphi as 1a's story — its pattern predates the 5b home; update it with the 5b lesson's publication.
 
@@ -831,3 +903,20 @@ introduction and 1b's opening stop relying on it.
 *gałąź jako poligon*, *panel kontroli wersji* — and none of them is recorded
 here yet. Added when that module is next revised; until then a Moduł 3 lesson
 that needs one of those terms recalls it by link rather than re-explaining.
+
+**Moduł 7's rows were added on 2026-09-10** from the drafts under
+`content/moduly/07-testy-i-jakosc/`, all `publish: false`, written from
+`docs/content-research/research-07-testy-jakosc-przeglad.md`. The module has
+six lessons, not the five the course-structure table carried until that day
+(open decision #16). `scripts/check-content-style.mjs` was not touched: no
+Moduł 7 story is told outside its home.
+
+**One checker finding, for whoever next revises it.** The one-sentence-paragraph
+count is inflated by roughly **three per `<Cytat>`** — the opening tag line, the
+quotation body and the closing tag are each counted as a prose paragraph — plus
+two per `<CzytajDalej>`. An evidence-heavy lesson with five quotations reports
+about seventeen paragraphs it does not have. Moduł 7's genuine counts are 4–10,
+against a reference lesson (6h, no quotations) at 4; most of the remainder are
+one-line lead-ins to code blocks, which the guide already excuses for procedure
+and hands-on shapes. Until the checker skips block elements, read this metric
+net of the machinery.

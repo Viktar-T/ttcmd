@@ -2,14 +2,23 @@
 title: "Konstytucja projektu i reguły"
 order: 2
 summary: "Plik reguł mówi, jak pisać kod, a specyfikacja — co ma robić dana funkcja. Jest jeszcze trzeci rodzaj zdań: to, co ma zostać prawdą niezależnie od tego, co dopiszesz. Lekcja o krótkiej konstytucji projektu, o zapisywaniu decyzji razem z odrzuconymi możliwościami — i o repozytorium, którego pierwszy commit nie zawiera kodu."
-publish: false
+publish: true
 ---
 
 {/* Drafted 2026-09-02 from docs/content-briefs/04b-konstytucja-i-reguly.md,
     autonomous run — brief unapproved. The lesson creates a NEW repository
     notatnik-v2 (04-index brief, Decision 3); if Viktar prefers a branch in the
     old one, section „Pierwszy commit bez kodu” changes wording, not shape.
-    Assumes the katalog's AGENTS.md from Budowa 3 exists for most students. */}
+    Assumes the katalog's AGENTS.md from Budowa 3 exists for most students. 
+
+    Exercises rewritten 2026-09-10 on Viktar's request into the hand-in
+    shape of Moduł 2 and Moduł 3 — one Zadanie element, the finished repository
+    state, four conditions visible in the repository, and the closing form
+    sentence. The rule is docs/content-style.md, „The hand-in assignment”.
+    The recall exercise was dropped; the twelve sentences of „Dwanaście zdań”
+    and the Spec Kit principle of „Konstytucja na miarę” became conditions,
+    the twelve kept as a list inside the same Zadanie.
+*/}
 
 Otwórz `AGENTS.md` z katalogu — plik reguł, który powstał, kiedy te same zdania po raz
 trzeci szły do nowej rozmowy. Ma kilkanaście linijek i każda
@@ -210,19 +219,34 @@ i sposób, żeby dało się je sprawdzić — to następna lekcja.
 
 ## Ćwiczenia
 
-<Zadanie>
+<Zadanie title="Notatnik-v2: konstytucja i pierwsza decyzja">
 
-Z pamięci: trzy rodzaje zdań o projekcie i miejsce każdego z nich; cztery części
-zapisu decyzji. Do tego jedno zdanie o tym, dlaczego konstytucji nie wkleja się
-do pliku reguł.
+Załóż `notatnik-v2` — pusty folder, `git init`, pusty projekt na GitHubie — i
+doprowadź go do stanu, w którym są w nim dwa pliki i ani jednej linijki kodu:
+`konstytucja.md` i `decyzje/0001-format-pliku-notatek.md`. Żadnego
+`dotnet new`. Oba pliki są twoje, nie przepisane z lekcji. Blok „Pierwszy
+commit bez kodu” jest częścią tego zadania, a to repozytorium jest używane w
+każdej następnej lekcji modułu.
 
-</Zadanie>
+Warunki są cztery i wszystkie widać w repozytorium:
 
-<Zadanie title="Dwanaście zdań">
+- pierwszy commit zawiera oba pliki i **żadnego kodu**, z opisem
+  `konstytucja i pierwsza decyzja`;
+- `konstytucja.md` ma od pięciu do ośmiu punktów i każdy mówi, co ma zostać
+  prawdą niezależnie od tego, jaką funkcję dopiszesz. Punkt, który mówi, *jak*
+  ma być napisany kod albo *co* robi konkretna funkcja, jest w złym pliku i
+  idzie do poprawki, zanim zrobisz commit;
+- `decyzje/0001-format-pliku-notatek.md` ma cztery części — kontekst, decyzja,
+  odrzucone, skutki — i opisuje to, jak zapisywał **twój** notatnik z Budowy 2,
+  nie ten z lekcji. W *skutkach* stoi to, co ta decyzja utrudnia, nie tylko to,
+  co daje;
+- w `README.md` jest dwanaście zdań z listy poniżej rozsortowanych do czterech
+  miejsc — plik reguł, specyfikacja, konstytucja, zapis decyzji — a przy dwóch
+  dwuznacznych napisane, od czego zależy odpowiedź. Do tego jedna zasada z
+  szablonu konstytucji Spec Kit (link w źródłach, z datą odczytania) i jedno
+  zdanie, dlaczego dla notatnika byłaby bez sensu.
 
-Rozsortuj poniższe zdania do czterech miejsc: plik reguł, specyfikacja,
-konstytucja, zapis decyzji. Dwa z nich są celowo dwuznaczne — przy nich napisz,
-od czego zależy odpowiedź.
+Zdania do rozsortowania. Dwa z nich są celowo dwuznaczne:
 
 1. Metoda nie może być dłuższa niż dwadzieścia linii.
 2. Program nie wymaga połączenia z internetem.
@@ -237,29 +261,11 @@ od czego zależy odpowiedź.
 11. Program uruchamia się w mniej niż dwie sekundy.
 12. Zrezygnowaliśmy z wyszukiwania w tej wersji, bo wydłużyłoby tydzień o drugi.
 
-</Zadanie>
+Na koniec wypchnij wszystko.
 
-<Zadanie>
-
-Załóż `notatnik-v2` z `konstytucja.md` i `decyzje/0001-….md` — własnymi, nie
-przepisanymi z lekcji: konstytucja może mieć od pięciu do ośmiu punktów, decyzja
-o formacie ma odpowiadać temu, jak *twój* notatnik zapisywał w Budowie 2. Commit,
-push, żadnego `dotnet new`. To repozytorium jest używane w każdej następnej
-lekcji modułu.
-
-</Zadanie>
-
-<Zadanie title="Konstytucja na miarę">
-
-Szablon konstytucji z narzędzia wspomnianego w lekcji ma pięć zasad z przykładami
-— **Library-First** (każda funkcja zaczyna się jako osobna biblioteka),
-**CLI Interface** (każda biblioteka ma interfejs tekstowy), **Test-First**
-(najpierw testy, potem kod), **Integration Testing**, **Observability** — oraz
-część o ograniczeniach, o sposobie pracy i o tym, że konstytucja stoi ponad
-wszystkim innym. Wybierz jedną z tych zasad i napisz jedno zdanie, dlaczego dla
-notatnika byłaby bez sensu — chodzi o to, żeby zobaczyć, że konstytucja ma
-rozmiar projektu, nie szablonu. Sam szablon jest po angielsku, link w źródłach;
-zaglądanie do niego jest dla chętnych, nie warunkiem zadania.
+Kiedy repozytorium z aplikacją będzie umieszczone na GitHubie, wypełnij
+[formularz](https://docs.google.com/forms/d/e/1FAIpQLSc9Da0ossYyhSCMjnkMCqom2VQ9CYpB2L0Kvymb3yt_UYF6rw/viewform?usp=header),
+żeby nauczyciel sprawdził zadanie.
 
 </Zadanie>
 

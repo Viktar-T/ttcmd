@@ -1,0 +1,217 @@
+---
+title: "Budowa: tydzień drugi"
+order: 6
+summary: "Zostały kryteria, które pisałeś na końcu — te, których nie umiałeś sobie wyobrazić. Lekcja o trzech sygnałach, że myli się specyfikacja, a nie kod, o dwóch rzeczach, które musi umieć każda aplikacja w tej klasie, i o pierwszym „Rozbierz to” na własnym kodzie."
+publish: true
+---
+
+{/* Drafted 2026-09-10 from docs/content-briefs/05f-budowa-tydzien-drugi.md,
+    autonomous run — brief unapproved. Re-derived from the deleted „Wspólna
+    aplikacja” row 6d (course-structure-v2 v2.9).
+
+    Section 3 states the module's own rubric to the student: the two
+    capabilities are quoted from course-structure v2.9 („aplikacja pamięta coś
+    po zamknięciu”, „aplikacja przeżywa błąd, który użytkownik może
+    spowodować”). They are stated as checks and never as mechanisms — how
+    persistence and error handling are done is the next module's material
+    („zapis i błędy”, „stan poza kontrolkami”), and naming either here would
+    spend a home lesson's terms. One forward pointer by topic, no more.
+
+    Section 2's „worst thing a user could plausibly do” is deliberately
+    bounded: something a person could do by accident with the application open,
+    never anything touching another program or the system.
+
+    No application code, no framework, no named control. Intra-module
+    references are plain text. */}
+
+Przeczytaj kryteria, które jeszcze nie przechodzą. Prawie na pewno są to te,
+które pisałeś na końcu, kiedy specyfikacja była już długa i chciało się skończyć.
+To nie jest przypadek i nie jest to wina zmęczenia: kryteria, które umiałeś sobie
+wyobrazić, poszły pierwsze, bo od nich zacząłeś zadania.
+
+Zostało więc to, czego wyobrazić sobie nie umiałeś. Program już działa na tyle,
+że da się w nim coś zrobić, i właśnie dlatego zaczniesz teraz zauważać rzeczy,
+których tydzień temu nie było widać — że jedno kryterium da się przeczytać na dwa
+sposoby, a drugie jest spełnione i mimo to coś jest nie tak.
+
+Pytanie na ten tydzień ma dwie części: **co robisz, kiedy budowa udowodni, że
+twoja specyfikacja się myli — i skąd wiesz, że twój własny program jest za
+skomplikowany?**
+
+## Druga połowa to ta trudniejsza
+
+Zanim dotkniesz kodu, przeczytaj wszystkie kryteria, które zostały, jedno po
+drugim, i przy każdym odpowiedz na jedno pytanie: czy dziś nadal umiem wykonać
+to, co jest po słowie „Sprawdzenie”?
+
+Trzy odpowiedzi są możliwe i każda oznacza co innego. „Tak” — zostaje bez zmian i
+robisz je w kolejności z listy. „Nie, bo nie wiem, co miałbym zobaczyć” —
+kryterium jest do przepisania, dziś, zanim powstanie kod, który miałby je
+spełnić. „Nie, bo sprawdzenie wymaga rzeczy, której nie mam” — to najczęstszy
+przypadek i najczęściej dotyczy drugiej osoby albo danych, których nie ma skąd
+wziąć; kryterium wtedy albo maleje do czegoś, co sprawdzisz sam, albo przesuwa
+się do `pozniej.md`.
+
+Ta godzina czytania wygląda jak strata czasu i nią nie jest. Kryterium poprawione
+przed kodem kosztuje jedno zdanie; kryterium poprawione po kodzie kosztuje kod.
+
+## Kiedy myli się specyfikacja, a kiedy kod
+
+Reguła jest ci znana z notatnika — **specyfikację zmienia się przed kodem** — i
+całą jej trudnością jest rozpoznanie, że to właśnie ten przypadek. Trzy sygnały
+mówią, że problem jest w pliku, a nie w programie.
+
+**Kryterium da się przeczytać na dwa sposoby.** Piszesz sprawdzenie i zauważasz,
+że wynik zależy od tego, którą interpretację przyjmiesz. To nie jest błąd
+programu, choćby program zachowywał się „nie tak”: dopóki zdanie ma dwa
+znaczenia, żadne zachowanie nie jest ani zgodne, ani niezgodne z kryterium.
+
+**Sprawdzenia nie umie wykonać nikt poza tobą.** Jeśli w sprawdzeniu jest „widać,
+że jest dobrze”, to kryterium mierzy twoje zadowolenie. Poprawka polega na
+zapisaniu, co konkretnie robi człowiek i co dokładnie ma z tego wyjść.
+
+**Kryterium jest spełnione, a program jest zły.** Najciekawszy przypadek i wart
+zatrzymania. Wszystko przechodzi, a mimo to program robi coś, czego byś nie
+chciał — na przykład rzeczywiście pamięta dane, ale gubi je, kiedy zamkniesz go
+w trakcie pisania. To znaczy, że specyfikacja jest niepełna: brakuje w niej
+zdania, którego nie umiałeś napisać tydzień temu, bo nie miałeś czego dotknąć.
+Dopisujesz je teraz, jako nowe kryterium, z datą.
+
+W każdym z trzech przypadków ruch jest identyczny i ma kolejność, której nie
+wolno odwrócić: poprawiasz `spec.md`, robisz commit z opisem mówiącym, co się
+zmieniło, dopiero potem wracasz do kodu. Historia repozytorium ma pokazywać, że
+zdanie zmieniło się przed programem, bo tylko wtedy da się później zobaczyć, w
+którym miejscu twoje myślenie o programie było błędne.
+
+## Dwie rzeczy, które musi umieć każda z tych aplikacji
+
+W klasie powstaje kilkadziesiąt różnych programów i prawie nic ich nie łączy.
+Dwie rzeczy jednak muszą być prawdą u wszystkich, i to jest jedyne miejsce w tym
+module, w którym ktoś mówi ci, co ma robić twoja aplikacja.
+
+**Aplikacja pamięta coś po zamknięciu.** Cokolwiek to jest — jedna pozycja, jedna
+liczba, jedno ustawienie — po zamknięciu i ponownym otwarciu ma tam nadal być.
+Sprawdzenie: wpisujesz trzy rzeczy, zamykasz program tak, jak zamyka go
+użytkownik, otwierasz i liczysz. Powód, dla którego to jest wymagane: program,
+który niczego nie pamięta, nigdy nie zostanie otwarty drugi raz, a druga połowa
+miary z pierwszej lekcji mówiła właśnie o zwykłym wtorku.
+
+**Aplikacja przeżywa błąd, który użytkownik może spowodować.** Nie każdy możliwy
+błąd — ten, który człowiek zrobi przez pomyłkę, mając twój program otwarty:
+puste pole, dwa kliknięcia zamiast jednego, tekst tam, gdzie miała być liczba,
+zamknięcie w środku czynności. „Przeżywa” znaczy: nie znika z ekranu, nie traci
+tego, co już było zapisane, i mówi, co poszło nie tak. Sprawdzenie: robisz
+najgłupszą rzecz, jaka jest możliwa w twoim programie, i zapisujesz w dzienniku,
+co się stało.
+
+Zwróć uwagę, że żadne z tych dwóch zdań nie mówi, jak to zrobić. To nie jest
+przeoczenie — jak dokładnie zapisuje się dane, żeby przetrwały zamknięcie, i co
+robić z błędem, żeby program go przeżył, jest tematem następnego modułu, w
+którym rozbierzesz na części dokładnie tę aplikację. Dziś obchodzi cię wynik: ma
+być prawdą, że pamięta, i ma być prawdą, że przeżywa.
+
+## Rozbierz to, na własnym kodzie
+
+`Rozbierz to` robiłeś raz, w [lekcji o halucynacjach](/moduly/03-budujemy/halucynacje-i-weryfikacja),
+na cudzej budowie. Dziś robisz je na własnej — na diffie dwóch tygodni, czyli na
+wszystkim, co powstało od commitu ze specyfikacją.
+
+```bash
+git diff <commit-ze-specyfikacja>..HEAD
+```
+
+Różnica jest większa, niż wygląda. Przy cudzym kodzie zawsze zostaje wyjście
+awaryjne: można zapytać autora. Tutaj autorem jesteś ty i pytanie „co to robi”
+kierujesz do siebie sprzed tygodnia, a on nie odpowie. Dlatego pytanie brzmi
+inaczej niż zwykle: nie „czy to działa”, bo to już wiesz z kryteriów, tylko **czy
+zrozumiem to za miesiąc**.
+
+Trzy rzeczy warto wypisać, po jednym zdaniu.
+
+Miejsce, którego nie umiesz wytłumaczyć. Znajdź fragment, przy którym musiałbyś
+powiedzieć „tak to wyszło”. Nie musisz go dziś przepisywać; masz go zapisać w
+dzienniku wraz ze zdaniem, czego o nim nie wiesz.
+
+Rzecz zrobiona dwa razy. Jeśli ta sama czynność wygląda w dwóch miejscach
+inaczej, to zwykle znaczy, że powstały w dwóch różnych rozmowach i żadna nie
+wiedziała o drugiej. To jest najczęstszy ślad budowania z agentem i najłatwiejszy
+do zauważenia w diffie.
+
+Rzecz, o którą nikt nie prosił. Kod, który nie zamyka żadnego kryterium i nie był
+w żadnym zadaniu. Czasem jest przydatny; zawsze warto wiedzieć, że tam jest.
+
+Na koniec jedno zdanie werdyktu z „bo” — takie, jakie pisałeś o cudzej budowie.
+Tym razem dotyczy twojej: „ten kod jest w porządku, bo…” albo „ten kod jest za
+skomplikowany, bo…”. Zdanie bez „bo” nie liczy się w tym kursie od trzeciego
+modułu i nie zaczyna się liczyć dlatego, że dotyczy ciebie.
+
+## Zamknięcie listy
+
+Dwa tygodnie się kończą i warto wiedzieć, co znaczy „skończone”. Nie znaczy, że
+zrobiłeś wszystko, co chciałeś w poniedziałek pierwszego tygodnia — takiej
+aplikacji nie ma w tej klasie ani jednej.
+
+Skończone znaczy trzy rzeczy, każdą sprawdzalną. Po pierwsze: każde kryterium
+albo przechodzi z dowodem w dzienniku, albo jest przepisane z datą i jednym
+zdaniem, dlaczego brzmi teraz inaczej. Po drugie: `pozniej.md` zawiera to, co nie
+weszło, i nie jest to lista wstydu, tylko lista następnych rzeczy. Po trzecie:
+`tasks.md` zgadza się z rzeczywistością — odhaczone jest to, co zrobione, a przy
+nieodhaczonych stoi po jednym zdaniu, co jest zrobione i co zostaje.
+
+Ostatni commit tygodnia niech będzie właśnie o tym: `spec` i `tasks` doprowadzone
+do prawdy. To jest commit, który za miesiąc powie ci, w jakim stanie naprawdę
+zostawiłeś projekt.
+
+## Program, który jest twój
+
+Pytanie z początku miało dwie części i obie mają teraz odpowiedź. Kiedy budowa
+kłóci się ze specyfikacją, wygrywa ta ze zmian, która jest zapisana wcześniej — a
+zapisuje się specyfikację, nie kod. A o tym, czy program jest za skomplikowany,
+mówi nie liczba linijek, tylko to, ile z nich umiesz wytłumaczyć.
+
+- **Trzy sygnały, że myli się plik, nie program**: kryterium na dwa sposoby,
+  sprawdzenie tylko dla ciebie, kryterium spełnione przy złym zachowaniu.
+- **Kolejność jest nieodwracalna**: `spec.md`, commit, dopiero kod.
+- **Dwie rzeczy u wszystkich**: pamięta coś po zamknięciu, przeżywa błąd, który
+  użytkownik może spowodować. Obie sprawdzasz, żadnej dziś nie tłumaczymy.
+- **`Rozbierz to` na własnym diffie** odpowiada na inne pytanie niż na cudzym:
+  czy zrozumiem to za miesiąc.
+
+Masz program, którego pomysł był twój, którego kryteria napisałeś sam i którego
+historia mówi, kiedy zmieniłeś zdanie. Sprawdziła go dokładnie jedna osoba — ta,
+która napisała kryteria. Ostatnia lekcja tego modułu jest o tym, co się dzieje,
+kiedy sprawdzi go ktoś inny.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: trzy sygnały, że myli się specyfikacja, a nie kod — i kolejność
+trzech ruchów, kiedy któryś z nich wystąpi.
+
+</Zadanie>
+
+<Zadanie title="Dwie rzeczy u wszystkich">
+
+Sprawdź obie: wpisz trzy rzeczy, zamknij program tak, jak zamknąłby go
+użytkownik, otwórz i policz; potem zrób najgłupszą rzecz, jaka jest możliwa w
+twoim programie przy otwartym oknie. Zapisz w `dziennik.md`, co się stało w obu
+przypadkach — dosłownie, nie „w porządku”.
+
+</Zadanie>
+
+<Zadanie title="Domknięcie">
+
+Każde kryterium przechodzi z dowodem albo jest przepisane z datą i powodem.
+`pozniej.md` uzupełniony, `tasks.md` zgodny z rzeczywistością, ostatni commit
+tygodnia doprowadza oba pliki do prawdy. Wypchnięte.
+
+</Zadanie>
+
+<Zadanie title="Rozbierz własne dwa tygodnie">
+
+Na diffie od commitu ze specyfikacją: miejsce, którego nie umiesz wytłumaczyć;
+rzecz zrobiona dwa razy; rzecz, o którą nikt nie prosił. Po jednym zdaniu, a na
+koniec werdykt z „bo”.
+
+</Zadanie>

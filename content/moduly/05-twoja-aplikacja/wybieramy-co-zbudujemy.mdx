@@ -1,0 +1,286 @@
+---
+title: "Trzy pomysły, jeden wybór"
+order: 1
+summary: "Miarą jest ktoś prawdziwy, kto otworzy twój program — i ty się liczysz, jeśli otworzysz go w zwykły wtorek. Lekcja o tym, jak zapisać pomysł w czterech zdaniach, jak przeczytać cudze i jak z trzech zrobić jeden wybór, który stoi w pliku, a nie w pamięci."
+publish: true
+---
+
+{/* Rewritten 2026-09-10 from docs/content-briefs/05a-wybieramy-co-zbudujemy.md,
+    autonomous run — brief unapproved. Replaces the 4f draft of 2026-09-02,
+    whose sections „Ktoś prawdziwy” and „Pomysł zapisany jak specyfikacja” are
+    kept nearly as Viktar read them; the opening, the placement of the peer
+    round and everything from „Wybór” on are new.
+
+    RENAMED per open decision #17, answered by Viktar 2026-09-10:
+    `zbieramy-pomysly` → `wybieramy-co-zbudujemy`, „Zbieramy pomysły: co
+    zbudujemy” → „Trzy pomysły, jeden wybór”. The old URL stops working; the
+    stale copy still sitting at content/moduly/04-specyfikacja/zbieramy-pomysly.mdx
+    (publish: true, order: 6) is a duplicate of the pre-move draft and must be
+    deleted — this session cannot delete files on the device.
+
+    The floor (open decision #18, answered yes): the menu of four ready-made
+    ideas in „Jeśli po rundzie nadal nie masz pomysłu”. It is a menu of ideas,
+    not of tasks — the module's rule that no task may name a feature is
+    untouched by it.
+
+    No evidence claims, hence no Źródła (ADR-0008). The worked example is a
+    small, domestic idea that says nothing about any real person. pomysly.md may
+    live in a small notes repository or in notatnik-v2/docs/ — both offered. The
+    peer round and the pairing are classroom arrangements. Intra-module
+    references are plain text: a link to an unpublished lesson fails the build.
+    No pointer to Moduł 9 anywhere — open decision #15. */}
+
+Notatnik, który skończyłeś w zeszłym tygodniu, ma dokładnie jednego użytkownika
+i jest nim osoba, która go napisała. Na tydzień to wystarczyło: dało się napisać,
+dla kogo jest, i dało się sprawdzić, czy robi to, co miał.
+
+Od dziś przedmiot jest inny. Przez najbliższe tygodnie będziesz budować program,
+którego nikt ci nie zadał — a to znaczy, że nikt poza tobą nie powie, czy warto.
+Masz w `pomysly.md` trzy wpisy. Zanim skończy się ta lekcja, jeden z nich będzie
+miał w pliku napisane, że to ten.
+
+Pytanie na dziś ma dwie części: **jaki program warto zbudować — i po czym
+poznasz, że to właśnie ten z trzech?**
+
+## Ktoś prawdziwy
+
+Miara jest jedna i brzmi: **ktoś prawdziwy ma tego używać — i ty się liczysz.**
+Obie połowy tego zdania wymagają wyjaśnienia, bo żadna z twoich dotychczasowych
+aplikacji nie miała użytkownika, który nie byłby jej autorem, i nie ma skąd
+wziąć wyobrażenia, co to znaczy.
+
+Użytkownik to osoba, której skargę trzeba przyjąć. Jeśli program zgubi jej
+notatkę, ona przyjdzie i powie, że zgubił — a ty musisz coś z tym zrobić.
+Program, na który nikt się nie poskarży, bo nikt go nie otwiera, jest
+ćwiczeniem. Nie ma w tym nic złego: masz za sobą cztery ćwiczenia i każde czegoś
+nauczyło. Ale ćwiczenie nie potrzebuje specyfikacji, konstytucji ani dziennika,
+bo nikogo nie zawiedzie. Cały ten moduł ma sens dopiero wtedy, kiedy ktoś czeka
+na wynik.
+
+Druga połowa jest równie ważna. Ty się liczysz — pod jednym warunkiem: że
+program, o którym myślisz, naprawdę otworzysz za miesiąc, w zwykły wtorek,
+kiedy nikt nie każe. Notatnik, którego używasz codziennie, ma prawdziwego
+użytkownika. Notatnik, który otworzysz raz, żeby pokazać, że działa, nie ma
+żadnego. Różnica nie jest w programie, jest w tym, czy istnieje czynność, którą
+ten program zastępuje.
+
+## Pomysł zapisany jak specyfikacja
+
+Pomysł zapisuje się w czterech zdaniach, i to nie są przypadkowe cztery zdania —
+to skrót specyfikacji z [lekcji o pętli](/moduly/04-specyfikacja/petla-spec-plan-zadania),
+w rozmiarze, który da się ocenić bez budowania.
+
+1. **Co robi** — jedno zdanie, w którym pada czynność, jaką program zastępuje.
+2. **Kto go otworzy** — konkretny rodzaj osoby, nigdy „każdy”. „Ktoś z domu, kto
+   prowadzi treningi” jest odpowiedzią. „Ludzie, którzy trenują” nie jest.
+3. **Po czym poznam, że działa** — jedno zdanie w formie „Kiedy …, to …”, do
+   sprawdzenia bez zaglądania w kod.
+4. **Czego nie robi** — jedna rzecz, którą program mógłby robić, a celowo nie
+   będzie.
+
+Oto przykład, celowo mały i celowo domowy, żeby było widać kształt, a nie żeby
+ktoś go budował:
+
+```markdown title="pomysly.md — jeden wpis"
+## Lista zakupów z tego, co się kończy
+
+Co robi: pozwala odhaczyć w telefonie, że coś w kuchni się kończy, i w sobotę
+pokazuje z tego listę zakupów, żeby nie pisać jej od nowa w sklepie.
+Kto go otworzy: ja, w każdą sobotę przed wyjściem do sklepu; druga osoba
+z domu, kiedy zaznacza, że skończyło się mleko.
+Po czym poznam: kiedy w tygodniu zaznaczymy cztery rzeczy, to w sobotę lista
+ma cztery pozycje i nic więcej.
+Czego nie robi: nie liczy cen i nie przypomina — to robi kalendarz.
+```
+
+Czwarte zdanie jest tym, które utrzymuje pomysł w rozmiarze do zbudowania.
+Pomysł bez „czego nie robi” rośnie za każdym razem, kiedy o nim opowiadasz, a po
+miesiącu jest już programem na dwa lata. Miarą rozmiaru jest notatnik: jeśli
+specyfikacja pomysłu zajęłaby więcej niż jedną stronę, tak jak jego, pomysł jest
+na dwa programy, a ty wybierasz jeden.
+
+Jeśli twoje trzy wpisy nie mają jeszcze tego kształtu, zacznij od tego. Różne:
+jeden dla siebie, jeden dla kogoś, kogo znasz z imienia, jeden, który zastępuje
+coś, co robisz w szkole. Nie muszą być dobre. Muszą mieć cztery zdania i osobę
+w drugim.
+
+## Runda: cudze pomysły
+
+Zamień się plikiem z kimś z klasy. Przeczytaj trzy cudze wpisy i pod każdym
+dopisz jedno pytanie — takie, jakie zadałby użytkownik z drugiego zdania, nie
+programista. „A co, jeśli zaznaczę coś dwa razy?” jest pytaniem użytkownika.
+„W czym to zapiszesz?” nie jest.
+
+Potem zaznacz jeden z trzech: ten, po który sięgnąłbyś jako użytkownik. To nie
+jest ocena pomysłu i nie jest głosowanie — to jedna informacja więcej dla autora,
+kto poza nim widzi tam użytkownika. Autor zapisuje ją w pliku obok wpisu.
+
+Runda jest dziś przed wyborem, a nie po nim, i to jest zmiana warta zauważenia.
+Znak postawiony przez kogoś obcego jest jedyną informacją o twoim pomyśle, która
+nie pochodzi od ciebie — a za chwilę będziesz wybierać. Jeśli pod żadnym z
+trzech wpisów nikt nie postawił znaku, to też jest informacja, wcześniejsza i
+tańsza niż ta sama wiadomość po dwóch tygodniach budowania. Nie unieważnia
+wyboru: pokazuje, że drugie zdanie wpisu trzeba napisać jeszcze raz, konkretniej.
+
+## Wybór
+
+Teraz wybierasz. Nie za tydzień, kiedy będziesz wiedzieć więcej — bo tego, co
+rozstrzyga, i tak się nie dowiesz przy stole. Trzy pytania, w tej kolejności, i
+każde odrzuca coś innego.
+
+**Który z tych programów otworzysz w zwykły wtorek, kiedy nikt nie każe?** To
+pytanie o pierwszą połowę miary. Odpowiedź „każdy z nich, jakby był gotowy” nie
+jest odpowiedzią — wszystkie trzy będą gotowe, więc pytanie brzmi, przy którym z
+nich sam wyobrażasz sobie tę czynność.
+
+**Który z nich ma w drugim zdaniu osobę, którą znasz z imienia?** Nie musi to
+być ktoś inny niż ty. Musi to być ktoś, kogo możesz w piątek zapytać, czy to,
+co zbudowałeś, jest tym, o co chodziło. Pomysł, którego użytkownik jest
+kategorią ludzi, a nie osobą, nie ma kogo zapytać.
+
+**Który z nich umiesz powiedzieć na głos bez słowa „i jeszcze”?** Spróbuj —
+naprawdę, na głos, jednym zdaniem. Pomysł, który wymaga trzech dopowiedzeń, żeby
+był ciekawy, jest w rzeczywistości trzema pomysłami i przekonasz się o tym
+dopiero w środku drugiego tygodnia.
+
+Wybrany wpis zaznaczasz w pliku. Nie w głowie — w pliku, bo za dwa tygodnie
+będziesz chciał wiedzieć, co dokładnie wtedy postanowiłeś i czego wtedy nie
+wiedziałeś.
+
+```markdown title="pomysly.md — po wyborze"
+# WYBRANE
+
+## Lista zakupów z tego, co się kończy
+(cztery zdania bez zmian)
+Wybrane dnia: rrrr-mm-dd. Dlaczego to: jedyny, przy którym umiem sobie
+wyobrazić, że otwieram go w sobotę bez powodu z zadania.
+
+# W REZERWIE — po co tu są
+
+Jeśli wybrany pomysł upadnie na etapie specyfikacji albo przycinania, biorę
+jeden z tych i zaczynam od nowa. Po rozpoczęciu budowy nie zamieniam już nic.
+
+## (drugi wpis, bez zmian)
+## (trzeci wpis, bez zmian)
+```
+
+Dwa niewybrane pomysły zostają i mają jasno napisane, po co. To jest wyjście
+awaryjne i ma termin: **wolno z niego skorzystać, zanim napiszesz specyfikację
+— potem już nie.** Powód jest prozaiczny. Zamiana pomysłu w trzecim dniu budowy
+nie kosztuje pomysłu, kosztuje tygodnia, i nie ma z czego go oddać.
+
+Jedna rada na wypadek, który się zdarza: jeśli w któryś pomysł zdążysz się
+zakochać, dopisz mu piąte zdanie — **czego muszę się nauczyć, żeby to
+zbudować**. Nie po to, żeby go porzucić. Po to, żeby na koniec modułu porównać
+to zdanie z tym, czego naprawdę udało się nauczyć.
+
+## Jeśli po rundzie nadal nie masz pomysłu
+
+Zdarza się i nie jest to porażka — częściej znaczy, że w twoim tygodniu nie ma
+akurat żadnej powtarzalnej, nudnej czynności, którą dałoby się oddać programowi.
+Poniżej są cztery pomysły do wzięcia w całości, zapisane w tych samych czterech
+zdaniach, żeby żaden nie był lepiej przygotowany od twojego. Bierze się jeden i
+bierze się go razem ze zdaniem „czego nie robi” — bo to ono trzyma rozmiar.
+
+```markdown title="cztery pomysły do wzięcia"
+## Kto ma mój kabel
+Co robi: zapisuje, komu pożyczyłem rzecz i którego dnia, i pokazuje, co jest
+wciąż na zewnątrz.
+Kto go otworzy: osoba, która pożycza sprzęt i przestaje pamiętać, u kogo co jest.
+Po czym poznam: kiedy wpiszę trzy pożyczone rzeczy i zamknę program, to po
+ponownym otwarciu widać trzy i przy każdej datę.
+Czego nie robi: nie przypomina i nie wysyła żadnych wiadomości.
+
+## Czyja dziś kolej
+Co robi: pokazuje, kto z listy ma dziś zrobić powtarzalną czynność, i przesuwa
+kolejkę o jedno, kiedy ktoś ją odhaczy.
+Kto go otworzy: osoba, która dziś tę czynność wykonuje.
+Po czym poznam: kiedy odhaczę dzisiejszą kolej, to następnym razem program
+pokazuje kolejną osobę z listy, a nie tę samą.
+Czego nie robi: nie pilnuje terminów i nie liczy, kto ile razy się wymigał.
+
+## Ile mi to zajęło
+Co robi: mierzy czas jednej czynności — start, stop — i pokazuje sumę z
+ostatnich siedmiu dni.
+Kto go otworzy: ktoś, kto chce wiedzieć, ile naprawdę zajmuje rzecz, o której
+mówi „dwie godziny”.
+Po czym poznam: kiedy zmierzę trzy odcinki jednego dnia, to suma tygodnia rośnie
+dokładnie o ich sumę.
+Czego nie robi: nie rysuje wykresów i nie mierzy dwóch czynności naraz.
+
+## Lista przed wyjściem
+Co robi: trzyma stałą listę rzeczy do sprawdzenia przed powtarzalnym wyjściem i
+pozwala odhaczyć ją od nowa za każdym razem.
+Kto go otworzy: osoba, która co tydzień pakuje to samo i za każdym razem czegoś
+zapomina.
+Po czym poznam: kiedy odhaczę całą listę i zamknę program, to przy następnym
+otwarciu pozycje są te same, a odhaczenia wyczyszczone.
+Czego nie robi: nie trzyma wielu list naraz i nie udostępnia ich nikomu.
+```
+
+Pomysł wzięty z tej listy jest wart dokładnie tyle samo, co własny, i przechodzi
+te same bramki co każdy inny. Zmienia się jedno: skoro nie ty go wymyśliłeś,
+tym ważniejsze jest drugie zdanie — znajdź konkretną osobę, dla której ten
+program ma sens, i zapytaj ją, zanim zaczniesz.
+
+## Jeden wybrany, dwa w rezerwie
+
+Pytanie z początku brzmiało, jaki program warto zbudować i po czym poznać, że to
+ten z trzech. Odpowiedź nie jest listą cech pomysłu — jest trzema pytaniami,
+które zadaje się o siebie, i jednym plikiem, w którym stoi wynik.
+
+- **Miara jest jedna**: ktoś prawdziwy ma tego używać, a ty się liczysz, jeśli
+  otworzysz to w zwykły wtorek.
+- **Pomysł to cztery zdania**: co robi, kto otworzy, po czym poznam, czego nie
+  robi. Piąte — czego trzeba się nauczyć — dla pomysłów, w które się wierzy.
+- **Wybrane, jeszcze nie wycenione.** Wybór stoi w pliku z datą i powodem, dwa
+  pozostałe czekają w rezerwie do momentu, w którym zaczniesz pisać
+  specyfikację.
+
+Czego w tym pliku nie ma: żadnej informacji o tym, ile to jest pracy. Zdanie „w
+sobotę pokazuje listę zakupów” brzmi tak samo tanio, jak brzmiałoby „w sobotę
+zamawia zakupy w trzech sklepach i porównuje ceny”, a to są dwa różne miesiące.
+Następna lekcja jest o mierzeniu tej różnicy — i nikt nie zaczyna pisać
+specyfikacji z pomysłem, którego nie przymierzył.
+
+## Ćwiczenia
+
+<Zadanie>
+
+Z pamięci: cztery zdania, z których składa się zapis pomysłu, i miara, według
+której pomysł warto rozważać — w jednym zdaniu.
+
+</Zadanie>
+
+<Zadanie title="Trzy wpisy">
+
+Doprowadź `pomysly.md` do stanu, w którym są trzy pomysły po cztery zdania
+każdy. W drugim zdaniu każdego wpisu ma być konkretna osoba albo konkretny
+rodzaj osoby — jeśli napisało się „każdy”, wpis jest do poprawy.
+
+</Zadanie>
+
+<Zadanie title="Runda i wybór">
+
+Przeprowadź rundę: cudze trzy wpisy, jedno pytanie użytkownika pod każdym, jeden
+znak. Potem odpowiedz sobie na trzy pytania z tej lekcji i zaznacz wybór w
+`pomysly.md` — z datą i jednym zdaniem „dlaczego to”. Dwa pozostałe wpisy zostają
+pod nagłówkiem o rezerwie. Commit i push.
+
+</Zadanie>
+
+<Zadanie title="Czwarty pomysł, nie twój">
+
+Zapytaj jedną osobę spoza klasy, jaką drobną rzecz robi co tydzień ręcznie i
+chętnie oddałaby programowi. Zapisz to jako czwarty wpis, jej słowami w drugim
+zdaniu. Jeśli okaże się lepszy od wybranego — masz jeszcze prawo zmienić zdanie.
+
+</Zadanie>
+
+## Czytaj dalej
+
+<CzytajDalej>
+
+<Lektura kind="artykul" title="Getting Real — rozdział „What's Your Problem?”" url="https://basecamp.com/gettingreal/02.2-whats-your-problem">krótki rozdział z 2006 roku o budowaniu programu najpierw dla siebie — „you'll be the target audience and you'll know what's important and what's not”; najlepszy argument za drugą połową dzisiejszej miary, napisany przez ludzi, którzy tak zaczęli</Lektura>
+
+</CzytajDalej>

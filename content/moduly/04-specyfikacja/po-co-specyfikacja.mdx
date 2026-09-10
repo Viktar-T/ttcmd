@@ -2,7 +2,7 @@
 title: "Po co komu specyfikacja"
 order: 1
 summary: "Trzy aplikacje działają i w żadnym z trzech repozytoriów nie ma zdania o tym, co miało powstać. Lekcja o tym, co model robi z tym, czego nikt nie napisał, dlaczego najtrudniejsza część programowania została tam, gdzie była — i co dokładnie warto spisać, zanim powstanie kod."
-publish: false
+publish: true
 ---
 
 {/* Drafted 2026-09-02 from docs/content-briefs/04a-po-co-specyfikacja.md,
@@ -10,7 +10,17 @@ publish: false
     repositories from Budowa 1 hold no written description of the app beyond
     dziennik.md; if the class added one, soften „nie ma go nigdzie” to „nie ma
     tam zdania, które dałoby się sprawdzić”. Intra-module references are plain
-    text: a link to an unpublished lesson fails the build. */}
+    text: a link to an unpublished lesson fails the build. 
+
+    Exercises rewritten 2026-09-10 on Viktar's request into the hand-in
+    shape of Moduł 2 and Moduł 3 — one Zadanie element, the finished repository
+    state, four conditions visible in the repository, and the closing form
+    sentence. The rule is docs/content-style.md, „The hand-in assignment”.
+    The recall exercise was dropped; „Minutnik wstecz”, the commit-and-push
+    exercise and „Połowa specyfikacji na pokazie” became conditions, and the
+    reset-during-a-break question from „Najtrudniejsza część” became the
+    fourth.
+*/}
 
 Otwórz repozytorium minutnika — pierwszej z trzech aplikacji, tej z siedmioma
 zasadami podanymi agentowi w jednej wiadomości. Minęło kilka tygodni. Przejrzyj
@@ -239,37 +249,37 @@ się następna lekcja.
 
 ## Ćwiczenia
 
-<Zadanie>
-
-Z pamięci: trzy rzeczy, które daje specyfikacja — komu i co. Do tego po jednym
-zdaniu o tym, czym specyfikacja różni się od pliku reguł i czym od dziennika
-weryfikacji.
-
-</Zadanie>
-
 <Zadanie title="Minutnik wstecz">
 
-Napisz `docs/co-mial-robic.md` dla minutnika z uruchomionej aplikacji, bez
-zaglądania do lekcji: co robi, czego nie robi, pięć zdań „Kiedy …, to …”, do
-ustalenia. Dopiero potem porównaj z siedmioma zasadami i dopisz na końcu, ile
-udało się odtworzyć i co program robi w sytuacji, o której żadna zasada nie mówiła.
+Doprowadź repozytorium minutnika do stanu, w którym leży w nim
+`docs/co-mial-robic.md` — specyfikacja spisana po fakcie, z uruchomionej
+aplikacji, z czterema częściami: co robi, czego nie robi, pięć zdań
+„Kiedy …, to …”, do ustalenia. Blok „Co spisujesz dzisiaj” jest częścią tego
+zadania.
 
-</Zadanie>
+Warunki są cztery i wszystkie widać w repozytorium:
 
-<Zadanie>
+- plik powstaje w **dwóch commitach**: pierwszy z opisem napisanym z pamięci,
+  bez zaglądania do lekcji o minutniku, drugi z dopiskiem po porównaniu z
+  siedmioma zasadami — ile udało się odtworzyć i co program robi w sytuacji, o
+  której żadna z nich nie mówiła. Historia ma pokazywać tę kolejność, a nie
+  odwrotną;
+- w `dziennik.md` jedno zdanie: ile z pięciu zdań „Kiedy …, to …” dało się
+  sprawdzić od razu przez uruchomienie programu, a których nie i dlaczego;
+- w `README.md` jest rozbiór promptu z pokazu: przy każdej linii zaznaczone,
+  czy mówi *co* ma powstać, czy *jak* (jaki język, jaka biblioteka, gdzie
+  plik), czy *po czym poznać, że skończone* — plus trzy liczby, po jednej na
+  rodzaj, i jedno zdanie o tym, którego jest najmniej;
+- w `README.md` jest też twoja odpowiedź na pytanie, którego nie da się
+  sprawdzić uruchomieniem: co ma się stać z licznikiem cykli, kiedy naciśniesz
+  reset w środku przerwy. Sprawdź, co program robi dzisiaj, i zapisz, czyja to
+  decyzja — twoja czy modelu.
 
-Zrób commit z tym plikiem i wypchnij. W `dziennik.md` minutnika dopisz jedno
-zdanie: ile z pięciu zdań „Kiedy …, to …” udało się od razu sprawdzić przez
-uruchomienie programu i które nie.
+Na koniec wypchnij wszystko.
 
-</Zadanie>
-
-<Zadanie title="Połowa specyfikacji na pokazie">
-
-Otwórz prompt z pokazu w lekcji o agencie budującym aplikację. Przy każdej linii
-zaznacz: mówi *co* ma powstać, mówi *jak* (jaki język, jaka biblioteka, gdzie
-plik), czy mówi *po czym poznać, że skończone*. Policz każdy rodzaj i zapisz,
-którego jest najmniej.
+Kiedy repozytorium z aplikacją będzie umieszczone na GitHubie, wypełnij
+[formularz](https://docs.google.com/forms/d/e/1FAIpQLSc9Da0ossYyhSCMjnkMCqom2VQ9CYpB2L0Kvymb3yt_UYF6rw/viewform?usp=header),
+żeby nauczyciel sprawdził zadanie.
 
 </Zadanie>
 

@@ -1,0 +1,91 @@
+---
+title: "Testy, jakość i przegląd kodu"
+---
+
+{/* Drafted 2026-09-10 from docs/content-briefs/07-index.md. Semi-supervised
+    run: Viktar approved the module's shape on 2026-09-10 (six lessons, the
+    pull request as its own lesson, research written to a file first) and asked
+    for the module in full, so the seven briefs were NOT individually approved
+    before drafting. Read them as the record of what was decided.
+
+    THE CONTRADICTION THIS MODULE RESOLVES. course-structure-v2 §Moduł 7 says
+    „lessons 7a–7e as v1's 6a–6e” (v1's 6e = Bezpieczeństwo) and, two
+    paragraphs later, calls 7e „the peer-review lesson”. Both cannot be true.
+    Viktar answered open decision #16 on 2026-09-10: six lessons, the hour
+    taken from 7a–7d. Hours 3/5/3/3/4/2 = 20, module total unchanged. THIS MUST
+    BE WRITTEN BACK INTO course-structure-v2.md — the table there still lists
+    five lessons and #16 still reads „open”.
+
+    THE MODULE STAYS publish: false UNTIL TWO THINGS HAPPEN, both named in the
+    briefs' open questions:
+      1. The 7b command sequence is run once on a lab machine on SDK 10.0.4xx
+         and the real `dotnet test` failure output is pasted into the lesson.
+         NuGet was unreachable from the drafting container, so the NUnit
+         template was generated and inspected but never restored or run
+         (docs/content-research/research-07-testy-jakosc-przeglad.md §6).
+         The 7a/7b anchor — the round-trip defect — WAS built and run on SDK
+         10.0.112 and its output is real (§6.2).
+      2. 7e's pairing is decided. The zadanie needs a partner per student.
+
+    Facts: every number, quotation and version in this module comes from
+    docs/content-research/research-07-testy-jakosc-przeglad.md, written the
+    same day, with links and dates. Its §7 lists what was searched for and NOT
+    found — no claim from that list appears anywhere in these lessons.
+
+    Windows/Linux: the lessons name both, and assume neither (open decisions
+    #1 and #9). Accounts: 7c and 7d assume a GitHub account that can run
+    Actions — open decision #2, still unsettled. */}
+
+Twoja aplikacja działa. Sam napisałeś jej specyfikację, sam ją zbudowałeś
+pętlą z modułu o specyfikacji, a potem przez cztery tygodnie rozbierałeś ją
+własnymi rękami: wpisywałeś układ linijka po linijce, wyprowadzałeś stan z
+kontrolek, nadawałeś imię każdemu błędowi, który `catch (Exception)` chował.
+Umiesz przeczytać diff i powiedzieć, kto go wywołuje, gdzie jest w nim stan i
+co się stanie z plikiem.
+
+Wszystkie te sprawdzenia mają jedną wspólną cechę: **wymagają, żebyś tam był**.
+Czytałeś, bo usiadłeś i przeczytałeś. Zauważyłeś, bo patrzyłeś. To działało
+przez jedenaście tygodni, bo przez jedenaście tygodni patrzyłeś. Pytanie tego
+modułu brzmi: co sprawdzi twoją aplikację w środę, kiedy agent zmieni jeden
+plik, a ciebie przy tym nie będzie — albo kiedy wrócisz do niej za trzy
+tygodnie i nie będziesz już pamiętać, dlaczego ta linijka wygląda właśnie tak.
+
+Odpowiedź to cztery sprawdzenia, które działają bez ciebie, i jedno, które
+patrzy inaczej niż ty. Każde z nich pojawia się w tej samej kolejności: najpierw
+awaria, której nie da się wytłumaczyć, potem narzędzie, które ją łapie.
+
+Kolejność lekcji wynika z tego wprost. Pierwsza nie uczy niczego nowego —
+prosi, żebyś zepsuł własną aplikację danymi, których nigdy jej nie dałeś, i
+zobaczył, że coś, co działa od trzech tygodni, gubi twoje dane po cichu. Druga
+zamienia jedno zdanie z twojej specyfikacji w test: osobny projekt bez okna,
+`dotnet test`, czerwone przed zielonym — i płaci rachunek za szóstą lekcję
+poprzedniego modułu, bo testować da się tylko to, co wyprowadziłeś z
+kontrolek. Trzecia daje ten sam diff do przeczytania modelowi i porównuje trzy
+listy: twoją, jego, i to, co on wymyślił. Czwarta wyjmuje ciebie z obiegu —
+dziewięć linijek pliku sprawia, że testy uruchamiają się na cudzym komputerze
+przy każdym wypchnięciu, a jedno ustawienie zamienia czerwony znaczek w „nie
+da się scalić”. Piąta jest tą, której nie było w tym kursie nigdy: wysyłasz
+zmianę do repozytorium kolegi z klasy, czytasz jego zmianę u siebie i
+rozwiązujesz konflikt. Szósta rysuje granicę wokół wszystkiego, co przed
+chwilą włączyłeś: co naprawdę znaczy „publiczne repozytorium”, gdzie mieszka
+sekret, i dlaczego agent, który czyta cudzy tekst, trzyma w tym samym momencie
+twoje klucze.
+
+Bezpieczeństwo jest na końcu nie dlatego, że jest najmniej ważne, tylko
+dlatego, że dopiero teraz dotyczy ciebie naprawdę. Dziś masz publiczne
+repozytorium z miesiącami historii, agenta z prawem do uruchamiania poleceń,
+proces, który buduje twój kod na maszynie, której nie znasz, i cudzy kod na
+własnym dysku. Wcześniej byłaby to lekcja o cudzych kłopotach.
+
+Kilka rzeczy o tym, jak ten moduł jest prowadzony. Aplikacja jest **twoja
+własna**, a to znaczy, że w klasie jest ich sześćdziesiąt i żadne dwie nie mają
+wspólnej funkcji — więc żadne zadanie i żaden blok kodu nie nazywa tu funkcji
+aplikacji. Kod pokazany w lekcji ma **kształt**, który masz u siebie odnaleźć;
+lekcja mówi, czego szukać, nigdy w której linijce. Cztery lekcje z sześciu —
+druga, czwarta, piąta i szósta — kończą się zadaniem oddawanym nauczycielowi,
+a warunki widać w repozytorium na GitHubie. Liczby, wersje i ceny w tym module
+mają daty i linki, bo za pół roku będą inne; sprawdzanie ich jest w kilku
+miejscach osobnym warunkiem zadania. I jedna uczciwa uwaga na start: nic w tym
+module nie sprawi, że twoja aplikacja będzie poprawna. Sprawi, że kilka
+konkretnych rzeczy stanie się mniej prawdopodobnych — i że będziesz umiał
+powiedzieć, które to są.
