@@ -1,7 +1,11 @@
 import Link from "next/link";
-import { formatDateIso, formatDateList, type ContentDate } from "@/lib/dates";
+import { formatDateDayMonth, formatDateIso } from "@/lib/dates";
 import { GROUPS } from "@/lib/schedule-schema";
-import type { ScheduleSession, ScheduleTopic } from "@/lib/schedule";
+import type {
+  ScheduleGroupClass,
+  ScheduleSession,
+  ScheduleTopic,
+} from "@/lib/schedule";
 import styles from "./page.module.css";
 
 /**
@@ -27,12 +31,26 @@ import styles from "./page.module.css";
  * for their own column would scroll right rather than read down.
  */
 
-function Cell({ date }: { date: ContentDate | null | undefined }) {
+function Cell({ held }: { held: ScheduleGroupClass | undefined }) {
   /* Empty means the group has not got there yet, and that is its only meaning
-     (spec §5). No dash, no em dash, no question mark: a placeholder in a cell
+     (016 §5). No dash, no em dash, no question mark: a placeholder in a cell
      that means "not yet" reads as a value. */
-  if (!date) return null;
-  return <time dateTime={formatDateIso(date)}>{formatDateList(date)}</time>;
+  if (!held) return null;
+  /* `03.09-T1` — the day, the month, and the week THAT DATE fell in, resolved
+     in lib/schedule.ts against the calendar. Never the session's planned week:
+     that number is the same for every cell in a row and would say nothing about
+     the group (slice 020, decision 4).
+
+     The year is dropped from the visible text and kept on the element. The
+     table covers one school year and the calendar above it prints the year on
+     all seventeen rows, so ten characters of a narrow column would be spent
+     saying 2026 over and over — but `datetime` stays the full ISO date, so
+     nothing machine-readable is lost. */
+  return (
+    <time dateTime={formatDateIso(held.date)}>
+      {formatDateDayMonth(held.date)}-T{held.week}
+    </time>
+  );
 }
 
 function Topic({ topic }: { topic: ScheduleTopic }) {
@@ -84,7 +102,7 @@ export function ScheduleTable({ sessions }: { sessions: ScheduleSession[] }) {
             {GROUPS.map((group) => (
               <td key={group}>
                 <span className={styles.label}>{group}</span>
-                <Cell date={session.groups[group]} />
+                <Cell held={session.groups[group]} />
               </td>
             ))}
           </tr>

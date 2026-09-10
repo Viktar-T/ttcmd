@@ -162,17 +162,80 @@ export type ScheduleTopic =
   | { kind: "module"; label: string; title: string; href: string }
   | { kind: "text"; text: string };
 
+/**
+ * What a filled group cell holds.
+ *
+ * The week is the one **this date** falls in, looked up in the calendar. It is
+ * never `ScheduleSession.week`, which is what the session was *planned* for.
+ * The two differ exactly when a group is behind, and that is the fact the page
+ * exists to show: the seeded file has the two 4Tc groups doing session 1 —
+ * planned for week 1 — on 2026-09-08, so their cells read `T2` beside the 4Ta
+ * groups' `T1` (slice 020, decision 4).
+ *
+ * One object rather than two parallel maps, because a cell is one fact: with
+ * the pair together the renderer cannot print a date without its week, which is
+ * the invariant stated in the type instead of in a comment.
+ */
+export interface ScheduleGroupClass {
+  date: ContentDate;
+  week: number;
+}
+
 export interface ScheduleSession {
   number: number;
+  /**
+   * The week this session was PLANNED for, and nothing renders it since slice
+   * 020 dropped the column. It stays because it is what ties the calendar to
+   * the sessions, and because the build still refuses a session naming a week
+   * the calendar does not have.
+   *
+   * **Do not render it in a group cell.** Repointing a cell at this field
+   * builds, lints, and produces a row on which every group agrees — which is
+   * precisely the drift slice 020 exists to make visible, silently undone.
+   */
   week: number;
+  /** The date this session was PLANNED for. Unrendered since slice 020; its
+      parse is what keeps an impossible planned date failing the build. */
   date: ContentDate | null;
   topics: ScheduleTopic[];
-  groups: Partial<Record<Group, ContentDate>>;
+  groups: Partial<Record<Group, ScheduleGroupClass>>;
 }
 
 export interface Schedule {
   weeks: ScheduleWeek[];
   sessions: ScheduleSession[];
+}
+
+/**
+ * The calendar week a class date falls in, or null when the calendar has none.
+ *
+ * **Both bounds inclusive**, and that is load-bearing rather than a corner
+ * case: 4Ta-2 did session 2 on 2026-09-11, which is week 2's `end` exactly, so
+ * an exclusive upper bound would leave a seeded cell with no week.
+ *
+ * Compared as normalised ISO strings, the idiom this file already uses for the
+ * week-ordering check and for the same reason: `new Date("2026-09-07")` is UTC
+ * midnight, and a local-time comparison across a DST boundary is a bug that
+ * appears twice a year. Every value here is day-precision and zero-padded, so
+ * lexicographic order *is* chronological order.
+ *
+ * NO WIDENING AND NO NEAREST-WEEK. The weeks run Monday to Friday, so a
+ * Saturday falls in nothing, and so does a date in a school break or past the
+ * end of the calendar — the page lists only the weeks that were written,
+ * because the breaks are institutional facts this repo does not hold (Article
+ * V). Attributing a Saturday to the week before would print a confident `T1`
+ * over what is almost certainly a typo. All of those are refused below.
+ *
+ * A linear scan: seventeen weeks against at most four cells in a session. The
+ * ranges are intervals, not keys, and an index would be more code defending a
+ * cost nobody is paying.
+ */
+function weekOf(date: ContentDate, weeks: ScheduleWeek[]): number | null {
+  const iso = formatDateIso(date);
+  const found = weeks.find(
+    (week) => formatDateIso(week.start) <= iso && iso <= formatDateIso(week.end)
+  );
+  return found?.number ?? null;
 }
 
 async function resolveTopic(
@@ -312,11 +375,34 @@ const readSchedule = cache(async (): Promise<Schedule> => {
 
     /* Deliberately NOT checked against the row's week: a group two weeks
        behind the plan is not an error, it is the fact this page exists to
-       show (spec §5). */
-    const groups: Partial<Record<Group, ContentDate>> = {};
+       show (016 §5). Since slice 020 the cell PRINTS the week its own date
+       falls in, so that drift is now visible in the cell rather than inferable
+       by comparing dates across a row — and the date is still never compared
+       with `session.week`.
+
+       The lookup runs after `scheduleDate`, and the order matters: an
+       impossible date must keep giving the day-length message from
+       `lib/dates.ts` rather than "falls in no week". `weeks` is fully built and
+       the end-before-start refusal has already fired, so `weekOf` never sees an
+       inverted range. */
+    const groups: Partial<Record<Group, ScheduleGroupClass>> = {};
     for (const group of GROUPS) {
       const value = session.groups?.[group];
-      if (value !== undefined) groups[group] = scheduleDate(value, row, group);
+      if (value === undefined) continue;
+      const date = scheduleDate(value, row, group);
+      const week = weekOf(date, weeks);
+      if (week === null) {
+        fail(
+          row,
+          `${group} — "${value}" falls in no week the calendar has, so the ` +
+            `cell cannot say which week that class was in. Add the week ` +
+            `containing it to "weeks", or correct the date: the calendar runs ` +
+            `${formatDateIso(weeks[0].start)} to ` +
+            `${formatDateIso(weeks[weeks.length - 1].end)}, Monday to Friday, ` +
+            `and a weekend or a school break falls in none of it.`
+        );
+      }
+      groups[group] = { date, week };
     }
 
     sessions.push({

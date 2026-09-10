@@ -25,7 +25,7 @@ build in between.
   Additive: the three existing formatters and `parseContentDate` are untouched.
   **Check:** `npm run build`, `npm run lint`. Nothing calls it yet.
 
-- [ ] **T03 — A group cell carries the week its own date fell in.**
+- [x] **T03 — A group cell carries the week its own date fell in.**
   `lib/schedule.ts`: `ScheduleGroupClass`, `groups` retyped, `weekOf`, and the
   ninth refusal. `app/postep/schedule-table.tsx`: `Cell` rewritten to
   `03.09-T1` with the full ISO date still on the element.
