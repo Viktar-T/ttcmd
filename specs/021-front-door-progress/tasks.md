@@ -17,7 +17,7 @@ in `verification.md`. The order is `plan.md`'s.
   `app/styleguide/page.tsx`: the bordered-button specimen reads `Postęp grup`.
   **Check:** `git diff` of that file is one line.
 
-- [ ] **T03 — Nothing else moved.**
+- [x] **T03 — Nothing else moved.**
   No source change. The pre-slice versions of the two files are built back to
   back with the slice's on one content tree, and the prerendered pages compared
   with the per-build id normalised.
