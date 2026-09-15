@@ -25,7 +25,7 @@ saved bytes after a hash check, never with `git checkout`.
   the stylesheet differing only by the new rules; criterion 8 by the same
   comparison on every other page.
 
-- [ ] **T03 — The title renders, and the refusals refuse.**
+- [x] **T03 — The title renders, and the refusals refuse.**
   No source change. Temporary titles on the schedule, restored from saved bytes.
   **Check:** criteria 3, 4 and 5 from the rendered page; criterion 6, two build
   failures naming the session; criterion 7, no overflow at 320, 375 and 1280 px
