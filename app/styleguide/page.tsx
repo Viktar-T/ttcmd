@@ -879,7 +879,7 @@ export default async function StyleguidePage() {
           <span className={styles.specimenLabel}>bordered button</span>
           <p>
             <a className="button" href="#">
-              Zacznij kurs
+              Postęp grup
             </a>
           </p>
         </div>

@@ -13,7 +13,7 @@ in `verification.md`. The order is `plan.md`'s.
   **Check:** `npm run build`, `npm run lint`; criteria 2, 3 and 4 read from the
   prerendered home page.
 
-- [ ] **T02 — The reference page's specimen shows the label the site has.**
+- [x] **T02 — The reference page's specimen shows the label the site has.**
   `app/styleguide/page.tsx`: the bordered-button specimen reads `Postęp grup`.
   **Check:** `git diff` of that file is one line.
 
