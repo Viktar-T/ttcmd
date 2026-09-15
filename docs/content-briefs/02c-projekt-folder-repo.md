@@ -120,3 +120,20 @@ sentence supplied at draft review.
 - **The never-list recall points forward to 2d** for build folders, one clause,
   as the brief planned — and 2c is written so those folders are never actually
   committed, which is what makes 2d's `.gitignore` section honest.
+- **2026-09-15: the lesson works in the Zadanie 2.1 folder, not in a new
+  `pierwsze-okno`** — Viktar's decision. The anchor changes from an empty
+  folder growing into a project to the agent's app acquiring a history. 2b's
+  exercise already asked for that folder on GitHub, and after 0c was dropped
+  nothing taught how. `pierwsze-okno` is now created at the start of 2d. This
+  supersedes the entry above about build folders never being committed here.
+- **2026-09-15: `.gitignore` is owned here**, not in 2d — Viktar's decision —
+  and written before the first `git add`, because the agent's folder may
+  already hold `bin/`, `obj/` or `node_modules/`, which `git status` does not
+  list when they are nested inside a project subfolder. 2d recalls it. The
+  unstaging command is `git reset`, because `git restore --staged .` fails
+  before the first commit (tested locally on an unborn branch).
+- **2026-09-15: the Windows install and `git config --global` passage** covers
+  what 0c used to own, now that 0c is gone.
+- **No hand-in of its own.** The repository built here is the one Zadanie 2.1
+  hands in, and the lesson says so. A `<Zadanie>` here would renumber every
+  later exercise in the module.

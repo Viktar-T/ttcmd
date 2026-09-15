@@ -1,7 +1,7 @@
 ---
 title: "Projekt, folder, repozytorium, GitHub"
 order: 3
-summary: "Gdzie mieszka projekt, żeby ani ty, ani agent nie musieli zgadywać: jeden folder, repozytorium na GitHub."
+summary: "Folder z Zadania 2.1 staje się projektem: jedno miejsce, historia w Gicie bez plików z budowania i kopia na GitHubie — tak, żeby ani ty, ani agent nie musieli zgadywać."
 publish: true
 ---
 
@@ -20,15 +20,43 @@ publish: true
     student's projects live and survive between lessons is an institutional
     fact this repo does not own (Article V), so the lesson says it is settled
     in class and writes no path. Also assumes the v2 install list: .NET SDK 10
-    present, standard accounts, NuGet cache warmed. */}
+    present, standard accounts, NuGet cache warmed.
+    2026-09-15, on Viktar's request: the Windows path to Git (check, download,
+    install, `git config --global`) added after the Pro Git link he placed at
+    the top of „Git i GitHub”, because 0c („Git i GitHub”) was dropped from
+    Moduł 0 on 2026-09-15 and nothing else in the course installs or configures
+    Git any more. The two sentences that pointed at Moduł 0 went with it: the
+    first removed on his instruction, the second repointed at the new
+    `init.defaultBranch` line. Installer screen labels and defaults read from
+    git-for-windows/build-extra installer/install.iss; sources checked
+    2026-09-15.
+    2026-09-15, later, on Viktar's request and two decisions of his: the lesson
+    now works in the folder from Zadanie 2.1 (2b) instead of creating an empty
+    `pierwsze-okno`, which moved to the opening of 2d. `.gitignore` gets its home
+    here and is written before the first `git add`, because the agent's folder
+    may already hold build output that `git status` does not list when it is
+    nested. Unstaging was tested locally on an unborn branch: `git restore
+    --staged .` fails there, `git reset` works. Viktar had begun the change
+    himself (`cd twoja-aplikacja`, the split `git init`, the „Co to jest Git?”
+    heading, `winget` removed); this revision builds on that.
+    2026-09-15, on Viktar's request: a GitHub-account step at the top of
+    „Git i GitHub”, before the Git install, because most students have no
+    account yet and the section needs one three times — the private-email
+    setting, the empty repository and the push. Only what GitHub's own
+    account-creation page states is claimed; 2FA is recommended there, not
+    required, so the lesson does not mention it. */}
 
-Spróbuj czegoś, co zajmie minutę. Znajdź na dysku pliki, które twój agent
-stworzył podczas pierwszego eksperymentu (Zadanie 2.1), oraz kartę obserwacji w swoim
-repozytorium.
+Spróbuj czegoś, co zajmie minutę. Znajdź na dysku folder z Zadania 2.1:
+aplikację, którą zbudował twój agent, i kartę obserwacji
+`obserwacje/pierwszy-agent.md`.
 
-Zanim zaczniemy budować aplikacje, projekt musi mieć adres — jeden folder i
-repozytorium — oraz sprawdzony zestaw narzędzi, którymi się go buduje. Tym
-zajmujemy się dzisiaj.
+Zadanie kończyło się zdaniem, że jedno i drugie ma trafić do repozytorium na
+GitHubie, zanim wypełnisz formularz. Na razie to jednak tylko pliki: nie mają
+historii ani kopii poza tym komputerem, a to, czym się je buduje, nikt jeszcze
+nie sprawdził.
+
+Dziś ten sam folder stanie się projektem: z jednym adresem, z historią w Gicie i
+kopią na GitHubie, i ze sprawdzonym zestawem narzędzi, którymi się go buduje.
 
 ## Jeden folder, jeden projekt
 
@@ -42,21 +70,114 @@ więcej do przeczytania i pięć okazji, żeby zmienić nie ten plik, o który
 chodziło. Folder z jednym projektem daje dokładnie to, co potrzebne, i nic
 poza tym.
 
-Nazwa folderu ma trzy wymagania, wszystkie z tego samego powodu — nazwa folderu
-trafia potem do poleceń, do adresu repozytorium i do wielu miejsc, w których
-spacja albo ogonek sprawia kłopot:
+Nazwa folderu z Zadania 2.1 powstała według wzoru, który ma trzy wymagania,
+wszystkie z tego samego powodu — nazwa folderu trafia potem do poleceń, do
+adresu repozytorium i do wielu miejsc, w których spacja albo ogonek sprawia
+kłopot:
 
 - małe litery,
 - myślnik zamiast spacji,
 - bez polskich znaków.
 
-Projekt, który prowadzimy przez resztę tego modułu, nazywa się `pierwsze-okno`.
-Utwórz dla niego folder w umówionym miejscu — i na razie nic więcej.
+Sprawdź dwie rzeczy, zanim pójdziesz dalej. Po pierwsze nazwę: ma wyglądać tak
+jak w zadaniu, na przykład `2.1-stoper-4tc-1-viktar-t`. Po drugie miejsce:
+folder ma leżeć w umówionym miejscu na dysku. Jeśli leży gdzie indziej, przenieś
+go tam teraz, zanim powstanie w nim repozytorium.
 
 ## Git i GitHub: repozytorium od pierwszego dnia
 
-Folder już jest. Drugie zabezpieczenie — repozytorium — zakładamy, zanim
-powstanie pierwsza linijka kodu, i za chwilę będzie jasne dlaczego.
+Folder już jest i jest w nim kod. Brakuje drugiego zabezpieczenia —
+repozytorium — i za chwilę będzie jasne, dlaczego bez niego trudno pracować z
+agentem.
+
+Zanim cokolwiek zainstalujesz, **załóż konto na GitHubie** — w serwisie, w którym
+twoje repozytorium będzie miało kopię poza tym komputerem. W tej sekcji konto
+przyda się trzy razy: jeśli zechcesz ukryć prywatny adres e-mail w commitach,
+przy zakładaniu repozytorium na GitHubie i przy wysyłaniu do niego projektu.
+Jeśli konto już masz, przejdź od razu dalej.
+
+Konto zakłada się na stronie [github.com/signup](https://github.com/signup),
+odpowiadając na kolejne pytania formularza; na końcu GitHub poprosi o
+potwierdzenie adresu e-mail. Tak opisuje to
+[dokumentacja GitHuba o zakładaniu konta](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github).
+Nazwę użytkownika wybierz z namysłem, bo zobaczy ją każdy: stanie się częścią
+adresu każdego twojego repozytorium, tak jak `twoja-nazwa` w adresie
+`https://github.com/twoja-nazwa/…` dalej w tej lekcji.
+
+- [Pro Git: Installing Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+  — jeden rozdział o tym, jak zainstalować Gita na Linuksie, macOS i Windowsie.
+  Potrzebny wtedy, gdy chcesz pracować nad projektem także w domu.
+
+Ten rozdział opisuje instalację na trzech systemach naraz. Na Windowsie cała
+droga ma trzy kroki: sprawdzić, czy Git już jest, zainstalować go, jeśli go nie
+ma, i raz przedstawić się Gitowi. Zacznij od sprawdzenia — w terminalu wpisz:
+
+```bash
+git --version
+```
+
+Jeśli Git jest zainstalowany, odpowiedź wygląda mniej więcej tak — u ciebie
+numer może być inny:
+
+```text
+git version 2.51.1.windows.1
+```
+
+Wtedy przejdź od razu do konfiguracji niżej. Jeśli terminal odpowie, że nie zna
+polecenia `git`, pobierz instalator ze strony
+[Git – Install for Windows](https://git-scm.com/install/windows). Wybierz
+**Git for Windows/x64 Setup**; wersja **ARM64** jest tylko dla komputerów z
+procesorem ARM.
+
+Instalator zadaje po drodze sporo pytań. Prawie wszędzie zostaw to, co jest
+zaznaczone, i przechodź dalej — zmień tylko dwa ekrany:
+
+- **Choosing the default editor used by Git** — domyślnie zaznaczony jest
+  edytor działający w terminalu, z własnym zestawem skrótów. Wybierz edytor,
+  który znasz: **Use Notepad as Git's default editor** albo, jeśli masz VS Code,
+  **Use Visual Studio Code as Git's default editor**.
+- **Adjusting the name of the initial branch in new repositories** — zaznacz
+  **Override the default branch name for new repositories** i wpisz `main`.
+  Dalej w tej lekcji gałąź nazywa się właśnie tak.
+
+Po instalacji zamknij terminal, otwórz go na nowo i powtórz `git --version`.
+Dopiero ta odpowiedź jest dowodem, że instalacja się udała.
+
+Zostaje konfiguracja, potrzebna na każdym komputerze, także na takim, na którym
+Gita instalował ktoś inny. Każdy commit zapisuje, kto go zrobił — imię i
+nazwisko oraz adres e-mail — a jak pisze
+[Pro Git](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup),
+te dane zostają w commicie na stałe. Podaj je Gitowi raz:
+
+```bash
+git config --global user.name "Imię Nazwisko"
+git config --global user.email "twoj-adres@example.com"
+git config --global init.defaultBranch main
+```
+
+Opcja `--global` znaczy: dla wszystkich repozytoriów na tym koncie Windowsa. Git
+zapisuje te ustawienia w pliku `C:\Users\twoje-konto\.gitconfig`, więc nie trzeba
+ich powtarzać w każdym projekcie. Trzecia linijka robi to samo co ekran z nazwą
+gałęzi w instalatorze — a na komputerze, na którym Gita instalował ktoś inny,
+tylko ona ustawi `main`.
+
+Adres z `user.email` zobaczy każdy, kto obejrzy historię twojego repozytorium.
+Jeśli nie chcesz pokazywać prywatnego adresu, w ustawieniach konta GitHub, w
+części **Emails**, zaznacz **Keep my email addresses private**. GitHub da ci
+wtedy adres w postaci `ID+nazwa@users.noreply.github.com` i to jego wpisz w
+`user.email` — tak opisuje to
+[dokumentacja GitHuba o adresie w commitach](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address).
+Na koniec sprawdź, co Git zapamiętał:
+
+```bash
+git config --global --list
+```
+
+Wśród wypisanych wpisów mają być `user.name`, `user.email` i
+`init.defaultBranch=main` — a skoro Git wie już, kim jesteś, może zacząć
+zapisywać historię.
+
+### Co to jest Git?
 
 **Git** to program, który zapisuje stan projektu w momentach wybranych przez
 ciebie i potrafi pokazać różnicę między dowolnymi dwoma z nich. **GitHub** to
@@ -65,46 +186,91 @@ ich powszechnie z trzech powodów naraz: praca nie ginie razem ze stanowiskiem,
 do wersji, która działała, wraca się poleceniem zamiast odtwarzania z pamięci, a
 każdą zmianę można przeczytać, zanim się ją przyjmie.
 
-Trzeci z tych powodów sprowadził Gita akurat do tej lekcji. Od następnych zajęć
-spora część zmian w twoim projekcie nie będzie twoja — dopisze je agent. Bez
+Trzeci z tych powodów sprowadził Gita akurat do tej lekcji. Całą aplikację w
+twoim folderze napisał agent, a od następnych zajęć będzie dopisywał zmiany do
+projektów, które już działają. Bez
 historii pytanie „co on właściwie zmienił” jest pytaniem do pamięci; z historią
 jest pytaniem do jednego polecenia. Na tej różnicy stoi cały ten moduł.
 
-Same polecenia poznaje się w lekcji o Gicie z Modułu 0 i nie tłumaczy się ich
-tu od nowa — tu się ich używa. Repozytorium zaczyna się w folderze, który przed
-chwilą powstał:
+Repozytorium zakłada się w folderze z aplikacją. Wejdź do niego w terminalu —
+zamiast przykładowej nazwy wpisz nazwę swojego folderu z Zadania 2.1 — i załóż
+repozytorium:
 
 ```bash
-cd pierwsze-okno
+cd 2.1-stoper-4tc-1-viktar-t
 git init
 ```
 
 `git init` zakłada w folderze ukryty podfolder `.git` i to w nim od tej chwili
-mieszka cała historia. Folder jest już repozytorium — na razie pustym.
+mieszka cała historia. Folder jest już repozytorium, choć jeszcze bez ani jednego
+zapisu.
 
-Napisz `README.md`: jedno zdanie o tym, czym ten projekt będzie. To wystarczy na
-pierwszy punkt w historii:
+Zanim cokolwiek trafi do historii, trzeba ustalić, czego do niej nie brać.
+Budowanie i instalowanie bibliotek zostawia w folderze pliki, które powstają na
+nowo przy każdym uruchomieniu i których nikt nie pisał: w programie w C# to
+foldery `bin/` i `obj/`, a w aplikacji w przeglądarce, do której agent
+doinstalował biblioteki przez npm, folder `node_modules/` — tam według
+[dokumentacji npm](https://docs.npmjs.com/cli/v11/configuring-npm/folders)
+trafiają pobrane pakiety. Do repozytorium takie foldery nie wchodzą. Wypisuje się
+je w pliku **`.gitignore`** w głównym folderze repozytorium. Utwórz go w
+edytorze i wpisz:
+
+```text title=".gitignore"
+bin/
+obj/
+node_modules/
+```
+
+Ukośnik na końcu znaczy, że chodzi o folder, a wzór bez ukośnika na początku
+działa na każdym poziomie — także w podfolderze projektu, na przykład w
+`Stoper/bin/`, bo tam budowanie w C# kładzie swoje pliki. Tak opisuje to
+[dokumentacja `.gitignore`](https://git-scm.com/docs/gitignore). Wpis, który do
+twojej aplikacji nie pasuje, niczemu nie szkodzi.
+
+Kolejność ma znaczenie: `.gitignore` nie działa na pliki, które Git już śledzi,
+więc zakłada się go przed pierwszym `git add`, a nie po nim. Teraz weź do
+commita wszystko i sprawdź, co naprawdę zostało wzięte:
 
 ```bash
-git add README.md
-git commit -m "opisz projekt pierwsze-okno"
+git add .
+git status --short
+```
+
+Każdy wiersz z literą `A` to plik, który wejdzie do pierwszego zapisu: twoja
+aplikacja, `obserwacje/pierwszy-agent.md` i `.gitignore`. Jeśli na liście jest
+cokolwiek z `bin`, `obj` albo `node_modules`, dopisz brakujący folder do
+`.gitignore`, a potem cofnij wybór i weź pliki jeszcze raz:
+
+```bash
+git reset
+git add .
+```
+
+Ostrzeżenia w rodzaju `LF will be replaced by CRLF` dotyczą znaków końca linii
+i nie zatrzymują polecenia. Kiedy lista jest czysta, zapisz pierwszy punkt w
+historii:
+
+```bash
+git commit -m "dodaj aplikacje i karte obserwacji z zadania 2.1"
 ```
 
 Teraz kopia poza tym komputerem. Na GitHubie załóż **puste** repozytorium o tej
-samej nazwie — `pierwsze-okno` — bez README, bez `.gitignore` i bez licencji;
+samej nazwie co folder — na przykład `2.1-stoper-4tc-1-viktar-t` — bez README,
+bez `.gitignore` i bez licencji;
 odznacz wszystko, co GitHub proponuje dołożyć, bo inaczej pierwsze wysłanie
 zostanie odrzucone jako niezgodne z tym, co masz u siebie. GitHub pokaże adres
 repozytorium; wklej go poniżej w miejsce przykładowego:
 
 ```bash
-git remote add origin https://github.com/twoja-nazwa/pierwsze-okno.git
+git remote add origin https://github.com/twoja-nazwa/2.1-stoper-4tc-1-viktar-t.git
 git push -u origin main
 ```
 
 `remote add` zapisuje, dokąd ma trafiać `push`, a `origin` to przyjęta nazwa
 tego jednego adresu. Opcja `-u` przy pierwszym wysłaniu wiąże twoją gałąź z
 gałęzią na GitHubie, więc od następnego razu wystarczy samo `git push`. Gałąź
-nazywa się `main`, bo tak ustawiła ją jednorazowa konfiguracja Gita z Modułu 0.
+nazywa się `main`, bo tak ustawiło ją `init.defaultBranch` z konfiguracji na
+początku tej sekcji.
 
 Sprawdź wynik tak, jak w tym module sprawdza się wszystko — nie założeniem,
 tylko poleceniem:
@@ -114,11 +280,18 @@ git status
 ```
 
 `nothing to commit, working tree clean` znaczy, że u ciebie nie ma nic
-niezapisanego. Odśwież teraz stronę repozytorium na GitHubie: `README.md` ma tam
-być widoczny. Dwa dowody z dwóch różnych miejsc — i dopiero razem znaczą, że
-kopia naprawdę istnieje.
+niezapisanego. Odśwież teraz stronę repozytorium na GitHubie: mają tam być
+aplikacja, folder `obserwacje` i plik `.gitignore`, a nie ma być `bin`, `obj`
+ani `node_modules`. Dwa dowody z dwóch różnych miejsc — i dopiero razem znaczą,
+że kopia naprawdę istnieje.
 
-Git jest większy niż te sześć poleceń i w pewnym momencie zaczniesz po niego
+To jest repozytorium, o które prosiło *Zadanie 2.1* w lekcji
+[Teraz ty: twój pierwszy agent](/moduly/02-warsztat/teraz-ty-pierwszy-agent).
+Dopiero teraz wypełnij formularz z tamtego zadania.
+
+### Węcej o Git
+
+Git jest większy niż polecenia z tej lekcji i w pewnym momencie zaczniesz po niego
 sięgać szerzej. Poniżej są cztery miejsca, w których tłumaczy się sam lepiej,
 niż zrobiłaby to jedna sekcja. Zajrzyj do każdego na pięć minut i zdecyduj,
 które jest twoje — to nie jest lista do przeczytania w całości dzisiaj:
@@ -186,7 +359,9 @@ zainstaluj SDK samodzielnie — instalatory dla Windowsa, macOS i Linuksa leżą
 Po instalacji zamknij terminal, otwórz go na nowo i powtórz polecenie: dopiero
 jego wynik jest dowodem, że się udało.
 
-Wynik wklej do `README.md`, pod opis. Za trzy tygodnie, kiedy coś przestanie się
+Wynik wklej do pliku `README.md` w głównym folderze projektu; jeśli agent go nie
+założył, utwórz go i zacznij od jednego zdania, co to za aplikacja. Za trzy
+tygodnie, kiedy coś przestanie się
 budować, pierwsze pytanie brzmi „a co ja tu właściwie mam zainstalowane” — i ta
 jedna linijka na nie odpowie. Zapisz ją w historii:
 
@@ -196,17 +371,17 @@ git commit -m "zapisz wersje SDK na stanowisku"
 git push
 ```
 
-## Pusty, ale prawdziwy
+## Ten sam folder, teraz projekt
 
-W folderze, który masz teraz, nie ma ani jednej linijki kodu aplikacji. Jest za
-to wszystko, czego brakowało przy pierwszym eksperymencie: adres, pod którym
-projekt leży i pod którym zostanie; historia, zaczęta zanim było co
-kontrolować; kopia poza tym komputerem; i sprawdzona — nie założona —
-odpowiedź na pytanie, czy jest tu czym budować.
+W folderze jest to samo, co zostało po Zadaniu 2.1: aplikacja agenta i karta
+obserwacji. Przybyło wszystko, czego tam brakowało: adres, pod którym projekt
+leży i pod którym zostanie; historia z pierwszym zapisem; `.gitignore`, który
+trzyma z dala od niej pliki z budowania; kopia poza tym komputerem; i
+sprawdzona — nie założona — odpowiedź na pytanie, czy jest tu czym budować.
 
 - **Nowy projekt zaczynaj od folderu i repozytorium**, nie od pierwszego pliku.
-  Odwrotna kolejność kosztuje pół godziny przenoszenia w tygodniu, w którym
-  akurat się spieszysz.
+  Dziś repozytorium powstało w folderze, w którym kod już był, i najpierw
+  trzeba było ustalić, czego do historii nie brać.
 - **Edytor otwieraj na folderze projektu**, nie na pulpicie i nie na całym
   dysku. To, co widzisz w drzewku plików, widzi też agent.
 - **Każde „powinno działać” zamieniaj na polecenie.** To najtańsza rzecz w całym
@@ -214,7 +389,8 @@ odpowiedź na pytanie, czy jest tu czym budować.
 - **Wynik sprawdzenia zapisuj tam, gdzie się go potem szuka.** README twojego
   projektu jest takim miejscem; własna pamięć nie jest.
 
-W następnej lekcji folder przestaje być pusty. Stanie w nim okno, postawione
+W następnej lekcji zaczniesz nowy projekt, `pierwsze-okno`, i tym razem od razu
+we właściwej kolejności: folder, repozytorium, a dopiero potem okno, postawione
 przez gotowy wzór projektu, bez udziału AI — i zmienisz je własną ręką, plik po
 pliku. Agent dostanie do zmieniania osobne, drugie repozytorium, żeby dało się
 zobaczyć różnicę między jednym a drugim.
@@ -230,6 +406,22 @@ zobaczyć różnicę między jednym a drugim.
 <Zrodlo title="How to check that .NET is already installed" publisher="Microsoft Learn" date="2026" url="https://learn.microsoft.com/dotnet/core/install/how-to-detect-installed-versions">stąd postać wyniku polecenia, wraz z przykładową ścieżką; strona dokumentacji bez własnej daty</Zrodlo>
 
 <Zrodlo title="Download .NET 10.0" publisher="Microsoft" date="2026" url="https://dotnet.microsoft.com/download/dotnet/10.0">instalatory SDK dla Windowsa (x64, x86, Arm64), macOS i Linuksa; strona bez własnej daty publikacji</Zrodlo>
+
+<Zrodlo title="Git – Install for Windows" publisher="git-scm.com" date="2026" url="https://git-scm.com/install/windows">instalatory Git for Windows x64 i ARM64 (w dniu sprawdzenia wersja 2.55.0(5)); strona bez własnej daty, sprawdzona 15.09.2026</Zrodlo>
+
+<Zrodlo title="installer/install.iss" publisher="Git for Windows" date="2026" url="https://github.com/git-for-windows/build-extra/blob/main/installer/install.iss">skrypt instalatora: tytuły ekranów i ich opcje domyślne — edytor Vim na ekranie „Choosing the default editor used by Git”, „Let Git decide” na ekranie nazwy gałęzi, z opcją „Override the default branch name for new repositories”; sprawdzony 15.09.2026</Zrodlo>
+
+<Zrodlo title="First-Time Git Setup" publisher="Scott Chacon, Ben Straub — Pro Git" date="2014" url="https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup">`git config --global user.name` i `user.email`, dane „immutably baked into the commits”, plik `C:\Users\$USER\.gitconfig` na Windowsie, `init.defaultBranch main` od Gita 2.28; wydanie drugie, sprawdzone 15.09.2026</Zrodlo>
+
+<Zrodlo title="Setting your commit email address" publisher="GitHub Docs" date="2026" url="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address">ustawienie „Keep my email addresses private” w części Emails ustawień konta i polecenie `git config --global user.email`; strona bez własnej daty, sprawdzona 15.09.2026</Zrodlo>
+
+<Zrodlo title="Email addresses reference" publisher="GitHub Docs" date="2026" url="https://docs.github.com/en/account-and-profile/reference/email-addresses-reference">postać adresu bez odpowiedzi: `ID+USERNAME@users.noreply.github.com` dla kont po 18.07.2017; strona bez własnej daty, sprawdzona 15.09.2026</Zrodlo>
+
+<Zrodlo title="gitignore — Specifies intentionally untracked files to ignore" publisher="git-scm.com" date="2026" url="https://git-scm.com/docs/gitignore">ukośnik na końcu wzoru dopasowuje tylko foldery; wzór pasuje na każdym poziomie poniżej pliku `.gitignore`; pliki już śledzone przez Gita nie są nim objęte; strona bez własnej daty, sprawdzona 15.09.2026</Zrodlo>
+
+<Zrodlo title="Folders" publisher="npm Docs" date="2026" url="https://docs.npmjs.com/cli/v11/configuring-npm/folders">instalacja lokalna umieszcza pakiety w `./node_modules` głównego folderu projektu; strona bez własnej daty, sprawdzona 15.09.2026</Zrodlo>
+
+<Zrodlo title="Creating an account on GitHub" publisher="GitHub Docs" date="2026" url="https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github">zakładanie konta na github.com/signup według kolejnych pytań formularza i potwierdzenie adresu e-mail na końcu; weryfikacja dwuetapowa zalecana, nie wymagana; strona bez własnej daty, sprawdzona 15.09.2026</Zrodlo>
 
 </Zrodla>
 

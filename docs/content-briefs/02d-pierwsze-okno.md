@@ -133,3 +133,9 @@ unless Viktar overturns it at approval.
   (Windows, macOS, desktop Linux — docs, 20.04.2026), phrased as „the commands
   in this lesson work in the lab and on what you have at home”, which is the
   form of that argument this reader can check.
+- **2026-09-15: the lesson creates `pierwsze-okno` itself** — Viktar's
+  decision, following 2c's move onto the Zadanie 2.1 folder. The opening runs
+  `mkdir`, `cd` and `git init`; right after the template commit the lesson
+  links the empty GitHub repository with `git remote add` and `git push -u`,
+  which the later plain `git push` depends on. `.gitignore` is a recall of 2c
+  rather than a pointer to the dropped Moduł 0 lesson.

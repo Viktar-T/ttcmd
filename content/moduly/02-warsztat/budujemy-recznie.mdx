@@ -28,10 +28,27 @@ publish: true
     every section changes files and commands; the arc survives. Also assumes
     per-user traps 2–3 handled: Avalonia templates installed and the NuGet
     cache warmed, or „Szablon, nie magia” becomes thirty simultaneous
-    downloads. */}
+    downloads.
+    2026-09-15, on Viktar's decision: 2c now works in the Zadanie 2.1 folder,
+    so this lesson creates `pierwsze-okno` itself — `mkdir` and `git init` in
+    the opening, `git remote add` and `git push -u` right after the template
+    commit, which the later plain `git push` depends on — and `.gitignore` is a
+    recall of 2c instead of a pointer to the dropped Moduł 0 lesson. */}
 
-Folder `pierwsze-okno` jest pusty: README, zapisana wersja SDK, dwa commity i
-nic więcej. Dziś stanie w nim okno.
+Folder z Zadania 2.1 jest już projektem z historią i kopią na GitHubie, ale
+repozytorium dostał dopiero wtedy, kiedy kod w nim był. Dziś zaczynasz nowy
+projekt i robisz to od razu we właściwej kolejności. W terminalu wejdź do
+umówionego miejsca na dysku — tego samego, w którym leży folder z Zadania 2.1 —
+i załóż folder oraz repozytorium, zanim powstanie w nim pierwszy plik:
+
+```bash
+mkdir pierwsze-okno
+cd pierwsze-okno
+git init
+```
+
+Folder `pierwsze-okno` jest pusty, ale repozytorium już w nim jest. Dziś stanie
+w nim okno.
 
 Podczas pierwszego eksperymentu okno pojawiło się z niczego. Agent robił
 wszystko, a twoim zadaniem było notować, więc nie było jak rozdzielić, która
@@ -103,9 +120,17 @@ git add .
 git commit -m "utworz projekt okna z szablonu Avalonia"
 ```
 
-Nie ma tu `git init` i nie jest to przeoczenie: repozytorium już istnieje,
-powstało w poprzedniej lekcji razem z folderem. `git init` wykonuje się raz na
-projekt — i wróci przy następnym projekcie.
+To pierwszy zapis w tym repozytorium, więc teraz jest co wysłać. Załóż na
+GitHubie **puste** repozytorium `pierwsze-okno` — tak samo jak w poprzedniej
+lekcji, bez README, bez `.gitignore` i bez licencji — i połącz jedno z drugim:
+
+```bash
+git remote add origin https://github.com/twoja-nazwa/pierwsze-okno.git
+git push -u origin main
+```
+
+`git init` wykonał się na początku lekcji i w tym projekcie drugi raz nie jest
+potrzebny: wykonuje się raz na projekt.
 
 Teraz uruchom:
 
@@ -125,8 +150,9 @@ Zamknij okno i wpisz `git status` jeszcze raz. Nie jest już pusty: przybyły
 foldery `bin` i `obj`, których nie tworzył ani szablon, ani ty. To wynik
 budowania — powstaje na nowo przy każdym uruchomieniu, więc do repozytorium
 nie wchodzi. Załóż w `pierwsze-okno`, czyli w korzeniu repozytorium, plik
-`.gitignore` i wpisz do niego `bin/` i `obj/`, tak jak mówiła lekcja o Gicie z
-Modułu 0. Potem zrób commit — to drugi commit dzisiejszego dnia.
+`.gitignore` i wpisz do niego `bin/` i `obj/` — tak samo jak w folderze z
+Zadania 2.1 w poprzedniej lekcji. Potem zrób commit — to drugi commit
+dzisiejszego dnia.
 
 ## Pliki, które są oknem
 

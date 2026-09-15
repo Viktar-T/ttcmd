@@ -860,7 +860,7 @@ introduction and 1b's opening stop relying on it.
 
 | Term | Home |
 | --- | --- |
-| Git, repozytorium, commit, gałąź (branch), pull request, `.gitignore`, `clone`, `pull`, `push` | 0c |
+| Git, GitHub, repozytorium, commit, gałąź `main`, `git init`, `git status`, `.gitignore`, `remote` / `origin`, `push`, `git config --global` — 0c was dropped on 2026-09-15; pull request, `clone` and `pull` have no home until a lesson needs them | 2c |
 | framework, RAD, XAML / język znaczników, deklaratywnie, SDK, sklep jako bramka — and, until 2026-09-02, *pętla zdarzeń, wiązanie danych, MVVM*, now homed in 5d and 5f (1a is outside the pipeline) | 1a |
 | podpowiedzi kodu, autouzupełnianie, IDE, czat w IDE, next edit, agent, pętla agenta, orkiestracja, podagent, MCP, jednostka pracy, refaktoryzacja | 1b |
 | randomizowane badanie z grupą kontrolną, open source, junior i senior, boilerplate, debugowanie, CRUD, mediana, punkt procentowy | 1c |
