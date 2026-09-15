@@ -73,7 +73,9 @@ render exactly as before.
 1. `npm run build` succeeds, lists `/postep` as a static route, and
    `npm run lint` is clean.
 2. **A schedule with no titles renders `/postep` byte-identically to before this
-   slice**, once the per-build id is normalised. The field is additive.
+   slice**, once the per-build id **and the name of the shared stylesheet** are
+   normalised, and the stylesheet itself differs from before only by the rules
+   this slice adds. The field is additive.
 3. **With a title set on a session**, the rendered page shows, inside that
    session's topics row and before its first topic, exactly the session number, a
    full stop, a space and the title text — `2. Budowa pierwszej aplikacji
@@ -87,7 +89,15 @@ render exactly as before.
    refuses an empty title, each with a message naming the session.
 7. No document scrolls sideways on `/postep` at 320, 375 and 1280 px with the
    longest of Viktar's three titles set.
-8. Every page other than `/postep` is byte-identical before and after this slice.
+8. Every page other than `/postep` is byte-identical before and after this slice,
+   with the build id and the shared stylesheet's name normalised as in
+   criterion 2.
+
+*Criteria 2 and 8 amended 2026-09-15, after the plan and before any code.* As
+first written they allowed only the build id to differ. The plan found that
+every page links one shared stylesheet named by a hash of its contents, so any
+rule this slice adds renames it everywhere, and the criteria could not have
+passed for a reason unrelated to what they are checking.
 9. No dependency, token, colour or client-side behaviour is added.
 10. **Human eye, and therefore left unchecked by the run that builds it:** whether
     the title reads as the heading of its topics on a projector.
