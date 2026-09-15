@@ -76,6 +76,14 @@ const sessionSchema = z.strictObject({
   /** Absent is the point: a session whose date is not yet fixed says nothing
       rather than guessing (spec §3, Article V). */
   date: z.string().min(1).optional(),
+  /** The name of the class as it is entered in the school's plan, written
+      without its number — the page adds the session's own (slice 022).
+      `/\S/` rather than `.min(1)`, because a title of spaces passes `min(1)`
+      and would render as a bare "2.". It normalises nothing: an accepted title
+      is stored exactly as written. A title that begins with its own number is
+      refused one layer up, in lib/schedule.ts, where the session's number is
+      known. */
+  title: z.string().regex(/\S/).optional(),
   /** At least one. A session with no topic occupies a line and tells the
       reader nothing, and is indistinguishable from a half-finished edit; a
       subject that is genuinely undecided says so in `text`. */

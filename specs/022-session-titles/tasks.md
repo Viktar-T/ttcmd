@@ -9,7 +9,7 @@ saved bytes after a hash check, never with `git checkout`.
 
 ---
 
-- [ ] **T01 — A session may carry a title, and the build knows its rules.**
+- [x] **T01 — A session may carry a title, and the build knows its rules.**
   `lib/schedule-schema.ts`: the optional `title`, refusing a title with no
   visible character. `lib/schedule.ts`: `ScheduleSession.title`, the refusal of
   a title that begins with its own number, the empty-title sentence, and the two

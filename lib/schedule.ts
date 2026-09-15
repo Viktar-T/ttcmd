@@ -78,12 +78,45 @@ function scheduleDate(value: string, row: string, field: string): ContentDate {
 }
 
 /**
+ * A session's title, verbatim, or null when it has none (slice 022).
+ *
+ * The schema has already refused a title with no visible character. What is
+ * refused here is a title that carries its own number: the page puts the
+ * session's number in front of every title, so "1. Jak dziś…" would render as
+ * "1. 1. Jak dziś…". It lives here and not in a Zod refinement because the
+ * sentence has to show that collision, and only this layer knows the session's
+ * number. Leading spaces are allowed for — " 1. Jak…" collides just the same.
+ *
+ * The suggested fix strips the number in the MESSAGE only. Nothing is ever
+ * stripped from stored data: if the typed number disagrees with the session,
+ * the reader should see the disagreement rather than have it quietly removed.
+ */
+function sessionTitle(
+  value: string | undefined,
+  number: number,
+  row: string
+): string | null {
+  if (value === undefined) return null;
+  if (/^\s*\d+\./.test(value)) {
+    fail(
+      row,
+      `title — "${value}" begins with a number and a full stop. The page ` +
+        `puts the session's number in front of every title automatically, ` +
+        `and would show "${number}. ${value}" on this row. Write the title ` +
+        `without the number, as "title": "${value.replace(/^\s*\d+\.\s*/, "")}"`
+    );
+  }
+  return value;
+}
+
+/**
  * Zod's own message, replaced by a written one.
  *
- * Two shapes are worth naming, because they are the two a person actually
- * types wrong: an unknown group code, and a topic that is none of the three
- * things a topic may be. Everything else falls through to Zod's text with the
- * path spelled out, which is worse than a sentence and better than nothing.
+ * Three shapes are worth naming, because they are the three a person actually
+ * types wrong: a session title with nothing in it, an unknown group code, and a
+ * topic that is none of the three things a topic may be. Everything else falls
+ * through to Zod's text with the path spelled out, which is worse than a
+ * sentence and better than nothing.
  */
 function describeSchemaFailure(error: z.ZodError, raw: unknown): never {
   const issue = error.issues[0];
@@ -119,6 +152,19 @@ function describeSchemaFailure(error: z.ZodError, raw: unknown): never {
           ? `"sessions"`
           : "the file";
 
+  /* Every failure on a session's title lands here — empty, blank, null or not
+     text at all — so the sentence is written to cover all of them. */
+  if (kind === "sessions" && inRow && trail[2] === "title") {
+    fail(
+      row,
+      `title must be text with something in it — the name of the class as ` +
+        `it is entered in the school's plan, written without its number, as ` +
+        `"title": "Budowa pierwszej aplikacji desktopowej za pomocą agenta ` +
+        `AI." A class with no registered name yet leaves the "title" key out ` +
+        `altogether.`
+    );
+  }
+
   if (issue.code === "unrecognized_keys" && trail.includes("groups")) {
     fail(
       row,
@@ -151,7 +197,7 @@ export interface ScheduleWeek {
 /**
  * A topic, resolved against the course.
  *
- * Nothing in `content/schedule.json` carries a title or a letter — those come
+ * No topic in `content/schedule.json` carries a title or a letter — those come
  * from the lesson's own frontmatter and from ADR-0003's derivation, every time
  * the page is built. `href` is null for a lesson that is not published: the
  * title is a fact about the course, and the link would be a door onto a page
@@ -199,6 +245,11 @@ export interface ScheduleSession {
   date: ContentDate | null;
   topics: ScheduleTopic[];
   groups: Partial<Record<Group, ScheduleGroupClass>>;
+
+  /** The name of the class as it is entered in the school's plan, verbatim, or
+      null when it has none. Never stored with its number: the renderer puts
+      the session's own number in front of it (slice 022, decision 2). */
+  title: string | null;
 }
 
 export interface Schedule {
@@ -409,6 +460,8 @@ const readSchedule = cache(async (): Promise<Schedule> => {
       number: session.number,
       week: session.week,
       date: session.date ? scheduleDate(session.date, row, "date") : null,
+
+      title: sessionTitle(session.title, session.number, row),
       /* Topics keep file order. They have no number, and the sequence the
          author wrote is the information. */
       topics: await Promise.all(
