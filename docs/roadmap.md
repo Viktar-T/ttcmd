@@ -8,7 +8,7 @@ What gets built, in what order, and what forces each step.
 | Binding?     | No. `constitution.md` is law; an accepted `spec.md` is a commitment; this file is a plan.                                                                         |
 | Scope        | **The application.** Not the curriculum.                                                                                                                          |
 | Owner        | Viktar                                                                                                                                                            |
-| Last revised | 2026-09-10 — **020 closed** (the narrower progress table); **016 is now the group progress page**, built and closed; the three unbuilt slices renumbered up by two (search → 017, glossary → 018, discoverability → 019); **Done** brought up to date with 007–016 |
+| Last revised | 2026-09-15 — **021 closed** (the progress button on the front door); 2026-09-10 — **020 closed** (the narrower progress table); **016 is now the group progress page**, built and closed; the three unbuilt slices renumbered up by two (search → 017, glossary → 018, discoverability → 019); **Done** brought up to date with 007–016 |
 
 **The course plan does not live here.** Lesson plans, task sheets, the program
 contract and anything student-facing belong in the vault (`30_work/TTC/`), per
@@ -47,7 +47,7 @@ Slice 001 was correctly sized. Keep that size.
 ---
 ## Where we are
 
-**Application** — seventeen slices closed: 001 through 016, and 020. See **Done** below.
+**Application** — eighteen slices closed: 001 through 016, 020 and 021. See **Done** below.
 
 **Content** — the lane that matters (ADR-0004)
 
@@ -131,6 +131,7 @@ the record. One line each here, no more.
 | **015-content-dev-refresh** | a content edit reaches the browser without restarting the dev server — unplanned by this file |
 | **016-group-progress** | `/postep`: four groups, week by week, each cell the date that group did that session. Amends Articles I, V and VI via ADR-0014 |
 | **020-progress-what-happened** | the progress table shows what happened, not what was planned: the two planned columns go, and a group cell reads 03.09-T1 — the date, and the week THAT date fell in |
+| **021-front-door-progress** | the front door's one button opens the progress page; „Zacznij kurs" and the text link are gone, and the course stays in the module grid directly below |
 
 One finding from 003 is still live and is carried into 007 below: **`--rule`
 computes to 1.47:1 on dark.** Exempt while a rule is decorative; not exempt the
