@@ -15,8 +15,9 @@ the project's launch configuration was started to take the live measurements.
 
 ## 1. Build, static route, lint
 
-Every build in the slice succeeded with 55 pages and listed `○ /postep`, static.
-`npx tsc --noEmit` and `npm run lint` produce no output.
+Every build of a valid schedule in the slice succeeded with 55 pages and listed
+`○ /postep`, static. The three builds of criterion 6 failed, as they were meant
+to. `npx tsc --noEmit` and `npm run lint` produce no output.
 
 ## 2. No titles, no change
 

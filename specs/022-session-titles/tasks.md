@@ -31,7 +31,7 @@ saved bytes after a hash check, never with `git checkout`.
   failures naming the session; criterion 7, no overflow at 320, 375 and 1280 px
   with the longest title set; criterion 9 from the diff.
 
-- [ ] **T04 — Close the slice.**
+- [x] **T04 — Close the slice.**
   `verification.md`, then the diff reviewed against `spec.md` in a fresh
   subagent context.
   **Check:** the review reports no gap. Criterion 10 is Viktar's eye.

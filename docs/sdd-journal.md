@@ -885,3 +885,47 @@ in the reflection sections.
   be checked by the address it lands on, not by finding „Postęp grup" on the
   next page — the progress page's title and the button's label are the same
   words, so the text would have been found on either side of the click.
+
+---
+
+## Slice 022 — session titles on the progress page
+
+**Agent notes** *(factual, appended by agents)*
+
+- **Two acceptance criteria were amended after the plan and before any code.**
+  Criteria 2 and 8 asked for every page to be byte-identical before and after
+  with only the build id normalised. The plan subagent found that every page
+  links one shared stylesheet named by a hash of its contents, so any rule the
+  slice added would rename it everywhere and the criteria would fail for a
+  reason unrelated to what they check. They now normalise that name too and
+  require the stylesheet itself to differ only by the slice's rules.
+- **`plan.md` is left stale in two places, on purpose.** Its §8.1 says the plan
+  does not edit its own spec, and its §6.1 describes the criteria as they stood
+  before the amendment. AGENTS.md §8 forbids editing a plan to match what
+  happened afterwards, so the record of the change is the spec's own amendment
+  note and this entry. `tasks.md` also collapsed the plan's five tasks into
+  four and moved some criteria between them.
+- **The plan subagent read the repository beyond its briefing**, and said so in
+  its header. It needed the real stylesheet and the build output to find the
+  gap above. That is the fresh-context test bending, disclosed rather than
+  hidden.
+- **The before/after instrument failed twice before it measured the slice.**
+  First its pattern for "the slice's rules" also stripped the exercise
+  component's own pre-existing `__title` rule. Then, scoped correctly, it cut
+  one rule out of a selector list the minifier had merged —
+  `.topics,.title{margin:0}` — and left a dangling comma. Undoing the merge
+  explicitly gave byte equality. Both failures were in the check, not the code,
+  and both are in `verification.md`.
+- **An untitled cell had to stay the same JSX, not just the same HTML.** The
+  obvious `{title && <h3/>}` renders identical HTML and changes the prerendered
+  page's embedded data, which criterion 2 would have caught as a failure. The
+  cell is a branch, and the review confirmed the embedded data is a single list.
+- **The owner's data and the owner's server both moved under the run.** Viktar
+  had added session 3 and a group date to the schedule, uncommitted, before the
+  slice began. Every temporary schedule was written only after his bytes and
+  hash were saved, and restored after a hash check; it came back byte-identical.
+  His `next dev` on port 3000 stopped mid-run, and the project's launch config
+  was started to finish the live measurements.
+- **A corner the review found:** a title of just `1.` is refused for its number,
+  and the message suggests an empty title, which the empty-title rule then
+  refuses. The build stops either way. Left as is.

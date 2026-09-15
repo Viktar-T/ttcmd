@@ -80,9 +80,10 @@ const sessionSchema = z.strictObject({
       without its number — the page adds the session's own (slice 022).
       `/\S/` rather than `.min(1)`, because a title of spaces passes `min(1)`
       and would render as a bare "2.". It normalises nothing: an accepted title
-      is stored exactly as written. A title that begins with its own number is
-      refused one layer up, in lib/schedule.ts, where the session's number is
-      known. */
+      is stored exactly as written. A title that begins with a number and a full
+      stop — any number, not only the session's own — is refused one layer up,
+      in lib/schedule.ts, where the session's number is known and the message
+      can show the collision. */
   title: z.string().regex(/\S/).optional(),
   /** At least one. A session with no topic occupies a line and tells the
       reader nothing, and is indistinguishable from a half-finished edit; a

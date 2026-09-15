@@ -81,9 +81,9 @@ function scheduleDate(value: string, row: string, field: string): ContentDate {
  * A session's title, verbatim, or null when it has none (slice 022).
  *
  * The schema has already refused a title with no visible character. What is
- * refused here is a title that carries its own number: the page puts the
- * session's number in front of every title, so "1. Jak dziś…" would render as
- * "1. 1. Jak dziś…". It lives here and not in a Zod refinement because the
+ * refused here is a title that begins with a number and a full stop — any
+ * number, not only the session's own: the page puts the session's number in
+ * front of every title, so "1. Jak dziś…" would render as "1. 1. Jak dziś…". It lives here and not in a Zod refinement because the
  * sentence has to show that collision, and only this layer knows the session's
  * number. Leading spaces are allowed for — " 1. Jak…" collides just the same.
  *
