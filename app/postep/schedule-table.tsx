@@ -75,6 +75,26 @@ function Topic({ topic }: { topic: ScheduleTopic }) {
   return topic.href ? <Link href={topic.href}>{body}</Link> : body;
 }
 
+/**
+ * A session's topics, built in one place for both branches of the topics cell.
+ *
+ * Called as a function, not rendered as a component, so the list lands in the
+ * cell exactly as it did before slice 022. That is load-bearing: the prerendered
+ * page embeds the cell's children literally, and an untitled session must leave
+ * them byte-identical — see the branch in ScheduleTable.
+ */
+function topicList(topics: ScheduleTopic[]) {
+  return (
+    <ul className={styles.topics}>
+      {topics.map((topic, index) => (
+        <li key={index}>
+          <Topic topic={topic} />
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export function ScheduleTable({ sessions }: { sessions: ScheduleSession[] }) {
   return (
     <table className={styles.table}>
@@ -111,13 +131,22 @@ export function ScheduleTable({ sessions }: { sessions: ScheduleSession[] }) {
                 group. A literal here and the header row would disagree the
                 first time a column moved. */}
             <td colSpan={1 + GROUPS.length}>
-              <ul className={styles.topics}>
-                {session.topics.map((topic, index) => (
-                  <li key={index}>
-                    <Topic topic={topic} />
-                  </li>
-                ))}
-              </ul>
+              {/* A BRANCH, NOT `title && <h3/>`. With no title the cell's only
+                  child must stay the same list it was before slice 022; a `&&`
+                  puts a null beside it, which renders the same HTML and changes
+                  the page's embedded data. The number is the session's own and
+                  goes in as one string, so the prerendered text has no React
+                  separator inside it (slice 022, decision 2). */}
+              {session.title === null ? (
+                topicList(session.topics)
+              ) : (
+                <>
+                  <h3 className={styles.title}>
+                    {`${session.number}. ${session.title}`}
+                  </h3>
+                  {topicList(session.topics)}
+                </>
+              )}
             </td>
           </tr>
         </tbody>

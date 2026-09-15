@@ -16,7 +16,7 @@ saved bytes after a hash check, never with `git checkout`.
   comments that stop being true.
   **Check:** `npm run build`, `npm run lint`. Nothing renders the title yet.
 
-- [ ] **T02 — The title opens the session's topics.**
+- [x] **T02 — The title opens the session's topics.**
   `app/postep/schedule-table.tsx`: the numbered title as a heading before the
   topic list, with an untitled session's cell left exactly as it was.
   `app/postep/page.module.css`: its treatment, existing tokens only.

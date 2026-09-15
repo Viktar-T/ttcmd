@@ -166,6 +166,25 @@
   gap: 0.2rem;
 }
 
+/* A session's title: the name of the class as it is entered in the school's
+   plan, first in the topics cell (slice 022). An h3, so it takes the mono face
+   from the heading rule in globals.css with no declaration here. font-size:
+   inherit cancels the browser's 1.17em and keeps the table's --text-sm, and the
+   weight is the theme-tuned bold the exercise titles already use. No colour is
+   declared: it keeps --text, so it cannot be mistaken for a topic link. */
+.title {
+  margin: var(--gap-tight) 0 0;
+  font-size: inherit;
+  font-weight: var(--weight-strong);
+}
+
+/* The same gap as between two topic lines, so the title reads as the first
+   line of its group. Two classes outrank both .topics rules, so this one rule
+   serves both layouts. */
+.title + .topics {
+  margin-block-start: 0.2rem;
+}
+
 .topicId {
   font-family: var(--font-mono), ui-monospace, monospace;
 }
@@ -246,6 +265,10 @@
   }
 
   .topics {
+    margin: 0;
+  }
+
+  .title {
     margin: 0;
   }
 
