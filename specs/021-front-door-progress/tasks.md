@@ -28,7 +28,7 @@ in `verification.md`. The order is `plan.md`'s.
   on the `/postep` address, and the hero's left edges hold at 1280 px with no
   overflow at 320, 375 and 1280 px.
 
-- [ ] **T04 — Close the slice.**
+- [x] **T04 — Close the slice.**
   `verification.md`, then the diff reviewed against `spec.md` in a fresh
   subagent context.
   **Check:** the review reports no gap. Criterion 11 is Viktar's eye and stays

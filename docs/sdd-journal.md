@@ -851,3 +851,37 @@ in the reflection sections.
   had two different content trees under it; both sides were rebuilt against the
   same tree and the comparison redone. Forty-four pages, forty-three
   byte-identical, one differing: `/postep`.
+
+---
+
+## Slice 021 — the progress button on the front door
+
+**Agent notes** *(factual, appended by agents)*
+
+- **A ten-line change ran as a full autonomous slice**, because it lives in
+  `app/` and Article IX has no small-change exemption. Spec, plan from a
+  subagent, tasks, four task commits, a fresh-context review. The plan came
+  back proportionate on its own — four tasks, and a warning that a plan longer
+  than its change is a smell.
+- **The plan subagent was run in the background while the baseline was built**,
+  and told not to run a build itself so the two could not clobber `.next`. The
+  baseline measurements and the plan arrived independently and neither waited
+  on the other.
+- **A plan step was shortcut, and verification.md says so.** T03 asked for the
+  pre-slice files to be restored and rebuilt back to back with the slice's.
+  Instead the "before" build was the one taken at `f55c0e9` minutes earlier,
+  with `git status content/` empty after the slice's own build to show both saw
+  one content tree. Same comparison, one fewer build. Recorded here because
+  Article II wants a shortcut in this file the same day.
+- **Boxes were ticked before their evidence reached verification.md.** T01 to
+  T03 were ticked in their own commits, from evidence held in a scratch log;
+  `verification.md` only arrived in T04. `tasks.md` says a box is ticked when
+  its output is in that file. The order was wrong; the evidence was not missing.
+- **The review found one inaccurate sentence and nothing else.** The new comment
+  in `app/page.tsx` said the lessons stay "one step away" in the module grid. A
+  lesson is two clicks away: the module card, then the lesson. Corrected in the
+  closing commit.
+- **The criterion that could not be a text search.** Clicking the button had to
+  be checked by the address it lands on, not by finding „Postęp grup" on the
+  next page — the progress page's title and the button's label are the same
+  words, so the text would have been found on either side of the click.

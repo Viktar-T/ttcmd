@@ -15,9 +15,10 @@ export default async function HomePage() {
           Materiały i zadania kursu aplikacji desktopowych i mobilnych.
         </p>
         {/* The front door's one action is the progress page (slice 021): a
-            student opens the site to see where their group is. The lessons
-            stay one step away in the module grid directly below. No guard —
-            /postep is a static route that exists on every build.
+            student opens the site to see where their group is. The course
+            stays in the module grid directly below — a module one click away,
+            a lesson two. No guard: /postep is a static route that exists on
+            every build.
 
             Here rather than in the site header, which has carried no
             navigation since slice 006; adding the first item there is a
