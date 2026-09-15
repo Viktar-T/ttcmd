@@ -6,7 +6,7 @@ in `verification.md`. The order is `plan.md`'s.
 
 ---
 
-- [ ] **T01 — The front door's one button opens the progress page.**
+- [x] **T01 — The front door's one button opens the progress page.**
   `app/page.tsx`: the hero keeps its title and lede and ends in one
   `Postęp grup` button to `/postep`, unguarded. The first-lesson derivation, the
   „Zacznij kurs" button and the text link are removed with their comments.
