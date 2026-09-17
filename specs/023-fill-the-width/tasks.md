@@ -75,7 +75,7 @@ for the baseline and for the result (spec, criteria preamble; plan §5.4).
   block there 760 (criterion 8). At 768 and 375 the grid renders the same number
   of cards per row as at T01.
 
-- [ ] **T05 — The module page joins the band, and keeps its panel.**
+- [x] **T05 — The module page joins the band, and keeps its panel.**
   `app/contents.css`: a `.pageColumnsBand` modifier — band width, centred, no
   page margin, content track `minmax(0, 1fr)` — applied at 80rem and above.
   `.pageColumns` itself, which is the lesson page's, is untouched.

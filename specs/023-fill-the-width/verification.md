@@ -207,3 +207,40 @@ its number on the next, and its dates ran into the next column's label. Capped
 to three columns above the same 80rem fold `.moduleGrid` uses, with the reason
 in the stylesheet. Below the fold the calendar is untouched. Screenshots before
 and after at 1585 are what decided it; the boxes were identical either way.
+
+---
+
+## T05 — The module page joins the band, and keeps its panel
+
+`app/contents.css` · `app/moduly/[module]/page.tsx`.
+
+```
+$ node scripts/check-design-invariants.mjs   exit 0, contrast report identical to T01
+$ npx eslint                                 exit 0
+$ npx tsc --noEmit                           exit 0
+```
+
+| page | window / cw | wrapper | panel | content column | its prose text | overflow |
+| --- | --- | --- | --- | --- | --- | --- |
+| module | 1585 / 1570 | **137 / 1296** | **137 / 352** | **513 / 920** | 593 / 760 | 0 |
+| module | 1280 / 1265 | 16 / 1233 | 16 / 352 | 392 / 857 | 509 / 624 | 0 |
+| module | 1024 / 1009 | 0 / 1009 | absent | 137 / 736 | 193 / 624 | 0 |
+| module | 375 / 360 | 0 / 360 | absent | 16 / 328 | 16 / 328 | 0 |
+| `1c` | 1585 / 1570 | 0 / 1570 | 32 / 352 | 408 / 872 | 464 / 760 | 0 |
+| `1c` | 1280 / 1265 | 0 / 1265 | 32 / 352 | 408 / 736 | 464 / 624 | 0 |
+
+**Criterion 4 again, and this is the commit that could have broken it.** The
+lesson rows are T02's rows and T01's below the fold. The band modifier is a
+class the lesson page does not carry.
+
+### The jump, measured rather than estimated
+
+Spec §4 costs the module→lesson step as the distance between the two **content
+columns**: 513 against 464, about 49 px at 1585. What a reader's eye follows is
+the **prose**, and the module page centres its measure in a 920 px column while
+a lesson centres it in an 872 px one, so the text moves **593 → 464 = 129 px at
+1585** and **509 → 464 = 45 px at 1280**. Both numbers are recorded; the spec's
+sentence is true of the thing it names and understates the thing that is seen.
+Left as built: the alternative is to size the module page's content column to
+the lesson's article width and leave 48 px of band unused on its right, which
+trades a visible gap for 24 px of the step. Viktar's eye, with criterion 12.

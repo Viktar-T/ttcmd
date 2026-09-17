@@ -95,6 +95,26 @@
     column-gap: var(--contents-gap);
     padding-inline-start: var(--lesson-margin);
   }
+
+  /* Slice 023. The module page uses this wrapper too (slice 014), but it is not
+     a lesson: it is one of the pages that sits in the band, centred, and it has
+     no article whose measure has to be protected. So the pair is the band wide
+     and centred in the viewport, the panel sits at the band's leading edge, and
+     the content column takes what is left rather than the lesson's fixed
+     article width — 1296 − 352 − 24 = 920 at a 1570px layout width.
+
+     No page margin: the band's own centring is what holds it off the glass, and
+     the 2rem the lesson page uses would push the pair off centre by that much.
+
+     The lesson page's rule above is untouched, which is criterion 4. */
+  .pageColumnsBand {
+    width: min(var(--band), 100% - 2rem);
+    margin-inline: auto;
+    padding-inline-start: 0;
+    grid-template-columns:
+      [panel-start] var(--contents-width)
+      [panel-end content-start] minmax(0, 1fr) [content-end];
+  }
 }
 
 /* The skip target. Programmatic focus only (tabindex -1): the default UA

@@ -36,14 +36,16 @@ export default async function ModulePage({
         />
       </Band>
 
-      {/* Two columns — the same wrapper a lesson page uses, slice 014.
-          Since slice 012 this page has begun its content one contents column
-          plus one gap in, because that is where a lesson's article begins and
-          the site has one left edge; the column it was holding open was
-          empty. Filling it means taking the columns themselves: the wrapper
-          is full-bleed, so the frame's content track — whose leading edge is
-          that very inset — never reaches this page, and the grid puts the
-          module's own text back on exactly the same x.
+      {/* Two columns — the same wrapper a lesson page uses, slice 014, plus
+          slice 023's band modifier.
+
+          Slice 012 anchored this page's columns at a fixed 32px so its text
+          would begin exactly where a lesson's article begins. Slice 023 took
+          that single left edge back: the pair is now centred in the 81rem band
+          every page that is not a lesson sits in, and the panel keeps its place
+          at the band's leading edge. The wrapper stays full-bleed — the frame's
+          content track is the band, and a grid that has to hold a panel beside
+          its content sizes itself rather than inheriting a track.
 
           The panel leads in the DOM, as on a lesson page: above the fold that
           puts the reading order in the visual order, leftmost column first,
@@ -54,7 +56,7 @@ export default async function ModulePage({
           article on this page, and the text the reader came for is what the
           control that skips the contents must land on — not the lesson list
           below it, which would jump over the introduction entirely. */}
-      <div className="pageColumns" data-full-bleed>
+      <div className="pageColumns pageColumnsBand" data-full-bleed>
         <ContentsPanel moduleItem={moduleItem} current="intro" />
         <div className="pageColumn">
           <ContentsDisclosure moduleItem={moduleItem} current="intro" />
