@@ -6,7 +6,7 @@ output is in the commit, never when the code is merely written.
 
 ---
 
-- [ ] **T01 — The baseline, measured before any code.**
+- [x] **T01 — The baseline, measured before any code.**
       With the tree at `6a59832`, record from a running server: the rendered
       height of a module card on `/`, the accessible name of one card, the
       computed `font-size` of the course name at 375px and at 1440px, the
