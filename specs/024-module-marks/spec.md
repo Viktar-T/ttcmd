@@ -10,6 +10,15 @@
   by line by construction, and he reviews it afterwards from that section and
   the final report.
 - **Date:** 2026-09-17
+- **Amended:** 2026-09-17, **before any code**, on the strength of the
+  fresh-context test AGENTS.md §2 requires. The plan's subagent could plan from
+  this file and found two criteria that do not survive contact with the tree.
+  Criterion 7 promised an unmatched module "the card as it is today" while
+  criterion 2 removed the large number that *is* the card as it is today — for
+  a module without a drawing the two could not both be true. Criterion 1 said
+  "published on the site", and no module carries a publish flag: `publish` is a
+  lesson field, and every module folder renders. Both are reworded below.
+  Nothing was changed to match code — no code exists yet — and no decision moved.
 - **Depends on:** 021 (the front door as it stands), 023 (the band the grid
   fills, and the card geometry this slice draws into)
 - **Reverses:** `docs/design-reference.md`'s **"no illustrations"** — in three
@@ -105,8 +114,9 @@ reference already warned about, with a picture in it.
 
 ## Acceptance criteria
 
-1. Each of the modules published on the site shows a drawing of its own on the
-   front door, and no two modules show the same drawing.
+1. Every module the site renders — each folder under the course content, eight
+   of them today — shows a drawing of its own on the front door, and no two
+   modules show the same drawing.
 2. The large accent-coloured module number is gone from the card; the module's
    number is still readable on the card as text.
 3. Clicking the drawing opens that module's page; clicking the module's title
@@ -121,8 +131,11 @@ reference already warned about, with a picture in it.
 6. On both themes every drawing is visible and legible: no drawing carries a
    hard-coded colour value of its own, verified by reading the rendered markup
    rather than by looking at it.
-7. A module with no drawing of its own renders without error and falls back to
-   the card as it is today. Adding a ninth module never breaks the front door.
+7. A module with no drawing of its own renders without error as an ordinary
+   card — the module's number and name, the title, the lesson count — with the
+   drawing's place simply empty and the card's height unchanged. Criterion 2 is
+   unconditional: the large number does not come back as a fallback. Adding a
+   ninth module never breaks the front door.
 8. The drawings cost **no additional network request** on the front door, and no
    visible layout shift on load.
 9. The drawings announce nothing to a screen reader, and the accessible name of
