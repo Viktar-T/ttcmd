@@ -851,8 +851,8 @@ export default async function StyleguidePage() {
 
         <div className={styles.specimen}>
           <span className={styles.specimenLabel}>
-            module cards — the number where an illustration would be, and the
-            doubled frame
+            module cards — the doubled frame, and two modules with no drawing of
+            their own, which is what a card falls back to
           </span>
           <ModuleGrid modules={SPECIMEN_MODULES} />
         </div>

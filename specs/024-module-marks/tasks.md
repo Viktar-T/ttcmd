@@ -62,7 +62,7 @@ output is in the commit, never when the code is merely written.
       the lede's rendered width match T01 at both widths. Closes the
       measurable half of criterion 5.
 
-- [ ] **T06 — Close the slice.**
+- [x] **T06 — Close the slice.**
       `npm run build` and `npm run lint` in full. Then the review of the diff
       against `spec.md` in a **fresh subagent context** (AGENTS.md §3,
       Article IX): every criterion met, nothing outside the slice touched.

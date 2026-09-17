@@ -929,3 +929,61 @@ in the reflection sections.
 - **A corner the review found:** a title of just `1.` is refused for its number,
   and the message suggests an empty title, which the empty-title rule then
   refuses. The build stops either way. Left as is.
+
+---
+
+## Slice 024 — drawings on the front door
+
+**Agent notes** *(factual, appended by agents)*
+
+- **This slice reverses a documented design position, on Viktar's instruction.**
+  `docs/design-reference.md` said in four places that ttcmd has no
+  illustrations, will commission none, and "must not have an agent generate
+  filler". He asked for one drawing per module and one for the course on
+  2026-09-17. ADR-0015 records the reversal and the file is corrected in place,
+  with the old wording quoted and dated rather than deleted. The ban on filler
+  survived with a test attached: a drawing earns its place by depicting a
+  subject traceable to a lesson in the module it marks, and every trace is
+  written down in the spec.
+- **The plan subagent found a contradiction inside the spec's own criteria,
+  before any code.** Criterion 7 promised an unmatched module "the card as it is
+  today" while criterion 2 removed the large number that *is* the card as it is
+  today. Criterion 1 said "published on the site" when no module carries a
+  publish flag. Both were reworded in `6a59832`, before the first line of code,
+  and the spec's header says so.
+- **The fresh-context test earned its keep twice in one slice.** The same
+  subagent also caught that `app/styleguide/page.tsx` renders the module grid
+  from two invented specimen modules numbered 7 and 8 — so matching a drawing by
+  module number would have put real modules' drawings on cards whose purpose is
+  to be unmistakably not content. Matching by folder slug instead turned the
+  styleguide into a live exercise of the fallback path with no fixture written.
+- **The closing review found the slice's one real defect, and it was in that
+  same fallback.** `ModuleMark` returned `null` for an unknown slug, so a
+  drawing-less card had three children instead of four, fell to
+  `min-height: 11rem`, and would have rendered 11px short of its row
+  neighbours — with a short frame and a short offset frame beside it.
+  `/styleguide` could not expose it because **both** specimens fall back and
+  therefore agree with each other. Fixed in T06 by rendering the empty box; the
+  fallback card now measures 187.3px, the same as a drawn one.
+- **The review also caught the run claiming an approval it does not have.**
+  ADR-0015 was written `Status: accepted · Decided by: Viktar`. The reversal is
+  genuinely his; the scope clause, the restated filler test and the five
+  rejected alternatives are the run's. It now reads `proposed`, following
+  ADR-0013's precedent, and says which part is which.
+- **Four of the nine drawings were redrawn after being looked at.** At 150px the
+  crossed tools read as a dumbbell, the loop arrow's 35° gap read as a chipped
+  ring, the bulb's filament read as an arrow, and the cogwheel read as a sun.
+  No command in this repository can catch any of those; the build proves a
+  drawing is theme-safe and cannot prove it looks like a flag.
+- **The stroke weight had to stop being shared.** One number across two boxes of
+  different size gives two different lines — 1.5 units in the card's 48-unit box
+  is about 2px at 63px, and the same 1.5 in the course mark's 132-unit box would
+  be over 4px at 352. Each mark states its own, aimed at the same rendered 2px.
+- **Two corrections the review asked for beyond the criteria**, both stale prose
+  the slice itself made false: the styleguide's own caption still described
+  "the number where an illustration would be", and `app/nav.css` still called
+  the course name "the one graphic element on a site that has no
+  illustrations".
+- **The owner's data moved under the run again.** `content/schedule.json` was
+  edited during the session (two group dates added). It is the content lane, it
+  was not touched, and it is in none of this slice's commits.

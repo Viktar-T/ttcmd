@@ -183,20 +183,25 @@ const MODULE_MARKS = new Map<string, ReactElement>([
 const COURSE_BOX = { width: 132, height: 100 };
 
 /**
- * The drawing for one module, or nothing.
+ * The drawing for one module — or the **empty box it would have filled**.
  *
- * Nothing, and not a placeholder: a module whose drawing has not been made
- * renders an ordinary card — number, title, lesson count — with this slot
- * empty. Adding a module folder publishes it the same day; it does not wait on
- * someone drawing for it, and it does not fail the build (spec, criterion 7).
+ * The box, and not nothing. A module whose drawing has not been made renders an
+ * ordinary card: number, title, lesson count, and this slot left blank. Adding
+ * a module folder publishes it the same day; it does not wait on someone
+ * drawing for it, and it does not fail the build (spec, criterion 7).
+ *
+ * The first version of this returned `null`, and the closing review caught what
+ * that costs: a card with three children instead of four is 111px of content,
+ * which `.moduleCard`'s `min-height: 11rem` rounds up to 176 — 11px short of
+ * the 187.3 every other card in its row is, with a visibly short frame and a
+ * short offset frame beside it. `/styleguide` could not show it, because both
+ * of its specimen modules fall back and so agree with each other. Keeping the
+ * box keeps the height by construction, the same way the drawn path does.
  */
 export function ModuleMark({ slug }: { slug: string }) {
-  const art = MODULE_MARKS.get(slug);
-  if (!art) return null;
-
   return (
     <Mark className="moduleCardMark" width={MODULE_BOX} height={MODULE_BOX}>
-      {art}
+      {MODULE_MARKS.get(slug)}
     </Mark>
   );
 }

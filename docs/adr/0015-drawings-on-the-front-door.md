@@ -1,12 +1,20 @@
 # ADR-0015 — Drawings on the front door
 
-- **Status:** accepted
 - **Date:** 2026-09-17
-- **Decided by:** Viktar
+- **Status:** proposed — written inside an autonomous run (AGENTS.md §2), so
+  most of what is below has not been read by Viktar. **The reversal itself is
+  his**: on 2026-09-17 he asked for a drawing per module on the front door and
+  one for the course beside its name, and answered three questions about them —
+  outline line art, the drawing replacing the large number, and the strokes
+  recolouring to the accent under the pointer. Everything else here — the scope
+  clause, the restated test for filler, the consequences and the rejected
+  alternatives — is this ADR's, for him to accept or veto.
 - **Number claimed** after listing `docs/adr/` (AGENTS.md §7); 0014 was the
   highest present.
 - **Supersedes:** `docs/design-reference.md`'s "no illustrations" position, in
-  the three places it was stated. That file is corrected, not rewritten.
+  the **four** places it was stated — the landing-page description, *What we
+  cannot copy*, *Deliberately dropped* and *Deliberately different*. That file
+  is corrected, not rewritten.
 - **Touches no article of the constitution.** Article VIII is unaffected — no
   dependency, no backend, no build step. Article III is unaffected — a drawing
   has no language.
@@ -15,12 +23,14 @@
 
 `docs/design-reference.md` was written against `fullstackopen.com`, which puts a
 commissioned black line-art drawing on every part: on its card, in its band, on
-every lesson page. The reference file drew a line under that and said it three
-times — ttcmd "has none, will not commission any, and **must not have an agent
-generate filler**"; the honest substitute is "typography doing the work", a
-large monospace module number in the accent colour where the drawing would be;
-and, in *Deliberately different*, "**No illustrations.** Typography and the
-accent colour carry the identity."
+every lesson page. The reference file drew a line under that and said it **four
+times** — in the landing-page description, "For ttcmd: same grid, same rhythm,
+**no illustrations**"; in *What we cannot copy*, that ttcmd "has none, will not
+commission any, and **must not have an agent generate filler**", with the honest
+substitute named as "typography doing the work", a large monospace module number
+in the accent colour where the drawing would be; in *Deliberately dropped*, "The
+illustrations — see above"; and in *Deliberately different*, "**No
+illustrations.** Typography and the accent colour carry the identity."
 
 That was a good rule for the problem it was written about. Two things about it
 have turned out to be true in different measure:
@@ -74,7 +84,7 @@ title, where it reads *Moduł 3*.
 
 ## Consequences
 
-- `docs/design-reference.md` is corrected in the three places named above. The
+- `docs/design-reference.md` is corrected in all four places named above. The
   earlier position is marked as reversed and dated, not deleted — Article II:
   if the honest history shows a change of mind, the change of mind stays.
 - *Deliberately dropped* loses "The illustrations" and *Deliberately different*

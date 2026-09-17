@@ -517,8 +517,10 @@ main > .lane {
 
 /*
  * Outside the reading scale on purpose. --text-3xl is the top of the scale
- * slice 004 built for reading, and this is not read — it is the one graphic
- * element on a site that has no illustrations.
+ * slice 004 built for reading, and this is not read — it is the front door's
+ * other graphic element, beside the course mark it now shares the band with.
+ * (It read "the one graphic element on a site that has no illustrations" until
+ * slice 024 and ADR-0015 gave the site drawings.)
  *
  * clamp, not a fixed size: the course name is thirty monospace characters, not
  * a five-letter wordmark, so the size has to follow the viewport. The upper
