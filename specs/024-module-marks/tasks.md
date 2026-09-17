@@ -51,7 +51,7 @@ output is in the commit, never when the code is merely written.
       against T01. Closes criteria 1, 2, 3, 6, 7, 9, 10, and the markup half
       of 4.
 
-- [ ] **T05 — The hero: the course mark beside the course name.**
+- [x] **T05 — The hero: the course mark beside the course name.**
       `app/page.tsx` — the hero's text moves into its own box and the course
       mark becomes its second child. `app/nav.css` — the hero becomes two
       columns in the band above a named fold, one column below it, with the

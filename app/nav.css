@@ -426,18 +426,20 @@ main > .lane {
  * The drawings — ADR-0015
  *
  * Shared by every mark in `components/marks.tsx`: the module cards' and the
- * course's. The weight, the caps and the joins are here rather than on nine
- * svg elements because they are one judgement, adjusted by eye, and a
- * judgement kept in nine places drifts.
+ * course's. The caps and the joins are here rather than on nine svg elements
+ * because they are one judgement, adjusted by eye, and a judgement kept in
+ * nine places drifts.
  *
- * A stroke authored in a 48-unit box renders thicker as the box is scaled up.
- * 1.5 puts a module mark at roughly 2px at its 63px, and the course mark's own
- * weight is set against its own box below, not inherited from this one.
+ * The weight is NOT shared, and that is the point of splitting them. A stroke
+ * is authored in the box's own units and scales with the box, so one number
+ * across two boxes of different size gives two different lines: 1.5 in a
+ * 48-unit box at 63px is about 2px, and the same 1.5 in the course mark's
+ * 132-unit box at 350px would be over 4. Each mark states its own, aimed at
+ * the same rendered 2px.
  * ------------------------------------------------------------------ */
 
 .moduleCardMark,
 .heroMark {
-  stroke-width: 1.5;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -457,10 +459,60 @@ main > .lane {
  * The landing page
  * ------------------------------------------------------------------ */
 
+/*
+ * The hero is the band now, not the lane (slice 024, ADR-0015). One column
+ * below the fold, two above it: the text at the measure, and the course's own
+ * drawing in the width that used to be nothing — 536px of it at 1440, 353px at
+ * 1024, growing with the window.
+ */
 .hero {
+  display: grid;
+  gap: 1.1rem;
+}
+
+/* Everything .hero itself used to be, so the course name, the lede and the
+   button keep the width and the left edge they had inside the lane. The
+   max-width is what the lane was giving them; without it the lede stretches
+   across the band, which is the failure slice 023 closed. */
+.heroText {
   display: grid;
   justify-items: start;
   gap: 1.1rem;
+  width: 100%;
+  max-width: var(--measure);
+}
+
+/*
+ * Hidden below the fold rather than reflowed under the name, and that is what
+ * settles criterion 5's phone half outright: at 375px the drawing is not laid
+ * out at all, so it cannot push the course name off screen, force the title's
+ * clamp down, or add a pixel of horizontal scroll. It costs about 1kB of
+ * markup a phone does not paint, which is cheaper than anything that would
+ * need script to decide.
+ *
+ * 64rem is the first width where what is left beside the measure is a drawing
+ * rather than a stamp: 353px at 1024, against 112px at the grid's own 48rem
+ * fold. Verified at 1024, 1280 and 1440, not reasoned about.
+ */
+.heroMark {
+  display: none;
+}
+
+@media (min-width: 64rem) {
+  .hero {
+    grid-template-columns: minmax(0, var(--measure)) 1fr;
+    column-gap: var(--gap-apart);
+    align-items: center;
+  }
+
+  .heroMark {
+    display: block;
+    justify-self: center;
+    width: 100%;
+    max-width: 22rem;
+    height: auto;
+    stroke-width: 0.8; /* ~2px at 352px in a 132-unit box */
+  }
 }
 
 /*
@@ -635,6 +687,7 @@ main > .lane {
   height: calc(var(--text-3xl) * 1.75);
   justify-self: start;
   margin-block-end: 0.4rem;
+  stroke-width: 1.5; /* ~2px at 63px in a 48-unit box */
 }
 
 .moduleCardTitle {
