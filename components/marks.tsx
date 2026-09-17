@@ -79,12 +79,21 @@ const MODULE_MARKS = new Map<string, ReactElement>([
   [
     "02-warsztat",
     <>
-      <path d="M6.5 11.5 11.5 6.5l10 10-5 5z" />
-      <path d="m19 19 14 14" />
-      <path d="m31 35 4-4" />
-      <circle cx="36" cy="12" r="5.5" />
-      <circle cx="13" cy="35" r="3.6" />
-      <path d="M32.1 15.9 15.5 32.5" />
+      {/* Both tools are drawn along the x axis and then turned onto their
+          diagonal, which is the only way the jaw of a wrench stays a jaw. The
+          screwdriver goes first so the wrench's handle, which is `data-bg`,
+          occludes it where they cross — otherwise two outlines meeting in the
+          middle read as a knot rather than as one tool over another. */}
+      <g transform="rotate(45 24 24)">
+        <path d="M18 21.5v5" />
+        <path d="M18 24h16" />
+        <path d="M34 22v4" />
+        <rect x="5" y="19" width="13" height="10" rx="3" data-bg />
+      </g>
+      <g transform="rotate(-45 24 24)">
+        <path d="M30 16h11v4.5h-6.5v7H41V32H30z" />
+        <rect x="8" y="21.5" width="24" height="5" rx="2.5" data-bg />
+      </g>
     </>,
   ],
 
@@ -108,8 +117,10 @@ const MODULE_MARKS = new Map<string, ReactElement>([
   [
     "04-specyfikacja",
     <>
-      <path d="M36 12A17 17 0 1 1 27 7.3" />
-      <path d="m22.5 10.5 4.5-3.2 3.5 4.6" />
+      {/* 290° of arc, not 325°: a gap of 35° reads as a ring with a chip out
+          of it, and the loop has to read as a loop. */}
+      <path d="M41 24A17 17 0 1 1 29.8 8" />
+      <path d="M24 9.3 29.8 8 26.2 3.3" />
       <rect x="16" y="15" width="16" height="19" rx="1.5" />
       <path d="M20 21h8M20 25h8M20 29h5" />
     </>,
@@ -122,7 +133,8 @@ const MODULE_MARKS = new Map<string, ReactElement>([
     <>
       <path d="M24 5a12.5 12.5 0 0 0-7.4 22.6c1.3 1 2.1 2.4 2.1 4V33h10.6v-1.4c0-1.6.8-3 2.1-4A12.5 12.5 0 0 0 24 5Z" />
       <path d="M19.5 37.5h9M21 42h6" />
-      <path d="m20 23 4-5 4 5" />
+      {/* A filament, zigzag. A single chevron here read as an arrow. */}
+      <path d="m19.5 24.5 2.5-4.5 2 3.5 2-3.5 2.5 4.5" />
     </>,
   ],
 
@@ -132,12 +144,16 @@ const MODULE_MARKS = new Map<string, ReactElement>([
   [
     "06-pod-maska",
     <>
+      {/* A hub, and teeth that stop short: eight long spokes on a bare circle
+          read as a sun. */}
       <circle cx="32" cy="16" r="6" />
-      <path d="M38 16h2.6M36.24 20.24l1.84 1.84M32 22v2.6M27.76 20.24l-1.84 1.84M26 16h-2.6M27.76 11.76l-1.84-1.84M32 10V7.4M36.24 11.76l1.84-1.84" />
+      <circle cx="32" cy="16" r="2.3" />
+      <path d="M38 16h2M36.24 20.24l1.42 1.42M32 22v2M27.76 20.24l-1.42 1.42M26 16h-2M27.76 11.76l-1.42-1.42M32 10V8M36.24 11.76l1.42-1.42" />
       <rect x="5" y="20" width="30" height="21" rx="2" data-bg />
       <path d="M5 26h30" />
       <circle cx="9.5" cy="23" r="1.1" />
       <circle cx="14" cy="23" r="1.1" />
+      <path d="M10 32h14M10 36.5h9" />
     </>,
   ],
 

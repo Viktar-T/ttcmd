@@ -37,7 +37,7 @@ output is in the commit, never when the code is merely written.
       colour literals — and `npm run lint` reports no new problem. Output in
       the commit.
 
-- [ ] **T04 — The card: the mark takes the number's place.**
+- [x] **T04 — The card: the mark takes the number's place.**
       `components/module-grid.tsx` — the kicker becomes the module's number in
       words and digits, the mark goes where the number was, inside the existing
       link. `app/nav.css` — `.moduleCardNumber` deleted, `.moduleCardMark`

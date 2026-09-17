@@ -423,6 +423,37 @@ main > .lane {
 }
 
 /* ------------------------------------------------------------------ *
+ * The drawings — ADR-0015
+ *
+ * Shared by every mark in `components/marks.tsx`: the module cards' and the
+ * course's. The weight, the caps and the joins are here rather than on nine
+ * svg elements because they are one judgement, adjusted by eye, and a
+ * judgement kept in nine places drifts.
+ *
+ * A stroke authored in a 48-unit box renders thicker as the box is scaled up.
+ * 1.5 puts a module mark at roughly 2px at its 63px, and the course mark's own
+ * weight is set against its own box below, not inherited from this one.
+ * ------------------------------------------------------------------ */
+
+.moduleCardMark,
+.heroMark {
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The one fill in the drawings: a shape painted in the page background so it
+   occludes what was drawn before it — the phone in front of the monitor, the
+   window in front of the cogwheel. Overlapping outlines with nothing behind
+   them read as a tangle, not as one thing in front of another. Here and not in
+   the markup because `var(--bg)` is the theme's value, and a presentation
+   attribute cannot hold a custom property. */
+.moduleCardMark [data-bg],
+.heroMark [data-bg] {
+  fill: var(--bg);
+}
+
+/* ------------------------------------------------------------------ *
  * The landing page
  * ------------------------------------------------------------------ */
 
@@ -564,9 +595,20 @@ main > .lane {
   border: 1px solid var(--rule-strong);
 }
 
+/* The frame, and the drawing inside it, answer together. `:focus-visible` is
+   here and not only `:hover` because the card is a link: a student who tabs
+   the grid would otherwise get the browser's outline and none of the change a
+   student with a mouse gets. */
 .moduleCard:hover,
-.moduleCard:hover::after {
+.moduleCard:hover::after,
+.moduleCard:focus-visible,
+.moduleCard:focus-visible::after {
   border-color: var(--accent-line);
+}
+
+.moduleCard:hover .moduleCardMark,
+.moduleCard:focus-visible .moduleCardMark {
+  color: var(--accent-line);
 }
 
 .moduleCardKicker {
@@ -574,12 +616,24 @@ main > .lane {
   color: var(--text-muted);
 }
 
-/* Where the illustration would be. Outside the reading scale, like the hero. */
-.moduleCardNumber {
-  font-size: calc(var(--text-3xl) * 1.75);
-  line-height: 1;
-  font-weight: 700;
-  color: var(--accent-line);
+/*
+ * The drawing, in the box the large module number used to hold — the same
+ * expression, `calc(var(--text-3xl) * 1.75)`, and the same trailing margin, so
+ * "the card's height does not move" is true by construction rather than by
+ * measurement. (It is measured anyway: 187.3px before the slice and after it,
+ * at 1440, 1024 and 375 — specs/024-module-marks/baseline.md.)
+ *
+ * `justify-self: start` because the card is a grid and an svg told to be a
+ * grid item will otherwise stretch across the whole column.
+ *
+ * `color`, not `stroke`: the drawings are drawn in `currentColor`, so the whole
+ * thing recolours from one declaration and the resting state is simply the
+ * card's own text colour. Nothing here knows which theme is on.
+ */
+.moduleCardMark {
+  width: calc(var(--text-3xl) * 1.75);
+  height: calc(var(--text-3xl) * 1.75);
+  justify-self: start;
   margin-block-end: 0.4rem;
 }
 

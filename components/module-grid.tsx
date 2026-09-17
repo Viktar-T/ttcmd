@@ -1,15 +1,21 @@
 import Link from "next/link";
 import type { CourseModule } from "@/lib/content";
+import { ModuleMark } from "@/components/marks";
 import { polishPlural } from "@/lib/plural";
 
 /**
- * The module grid, **without illustrations**.
+ * The module grid, **with one drawing per module**.
  *
- * The reference site puts a commissioned line drawing on every card, and
- * `docs/design-reference.md` is explicit that ttcmd has none, will commission
- * none, and must not have an agent generate filler. The honest substitute it
- * names is typography doing the work: the module's number, large, in the accent
- * colour, in the space where the drawing would be.
+ * This is where the large accent-coloured module number stood, and the number
+ * stood there because `docs/design-reference.md` said ttcmd would have no
+ * illustrations at all. ADR-0015 reversed that. Slice 023 had already widened
+ * these cards from 197px to 421px, which made the sameness larger rather than
+ * smaller: eight rectangles carrying four lines of type, three of which say the
+ * same thing on every one of them. The number is still on the card — it moved
+ * up into the kicker, where it reads `Moduł 3`.
+ *
+ * A module whose drawing has not been made renders without one. See
+ * `components/marks.tsx` for why that is a fallback and not a defect.
  *
  * No `lane`: slice 023 made this the one block on the front door and the
  * module listing that takes the **whole band** rather than the reading measure.
@@ -26,8 +32,10 @@ export function ModuleGrid({ modules }: { modules: CourseModule[] }) {
       {modules.map((moduleItem) => (
         <li key={moduleItem.slug}>
           <Link href={moduleItem.href} className="moduleCard">
-            <span className="moduleCardKicker">Moduł</span>
-            <span className="moduleCardNumber">{moduleItem.number}</span>
+            {/* One link, and the drawing is inside it: the picture and the
+                name open the same page because they are the same control. */}
+            <span className="moduleCardKicker">Moduł {moduleItem.number}</span>
+            <ModuleMark slug={moduleItem.slug} />
             <span className="moduleCardTitle">{moduleItem.title}</span>
             <span className="moduleCardCount">
               {lessonCount(moduleItem.lessons.length)}
