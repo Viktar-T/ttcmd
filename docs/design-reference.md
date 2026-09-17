@@ -173,7 +173,11 @@ Then the **module grid, three across**. Each card is a large light illustration
 tile inside a doubled frame, with the monospace title (`Part 0`) beneath it and a
 one-line subtitle below that.
 
-For ttcmd: same grid, same rhythm, **no illustrations** — see below.
+For ttcmd: same grid, same rhythm, and — since **ADR-0015**, 2026-09-17 — **one
+drawing per module**, made here, outline line art in the page's own text colour,
+in the place the large module number used to hold. A drawing sits to the right
+of the course name as well. *(This line read "no illustrations" until ADR-0015
+reversed that; see "What we cannot copy" below for what the reversal kept.)*
 
 ### Module overview (`/moduly/[modul]`)
 
@@ -250,14 +254,24 @@ carry most of the character; the rest is polish.
 
 ## What we cannot copy
 
-**The illustrations.** Every part has a commissioned black line-art drawing —
-on its card, in its band, on every lesson page. They are a large share of the
-site's identity and ttcmd has none, will not commission any, and must not have
-an agent generate filler.
+**The commissioned illustrations.** Every part has a commissioned black line-art
+drawing — on its card, in its band, on every lesson page. They are a large share
+of the site's identity, and ttcmd will not commission any.
 
-The honest substitute is **typography doing the work**: a large monospace module
-number in the accent colour where the illustration would be. The result is
-plainer than the reference. Accept that rather than fill the space badly.
+> **Reversed in part by ADR-0015, 2026-09-17.** This paragraph used to end "and
+> ttcmd has none, will not commission any, and must not have an agent generate
+> filler", and the next one used to offer typography as the substitute: a large
+> monospace module number in the accent colour where the illustration would be.
+> That is what the front door had, and eight cards distinguished by one digit is
+> what it bought. ttcmd now has **its own drawings** — written as SVG paths in
+> this repository, outline line art in the page's own text colour, one per
+> module on the front door and the course contents page, plus one for the course
+> itself. What did not move: no commissioned art, no raster assets, and **no
+> drawing on the module page, the lesson page or the band** — the paragraph
+> below is exactly why. The ban on **filler** did not move either; it acquired a
+> test. A drawing earns its place by depicting a subject traceable to a lesson
+> in the module it marks, and for every drawing on the site that trace is
+> written down in `specs/024-module-marks/spec.md`.
 
 A consequence worth planning for: the reference's accent band is **tall** —
 roughly 450px on a lesson page — because it is holding an illustration. Copy the
@@ -317,7 +331,8 @@ unmissable when scrolling back.
 - **Language selector** — Polish only (Article III)
 - **Certificates, submission and exercise tracking** — needs a backend (Article VIII)
 - **The institutional footer** — logos, social links, contact addresses
-- **The illustrations** — see above
+- **The commissioned illustrations, and their placement on every lesson page**
+  — see above. *(Read "the illustrations" until ADR-0015, 2026-09-17.)*
 
 Roughly a third of the reference's surface area, doing the part that teaches.
 
@@ -327,7 +342,11 @@ Roughly a third of the reference's surface area, doing the part that teaches.
 - **"Report a problem" points at GitHub issues, not an edit link.** Lower barrier
   than fork-and-PR, less to moderate mid-term.
 - **A `Prompt` component**, which the reference has no need for.
-- **No illustrations.** Typography and the accent colour carry the identity.
+- **Drawings only where they say something.** The reference illustrates every
+  part on every page; ttcmd draws a module once, on the front door and the
+  contents page, and lets typography and the accent colour carry the rest.
+  *(This line read "No illustrations. Typography and the accent colour carry the
+  identity." until ADR-0015, 2026-09-17.)*
 
 ## Open questions
 

@@ -16,7 +16,7 @@ output is in the commit, never when the code is merely written.
       **Check:** the file exists and every number in it was read off a browser,
       with the width it was read at. No code changes in this commit.
 
-- [ ] **T02 — ADR-0015 and the correction to the design reference.**
+- [x] **T02 — ADR-0015 and the correction to the design reference.**
       Claim the ADR number only after listing `docs/adr/` (AGENTS.md §7).
       Record the reversal of "no illustrations": what was decided, why it is
       reversed, what the reversal covers (the front door and the course
