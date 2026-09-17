@@ -17,7 +17,7 @@ for the baseline and for the result (spec, criteria preamble; plan §5.4).
 
 ---
 
-- [ ] **T01 — The baseline. No code.**
+- [x] **T01 — The baseline. No code.**
   Every box criteria 3, 4, 5, 6, 7 and 8 name, on every page and width above,
   plus `scrollWidth − clientWidth` at each, plus the current `npm run build`
   output including the contrast report, plus `npm run lint`. Which element is
