@@ -86,7 +86,7 @@ for the baseline and for the result (spec, criteria preamble; plan §5.4).
   panel, the disclosure and the scroll-spy behave as they did at T01
   (criterion 9 on this page). The lesson page is still unchanged (criterion 4).
 
-- [ ] **T06 — The reference page shows the geometry the site has.**
+- [x] **T06 — The reference page shows the geometry the site has.**
   `app/styleguide/page.module.css`: its own text capped at the measure, its
   prose specimens at the article column, `.page` keeping the band.
   **Check:** `/styleguide` renders without error at 1585, 1280 and 375;

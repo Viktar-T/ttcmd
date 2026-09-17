@@ -1,6 +1,14 @@
 /*
  * The reference page's own layout. Kept out of globals.css: it is not a
  * site-wide concern, it is this page's furniture.
+ *
+ * Slice 023. This page is one of the band pages, so `.page` is 1296px wide at
+ * a 1570px layout width, and that is right for what it mostly holds: swatches,
+ * chips, specimens, a grid. It is wrong for the page's own sentences, which
+ * would set at 1296 — the one width the site never gives prose. So the text
+ * this page writes about itself is capped at the measure, and the prose
+ * specimens are capped at the article column a lesson actually has, so the page
+ * whose job is to show the site's geometry shows the site's geometry.
  */
 
 .page {
@@ -8,6 +16,7 @@
 }
 
 .lede {
+  max-width: var(--measure);
   color: var(--text-muted);
   font-size: var(--text-sm);
   border-bottom: 1px solid var(--rule);
@@ -23,6 +32,13 @@
   color: var(--text-muted);
   border-bottom: 1px solid var(--rule);
   padding-bottom: 0.5rem;
+}
+
+/* The prose specimens stand in for a lesson's article column, so they are that
+   column's width and their text lands on the measure inside it, exactly as on a
+   lesson page. */
+.page :global(.prose) {
+  max-width: calc(var(--content-width) - 2rem);
 }
 
 .specimen {
@@ -162,7 +178,11 @@
   margin-top: 1.5rem;
 }
 
+/* Every explanatory paragraph this page writes about itself carries .muted, so
+   this is where slice 023 caps the page's own sentences at the measure — the
+   band is for the specimens, not for the commentary. */
 .muted {
+  max-width: var(--measure);
   color: var(--text-muted);
 }
 

@@ -244,3 +244,32 @@ sentence is true of the thing it names and understates the thing that is seen.
 Left as built: the alternative is to size the module page's content column to
 the lesson's article width and leave 48 px of band unused on its right, which
 trades a visible gap for 24 px of the step. Viktar's eye, with criterion 12.
+
+---
+
+## T06 — The reference page shows the geometry the site has
+
+`app/styleguide/page.module.css`.
+
+```
+$ node scripts/check-design-invariants.mjs   exit 0, contrast report identical to T01
+$ npx eslint                                 exit 0
+```
+
+| window / cw | `.page` | lede / commentary | prose specimen | its text | panel specimen | grid specimen | pager specimen | overflow |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1585 / 1570 | **137 / 1296** | 137 / 760 | **137 / 872** | **193 / 760** | 137 / 352 | 137 / 1296 | 405 / 760 | 0 |
+| 1280 / 1265 | 16 / 1233 | 16 / 624 | 16 / 736 | 72 / 624 | 16 / 352 | 16 / 1233 | 321 / 624 | 0 |
+| 375 / 360 | 16 / 328 | 16 / 328 | 16 / 328 | 16 / 328 | 16 / 328 | 16 / 328 | 16 / 328 | 0 |
+
+**Criterion 13** — the page renders at all three widths with no runtime error,
+and every specimen is the width the site itself uses: the prose specimen is the
+article column with the measure inside it, the panel specimen is 352, the grid
+specimen is the band. The page's own sentences are capped at the measure, which
+is the one width the site never gives prose otherwise.
+
+**Pre-existing console errors on this page, not this slice's.** React logs four
+`Invalid DOM property` warnings for `stroke-width`, `font-size`, `font-weight`
+and `stroke-dasharray` on the inline SVG in `app/styleguide/page.tsx` — a file
+this slice does not touch. Recorded here so the sweep's console check is not
+read as a regression; fixing it is a chore, not this slice.
