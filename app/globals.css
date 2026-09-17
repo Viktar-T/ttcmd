@@ -113,7 +113,7 @@ main {
   display: grid;
   grid-template-columns:
     [full-start] minmax(1rem, 1fr)
-    [content-start] min(var(--content-width) - 2rem, 100% - 2rem) [content-end]
+    [content-start] min(var(--band), 100% - 2rem) [content-end]
     minmax(1rem, 1fr) [full-end];
   align-content: start;
   row-gap: var(--gap-apart);
@@ -139,37 +139,42 @@ main > * {
 }
 
 /*
- * Slice 012. Above the fold the content column is ANCHORED rather than
- * centred: its leading track is the fixed distance at which a lesson page's
- * article column begins — the page margin, the contents column, and the gap
- * between them, summed once in tokens.css as --content-inset.
+ * Slice 023. THE WIDE FOLD, and the only place 88rem is written.
  *
- * Why it belongs to the frame and not to the pages. Slice 011 anchored the
- * lesson page to the left and left every other page centred, so the site had
- * two left edges and the prose jumped when a student opened a lesson from a
- * module page — 144px at 1280, the other way at 1585, and by a different
- * amount at every width, because one edge was a fraction of the viewport and
- * the other was not. Anchoring the frame puts the module page, the module
- * grid, the home page and the reference page on the lesson's edge, and makes
- * that edge the same number at 1280 and at 2560.
+ * At 88rem and above the prose column is the reference's 47.5rem instead of
+ * slice 004's 39rem, and --content-width follows it because tokens.css derives
+ * it (--measure + 9rem). Everything measure-shaped follows from here with no
+ * rule of its own: .prose's text track, .lane, the lesson header, the pager,
+ * the figure caption, and the site header and accent-band lanes, which are the
+ * measure plus the frame's two gutters.
  *
- * A lesson page is untouched by this, and that is structural rather than
- * lucky: every child of the frame it has in flow — the accent band and the
- * two-column wrapper — is full-bleed, so they take the `full` track and never
- * see where `content` starts. (Back-to-top is a third child once the reader
- * has scrolled, and it is `position: fixed`, so it is out of flow and is not a
- * grid item at all.)
+ * Why a SECOND fold, when 80rem already exists. A lesson page above 80rem is
+ * the page margin, the contents column, the gap and the article column:
+ * 2 + 22 + 1.5 + 54.5 = 80rem exactly, which at a 1280px viewport is a
+ * horizontal scrollbar rather than a layout. Raising the 80rem fold instead
+ * would take the contents panel away from every 1366px laptop — the same trade
+ * in the direction nobody wants. So between 80rem and 88rem a lesson is
+ * exactly what slice 011 built, and the wider line waits for the width that
+ * fits it. Do not widen this query or raise --measure-wide without redoing
+ * that sum.
  *
- * The trailing track stays flexible and absorbs everything left over, which is
- * what keeps a full-bleed child spanning edge to edge. Below the fold nothing
- * here applies and the frame is the centred one slice 006 built.
+ * Slice 012's block stood here: it anchored every page's content column at a
+ * fixed 408px so the site had one left edge. Slice 023 deleted it. `main`'s
+ * content track is the centred band again (see the frame above), the empty
+ * 408px strip on the left of the home page, the module listing, the progress
+ * page and the reference page goes with it, and the price is the one 012
+ * bought off — opening a lesson from a module page moves the text, by about
+ * 49px at 1585. specs/023-fill-the-width/spec.md §4 records that as chosen.
+ *
+ * A lesson page does not read the frame's content track at all, which is
+ * structural rather than lucky and is why criterion 4 holds: every child of
+ * the frame it has in flow — the accent band and the two-column wrapper — is
+ * full-bleed and takes the `full` track. (Back-to-top is `position: fixed`,
+ * out of flow, and not a grid item at all.)
  */
-@media (min-width: 80rem) {
-  main {
-    grid-template-columns:
-      [full-start] var(--content-inset)
-      [content-start] calc(var(--content-width) - 2rem) [content-end]
-      minmax(1rem, 1fr) [full-end];
+@media (min-width: 88rem) {
+  :root {
+    --measure: var(--measure-wide);
   }
 }
 

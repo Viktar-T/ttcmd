@@ -27,7 +27,7 @@ for the baseline and for the result (spec, criteria preamble; plan §5.4).
   and criterion 7 have no meaning without it, and it cannot be taken after the
   first commit.
 
-- [ ] **T02 — The measure moves, and the lane follows it.**
+- [x] **T02 — The measure moves, and the lane follows it.** *(T03 folded in — see below.)*
   `app/tokens.css`: `--measure-wide: 47.5rem` and `--band: 81rem` added,
   `--content-width` becomes `calc(var(--measure) + 9rem)`, `--content-inset`
   deleted, the slice-004 and slice-012 comments rewritten. `app/globals.css`:
@@ -41,7 +41,14 @@ for the baseline and for the result (spec, criteria preamble; plan §5.4).
   identical to T01 — 32 / 352, 408 / 736, 464 / 624 (criterion 4). No
   horizontal overflow at any of the eleven widths.
 
-- [ ] **T03 — The frame becomes the band.**
+- [x] **T03 — The frame becomes the band.** **Done inside T02's commit, not
+      beside it.** The two are one edit once `--content-inset` goes: slice 012's
+      anchoring block is the only thing that reads that name, so deleting the
+      name and deleting the block cannot be separated, and a commit holding one
+      without the other would not build a page anyone could measure. Recorded
+      rather than split artificially (AGENTS.md §8: new work is proposed, not
+      inserted — this is the same work in one commit).
+
   `app/globals.css`: `main`'s content track becomes
   `min(var(--band), 100% - 2rem)`, and slice 012's `@media (min-width: 80rem)`
   anchoring block is deleted with its comment.

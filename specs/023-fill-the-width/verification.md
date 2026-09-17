@@ -103,3 +103,59 @@ The module page's own boxes at 1585 / 1570: panel 32 / 352, page column
 what slice 014 gave it. `/postep`'s table is 464 / 624. The home page's hero
 lede is 464 / **522**: it shrink-wraps inside `.heroLede { max-width: 34rem }`,
 the one hard-coded prose length in the tree (plan §5.1).
+
+---
+
+## T02 — The measure moves, the lane follows, the frame becomes the band
+
+`app/tokens.css` · `app/globals.css`. T03 is in this commit; `tasks.md` says why.
+
+### Commands
+
+```
+$ node scripts/check-design-invariants.mjs
+  Design invariants OK.
+  Contrast floors (Check E): ... identical to T01, all twenty rows ...
+  exit 0
+
+$ npx eslint        exit 0, no output
+$ npx tsc --noEmit  exit 0, no output
+```
+
+### Boxes — lesson `1c`, criteria 2, 3 and 4
+
+| window / cw | panel | article column | prose | pager | header lane | overflow |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1585 / 1570 | 32 / 352 | **408 / 872** | **464 / 760** | **464 / 760** | **389 / 792** | 0 |
+| 1409 / 1394 | 32 / 352 | 408 / 872 | 464 / 760 | 464 / 760 | 301 / 792 | 0 |
+| 1407 / 1392 | 32 / 352 | 408 / 736 | 464 / 624 | 464 / 624 | 368 / 656 | 0 |
+| 1280 / 1265 | 32 / 352 | 408 / 736 | 464 / 624 | 464 / 624 | 305 / 656 | 0 |
+
+- **Criterion 2** — prose 760, wide lane 872, and 872 − 760 = 112, the 56 px a
+  side slice 004 fixed, now arithmetic rather than a second literal.
+- **Criterion 3** — the article column's right edge is 408 + 872 = 1280, so the
+  gap to the viewport's right edge is 1570 − 1280 = **290 px**, against 426 at
+  T01. The contents column is where it was.
+- **Criterion 4** — the two rows at 1407 and 1280 are T01's rows, value for
+  value. The wide fold is the only thing between them and the two rows above.
+- **Criterion 8, first half** — the site header and accent-band lane is 389 /
+  **792**, the measure plus the frame's two gutters, and it moved 68 px left as
+  spec §5 said it would.
+
+### The band, as far as this commit takes it
+
+`main`'s content track is the band at 1585: on `/` it is 1296 centred with 144
+either side, and the page's own blocks are still `.lane`-centred **inside** it —
+`section.hero` and `ul.moduleGrid` at 413 / 760, four cards per row. That is the
+expected intermediate state, and T04 is the commit that makes a lane start at
+the band's left edge and takes the grid out of the lane. `/postep`'s three lanes
+are likewise at 405 / 760.
+
+### Instrument note, found here rather than assumed
+
+In the measuring iframe a media query is evaluated against the **full iframe
+width**, not the width less the scrollbar: the wide fold fires at window 1409 /
+cw 1394. A top-level window excludes the scrollbar from that evaluation, so the
+same fold arrives at a window of about 1423 there. Boxes are unaffected — they
+are read from the same layout the query produced — and the boundary itself is
+cross-checked in a real top-level window at T07.

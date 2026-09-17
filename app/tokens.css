@@ -93,40 +93,55 @@
 }
 
 /*
- * Slice 004. Two widths, not one: --content-width is the page's box and the
- * column a diagram or a table may use; --measure is the prose column inside
- * it. Keeping them apart is what lets the contents panel arrive beside the
- * prose later without reopening the measure.
+ * Slice 004 kept these two apart; slice 023 moved the first and DERIVED the
+ * second from it. --measure is the prose column. --content-width is the box
+ * around it — the wide lane a diagram or a table may use — and it is now
+ * `--measure + 9rem`, which is exactly the 56px of lane showing on each side
+ * of the prose that 004 fixed by hand. One number moves, the other follows,
+ * and the offset cannot drift.
+ *
+ * --measure has two values. Below the wide fold it is the 39rem slice 004
+ * measured. At 88rem and above it is --measure-wide: 47.5rem, read off the
+ * reference at the same viewport and the same 18px body size, because a
+ * lesson at 1585px was spending 426px on nothing to the right of its article.
+ *
+ * THE SWAP IS NOT IN THIS FILE. It is one @media in app/globals.css, the only
+ * place 88rem is written, and it has to be there: Check D of
+ * scripts/check-design-invariants.mjs reads these declarations with a flat
+ * brace scan and fails the build on a rule nested one level deep here.
+ *
+ * The trap the calc() brings with it: set --measure anywhere but :root — on a
+ * component, inside a media query scoped to one page — and the wide lane
+ * silently follows it there too.
  */
 :root {
   --measure: 39rem;
-  --content-width: 48rem;
+  --measure-wide: 47.5rem;
+  --content-width: calc(var(--measure) + 9rem);
+
+  /* Slice 023. The band every page that is NOT a lesson sits in: at most this
+     wide, centred in the viewport, and the viewport less the frame's two
+     gutters below that. 81rem is the 1296px the reference runs its own front
+     page at, and it is what replaced slice 012's fixed left inset. */
+  --band: 81rem;
 }
 
 /*
  * Slice 011 introduced these three in app/contents.css, because only the
- * contents panel needed them. Slice 012 moved them here, because the PAGE
- * FRAME needs them too: above the fold every page's content column starts
- * where a lesson's article column starts, so the frame has to know how wide
- * the contents column and its gap are even on a page that has no panel.
+ * contents panel needed them; slice 012 moved them here, because its anchored
+ * page frame needed them too. They live beside the measure and the band
+ * because that is what they are: page geometry.
  *
- * A stylesheet for one component is the wrong place for a length the frame
- * reads, and the frame reaching into it would be worse. They live beside the
- * measure and the content width because that is what they are: page geometry.
- *
- * --content-inset is DERIVED, not a fourth number. It is the one name the
- * frame uses, so the sum is written once and cannot drift from its parts:
- * 2 + 22 + 1.5 = 25.5rem = 408px at a 16px root, which is exactly where the
- * lesson page's article column begins.
+ * Slice 023 deleted the fourth name that used to sit here, --content-inset —
+ * the sum of these three, 408px, which was where every page's content column
+ * began. Nothing reads it any more: a band page is centred on --band, and only
+ * a lesson page is anchored, out of these three directly, in app/contents.css
+ * where the panel is.
  */
 :root {
   --contents-width: 22rem;
   --contents-gap: 1.5rem;
   --lesson-margin: 2rem;
-
-  --content-inset: calc(
-    var(--lesson-margin) + var(--contents-width) + var(--contents-gap)
-  );
 }
 
 /*
