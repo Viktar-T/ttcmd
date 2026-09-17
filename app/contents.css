@@ -77,6 +77,23 @@
   min-width: 0;
 }
 
+/* Slice 023, and the closing review's second finding. The band is a property of
+   the PAGE, not of the fold: spec §3 gives a band page the band at every width,
+   and criterion 10 asks it to fill the viewport less the gutters at 1024, 768
+   and 375. Declared outside the 80rem block for that reason — with the width
+   inside it, the module page fell back below the fold to the lesson wrapper's
+   centred 736px column while the home page beside it filled 977.
+
+   One track, both name sets, so anything that claims `full` inside this wrapper
+   still resolves. The panel is display:none below the fold and the disclosure
+   takes its place inside the column, exactly as on a lesson page. */
+.pageColumnsBand {
+  width: min(var(--band), 100% - 2rem);
+  margin-inline: auto;
+  grid-template-columns:
+    [full-start content-start] minmax(0, 1fr) [content-end full-end];
+}
+
 @media (min-width: 80rem) {
   .pageColumns {
     /* [panel-end content-start] is ONE line-names block, not two adjacent
@@ -108,8 +125,6 @@
 
      The lesson page's rule above is untouched, which is criterion 4. */
   .pageColumnsBand {
-    width: min(var(--band), 100% - 2rem);
-    margin-inline: auto;
     padding-inline-start: 0;
     grid-template-columns:
       [panel-start] var(--contents-width)

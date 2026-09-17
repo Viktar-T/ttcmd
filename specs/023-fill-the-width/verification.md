@@ -385,3 +385,97 @@ $ git diff <pre-slice> -- app components | grep -c '^+.*use client'  0
 
 Nothing under `content/`, no dependency, no new client component, no network
 request added.
+
+---
+
+## T08 — The closing review, and the two gaps it found
+
+A subagent with fresh context read `constitution.md`, `AGENTS.md`, this slice's
+`spec.md` and the complete diff, and checked every acceptance criterion. It
+found **no scope violation** — nothing under `content/`, no dependency, no new
+client component, no token, palette, rhythm or rule value moved, the contents
+panel untouched — and no claim in this file that the code contradicts. It found
+three gaps. Two affected a criterion and are fixed below; the third is Viktar's.
+
+### Gap 1 (fixed) — the module grid put *more, narrower* cards between 768 and 1280
+
+`app/nav.css`. The three-column cap was gated at the lesson page's 80rem fold,
+but the band widens the grid from about 768 px upward, so in the window between
+them `auto-fit` spent the new width on **more columns**: five cards of 183 px at
+1024 and six of 192 px at 1279, against **three of 197 px before the slice**,
+snapping to three of 400 px at 1280. Narrower cards than the ones this slice
+exists to widen — spec §3's "wider cards, not more of them" and decision 9,
+failed in the one range criterion 7 does not name. The cap now starts at 48rem.
+
+| `/` window / cw | grid | card | per row |
+| --- | --- | --- | --- |
+| 375 / 360 | 16 / 328 | 16 / 328 | 1 |
+| 768 / 753 | 16 / 721 | 16 / **230** | 3 |
+| 1024 / 1009 | 16 / 977 | 16 / **315** | 3 |
+| 1279 / 1264 | 16 / 1232 | 16 / **400** | 3 |
+| 1280 / 1265 | 16 / 1233 | 16 / 400 | 3 |
+| 1585 / 1570 | 137 / 1296 | 137 / **421** | 3 |
+
+The card is wider than T01's at every width and never narrower. `/moduly` and
+the reference page's grid specimen use the same rule and follow it.
+
+### Gap 2 (fixed) — the module page was not in the band below the fold
+
+`app/contents.css`. The band modifier's width sat inside the 80rem block, so
+under the fold the module page fell back to the lesson wrapper's centred 736 px
+column while every other band page filled the viewport less the gutters — spec
+§3 says "at every width" and criterion 10 says band pages fill it. The width and
+the centring are now declared outside the media query, with a single-track grid
+carrying both name sets, and the panel arrangement stays inside it.
+
+| module page, window / cw | wrapper | panel | content column | its prose text |
+| --- | --- | --- | --- | --- |
+| 375 / 360 | 16 / 328 | absent | 16 / 328 | 16 / 328 |
+| 768 / 753 | 16 / **721** | absent | 16 / 721 | 65 / 624 |
+| 1024 / 1009 | 16 / **977** | absent | 16 / 977 | 193 / 624 |
+| 1280 / 1265 | 16 / 1233 | 16 / 352 | 392 / 857 | 509 / 624 |
+| 1585 / 1570 | 137 / 1296 | 137 / 352 | 513 / 920 | 593 / 760 |
+
+**The ordering matters and was got wrong once.** Declared after the 80rem block,
+the single-track base rule wins on source order at equal specificity and would
+have erased the panel column above the fold. It is declared before it.
+
+### Gap 3 (not fixed — Viktar's) — the module-to-lesson step is 129 px, not 49
+
+Already recorded at T05. The review's reading is that this is a deviation from
+the cost Viktar approved rather than a measurement footnote, and it agrees there
+is no fix short of re-anchoring the module page, which is what this slice
+deliberately undid. It goes to him with criterion 12.
+
+### Re-checks after both fixes
+
+```
+$ node scripts/check-design-invariants.mjs   exit 0
+$ diff <pre-slice report> <after>            no differences
+$ npx eslint                                 exit 0
+$ npx tsc --noEmit                           exit 0
+```
+
+**The lesson page is still untouched**, which is what the second fix put at
+risk: at 1585 panel 32 / 352, article column 408 / 872, prose and pager
+464 / 760; at 1409 the same; at 1407 and 1280 the baseline's 408 / 736 and
+464 / 624; at 1024 and 375 one column at 137 / 736 and 16 / 328.
+
+**No horizontal overflow** at any of the eleven widths on `/`, `/moduly`, a
+module page, `/postep` or `/styleguide`. The longest lesson's pre-existing table
+overflow at 320 and 375 is unchanged and unfixed (T07).
+
+---
+
+## What is left unchecked, and for whom
+
+- **Criterion 1** — `npm run build`. The invariants half runs and passes here;
+  `next build` needs `fonts.googleapis.com`, which no shell in this session may
+  reach. **One run on Viktar's machine closes it.**
+- **Criterion 11**, for the longest lesson at 320 and 375 px only: it fails, it
+  failed before this slice by the same number of pixels, and the cause is a wide
+  table in that lesson's content.
+- **Criterion 12** — the human eye. What to look at: `1c` and `1d` at 1585 for
+  whether 79 characters of Polish reads better than 65; and `/` → a module page
+  → a lesson at 1585 for whether a centred band beside a left-anchored lesson
+  reads as one site, with the 129 px step of gap 3 in view.

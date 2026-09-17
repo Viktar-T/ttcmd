@@ -494,11 +494,21 @@ main > .lane {
  * auto-fit below the fold: three across where there is room, one across on a
  * phone, and it stays right when a module is added.
  *
- * Above the fold it is three fixed columns, because slice 023 took this grid
- * out of the lane and gave it the whole band: auto-fit in a 1296px band puts
- * SEVEN 11rem cards across and turns the front door into a directory. Three
- * wide cards are the reference's own arrangement and what the grid had before
- * the band; the width goes into the cards, not into the count.
+ * Three fixed columns from 48rem up, because slice 023 took this grid out of
+ * the lane and gave it the whole band: auto-fit in a 1296px band puts SEVEN
+ * 11rem cards across and turns the front door into a directory. Three wide
+ * cards are the reference's own arrangement and what the grid had before the
+ * band; the width goes into the cards, not into the count.
+ *
+ * 48rem and not the 80rem fold, and that is the closing review's finding, not
+ * a taste: the band is wider than the old 624px lane from about 768px upward,
+ * so gating the cap at 80rem left a window between the two where auto-fit
+ * filled the extra width with MORE cards — five of 183px at 1024, six of 192px
+ * at 1279, against three of 197px before the slice — and then snapped back to
+ * three of 400px at 1280. Cards narrower than the ones this slice set out to
+ * widen. At 48rem and below the cap changes nothing that was not already
+ * happening: auto-fit gives three columns at 768 and fewer below it, which is
+ * what the page did before the band.
  * ------------------------------------------------------------------ */
 
 .moduleGrid {
@@ -514,7 +524,7 @@ main > .lane {
   gap: 1rem;
 }
 
-@media (min-width: 80rem) {
+@media (min-width: 48rem) {
   .moduleGrid {
     grid-template-columns: repeat(3, 1fr);
   }

@@ -108,7 +108,7 @@ for the baseline and for the result (spec, criteria preamble; plan §5.4).
   under `content/`, `package.json` and `package-lock.json` are unchanged, and no
   `"use client"` was added.
 
-- [ ] **T08 — Close the slice.**
+- [x] **T08 — Close the slice.**
   `verification.md` completed, then the complete diff reviewed against
   `spec.md`'s acceptance criteria in a fresh subagent context (AGENTS.md §3).
   **Check:** the review reports no gap affecting correctness or a criterion
