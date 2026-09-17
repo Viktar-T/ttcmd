@@ -27,7 +27,7 @@ output is in the commit, never when the code is merely written.
       surviving statement that ttcmd has none; `docs/adr/0015-*.md` exists and
       names its rejected alternatives. Closes criterion 12.
 
-- [ ] **T03 — The nine drawings.**
+- [x] **T03 — The nine drawings.**
       `components/marks.tsx`: eight module marks on one square viewBox keyed by
       folder slug, one wider course mark, every one of them `fill="none"`,
       `stroke="currentColor"`, `aria-hidden="true"`, no `<title>`, no colour
