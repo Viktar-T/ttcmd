@@ -273,3 +273,115 @@ is the one width the site never gives prose otherwise.
 and `stroke-dasharray` on the inline SVG in `app/styleguide/page.tsx` — a file
 this slice does not touch. Recorded here so the sweep's console check is not
 read as a regression; fixing it is a chore, not this slice.
+
+---
+
+## T07 — The sweep
+
+One file changed, because the sweep found a real break: `app/postep/page.module.css`.
+
+### What the sweep found, and the fix
+
+`scrollWidth − clientWidth` at 320, 375, 768, 1024, 1279, 1280, 1281, 1407,
+1409, 1585 and 2560 px, on `1c`, the longest lesson, module 0's lesson, `/`,
+`/moduly`, a module page, `/postep` and `/styleguide`.
+
+**`/postep` scrolled sideways at 768, 1024 and 1279** — by 22, 20 and 18 px. The
+band gave the weeks calendar more width than the lane did, `auto-fit` filled it
+with three 230 px columns at 768, and a week's row is a flex line whose dates do
+not shrink below their own min-content, so `31.08.2026 – 04.09.2026` ran past
+the right edge of the document. Raising the column floor to `20rem` fixed those
+three and broke 320, where a 320 px floor is the entire phone; `min(20rem, 100%)`
+fixed that. Both reasons are written into the stylesheet beside the value.
+
+After the fix: **clean at all eleven widths on all eight pages**, with one
+exception below.
+
+### The one failure that is not this slice's
+
+**The longest lesson (`1d`) overflows at 320 px (89 px) and 375 px (34 px)** — a
+wide `<table>` in that lesson, which sets a min-content width of 425 px on a
+305 px viewport. **It does the same before this slice**, verified by restoring
+the pre-slice `app/` and `components/` over the same content tree and measuring
+again: 89 px at 320 and 34 px at 375, identical. Nothing below the 80rem fold
+changed geometry — `--content-width` is 48rem there either way — so criterion 11
+is met by this slice and fails for a reason that predates it. Reported, not
+checked off, and not fixed here: a lesson's table on a phone is its own problem
+and its own slice.
+
+### Criterion 9, on `1d` at 1585
+
+Measured in the **top-level window**, not the iframe: the scroll-spy throttles on
+`requestAnimationFrame`, which never fires while the desktop app's browser pane
+is not being painted, so the iframe reports no highlight however far it is
+scrolled. The pane paints on a screenshot, and every result below is from the
+real window after one.
+
+| what | result |
+| --- | --- |
+| at the top of the lesson | only `aria-current="page"` (the lesson's own row); no section highlighted |
+| after scrolling ~1000 px | `aria-current="location"` on `- Trzy momenty`, and on no other section |
+| at the document's bottom | `aria-current="location"` on `- Źródła`, the last section |
+| following `- Uczciwe granice` | the hash lands, the heading's top is +32 px (below the top edge), and the highlight moves to it |
+| the panel's own scrollbar (viewport 420 px tall) | the panel overflows, scrolls to its end (34 of a possible 33), and the page's scroll position stays 0 |
+| the first focusable in the panel | `Pomiń spis treści`, 1 px wide until focused |
+| back-to-top | absent at the top, present after a viewport of scroll |
+| every entry in the panel | 27 entries, **all on one line**, none over two |
+
+### Criterion 10, below the fold
+
+| window / cw | panel | disclosure | between header and first paragraph | overflow |
+| --- | --- | --- | --- | --- |
+| 1024 / 1009 | hidden | 193 / 624 | yes | 0 |
+| 768 / 753 | hidden | 65 / 624 | yes | 0 |
+| 375 / 360 | hidden | 16 / 328 | yes | 0 |
+
+### The fold's real boundary, cross-checked in a top-level window
+
+| window / cw | `(min-width: 88rem)` | article column | prose |
+| --- | --- | --- | --- |
+| 1407 / 1392 | false | 408 / 736 | 464 / 624 |
+| 1422 / 1407 | **true** | 408 / 872 | 464 / 760 |
+
+So this browser evaluates the query against the **window** width, not the layout
+width: the fold arrives at a window of **1408**, not the ~1423 the spec's
+criteria preamble estimates. The criteria themselves are unaffected — they name
+1407 (narrow) and 1409 (wide), and both behave as they say — but the preamble's
+parenthetical is wrong and is corrected here rather than in the spec, which is
+committed.
+
+### Criterion 1, as far as it can be run here
+
+```
+$ node scripts/check-design-invariants.mjs   exit 0
+$ diff <before> <after>                      no differences — contrast report identical to T01,
+                                             all twenty rows, both themes
+$ npx eslint                                 exit 0
+$ npx tsc --noEmit                           exit 0
+```
+
+`next build` is still not runnable from this session (T01). **One
+`npm run build` on Viktar's machine is what remains of criterion 1**, and the
+box stays unchecked until it has run.
+
+### Criterion 14, the diff's scope
+
+```
+$ git diff --stat <pre-slice> -- . ':!specs'
+ app/contents.css               | 20 ++++++++++++++
+ app/globals.css                | 61 +++++++++++++++++++-------------------
+ app/moduly/[module]/page.tsx   | 20 +++++++-------
+ app/nav.css                    | 41 +++++++++++++++++++++++++---
+ app/postep/page.module.css     | 47 +++++++++++++++++++++++++++-----
+ app/postep/page.tsx            |  7 +++--
+ app/styleguide/page.module.css | 20 ++++++++++++++
+ app/tokens.css                 | 57 ++++++++++++++++++++++++---------------
+ components/module-grid.tsx     |  7 ++++-
+ 9 files changed, 208 insertions(+), 72 deletions(-)
+
+$ git diff --name-only <pre-slice> | grep -E '^(content/|package)'   none
+$ git diff <pre-slice> -- app components | grep -c '^+.*use client'  0
+```
+
+Nothing under `content/`, no dependency, no new client component, no network
+request added.

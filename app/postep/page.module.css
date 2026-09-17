@@ -40,8 +40,21 @@
   display: grid;
   /* auto-fit rather than a media query, the idiom .moduleGrid already uses:
      one column on a phone, several where there is room, and it stays right
-     when the twentieth week is written. */
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+     when the twentieth week is written.
+
+     20rem, not the 14rem this started at. A week's row is a flex line — the
+     label at one end, "31.08.2026 – 04.09.2026" at the other — and flex items
+     do not shrink below their min-content, so a column narrower than the row
+     needs does not compress, it overflows the page. At 14rem the band gave the
+     calendar three 230px columns at a 768px viewport and the dates ran 22px
+     past the right edge of the document. Found by the sweep at T07, not by
+     looking: the page scrolled sideways by a hair at 768, 1024 and 1279 and
+     nowhere else. 20rem is the row's own width with room to spare.
+
+     min(20rem, 100%) rather than the bare 20rem: a minmax floor wider than the
+     track available does not shrink either, and 20rem is 320px, which is the
+     whole of a 320px phone. The sweep caught that too, one width down. */
+  grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
   gap: var(--gap-tight) 1rem;
   font-size: var(--text-sm);
 }

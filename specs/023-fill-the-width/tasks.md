@@ -93,7 +93,7 @@ for the baseline and for the result (spec, criteria preamble; plan §5.4).
   `.page` is 137 / 1296; a prose specimen is 872 wide with its text at 760; the
   contents, grid and pager specimens show the site's own widths (criterion 13).
 
-- [ ] **T07 — The sweep. No code unless something fails.**
+- [x] **T07 — The sweep. No code unless something fails.** *(Something failed; one file changed.)*
   **Check:** criterion 9 on `1d` at 1585 — no section highlighted at the top,
   the passed section highlighted and only it with `aria-current="location"`, the
   last section at the document's bottom, a followed entry landing its heading
