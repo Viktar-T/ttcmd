@@ -195,11 +195,14 @@ Observable conditions, measured in a rendered page in a real browser. Boxes are
 `left / width` of the element's border box, in CSS pixels.
 
 **The convention, fixed here so before and after cannot use different ones.** A
-width named below is the **layout width** — `document.documentElement.clientWidth`
-— which is what a media query is evaluated against and what the numbers in this
-spec were taken with: the 1585 px window that produced them had a layout width
-of 1570. The window width is recorded beside every measurement, and the same
-convention is used for the baseline and for the result.
+width named below is the **window width**, and the **layout width** —
+`document.documentElement.clientWidth`, which is what a media query is actually
+evaluated against — is recorded beside it. The two differ by the scrollbar: the
+1585 px window that produced this spec's numbers had a layout width of 1570, and
+that is why the band there is 1296 with 137 either side rather than 1296 with
+144. One consequence is stated rather than discovered: a fold named `88rem`
+arrives at a **window** of about 1423 px, not 1408. The same convention is used
+for the baseline and for the result.
 
 1. `npm run build` succeeds, the colour-literal guard passes, and the contrast
    report prints the same ratios as before this slice — no token moved.
