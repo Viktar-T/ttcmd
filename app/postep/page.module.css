@@ -46,6 +46,19 @@
   font-size: var(--text-sm);
 }
 
+/* Three columns where the band is, for the reason .moduleGrid has the same cap
+   and found the same way — by looking at it. Slice 023 took this section out of
+   the 624px lane and gave it the 1296px band, where auto-fit fits FIVE 14rem
+   columns: at 240px each a week's row runs "Tydzień" onto one line, its number
+   onto the next, and its dates straight into the next column's label. The cells
+   need about 400px, which is three of them. Below the fold nothing here applies
+   and auto-fit arranges the calendar exactly as it did before the band. */
+@media (min-width: 80rem) {
+  .weeks {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 .weeks li {
   display: flex;
   justify-content: space-between;
@@ -192,11 +205,18 @@
 /* ------------------------------------------------------------------ *
  * The table of sessions — the wide layout
  *
- * 41rem is derived, not chosen: .lane stops shrinking when the viewport
- * reaches --measure (39rem) plus the frame's two 1rem gutters, and that is
- * where the lane's full 624px is guaranteed. It is the same number
- * app/nav.css already treats as the fold. A media query cannot read
- * var(--measure), so the literal is written with this sentence beside it.
+ * 41rem was derived, not chosen: .lane stopped shrinking when the viewport
+ * reached --measure plus the frame's two 1rem gutters, which with the 39rem of
+ * slice 004 was 41rem and where the lane's full 624px was guaranteed. It is
+ * the same number app/nav.css already treats as a fold. A media query cannot
+ * read var(--measure), so the literal is written with this sentence beside it.
+ *
+ * Slice 023 moved the measure and took this page's sections out of the lane
+ * altogether, so the width this number was derived from is no longer what the
+ * table gets — above the fold the table has the band. 41rem is kept anyway: it
+ * is below every width the table now has, so it still fires where the rest of
+ * the site changes shape, which is the reason the next paragraph gives for not
+ * moving it.
  *
  * The number stays where it is after slice 020 even though the table now
  * needs less: five columns want about 399px where seven wanted about 591px,

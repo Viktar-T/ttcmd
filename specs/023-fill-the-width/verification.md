@@ -159,3 +159,51 @@ cw 1394. A top-level window excludes the scrollbar from that evaluation, so the
 same fold arrives at a window of about 1423 there. Boxes are unaffected — they
 are read from the same layout the query produced — and the boundary itself is
 cross-checked in a real top-level window at T07.
+
+---
+
+## T04 — Inside the band: prose keeps the measure, the grid takes the width
+
+`app/nav.css` · `components/module-grid.tsx` · `app/postep/page.tsx` ·
+`app/postep/page.module.css`.
+
+### Commands
+
+```
+$ node scripts/check-design-invariants.mjs   exit 0, contrast report identical to T01
+$ npx eslint                                 exit 0, no output
+$ npx tsc --noEmit                           exit 0, no output
+```
+
+### Boxes
+
+| page | window / cw | hero / header lane | module grid | card | per row | overflow |
+| --- | --- | --- | --- | --- | --- | --- |
+| `/` | 1585 / 1570 | **137 / 760** | **137 / 1296** | **137 / 421** | **3** | 0 |
+| `/` | 1280 / 1265 | 16 / 624 | 16 / 1233 | 16 / 400 | 3 | 0 |
+| `/` | 768 / 753 | 16 / 624 | 16 / 721 | 16 / 230 | 3 | 0 |
+| `/` | 375 / 360 | 16 / 328 | 16 / 328 | 16 / 328 | 1 | 0 |
+| `/moduly` | 1585 / 1585 | 145 / 760 | 145 / 1296 | 145 / 421 | 3 | 0 |
+
+`/postep` at 1585 / 1570: `header.lane` 137 / 760, both sections **137 / 1296**,
+the table 137 / 1296.
+
+- **Criterion 6** — the hero paragraph is 137 / **760**: the measure, starting
+  at the band's left edge, not centred inside the band and no longer held at
+  544 px by `.heroLede`'s deleted `max-width: 34rem`.
+- **Criterion 7** — the grid is the whole band, three cards per row, each
+  **421 px** against a floor of 380 and against T01's 197. At 768 and 375 the
+  card *count* per row is T01's — 3 and 1 — and the cards are wider because the
+  band is wider, which is what the amended criterion says to expect.
+- **Criterion 8** — on `/postep` the header lane is 760 and the sections are
+  1296. Neither is 624, and 792 is a width this page does not have, as the
+  amendment records.
+
+### One thing the numbers did not catch, found by looking
+
+At band width the weeks calendar's `auto-fit, minmax(14rem, 1fr)` fits **five**
+columns of 240 px, and a week's row needs about 400: "Tydzień" set on one line,
+its number on the next, and its dates ran into the next column's label. Capped
+to three columns above the same 80rem fold `.moduleGrid` uses, with the reason
+in the stylesheet. Below the fold the calendar is untouched. Screenshots before
+and after at 1585 are what decided it; the boxes were identical either way.

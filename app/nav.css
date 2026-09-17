@@ -134,6 +134,13 @@
 /* The same lane, for a block that is already inside the frame's content column
    and therefore already has its gutters.
 
+   SLICE 023 SPLIT THIS IN TWO. Inside .pageColumn — a lesson's article column —
+   the lane still centres, which is what keeps the pager under the prose. On a
+   band page the lane is a child of the frame, whose content column is now the
+   whole 81rem band, and centring a 760px block in a 1296px band would put the
+   page's prose on a third left edge of its own. There it starts at the band's
+   left edge instead; the rule for that is below this one.
+
    width: 100% is load-bearing, not belt-and-braces. `margin-inline: auto` on a
    GRID ITEM suppresses the default `justify-self: stretch`, so the item is
    sized to its content and centred — which made the previous/next pair 186px
@@ -144,6 +151,15 @@
   width: 100%;
   max-width: var(--measure);
   margin-inline: auto;
+}
+
+/* A lane that is a child of the frame is on a band page: it reads at the
+   measure, and it starts where the band starts. `0 auto` rather than dropping
+   the margin entirely, so the leftover width still falls on the right instead
+   of stretching the block. Spec 023 §3: text still reads at the measure, and
+   only what is not prose may use the whole band. */
+main > .lane {
+  margin-inline: 0 auto;
 }
 
 /* ------------------------------------------------------------------ *
@@ -433,9 +449,15 @@
   line-height: 1.1;
 }
 
+/* No max-width of its own: it is the lane's width, which is the measure, which
+   slice 023 moved. The 34rem that stood here was the only hard-coded prose
+   length in the tree and it silently held the lede at 544px while everything
+   around it grew. `justify-self: stretch` is load-bearing with it — .hero is
+   `justify-items: start`, so a paragraph shrink-wraps to its text unless told
+   to fill, and the lede then sets narrower than the lane it sits in. */
 .heroLede {
   margin: 0;
-  max-width: 34rem;
+  justify-self: stretch;
   font-size: var(--text-lg);
   color: var(--text-muted);
 }
@@ -469,9 +491,14 @@
 /* ------------------------------------------------------------------ *
  * The module grid
  *
- * auto-fit rather than a media query: three across where there is room inside
- * the lane, one across on a phone, and it stays right when a third module is
- * written.
+ * auto-fit below the fold: three across where there is room, one across on a
+ * phone, and it stays right when a module is added.
+ *
+ * Above the fold it is three fixed columns, because slice 023 took this grid
+ * out of the lane and gave it the whole band: auto-fit in a 1296px band puts
+ * SEVEN 11rem cards across and turns the front door into a directory. Three
+ * wide cards are the reference's own arrangement and what the grid had before
+ * the band; the width goes into the cards, not into the count.
  * ------------------------------------------------------------------ */
 
 .moduleGrid {
@@ -485,6 +512,12 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
   gap: 1rem;
+}
+
+@media (min-width: 80rem) {
+  .moduleGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .moduleCard {

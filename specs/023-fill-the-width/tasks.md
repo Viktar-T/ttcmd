@@ -58,7 +58,7 @@ for the baseline and for the result (spec, criteria preamble; plan §5.4).
   (criterion 5). The lesson page is unchanged from T02 — this is the commit that
   could reach it and must not (criterion 4).
 
-- [ ] **T04 — Inside the band: prose keeps the measure, the grid takes the
+- [x] **T04 — Inside the band: prose keeps the measure, the grid takes the
       whole width.**
   `app/nav.css`: `main > .lane { margin-inline: 0 auto }` so a lane on a band
   page starts at the band's left edge; `.heroLede` loses `max-width: 34rem` —

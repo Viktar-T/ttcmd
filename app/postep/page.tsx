@@ -25,11 +25,14 @@ export default async function ProgressPage() {
 
   return (
     <>
+      {/* The title is text and keeps the reading lane. The two sections below
+          it are a list of weeks and a table of sessions — neither is prose, so
+          slice 023 gives them the whole band the frame now draws. */}
       <header className="lane">
         <h1 className="pageTitle">Postęp grup</h1>
       </header>
 
-      <section className={`lane ${styles.section}`}>
+      <section className={styles.section}>
         <h2 className={styles.heading}>Tygodnie</h2>
         {/* Only the weeks that have been written. The page never generates a
             school year: the breaks, the holidays and the last week are
@@ -52,7 +55,7 @@ export default async function ProgressPage() {
         </ul>
       </section>
 
-      <section className={`lane ${styles.section}`}>
+      <section className={styles.section}>
         <h2 className={styles.heading}>Zajęcia</h2>
         <ScheduleTable sessions={schedule.sessions} />
       </section>
