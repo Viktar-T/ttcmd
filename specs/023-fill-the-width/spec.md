@@ -11,9 +11,19 @@
   slice, not of every line: it is unapproved line by line by construction, and
   he reviews it afterwards from `## Decisions taken` and the final report.
 - **Date:** 2026-09-17
+- **Amended:** 2026-09-17, **before any code**, on the strength of the
+  fresh-context test AGENTS.md §2 requires. The plan's subagent could plan from
+  this file, and found three statements in it that do not survive contact with
+  the tree: §4 costed the jump as though the module page had no contents panel
+  (slice 014 gave it one, and this slice keeps it); criterion 8 asked for a
+  792 px box on a page where no rule produces one; and criterion 7 said "what it
+  renders today" about a grid the band necessarily widens. All three are
+  corrected below, and the measurement convention is now stated rather than
+  assumed. Nothing was changed to match code — no code exists yet — and no
+  decision moved.
 - **Depends on:** 004 (the measure and the wide lane — both re-opened here),
   006 (the page frame), 011 (the lesson page's two columns), 012 (the anchored
-  frame)
+  frame), 014 (the module page's contents panel, which stays)
 - **Supersedes:** slice 004's **value** for the measure, and **slice 012 in
   full** — its single anchored left edge and its criteria 2, 3 and 5. Neither
   file is rewritten (AGENTS.md §8); this one is the record of the change.
@@ -113,16 +123,23 @@ today's 197 px — and falling to two and then one below it, as it does now.
 
 ### 4. The cost, stated rather than discovered: two left edges again
 
-A lesson's prose starts at a fixed 464 px. A module page's lesson list will
-start at the band's left edge — 137 px at 1585 px, 16 px at 1280 px — which
-moves with the window. **Opening a lesson from a module page will move the text
-again**, by about 327 px at 1585 px.
+A lesson's prose starts at a fixed 464 px. Every band page starts where the
+band starts, which moves with the window — 137 px at 1585 px, 16 px at 1280 px.
+**Opening a lesson will move the text again**, which is precisely what slice 012
+existed to stop.
 
-That jump is precisely what slice 012 existed to remove, and removing it is what
-bought the empty strip this slice deletes. Viktar was shown the trade in those
-words and chose the band. 012 is superseded, not forgotten: if the jump turns
-out to be worse in use than the strip, the record of why it was traded away is
-this paragraph.
+**How far it moves, corrected.** The module page keeps the contents panel slice
+014 gave it, so its content column starts one panel and one gap inside the band,
+not at the band's edge: 513 px at 1585 px and 392 px at 1280 px, against a
+lesson's fixed 464 px. The jump is therefore about **49 px at 1585 px** and
+about **72 px the other way at 1280 px** — real, and an order of magnitude
+smaller than the 327 px this paragraph claimed before the plan measured it.
+Between the front door, the module listing and a module page there is no jump at
+all: all three start at the band's left edge.
+
+That is the trade Viktar was shown and took. 012 is superseded, not forgotten:
+if a 49-pixel step turns out to be worse in use than a 408-pixel empty strip,
+the record of why it was traded away is this paragraph.
 
 ### 5. What does not change
 
@@ -174,9 +191,15 @@ Refused deliberately, not forgotten:
 
 ## Acceptance criteria
 
-Observable conditions, measured in a rendered page in a real browser. Widths
-are CSS pixels of the viewport; boxes are `left / width` of the element's
-border box.
+Observable conditions, measured in a rendered page in a real browser. Boxes are
+`left / width` of the element's border box, in CSS pixels.
+
+**The convention, fixed here so before and after cannot use different ones.** A
+width named below is the **layout width** — `document.documentElement.clientWidth`
+— which is what a media query is evaluated against and what the numbers in this
+spec were taken with: the 1585 px window that produced them had a layout width
+of 1570. The window width is recorded beside every measurement, and the same
+convention is used for the baseline and for the result.
 
 1. `npm run build` succeeds, the colour-literal guard passes, and the contrast
    report prints the same ratios as before this slice — no token moved.
@@ -201,11 +224,16 @@ border box.
    not centred inside the band.
 7. **The module grid.** At 1585 px it spans the full band, renders **three**
    cards per row, and a card is at least 380 px wide. At 768 px and 375 px it
-   renders what it renders today.
+   renders the **same number of cards per row** as it does today; the cards are
+   wider there because the band is wider, and that is expected.
 8. **No length that means "the prose column" is left at its old value.** At
-   1585 px the progress page's table lane is the new measure plus the frame's
-   two gutters — 792 px — and no page renders a block at 624 px that rendered
-   at the measure before this slice.
+   1585 px the site header's and the accent band's inner lane is **792 px** —
+   the measure plus the frame's two gutters, which is the rule §5 keeps for
+   those two full-bleed elements. Inside the band there are no gutters to add,
+   so on the progress page a measure-capped block is **760 px** and a block
+   taking the whole band is **1296 px**; 792 is not a width that page can have.
+   And no page renders a block at 624 px that rendered at the measure before
+   this slice.
 9. **Nothing 007 and 011 shipped regressed**, demonstrated at 1585 px on the
    longest lesson: no section highlighted at the top; the passed section
    highlighted and only it, carrying the assistive current-location mark; the
