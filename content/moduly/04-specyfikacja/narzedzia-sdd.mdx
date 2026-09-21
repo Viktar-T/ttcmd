@@ -138,6 +138,25 @@ tu ma rację. Warto też pamiętać, co padło w pierwszej lekcji tego modułu: 
 dotąd nie zmierzył samej metody na prawdziwych aplikacjach. Pięć firm w tabeli
 wyżej zrobiło zakład, nie dowód — i dlatego ta lekcja ma daty w każdym wierszu.
 
+Jest jeszcze druga krytyka i tej rozmiarem nie odbijesz. Matt Pocock —
+programista, który uczy innych pracy z agentami — opowiedział w wystąpieniu
+opublikowanym w kwietniu 2026, co wyszło, kiedy sam spróbował trzeciego poziomu: napisał specyfikację,
+wygenerował z niej kod, a kiedy coś nie grało, poprawiał specyfikację i
+generował jeszcze raz. [Za każdym razem kod wychodził gorszy niż
+poprzednio](https://www.youtube.com/watch?v=v4F1gFy-hqg&t=102s), aż przestał
+się do czegokolwiek nadawać.
+
+Pocock uderza w założenie, na którym stoi cały trzeci poziom: że kod jest tani,
+więc nie szkoda go wyrzucić i wygenerować od nowa. [Jest
+odwrotnie](https://www.youtube.com/watch?v=v4F1gFy-hqg&t=235s) — im trudniej
+zmienić to, co już leży w projekcie, tym mniej agent zdoła w tym projekcie
+zrobić, bo w tym właśnie musi się połapać, zanim dopisze jedną linijkę. To
+jedna relacja jednego praktyka, nie pomiar. Ale dotyczy czegoś, czego rozmiar
+specyfikacji nie załatwia: tego, co pętla robi z kodem po dziesiątym przebiegu.
+Pytanie zostaw otwarte — wrócisz do niego w [module o testach i
+jakości](/moduly/07-testy-i-jakosc/testy-to-nowe-zloto), gdzie pojawi się
+sprawdzenie, które działa bez ciebie.
+
 ## Połowa pętli jest już w twoim edytorze
 
 Obu edytorów z tego kursu nie ma w tabeli, a mimo to robią połowę pętli. Warto to
@@ -286,6 +305,8 @@ był *spec-anchored*, a nie tylko *spec-first*.
 
 <Zrodlo title="Spec Workflow MCP — README" publisher="Pimzino (GitHub)" date="2026-09-02" url="https://github.com/Pimzino/spec-workflow-mcp">serwer MCP z pętlą requirements → design → tasks → implementation; notka autora o przerwie w rozwoju; plik bez własnej daty — data to dzień sprawdzenia</Zrodlo>
 
+<Zrodlo title="„Software Fundamentals Matter More Than Ever”" publisher="AI Engineer, wystąpienie Matta Pococka (YouTube)" date="2026-04-23" url="https://www.youtube.com/watch?v=v4F1gFy-hqg">relacja z własnej próby podejścia spec-to-code: „I kept running the compiler… and I would just end up with garbage” (1:42) oraz „code is not cheap — in fact, bad code is the most expensive it's ever been” (3:55); pisany zapis wystąpienia leży na `ai.engineer/talks/v4F1gFy-hqg`; tłumaczenie własne</Zrodlo>
+
 </Zrodla>
 
 ## Czytaj dalej
@@ -297,5 +318,9 @@ był *spec-anchored*, a nie tylko *spec-first*.
 <Lektura kind="dokumentacja" title="Specs — Kiro" url="https://kiro.dev/docs/specs/">dokumentacja z obrazkami trzech plików i przycisku przy zadaniu; warto obejrzeć, żeby zobaczyć pętlę z tej lekcji jako interfejs, nie jako folder</Lektura>
 
 <Lektura kind="artykul" title="Conductor: Introducing context-driven development for Gemini CLI" url="https://developers.googleblog.com/conductor-introducing-context-driven-development-for-gemini-cli/">krótki wpis, w którym duża firma mówi tezę tego modułu własnymi słowami: kontekst pracy ma leżeć w repozytorium, nie w rozmowie</Lektura>
+
+<Lektura kind="wideo" title="„Software Fundamentals Matter More Than Ever” — Matt Pocock" url="https://www.youtube.com/watch?v=v4F1gFy-hqg">osiemnaście minut kontrargumentu do tego modułu; wystąpienie jest po angielsku, ale napisy da się włączyć i kazać im przetłumaczyć. Warto obejrzeć całość, bo druga połowa mówi już nie o tym, co w metodzie jest złe, tylko co robić zamiast tego</Lektura>
+
+<Lektura kind="dokumentacja" title="mattpocock/skills — ta sama pętla jako zwykłe pliki Markdown" url="https://github.com/mattpocock/skills">repozytorium, w którym pętla z tej lekcji leży rozpisana bez żadnego produktu wokół: `to-spec` spisuje rozmowę w specyfikację, `to-tickets` rozbija ją na zadania, `implement` je wykonuje. Otwórz dwa pliki i porównaj z wierszami tabeli — to jest ten sam wiersz, tylko po angielsku i bez ceny</Lektura>
 
 </CzytajDalej>
