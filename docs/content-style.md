@@ -837,6 +837,8 @@ introduction and 1b's opening stop relying on it.
 | The 2025 SDD timeline (Kiro 14.07 → Spec Kit 02.09 → OpenSpec 06.09 → Tessl 23.09 → Kiro GA 17.11 → Conductor 17.12) and the your-file ↔ tool mapping table | 4d | — |
 | Böckeler's three levels and her critique („I'd rather review code than all these markdown files”; „a sledgehammer to crack a nut”) | 4d | — |
 | Cursor Plan Mode / Antigravity Implementation Plan as the plan-and-tasks half of the loop | 4d | 4e uses the feature without naming the products |
+| Matt Pocock's talk of 23.04.2026: the specs-to-code run whose output got worse with every regeneration, and „bad code is the most expensive it's ever been” | 4d | — |
+| „The rate of feedback is your speed limit”, from the same talk | **7a** | 4d links the talk whole; the two lessons quote different sentences of it, as 1b and 1c do with the Anthropic report |
 | „Ktoś prawdziwy ma tego używać — i ty się liczysz” | 4f | Moduł 9 (the project; v2.5 numbering), when the project is chosen |
 | The four families of window toolkits (A web shell, B one renderer, C native controls, D own renderer); Hopp's 8,6 vs 244 MB with its N = 1 caveat; 1Password's „four stacks”; „the cost is technical, the benefit organisational” | 5a | 5b as the family of each table row, one clause |
 | Delphi did not lose on merit — the price list (2 000 / 3 400 / 4 416 USD) and Borland → Inprise, 29.04.1998 | 5b | — (1a's telling stays outside the pipeline) |
