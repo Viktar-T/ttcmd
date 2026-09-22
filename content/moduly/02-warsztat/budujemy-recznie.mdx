@@ -159,13 +159,33 @@ model.** Zrobił to wzór napisany przez ludzi i polecenie, które go rozpakowa�
 To jest podłoga, na której stanie wszystko, co zbuduje potem agent, i warto ją
 zobaczyć osobno, zanim cokolwiek na niej stanie.
 
-Zamknij okno i wpisz `git status` jeszcze raz. Nie jest już pusty: przybyły
+Zamknij okno i wpisz `git status` jeszcze raz:
+
+```bash
+git status
+```
+
+Nie jest już pusty: przybyły
 foldery `bin` i `obj`, których nie tworzył ani szablon, ani ty. To wynik
 budowania — powstaje na nowo przy każdym uruchomieniu, więc do repozytorium
 nie wchodzi. Załóż w `pierwsze-okno`, czyli w korzeniu repozytorium, plik
-`.gitignore` i wpisz do niego `bin/` i `obj/` — tak samo jak w folderze z
-Zadania 2.1 w poprzedniej lekcji. Potem zrób commit — to drugi commit
-dzisiejszego dnia.
+`.gitignore` i wpisz do niego:
+
+```text title=".gitignore"
+bin/
+obj/
+```
+
+Wpisz `git status` jeszcze raz:
+
+```bash
+git status
+```
+
+Jest już pusty.
+
+Wykonaliśmy takie same kroki jak w folderze z
+Zadania 2.1 w poprzedniej lekcji.
 
 ## Pliki, które są oknem
 
@@ -175,17 +195,23 @@ jeszcze nie przedstawił — plus `bin` i `obj`, które przed chwilą trafiły d
 innego: o to, żeby zobaczyć, że **aplikacja to nie jeden plik z kodem, tylko
 kilka plików, z których każdy odpowiada na inne pytanie**. Pytania są cztery.
 
-**Od czego się zaczyna?** `Program.cs`. Każdy program ma jedno miejsce, w którym
+### **Od czego się zaczyna?** — `Program.cs`
+
+Każdy program ma jedno miejsce, w którym
 system operacyjny go uruchamia; tutaj nazywa się `Main` i robi dokładnie dwie
 rzeczy — składa aplikację i ją uruchamia. Nic więcej z tego pliku przez
 najbliższe tygodnie nie będzie potrzebne.
 
-**Czym jest sama aplikacja?** `App.axaml`, a obok niego `App.axaml.cs`. To opis
+### **Czym jest sama aplikacja?** — `App.axaml`, `App.axaml.cs`
+
+To opis
 całego programu, a nie pojedynczego okna: jaki motyw ma program i które okno
 otwiera jako pierwsze. Zapamiętaj ten plik — za chwilę zrobisz w nim zmianę,
 którą widać wszędzie naraz.
 
-**Co widać w oknie?** `MainWindow.axaml`. To plik, który opisuje okno — nie jego
+### **Co widać w oknie?** — `MainWindow.axaml`
+
+To plik, który opisuje okno — nie jego
 działanie, tylko wygląd i zawartość. Zapisany jest w języku znaczników (*XAML*),
 który działa na tej samej zasadzie co HTML: znaczniki w nawiasach ostrych,
 atrybuty w cudzysłowach, jedno zagnieżdżone w drugim. Jeśli umiesz przeczytać
@@ -196,11 +222,15 @@ widać, jest w środku okna. Obok leży `MainWindow.axaml.cs`, plik z kodem C#
 należącym do tego samego okna: znaczniki opisują, co widać, a kod obok opisuje,
 co się dzieje po kliknięciu. Dziś nie zaglądamy do niego głębiej.
 
-**Z czego się to buduje?** `okno.csproj`. Tu zapisane jest, w której wersji .NET
+### **Z czego się to buduje?** — `okno.csproj`
+
+Tu zapisane jest, w której wersji .NET
 projekt ma się zbudować i z jakich bibliotek korzysta — linijki z `Avalonia` w
 nazwie wskazują właśnie tę bibliotekę, którą pobierało pierwsze `dotnet run`.
 Ten plik jest czytany przez zestaw narzędzi, którego obecność wykazało polecenie
-`dotnet --list-sdks` w poprzedniej lekcji. Zostaje jeszcze `app.manifest` —
+`dotnet --list-sdks` w poprzedniej lekcji. 
+
+Zostaje jeszcze `app.manifest` —
 drobne ustawienia dla Windowsa, których dziś nie ruszamy.
 
 Zwróć uwagę na jedno: nazwa `okno` jest w tych plikach w kilku miejscach, bo
