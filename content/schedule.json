@@ -139,7 +139,21 @@
       ],
       "groups": {
         "4Ta-1": "2026-09-15",
-        "4Ta-2": "2026-09-17"
+        "4Ta-2": "2026-09-17",
+        "4Tc-1": "2026-09-22"
+      }
+    },
+    {
+      "number": 4,
+      "week": 4,
+      "title": "Budujemy okno ręcznie.",
+      "topics": [
+        {
+          "lesson": "02-warsztat/budujemy-recznie"
+        }
+      ],
+      "groups": {
+        "4Ta-2": "2026-09-22"
       }
     }
   ]
