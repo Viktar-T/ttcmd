@@ -126,7 +126,19 @@ GitHubie **puste** repozytorium `pierwsze-okno` — tak samo jak w poprzedniej
 lekcji, bez README, bez `.gitignore` i bez licencji — i połącz jedno z drugim:
 
 ```bash
+# zapisuje adres, dokąd ma trafiać push; origin to przyjęta nazwa tego adresu
 git remote add origin https://github.com/twoja-nazwa/pierwsze-okno.git
+
+# wysyła gałąź na GitHub; -u wiąże ją z tamtejszą, więc potem wystarczy git push
+git push -u origin main
+
+
+# lub — jeśli git status pisze „On branch master”, a nie „On branch main”:
+
+# zmienia nazwę gałęzi u ciebie na dysku: master na main
+git branch -m master main
+
+# teraz nazwa gałęzi zgadza się z tą w poleceniu i push ma co wysłać
 git push -u origin main
 ```
 
