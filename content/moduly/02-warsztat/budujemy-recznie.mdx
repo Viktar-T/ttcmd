@@ -241,15 +241,35 @@ pliku `okno.csproj`, w kodzie i w pasku tytułu okna. Nic tu nie powstało samo.
 
 Skoro pliki opisują okno, to zmiana w pliku musi zmieniać okno. Sprawdzimy to
 piętnaście razy, bo raz to przypadek, a piętnaście razy to zasada. Każda zmiana
-siedzi w jednym miejscu i każdą widać gołym okiem. Po każdej rób to samo: zapisz
-plik, wpisz `dotnet run`, popatrz, zamknij okno. Pierwsze uruchomienie było
-wolne, bo pobierały się biblioteki — następne trwają sekundę albo dwie.
+siedzi w jednym miejscu i każdą widać gołym okiem. Po każdej rób to samo: 
+- zapisz plik, 
+- wpisz `dotnet run`, 
+- popatrz, 
+- zamknij okno — i zrób commit. 
 
-Prowadź przy tym notatkę: numer zmiany i jedno zdanie o tym, co się stało. Nie
-z pamięci, tylko na bieżąco — po piętnastu zmianach z rzędu nikt nie pamięta,
-która co zrobiła.
+Pierwsze uruchomienie było wolne, bo pobierały się biblioteki; następne trwają sekundę
+albo dwie. Pełny obrót wygląda więc tak:
 
-Pierwsze pięć zmian dotyczy ramy okna, czyli samego znacznika `<Window>` w
+```bash
+dotnet run
+
+# popatrz na okno, zamknij je i zapisz w historii ten jeden krok;
+# przy zmianach 14 i 15 plikiem jest App.axaml, nie MainWindow.axaml
+git add MainWindow.axaml
+git commit -m "ustaw wlasny tytul okna"
+```
+
+Commit jest tutaj notatką i osobnej nie prowadź. Opis mówi jednym zdaniem, co ta
+zmiana zrobiła, i powstaje na bieżąco, a nie z pamięci — po piętnastu zmianach
+z rzędu nikt nie pamięta, która co zrobiła. Na końcu `git log --oneline` wypisze
+całą lekcję w piętnastu wierszach, po jednym na zmianę.
+
+Trzy zmiany — czwarta, piąta i piętnasta — każą coś dopisać, zobaczyć i usunąć
+albo zmienić z powrotem. Tam commit robisz dopiero na końcu, kiedy plik wygląda
+tak, jak ma zostać: w historii zapisuje się stan, który zostaje, a nie każde
+naciśnięcie klawisza.
+
+**Pierwsze pięć** zmian dotyczy ramy okna, czyli samego znacznika `<Window>` w
 `MainWindow.axaml`. Wszystkie są [właściwościami okna](https://docs.avaloniaui.net/docs/reference/controls/window)
 i wszystkie dopisuje się tam, gdzie już stoi `Title`.
 
@@ -270,7 +290,7 @@ i wszystkie dopisuje się tam, gdzie już stoi `Title`.
    zmaksymalizowane. Potem też usuń: reszta lekcji wygląda czytelniej w małym
    oknie.
 
-Kolejnych osiem zmian dotyczy napisu w oknie, czyli tego, co leży między
+**Kolejnych osiem** zmian dotyczy napisu w oknie, czyli tego, co leży między
 `<Window …>` a `</Window>` — jedynej rzeczy, którą w tym oknie widać.
 
 6. **Własny tekst.** Zastąp `Welcome to Avalonia!` swoim zdaniem. Zmienił się
@@ -295,7 +315,7 @@ Kolejnych osiem zmian dotyczy napisu w oknie, czyli tego, co leży między
     [te dwie właściwości](https://docs.avaloniaui.net/docs/basics/user-interface/building-layouts/alignment-margins-and-padding)
     mówią, gdzie w wolnym miejscu ma stanąć to, co je wypełnia.
 
-Dwie ostatnie zmiany są w zupełnie innym pliku — i to jest ich jedyny cel.
+**Dwie ostatnie** zmiany są w zupełnie innym pliku — i to jest ich jedyny cel.
 
 14. **Motyw na ciemny.** Otwórz `App.axaml` i zmień
     `RequestedThemeVariant="Default"` na `"Dark"`. Okno jest ciemne, a zmiana
@@ -310,12 +330,15 @@ Dwie ostatnie zmiany są w zupełnie innym pliku — i to jest ich jedyny cel.
 Trzynaście zmian zmieściło się w `MainWindow.axaml`, dwie ostatnie w
 `App.axaml`. I właśnie dla tych dwóch warto było przejść przez wcześniejsze
 trzynaście: pokazują granicę między „to okno” a „ta aplikacja” — i pokazują ją
-tak, że widać ją na ekranie. Zapisz całość w historii, po nazwach plików, bo
-commit ma zawierać dokładnie te dwa pliki, w których coś się zmieniło:
+tak, że widać ją na ekranie. Widać ją też w historii: piętnaście commitów,
+z których dwa ostatnie dotykają innego pliku niż trzynaście poprzednich. Sprawdź
+to i wyślij całość:
 
 ```bash
-git add MainWindow.axaml App.axaml
-git commit -m "zmien wyglad okna i motyw aplikacji"
+# cała lekcja w jednym wypisie — jeden wiersz na commit
+git log --oneline
+
+# wysyła wszystkie commity naraz
 git push
 ```
 
@@ -333,13 +356,14 @@ i nie wymaga wiary.
 
 - **Okno bierze się z pliku, który potrafisz wskazać.** `MainWindow.axaml`
   opisuje, co widać; `App.axaml` — całą aplikację; `okno.csproj` — z czego to
-  się buduje. Piętnaście zmian w dwóch z tych plików powstało pod twoją ręką i
-  każdą było widać po uruchomieniu.
+  się buduje. Piętnaście zmian w dwóch z tych plików powstało pod twoją ręką,
+  każdą było widać po uruchomieniu i każda ma w historii własny commit.
 - **Podłoga jest ludzka.** Okno postawił wzór napisany przez ludzi i polecenie,
   które go rozpakowało — żaden model. Wszystko, co agent zbuduje później,
   zbuduje na tym.
 - **Zmiana w pliku jest zmianą na ekranie.** Piętnaście razy z rzędu ten sam
-  rytm: zapisz plik, uruchom, popatrz. To jest dokładnie ten rytm, w którym w
+  rytm: zapisz plik, uruchom, popatrz, zrób commit. To jest dokładnie ten rytm,
+  w którym w
   następnej lekcji będziesz sprawdzać agenta — tyle że wtedy plik zmieni ktoś
   inny.
 
@@ -356,8 +380,9 @@ Doprowadź `pierwsze-okno` do stanu, w którym projekt z szablonu uruchamia się
 wszystkie piętnaście zmian z podrozdziału „15 zmian własną ręką” jest w plikach
 i widać je po `dotnet run`: własny tytuł na pasku, własny napis w środku, zadany
 rozmiar i położenie okna, wygląd samego napisu i motyw aplikacji. Historia ma opowiadać tę lekcję — osobny commit z
-szablonem, osobny z `.gitignore` i osobny z twoimi piętnastoma zmianami, opisy w
-trybie rozkazującym. Na koniec `git status` ma być pusty.
+szablonem, osobny z `.gitignore` i piętnaście osobnych commitów, po jednym na
+każdą zmianę, opisy w trybie rozkazującym; `git log --oneline` wypisze więc
+siedemnaście wierszy. Na koniec `git status` ma być pusty.
 
 Kiedy repozytorium z aplikacją będzie umieszczone na GitHubie, wypełnij
 [formularz](https://docs.google.com/forms/d/e/1FAIpQLSc9Da0ossYyhSCMjnkMCqom2VQ9CYpB2L0Kvymb3yt_UYF6rw/viewform?usp=header),
