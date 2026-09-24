@@ -157,6 +157,19 @@
         "4Ta-2": "2026-09-24",
         "4Tc-1": "2026-09-24"
       }
+    },
+    {
+      "number": 5,
+      "week": 5,
+      "title": "Budujemy okno z agentem.",
+      "topics": [
+        {
+          "lesson": "02-warsztat/budujemy-z-agentem"
+        }
+      ],
+      "groups": {
+
+      }
     }
   ]
 }

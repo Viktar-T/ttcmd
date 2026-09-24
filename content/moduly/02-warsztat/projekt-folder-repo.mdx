@@ -44,7 +44,18 @@ publish: true
     account yet and the section needs one three times — the private-email
     setting, the empty repository and the push. Only what GitHub's own
     account-creation page states is claimed; 2FA is recommended there, not
-    required, so the lesson does not mention it. */}
+    required, so the lesson does not mention it.
+    2026-09-24, on Viktar's request: his two placeholders under the account
+    step („video o GitHub”, „video o Git”) filled with GitHub's own videos —
+    How GitHub works (19.12.2016, 3:32, English subtitles YouTube can
+    translate) and A brief introduction to Git for beginners (26.05.2024,
+    9:07; chapters: what Git is, installing, configuring, first commands, Git
+    vs GitHub; a Polish auto-dubbed audio track, played by default in a
+    Polish-language browser). Both placed above the Pro Git bullet, so that
+    „Ten rozdział opisuje instalację…” still follows the chapter it refers to.
+    Polish-language videos were passed over: the short ones date from 2018,
+    the complete ones run 40–80 minutes or set up SSH where this lesson uses
+    HTTPS. Checked 2026-09-24. */}
 
 Spróbuj czegoś, co zajmie minutę. Znajdź na dysku folder z Zadania 2.1:
 aplikację, którą zbudował twój agent, i kartę obserwacji
@@ -106,6 +117,15 @@ Nazwę użytkownika wybierz z namysłem, bo zobaczy ją każdy: stanie się czę
 adresu każdego twojego repozytorium, tak jak `twoja-nazwa` w adresie
 `https://github.com/twoja-nazwa/…` dalej w tej lekcji.
 
+- [How GitHub works](https://www.youtube.com/watch?v=w3jLJU7DT5E) — trzy i pół
+  minuty animacji od samego GitHuba o tym, jak zespół pracuje w tym serwisie nad
+  wspólnym projektem. Po angielsku, z napisami; w ustawieniach odtwarzacza
+  przełączysz je na polskie, tłumaczone automatycznie.
+- [A brief introduction to Git for beginners](https://www.youtube.com/watch?v=r8jQ9hVA2qs)
+  — dziewięć minut, też od GitHuba: czym jest Git, jak go zainstalować i
+  skonfigurować, od jakich poleceń zacząć i czym Git różni się od GitHuba. Film
+  ma polską ścieżkę dźwiękową wygenerowaną automatycznie, więc może ruszyć po
+  polsku; oryginał po angielsku wybierzesz w ustawieniach odtwarzacza.
 - [Pro Git: Installing Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
   — jeden rozdział o tym, jak zainstalować Gita na Linuksie, macOS i Windowsie.
   Potrzebny wtedy, gdy chcesz pracować nad projektem także w domu.
@@ -264,7 +284,18 @@ zostanie odrzucone jako niezgodne z tym, co masz u siebie. GitHub pokaże adres
 repozytorium; wklej go poniżej w miejsce przykładowego:
 
 ```bash
+# zapisuje adres, dokąd ma trafiać push; origin to przyjęta nazwa tego adresu
 git remote add origin https://github.com/twoja-nazwa/2.1-stoper-4tc-1-viktar-t.git
+
+# wysyła gałąź na GitHub; -u wiąże ją z tamtejszą, więc potem wystarczy git push
+git push -u origin main
+
+# lub — jeśli git status pisze „On branch master”, a nie „On branch main”:
+
+# zmienia nazwę gałęzi u ciebie na dysku: master na main
+git branch -m master main
+
+# teraz nazwa gałęzi zgadza się z tą w poleceniu i push ma co wysłać
 git push -u origin main
 ```
 
@@ -286,6 +317,8 @@ niezapisanego. Odśwież teraz stronę repozytorium na GitHubie: mają tam być
 aplikacja, folder `obserwacje` i plik `.gitignore`, a nie ma być `bin`, `obj`
 ani `node_modules`. Dwa dowody z dwóch różnych miejsc — i dopiero razem znaczą,
 że kopia naprawdę istnieje.
+
+### Kończymy Zadanie 2.1 - budowa aplikacji desktopowej
 
 To jest repozytorium, o które prosiło *Zadanie 2.1* w lekcji
 [Teraz ty: twój pierwszy agent](/moduly/02-warsztat/teraz-ty-pierwszy-agent).
