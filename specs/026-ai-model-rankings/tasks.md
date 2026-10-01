@@ -26,7 +26,7 @@ before. The order is `plan.md` §8's; criteria are `spec.md`'s as amended
   the file carries `target=` or an `href` with `?`. Criteria 1, 3 (markup
   half), 4, 5.
 
-- [ ] **T03 — Invalid data fails the build, naming the entry.**
+- [x] **T03 — Invalid data fails the build, naming the entry.**
   No code unless a message reads badly (plan §3.3 — then `lib/ai-rankings.ts`
   is fixed and all three re-run). The data file is copied aside and
   sha256-recorded first, restored after each break and its hash re-checked;

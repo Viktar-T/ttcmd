@@ -100,3 +100,58 @@ Criterion 3's markup half (the heading), criterion 4 (three rows, exact
 targets, non-empty descriptions, in §3's order) and criterion 5 (no
 `target="_blank"`, no query string — across every anchor, the header's
 included) hold. The lede sits between the title and the table (spec §2).
+
+## T03 — Invalid data fails the build, naming the entry
+
+No code changed: the messages read as written. The data file was copied
+aside first and its hash recorded; after each break it was restored from the
+copy and the hash compared with the committed one. The broken states existed
+only in the working tree, for the length of one build each, and none was
+committed (`scratchpad/t03-break.sh`):
+
+```
+committed sha256: e9afdbb98fcd64506e17cf5407cb3b87fc0a54792824cfa19af7ece1e83b038a
+working   sha256: e9afdbb98fcd64506e17cf5407cb3b87fc0a54792824cfa19af7ece1e83b038a
+
+=== (a) ===
+-      "url": "https://artificialanalysis.ai/",
+-      "description": "Niezależne porównanie modeli i dostawców API: zbiorczy wskaźnik „inteligencji” z kilku testów, szybkość od
++      "url": "https://artificialanalysis.ai/"
+npm run build exit 1
+Error: content/ai-rankings.json — ranking "Artificial Analysis": "description" must be text with something in it — one or two sentences saying what this ranking measures.
+restored: sha256 e9afdbb9…b038a == committed e9afdbb9…b038a: true
+
+=== (b) ===
+-      "url": "https://www.swebench.com/",
++      "url": "http://www.swebench.com/",
+npm run build exit 1
+Error: content/ai-rankings.json — ranking "SWE-bench": "url" is "http://www.swebench.com/", which is not an https address. Every ranking is linked over https — write the address starting with https://.
+restored: sha256 e9afdbb9…b038a == committed e9afdbb9…b038a: true
+
+=== (c) ===
+-      "url": "https://arena.ai/leaderboard/agent/overall",
++      "url": "https//arena.ai/leaderboard/agent/overall",
+npm run build exit 1
+Error: content/ai-rankings.json — ranking "Arena — Agent: Overall": "url" is "https//arena.ai/leaderboard/agent/overall", which is not a web address. Write the whole address as the browser shows it, starting with https://.
+restored: sha256 e9afdbb9…b038a == committed e9afdbb9…b038a: true
+
+=== after the last restore ===
+npm run build exit 0
+✓ Generating static pages using 10 workers (56/56) in 16.2s
+├ ○ /rankingi-ai
+(porcelain for the data file above; empty = clean)
+```
+
+Where the build stops, from break (b)'s log:
+
+```
+Error occurred prerendering page "/rankingi-ai". Read more: https://nextjs.org/docs/messages/prerender-error
+Error: content/ai-rankings.json — ranking "SWE-bench": "url" is "http://www.swebench.com/", which is not an https address. Every ranking is linked over https — write the address starting with https://.
+    at l (lib\ai-rankings.ts:26:9)
+Export encountered an error on /rankingi-ai/page: /rankingi-ai, exiting the build.
+⨯ Next.js build worker exited with code: 1 and signal: null
+```
+
+Criterion 6 holds: a removed description, an `http:` address and a malformed
+address each fail `npm run build` with a message naming the entry by its own
+name, and the restored file builds.
