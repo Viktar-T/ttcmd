@@ -51,7 +51,7 @@ before. The order is `plan.md` §8's; criteria are `spec.md`'s as amended
   `class="button"` occurs exactly twice in element markup. Criteria 1, 2
   (markup half).
 
-- [ ] **T06 — Nothing else moved, and it holds at every width.**
+- [x] **T06 — Nothing else moved, and it holds at every width.**
   No code. The before/after comparison of plan §9 on one fingerprinted tree,
   then live measurements in the browser.
   **Check:** criterion 8 — the file sets differ only by the new page; every
