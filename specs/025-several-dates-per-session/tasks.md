@@ -18,7 +18,7 @@ unchanged code as the baseline for criterion 1, and build the scratch tree.
 
 ---
 
-- [ ] **T01 — Style rules for a cell with several dates.**
+- [x] **T01 — Style rules for a cell with several dates.**
   `app/postep/page.module.css`: the two rules for the block that holds several
   dates, and the "one value, one line" comment corrected. Nothing uses them
   until T02.
