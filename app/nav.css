@@ -471,7 +471,7 @@ main > .lane {
 }
 
 /* Everything .hero itself used to be, so the course name, the lede and the
-   button keep the width and the left edge they had inside the lane. The
+   buttons keep the width and the left edge they had inside the lane. The
    max-width is what the lane was giving them; without it the lede stretches
    across the band, which is the failure slice 023 closed. */
 .heroText {
@@ -545,6 +545,17 @@ main > .lane {
   justify-self: stretch;
   font-size: var(--text-lg);
   color: var(--text-muted);
+}
+
+/* The front door's two buttons (slice 026): side by side where the measure
+   holds both, one under the other where it does not. flex-wrap moves the
+   second to a line of its own instead of shrinking either or pushing the page
+   sideways. The gap is tighter than .heroText's 1.1rem so a wrapped pair still
+   reads as one group, not as two more rows of the hero. */
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-tight);
 }
 
 /* The design reference's bordered button: rectangular, outlined, monospace

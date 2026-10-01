@@ -42,7 +42,7 @@ before. The order is `plan.md` §8's; criteria are `spec.md`'s as amended
   edit and passes after it; once restored, `git status` of `content/moduly`
   is what it was before the task.
 
-- [ ] **T05 — The front door has two buttons, progress first.**
+- [x] **T05 — The front door has two buttons, progress first.**
   `app/page.tsx` (a wrapper holding both buttons, the comment rewritten) and
   `app/nav.css` (one wrapping rule; plan §5).
   **Check:** build and lint clean. In the prerendered `index.html`: the

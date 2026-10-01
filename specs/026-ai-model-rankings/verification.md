@@ -197,3 +197,40 @@ lint exit 0
 
 `content/moduly` is as it was before the task, so the spec's *Out of scope*
 promise — a lesson points here in the content lane — now holds.
+
+## T05 — The front door has two buttons, progress first
+
+```
+$ npm run build
+  Design invariants OK.
+✓ Generating static pages using 10 workers (56/56) in 23.4s
+┌ ○ /
+├ ○ /rankingi-ai
+npm run build exit 0
+
+$ npm run lint
+> eslint
+lint exit 0
+```
+
+`Design invariants OK` includes Check B, the scan of `app/` and `lib/` for
+colour literals; the one new rule has none. Read from
+`.next/server/app/index.html`, element markup only:
+
+```
+$ node scratchpad/t05-hero.mjs
+class="heroActions" in element markup: 1
+directly inside it: <a class="button" href="/postep">Postęp grup</a><a class="button" href="/rankingi-ai">Ranking modeli AI</a>
+equals the two buttons, progress first: true
+class="button" in element markup: 2
+  1. <a class="button" href="/postep">Postęp grup</a>
+  2. <a class="button" href="/rankingi-ai">Ranking modeli AI</a>
+heroText children: h1, p, div
+PASS
+exit 0
+```
+
+Criterion 2's markup half holds: the first button reads exactly „Postęp grup"
+and targets `/postep`, its markup byte-for-byte what it was; the second reads
+exactly „Ranking modeli AI" and targets `/rankingi-ai`; both carry the same
+`button` class and nothing else. The computed half is T06.
