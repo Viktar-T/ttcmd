@@ -40,8 +40,9 @@ export type LinkKind =
 
 /**
  * The site's own routes that are not derived from content: `app/page.tsx`,
- * `app/moduly/page.tsx` and `app/postep/page.tsx`. Everything else a link may
- * point at is a module or a lesson, and comes from the course model.
+ * `app/moduly/page.tsx`, `app/postep/page.tsx` and `app/rankingi-ai/page.tsx`.
+ * Everything else a link may point at is a module or a lesson, and comes from
+ * the course model.
  *
  * `/styleguide` is deliberately absent. It is a maintainer's instrument that
  * nothing links to, and a lesson linking to it is a mistake worth stopping.
@@ -51,8 +52,17 @@ export type LinkKind =
  * describes. No lesson links to it today, so no criterion of that slice needed
  * it — but the schedule is a page a lesson may perfectly well point at, and
  * leaving it out would refuse the first such link as "there is no such page".
+ *
+ * `/rankingi-ai` was added by slice 026 for the same reason: its spec leaves a
+ * lesson that wants to point at the rankings free to do so in the content
+ * lane, which is only true if this list knows the address.
  */
-export const SITE_ROUTES: readonly string[] = ["/", "/moduly", "/postep"];
+export const SITE_ROUTES: readonly string[] = [
+  "/",
+  "/moduly",
+  "/postep",
+  "/rankingi-ai",
+];
 
 export function classifyLink(rawHref: string): LinkKind {
   const href = rawHref.trim();

@@ -35,7 +35,7 @@ before. The order is `plan.md` §8's; criteria are `spec.md`'s as amended
   description removed, (b) an `http:` address, (c) a malformed address — and
   the build after the last restore passes. Criterion 6.
 
-- [ ] **T04 — A lesson can link to the page.**
+- [x] **T04 — A lesson can link to the page.**
   `lib/links.ts`: the address joins the site's known routes (plan §6).
   **Check:** with a temporary link to `/rankingi-ai` added to one published
   lesson (copied aside, restored, sha256-checked), the build fails before the

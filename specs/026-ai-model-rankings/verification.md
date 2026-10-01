@@ -155,3 +155,45 @@ Export encountered an error on /rankingi-ai/page: /rankingi-ai, exiting the buil
 Criterion 6 holds: a removed description, an `http:` address and a malformed
 address each fail `npm run build` with a message naming the entry by its own
 name, and the restored file builds.
+
+## T04 — A lesson can link to the page
+
+A temporary paragraph `[Ranking modeli AI](/rankingi-ai)` was appended to one
+published lesson, copied aside first, and restored from the copy with its hash
+checked (`scratchpad/t04-stage.sh`).
+
+Before the edit to the site's known routes:
+
+```
+staged; lesson sha256 before: d4b70c6072e80e0fab31933eedc7bc0f369e7ea24d73f73e034e25857a812156
++
++[Ranking modeli AI](/rankingi-ai)
+npm run build exit 1
+Error: content/moduly/00-start/jak-dziala-ten-kurs.mdx:40: the link /rankingi-ai — there is no such page. Links into the course are resolved against content/moduly/ when the site is built.
+```
+
+After it, with the same staged lesson:
+
+```
+npm run build exit 0
+✓ Generating static pages using 10 workers (56/56) in 18.7s
+$ grep -o '<a[^>]*href="/rankingi-ai"[^>]*>[^<]*</a>' .next/server/app/moduly/00-start/jak-dziala-ten-kurs.html
+<a href="/rankingi-ai">Ranking modeli AI</a>
+restored; sha256 now d4b70c6072e80e0fab31933eedc7bc0f369e7ea24d73f73e034e25857a812156, before d4b70c6072e80e0fab31933eedc7bc0f369e7ea24d73f73e034e25857a812156
+(content/moduly porcelain above; empty = clean)
+```
+
+The link renders as an internal link — same tab, no mark. Then, on the
+restored tree:
+
+```
+$ npm run build
+npm run build exit 0
+✓ Generating static pages using 10 workers (56/56) in 16.7s
+$ npm run lint
+> eslint
+lint exit 0
+```
+
+`content/moduly` is as it was before the task, so the spec's *Out of scope*
+promise — a lesson points here in the content lane — now holds.
