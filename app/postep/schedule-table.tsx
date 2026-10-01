@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import { formatDateDayMonth, formatDateIso } from "@/lib/dates";
 import { GROUPS } from "@/lib/schedule-schema";
@@ -31,25 +32,58 @@ import styles from "./page.module.css";
  * for their own column would scroll right rather than read down.
  */
 
-function Cell({ held }: { held: ScheduleGroupClass | undefined }) {
+/**
+ * One date, as `03.09-T1` — the day, the month, and the week THAT DATE fell in,
+ * resolved in lib/schedule.ts against the calendar. Never the session's planned
+ * week: that number is the same for every cell in a row and would say nothing
+ * about the group (slice 020, decision 4).
+ *
+ * The year is dropped from the visible text and kept on the element. The table
+ * covers one school year and the calendar above it prints the year on all
+ * seventeen rows, so ten characters of a narrow column would be spent saying
+ * 2026 over and over — but `datetime` stays the full ISO date, so nothing
+ * machine-readable is lost.
+ *
+ * Called as a function, not rendered as a component, so that a cell holding one
+ * date lands in the page exactly as it did before slice 025. That is
+ * load-bearing: the prerendered page embeds a cell's children literally, the
+ * day-month, the "-T" and the week are three text children that React keeps
+ * apart, and a template literal in their place would print the same text and
+ * change the bytes of every cell that holds one date.
+ */
+function dateElement(one: ScheduleGroupClass) {
+  return (
+    <time dateTime={formatDateIso(one.date)}>
+      {formatDateDayMonth(one.date)}-T{one.week}
+    </time>
+  );
+}
+
+function Cell({ held }: { held: ScheduleGroupClass[] | undefined }) {
   /* Empty means the group has not got there yet, and that is its only meaning
      (016 §5). No dash, no em dash, no question mark: a placeholder in a cell
      that means "not yet" reads as a value. */
   if (!held) return null;
-  /* `03.09-T1` — the day, the month, and the week THAT DATE fell in, resolved
-     in lib/schedule.ts against the calendar. Never the session's planned week:
-     that number is the same for every cell in a row and would say nothing about
-     the group (slice 020, decision 4).
-
-     The year is dropped from the visible text and kept on the element. The
-     table covers one school year and the calendar above it prints the year on
-     all seventeen rows, so ten characters of a narrow column would be spent
-     saying 2026 over and over — but `datetime` stays the full ISO date, so
-     nothing machine-readable is lost. */
+  /* ONE DATE is the markup it has always been, with nothing around it. A
+     wrapper on every cell would change the prerendered data of every cell that
+     holds one date, which is nearly all of them. */
+  if (held.length === 1) return dateElement(held[0]);
+  /* SEVERAL are one block, earliest first as lib/schedule.ts hands them over
+     (slice 025): one element and not several siblings, because the narrow
+     layout lays a cell out as a flex row of its label and its value (see .dates
+     in the stylesheet). The space between two dates is invisible in either
+     layout and keeps their text from running together where no layout is
+     applied. The key is the ISO date: lib/schedule.ts hands over each date of
+     an entry once. */
   return (
-    <time dateTime={formatDateIso(held.date)}>
-      {formatDateDayMonth(held.date)}-T{held.week}
-    </time>
+    <span className={styles.dates}>
+      {held.map((one, index) => (
+        <Fragment key={formatDateIso(one.date)}>
+          {index > 0 && " "}
+          {dateElement(one)}
+        </Fragment>
+      ))}
+    </span>
   );
 }
 

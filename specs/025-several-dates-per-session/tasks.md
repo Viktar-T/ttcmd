@@ -29,7 +29,7 @@ unchanged code as the baseline for criterion 1, and build the scratch tree.
   stylesheet identical in name and bytes, and the CSS-modules stylesheet
   differing only by the new rules.
 
-- [ ] **T02 — A cell is a list of dates.**
+- [x] **T02 — A cell is a list of dates.**
   `lib/schedule.ts`: a group's entry holds a list in the model, and the loader
   wraps today's single date in a list of one. `app/postep/schedule-table.tsx`:
   the cell takes the list; one date is today's markup untouched, several are new

@@ -209,7 +209,8 @@ export type ScheduleTopic =
   | { kind: "text"; text: string };
 
 /**
- * What a filled group cell holds.
+ * What ONE of a group's dates holds. A cell holds one of these or several,
+ * earliest first (slice 025).
  *
  * The week is the one **this date** falls in, looked up in the calendar. It is
  * never `ScheduleSession.week`, which is what the session was *planned* for.
@@ -218,7 +219,7 @@ export type ScheduleTopic =
  * planned for week 1 — on 2026-09-08, so their cells read `T2` beside the 4Ta
  * groups' `T1` (slice 020, decision 4).
  *
- * One object rather than two parallel maps, because a cell is one fact: with
+ * One object rather than two parallel maps, because a date is one fact: with
  * the pair together the renderer cannot print a date without its week, which is
  * the invariant stated in the type instead of in a comment.
  */
@@ -244,7 +245,13 @@ export interface ScheduleSession {
       parse is what keeps an impossible planned date failing the build. */
   date: ContentDate | null;
   topics: ScheduleTopic[];
-  groups: Partial<Record<Group, ScheduleGroupClass>>;
+  /**
+   * A group with an entry holds a NON-EMPTY list, earliest date first, no two
+   * the same — all three true by construction in `readSchedule`, which is what
+   * lets the renderer trust them without checking. A group with no entry is
+   * absent from the record, and its cell is empty.
+   */
+  groups: Partial<Record<Group, ScheduleGroupClass[]>>;
 
   /** The name of the class as it is entered in the school's plan, verbatim, or
       null when it has none. Never stored with its number: the renderer puts
@@ -436,7 +443,7 @@ const readSchedule = cache(async (): Promise<Schedule> => {
        `lib/dates.ts` rather than "falls in no week". `weeks` is fully built and
        the end-before-start refusal has already fired, so `weekOf` never sees an
        inverted range. */
-    const groups: Partial<Record<Group, ScheduleGroupClass>> = {};
+    const groups: Partial<Record<Group, ScheduleGroupClass[]>> = {};
     for (const group of GROUPS) {
       const value = session.groups?.[group];
       if (value === undefined) continue;
@@ -453,7 +460,9 @@ const readSchedule = cache(async (): Promise<Schedule> => {
             `and a weekend or a school break falls in none of it.`
         );
       }
-      groups[group] = { date, week };
+      /* A list since slice 025. Until the file may hold more than one date for
+         a group, every entry is the single date it has always been. */
+      groups[group] = [{ date, week }];
     }
 
     sessions.push({
