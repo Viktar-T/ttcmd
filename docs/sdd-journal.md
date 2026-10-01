@@ -1072,3 +1072,51 @@ in the reflection sections.
   criterion 9 is named beside it in `verification.md`.
 - **The data move Viktar asked for** — session 5's three dates onto session 4 —
   is a content-lane commit made after this slice closed, not a task in it.
+
+---
+
+## Slice 026 — the AI-model rankings page
+
+**Agent notes** *(factual, appended by agents)*
+
+- **An autonomous run of a spec Viktar had read.** The spec was drafted in
+  supervised mode and he reviewed it before the run. Its Status line says
+  exactly that. The plan and tasks are the run's and say "unreviewed".
+- **The fresh-context plan found five gaps, and four were amended in the spec
+  before any code.** (1) §5 and decision 6 justified same-tab links by saying
+  no other link on the site opens a new tab. That is false: slice 010 §6 opens
+  every link that leaves a lesson in a new tab, with a ↗ mark. The claim was
+  corrected, the departure was named under *Supersedes*, and the behaviour
+  was kept as reviewed; it goes back to Viktar. (2) Criterion 8 normalised
+  only the build id. (3) The sentence under the title had no stated home.
+  (4) *Out of scope* presumed a lesson could link to the page, which needed an
+  edit to the link check's known routes. The fifth, ADR-0008's visible check
+  date, was left open: that ADR is still *proposed*.
+- **Criterion 8 hit the same wall as slice 022's, written a fortnight later.**
+  "Byte-identical with the build id normalised" cannot hold for a slice that
+  adds any CSS rule. Every page links one global stylesheet named by a hash of
+  its contents. Without normalising its name, 265 of the 324 artefacts outside
+  the home page differed; with it, all 324 are identical. The amendment
+  copies 022's wording.
+- **Another session worked slice 025 in the same working tree throughout.**
+  Its `verification.md` appeared at 11:32. `app/postep/schedule-table.tsx` and
+  `lib/schedule-schema.ts` changed at 11:55, between the run's first baseline
+  and its before/after builds. Every 026 commit was staged path by path, and
+  the review confirmed none carries a 025 path. Criterion 8's primary evidence
+  is two builds back to back on one fingerprinted tree, not the session-start
+  baseline, which agrees but is not proven to share a tree. Slice 025 then
+  closed and committed on `main` at 12:08–12:09, on top of `026/T06` and
+  before 026's close, so the two slices' commits interleave in the log. The
+  closing build was re-run on that integrated HEAD.
+- **The live measurements ran on a dev server the run did not start.**
+  `next dev` allows one server per directory. One started outside this
+  session already served the tree on port 3001, so the project's launch
+  config refused to start a second. It was used read-only and not stopped.
+- **The review rebuilt HEAD from `git archive`**, without 025's uncommitted
+  files, and re-ran criteria 1, 2, 4, 5 and 8 there. That is the only evidence
+  in this slice from the committed tree alone; everything else was measured
+  on a tree that also held another slice's work in progress.
+- **Criterion 6 was proved with three temporary breaks of the data file**:
+  a description removed, an `http:` address, a malformed one. Each build
+  failed naming the ranking, and the file was restored from a copy with its
+  hash checked after each. No broken state was committed.

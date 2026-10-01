@@ -403,3 +403,103 @@ taken in the pane: the two buttons stacked under the lede, and the table in
 two columns with the names wrapping in the first.
 
 Criteria 2, 3, 7, 8 and 9 hold.
+
+## T07 — Close the slice
+
+### Criterion 8, a second measurement
+
+Before any slice code changed, the prerendered HTML of all 55 pages was
+captured from a clean build, and a second clean build of the same tree
+compared byte-identical with it (build id normalised), so the build is
+deterministic. That session-start capture was diffed against the slice's
+build from T06, normalising the build id and the global stylesheet's name:
+
+```
+differs: ./index.html
+pages in the session-start baseline: 55; differing from the slice's build: 1
+only in the slice's build: ./rankingi-ai.html
+```
+
+T06's back-to-back builds remain the primary evidence. Slice 025's working
+files moved between this capture and T06 (see the journal), and only the
+back-to-back pair is proven to have seen one tree. The two measurements agree.
+
+### Criterion 10 — Viktar's eye, unchecked
+
+Not judged by this run. What to look at:
+
+- the front door at 1280 px and on a phone: whether two equal bordered buttons
+  still read as one front door, with „Postęp grup" first;
+- `/rankingi-ai`: whether the three descriptions and the sentence under the
+  title are his wording. All four are drafts in `content/ai-rankings.json`;
+- also `/rankingi-ai` at 1280 px: the first column takes about 114px, so
+  „Arena — Agent: Overall" sets on three lines beside five or six lines of
+  description. That is the site's lesson-table style as it stands; no rule
+  was added for it (plan §4.3, decision 6).
+
+### Criterion 11 — the fresh-context review
+
+A subagent was briefed with only `constitution.md`, `AGENTS.md` and the
+amended spec, and reviewed `git diff 7db9833 HEAD` read-only. Verdict: **no
+gap**. What it checked:
+
+- `git show --stat` on every commit. None touches slice 025's paths. Outside
+  the slice folder the diff is the 7 files of the plan.
+- **HEAD exported with `git archive` into a scratch folder**, so without slice
+  025's uncommitted files: `npm ci`, `npm run build` exited 0 (56 pages,
+  `○ /rankingi-ai`, prerender manifest `initialRevalidateSeconds: false`), and
+  `npm run lint` exited 0.
+- Criteria 2, 4 and 5 re-read from that build. The data file was compared
+  with spec §3 by its own script.
+- **Criterion 8 re-run on committed trees alone**: `7db9833` and HEAD built in
+  isolation, every `.html`/`.rsc`/`.meta`/`.segments` file compared. Only the
+  6 `rankingi-ai.*` files are new, 326 common files are byte-identical, and the
+  only 4 that differ are the home page's. The global stylesheet minus the one
+  `.heroActions` rule equals the old one, and the modules stylesheet is
+  identical.
+- Criterion 6's URL rules re-checked against Zod 4.4.3 directly. Criterion 9:
+  no dependency, `"use client"`, handler or custom property added.
+- The rules: nothing is called approved that Viktar did not read, the
+  languages are right, `app/` stays at the root. No comment the slice touched
+  is left stale.
+
+It raised as open, not as gaps: decision 6 (same-tab links) and ADR-0008's
+visible date are Viktar's call, and `docs/roadmap.md` has no row for 026 yet.
+All three are in the final report and not done here.
+
+### On the integrated HEAD
+
+Slice 025 committed on `main` during this run, at 12:08–12:09 on top of
+`026/T06` (`785adc9`…`ebfb04c`), and its files are no longer uncommitted. The
+closing checks were re-run at `ebfb04c` before the close was committed:
+
+```
+$ npm run build
+  Design invariants OK.
+✓ Generating static pages using 10 workers (56/56) in 20.8s
+┌ ○ /
+├ ○ /postep
+├ ○ /rankingi-ai
+npm run build exit 0
+$ npm run lint
+lint exit 0
+$ node scratchpad/t02-page.mjs   → PASS
+$ node scratchpad/t05-hero.mjs   → PASS
+$ node scratchpad/t01-seed.mjs   → rankings === spec §3 rows, in order: true
+```
+
+### Every criterion
+
+| # | criterion | evidence | status |
+| --- | --- | --- | --- |
+| 1 | build succeeds, lint clean | every task; the review's isolated HEAD build | met |
+| 2 | two buttons, „Postęp grup" first, same style | T05 markup; T06 computed box | met |
+| 3 | the click lands on `/rankingi-ai` with its heading | T02 markup; T06 live click | met |
+| 4 | three rows in §3's order, exact targets, non-empty | T02; the review | met |
+| 5 | no `target="_blank"`, no query string | T02; T06 live; the review | met |
+| 6 | invalid data fails the build naming the entry | T03, three breaks | met |
+| 7 | no sideways scroll at 320/375/1280; buttons visible at 320 | T06 live | met |
+| 8 | no other page changed | T06 back-to-back; T07 session-start baseline; the review's isolated builds | met |
+| 9 | no dependency, token, colour, client behaviour | T06; the review | met |
+| 10 | Viktar's eye | — | **unchecked, his** |
+| 11 | fresh-context review reports no gap | above | met |

@@ -65,7 +65,7 @@ before. The order is `plan.md` §8's; criteria are `spec.md`'s as amended
   `scrollWidth − clientWidth` is 0 on `/` and `/rankingi-ai` at 320, 375 and
   1280 px, and at 320 both buttons lie inside the viewport.
 
-- [ ] **T07 — Close the slice.**
+- [x] **T07 — Close the slice.**
   `verification.md` complete; the diff reviewed against `spec.md` in a fresh
   subagent context, real gaps fixed; a factual entry under "Agent notes" in
   `docs/sdd-journal.md`.
