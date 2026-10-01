@@ -16,7 +16,7 @@ before. The order is `plan.md` §8's; criteria are `spec.md`'s as amended
   file's `rankings` equals them exactly, in order, and that `lede` is
   non-blank; `npm run build` and `npm run lint` clean. Criterion 1.
 
-- [ ] **T02 — `/rankingi-ai` renders the list.**
+- [x] **T02 — `/rankingi-ai` renders the list.**
   `app/rankingi-ai/page.tsx` (plan §4).
   **Check:** `npm run build` lists `/rankingi-ai` as `○` static; lint clean.
   In the prerendered `rankingi-ai.html`: the tab title follows the

@@ -51,3 +51,52 @@ tsc exit 0
 ```
 
 Criterion 1 holds at this step.
+
+## T02 — `/rankingi-ai` renders the list
+
+```
+$ npm run build
+  Design invariants OK.
+✓ Compiled successfully in 553ms
+  Finished TypeScript in 2.1s ...
+✓ Generating static pages using 10 workers (56/56) in 13.4s
+├ ○ /postep
+├ ○ /rankingi-ai
+build exit 0
+
+$ npm run lint
+> eslint
+lint exit 0
+```
+
+`○` — prerendered as static content, so the loader's validation runs at build
+time. Read from `.next/server/app/rankingi-ai.html` with the `<script>` payload
+cut away, so only element markup is counted; the addresses are read out of
+spec §3 by the same pattern T01 used:
+
+```
+$ node scratchpad/t02-page.mjs
+tab title: "Ranking modeli AI — ttcmd"
+h1 count: 1 text: "Ranking modeli AI"
+tbody rows: 3
+ row 1: first cell <a href="https://arena.ai/leaderboard/agent/overall">Arena — Agent: Overall</a> | target === §3: true | second cell 295 chars, non-empty: true
+ row 2: first cell <a href="https://artificialanalysis.ai/">Artificial Analysis</a> | target === §3: true | second cell 213 chars, non-empty: true
+ row 3: first cell <a href="https://www.swebench.com/">SWE-bench</a> | target === §3: true | second cell 204 chars, non-empty: true
+anchors on the page: 4
+   <a class="wordmark" aria-label="Strona główna" href="/">
+   <a href="https://arena.ai/leaderboard/agent/overall">
+   <a href="https://artificialanalysis.ai/">
+   <a href="https://www.swebench.com/">
+anchors with target=: 0 | anchors whose href has '?': 0
+'_blank' anywhere in the file: false
+PASS
+exit 0
+
+$ grep -o '<h1>Ranking modeli AI</h1><p>[^<]*</p><table>' .next/server/app/rankingi-ai.html
+<h1>Ranking modeli AI</h1><p>Każdy z tych rankingów mierzy coś innego, a ich wyniki zmieniają się często.</p><table>
+```
+
+Criterion 3's markup half (the heading), criterion 4 (three rows, exact
+targets, non-empty descriptions, in §3's order) and criterion 5 (no
+`target="_blank"`, no query string — across every anchor, the header's
+included) hold. The lede sits between the title and the table (spec §2).
