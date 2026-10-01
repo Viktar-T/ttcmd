@@ -38,7 +38,7 @@ unchanged code as the baseline for criterion 1, and build the scratch tree.
   byte-identical with only the build id normalised, both stylesheets identical
   in name and bytes.
 
-- [ ] **T03 — A group entry may hold several dates.**
+- [x] **T03 — A group entry may hold several dates.**
   `lib/schedule-schema.ts`, `lib/schedule.ts`: the entry is a date or a list of
   dates; each date goes through the check a single date gets; the three new
   refusals; the sort; the reworded sentence for an unknown group; the five

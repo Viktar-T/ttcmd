@@ -112,11 +112,12 @@ function sessionTitle(
 /**
  * Zod's own message, replaced by a written one.
  *
- * Three shapes are worth naming, because they are the three a person actually
- * types wrong: a session title with nothing in it, an unknown group code, and a
- * topic that is none of the three things a topic may be. Everything else falls
- * through to Zod's text with the path spelled out, which is worse than a
- * sentence and better than nothing.
+ * Four shapes are worth naming, because they are the four a person actually
+ * types wrong: a session title with nothing in it, an unknown group code, a
+ * group's entry that is neither a date nor a list of dates, and a topic that is
+ * none of the three things a topic may be. Everything else falls through to
+ * Zod's text with the path spelled out, which is worse than a sentence and
+ * better than nothing.
  */
 function describeSchemaFailure(error: z.ZodError, raw: unknown): never {
   const issue = error.issues[0];
@@ -169,8 +170,27 @@ function describeSchemaFailure(error: z.ZodError, raw: unknown): never {
     fail(
       row,
       `"${issue.keys.join('", "')}" is not one of this course's groups. The ` +
-        `four are ${GROUPS.join(", ")} (ADR-0014), and a group cell holds ` +
-        `that group's own date as yyyy-mm-dd, or nothing at all.`
+        `four are ${GROUPS.join(", ")} (ADR-0014), and a group's entry holds ` +
+        `that group's own date as yyyy-mm-dd, a list of dates when the ` +
+        `session took more than one class, or nothing at all.`
+    );
+  }
+
+  /* A group's entry that is neither a date nor a list of dates — a number, a
+     null, an object, a list with a number in it (slice 025). Zod reports a
+     union whose branches all fail as one "Invalid input" at the entry's own
+     path, which says nothing about what an entry may be, so the sentence is
+     written here the way the title's is. Only the entry's own type can fail at
+     this depth: an unknown group is the branch above, and an empty list is
+     valid to Zod and refused below, where the session is known. */
+  if (kind === "sessions" && inRow && trail[2] === "groups" && trail.length > 3) {
+    const group = String(trail[3]);
+    fail(
+      row,
+      `${group} must be a date, as "${group}": "yyyy-mm-dd", or a list of ` +
+        `dates, as "${group}": ["yyyy-mm-dd", "yyyy-mm-dd"], one for each ` +
+        `class the group spent on this session. A group that has not got ` +
+        `there yet leaves the "${group}" key out altogether.`
     );
   }
 
@@ -284,9 +304,9 @@ export interface Schedule {
  * V). Attributing a Saturday to the week before would print a confident `T1`
  * over what is almost certainly a typo. All of those are refused below.
  *
- * A linear scan: seventeen weeks against at most four cells in a session. The
- * ranges are intervals, not keys, and an index would be more code defending a
- * cost nobody is paying.
+ * A linear scan: seventeen weeks against the few dates a session's four cells
+ * hold. The ranges are intervals, not keys, and an index would be more code
+ * defending a cost nobody is paying.
  */
 function weekOf(date: ContentDate, weeks: ScheduleWeek[]): number | null {
   const iso = formatDateIso(date);
@@ -436,33 +456,75 @@ const readSchedule = cache(async (): Promise<Schedule> => {
        show (016 §5). Since slice 020 the cell PRINTS the week its own date
        falls in, so that drift is now visible in the cell rather than inferable
        by comparing dates across a row — and the date is still never compared
-       with `session.week`.
+       with `session.week`. Since slice 025 no date is refused for coming
+       before or after another either: an entry is sorted for display, and
+       refused only for a date written twice.
 
        The lookup runs after `scheduleDate`, and the order matters: an
        impossible date must keep giving the day-length message from
        `lib/dates.ts` rather than "falls in no week". `weeks` is fully built and
        the end-before-start refusal has already fired, so `weekOf` never sees an
-       inverted range. */
+       inverted range. Every date of an entry goes through that same pair, so a
+       date inside a list is refused with the message it would get alone. */
     const groups: Partial<Record<Group, ScheduleGroupClass[]>> = {};
     for (const group of GROUPS) {
-      const value = session.groups?.[group];
-      if (value === undefined) continue;
-      const date = scheduleDate(value, row, group);
-      const week = weekOf(date, weeks);
-      if (week === null) {
+      const entry = session.groups?.[group];
+      if (entry === undefined) continue;
+      /* One date is written as one date and is held here as a list of one, so
+         the single case and the several case run the same code below. */
+      const written = typeof entry === "string" ? [entry] : entry;
+      if (written.length === 0) {
         fail(
           row,
-          `${group} — "${value}" falls in no week the calendar has, so the ` +
-            `cell cannot say which week that class was in. Add the week ` +
-            `containing it to "weeks", or correct the date: the calendar runs ` +
-            `${formatDateIso(weeks[0].start)} to ` +
-            `${formatDateIso(weeks[weeks.length - 1].end)}, Monday to Friday, ` +
-            `and a weekend or a school break falls in none of it.`
+          `${group} — the list is empty. A group that has not got to this ` +
+            `session yet is left out of the row, and a second way of saying so ` +
+            `would hide a half-finished edit. Delete the "${group}" line, or ` +
+            `write its dates: "${group}": ["yyyy-mm-dd", "yyyy-mm-dd"].`
         );
       }
-      /* A list since slice 025. Until the file may hold more than one date for
-         a group, every entry is the single date it has always been. */
-      groups[group] = [{ date, week }];
+      const classes: ScheduleGroupClass[] = [];
+      /* Found on the NORMALISED date, not on the text: `parseContentDate` trims,
+         so " 2026-09-22" and "2026-09-22" are the same day and would print as
+         two identical lines. */
+      const seen = new Set<string>();
+      for (const value of written) {
+        const date = scheduleDate(value, row, group);
+        const week = weekOf(date, weeks);
+        if (week === null) {
+          fail(
+            row,
+            `${group} — "${value}" falls in no week the calendar has, so the ` +
+              `cell cannot say which week that class was in. Add the week ` +
+              `containing it to "weeks", or correct the date: the calendar runs ` +
+              `${formatDateIso(weeks[0].start)} to ` +
+              `${formatDateIso(weeks[weeks.length - 1].end)}, Monday to Friday, ` +
+              `and a weekend or a school break falls in none of it.`
+          );
+        }
+        const iso = formatDateIso(date);
+        if (seen.has(iso)) {
+          fail(
+            row,
+            `${group} — "${iso}" is written twice. A group's entry holds each ` +
+              `class once, and two identical lines in a cell would read as a ` +
+              `bug. Delete one of them, or correct the one that was meant to be ` +
+              `another day.`
+          );
+        }
+        seen.add(iso);
+        classes.push({ date, week });
+      }
+      /* Earliest first, whatever order they were written in — the calendar is
+         sorted the same way, so a hurried edit never prints backwards. The
+         order lives here and not in the renderer, so a second consumer cannot
+         show them another way. Every value is a whole day, zero-padded, so the
+         ISO strings order as the days do, and no two are equal. */
+      classes.sort((a, b) => {
+        const x = formatDateIso(a.date);
+        const y = formatDateIso(b.date);
+        return x < y ? -1 : x > y ? 1 : 0;
+      });
+      groups[group] = classes;
     }
 
     sessions.push({

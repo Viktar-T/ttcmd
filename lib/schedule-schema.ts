@@ -28,17 +28,30 @@ export const GROUPS = ["4Ta-1", "4Ta-2", "4Tc-1", "4Tc-2"] as const;
 
 export type Group = (typeof GROUPS)[number];
 
-/** What a group cell may hold: a date, or nothing at all (spec §5). */
-export type GroupDates = Partial<Record<Group, string>>;
+/**
+ * What a group's entry may hold: one date, a list of dates — one for each class
+ * the group spent on the session — or nothing at all (016 §5, widened by slice
+ * 025). A list is accepted here whatever it holds, an empty one included: that a
+ * list must hold a date is refused one layer up, where the session is known and
+ * the message can name it.
+ */
+export type GroupDates = Partial<Record<Group, string | string[]>>;
 
 /*
  * Built from GROUPS rather than spelled out four times, for the reason above.
  * The annotation is what the four optional keys amount to; `strictObject`
  * still refuses an unknown key at run time, which is refusal 2 of spec §6 —
- * `4Tb-1` fails as a KEY, before anything looks at its value.
+ * `4Tb-1` fails as a KEY, before anything looks at its value. Each key holds a
+ * date or a list of them (slice 025); one date stays written as one date, so no
+ * entry already in the file needs an edit.
  */
 const groupDatesSchema: z.ZodType<GroupDates> = z.strictObject(
-  Object.fromEntries(GROUPS.map((group) => [group, z.string().optional()]))
+  Object.fromEntries(
+    GROUPS.map((group) => [
+      group,
+      z.union([z.string(), z.array(z.string())]).optional(),
+    ])
+  )
 );
 
 /**
