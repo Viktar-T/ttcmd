@@ -1,0 +1,20 @@
+{
+  "lede": "Każdy z tych rankingów mierzy coś innego, a ich wyniki zmieniają się często.",
+  "rankings": [
+    {
+      "name": "Arena — Agent: Overall",
+      "url": "https://arena.ai/leaderboard/agent/overall",
+      "description": "Ogólny ranking modeli w pracy agentowej — przy kodzie, w rozmowie i w zadaniach biurowych — zbudowany z prawdziwych sesji użytkowników: czy zadanie zostało wykonane, jak model radzi sobie z narzędziami i czy słucha poleceń. Mówi, jak model sprawdza się w codziennej pracy, a nie w jednym teście."
+    },
+    {
+      "name": "Artificial Analysis",
+      "url": "https://artificialanalysis.ai/",
+      "description": "Niezależne porównanie modeli i dostawców API: zbiorczy wskaźnik „inteligencji” z kilku testów, szybkość odpowiedzi (tokeny na sekundę) i cena. Przydaje się, gdy wybierasz model pod budżet albo pod czas odpowiedzi."
+    },
+    {
+      "name": "SWE-bench",
+      "url": "https://www.swebench.com/",
+      "description": "Test, w którym model ma rozwiązać prawdziwe zgłoszenia (issues) z projektów open source na GitHubie; zadanie liczy się dopiero wtedy, gdy przechodzą testy projektu. Ma kilka wersji, m.in. Verified i Lite."
+    }
+  ]
+}

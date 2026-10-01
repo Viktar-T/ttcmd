@@ -9,7 +9,7 @@ before. The order is `plan.md` §8's; criteria are `spec.md`'s as amended
 
 ---
 
-- [ ] **T01 — The list exists, and the build knows its rules.**
+- [x] **T01 — The list exists, and the build knows its rules.**
   `content/ai-rankings.json` (the lede and spec §3's three rows),
   `lib/ai-rankings-schema.ts`, `lib/ai-rankings.ts` (plan §2–§3).
   **Check:** a one-off script reads spec §3's three table rows and asserts the
