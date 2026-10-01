@@ -44,12 +44,14 @@ import styles from "./page.module.css";
  * 2026 over and over — but `datetime` stays the full ISO date, so nothing
  * machine-readable is lost.
  *
- * Called as a function, not rendered as a component, so that a cell holding one
- * date lands in the page exactly as it did before slice 025. That is
- * load-bearing: the prerendered page embeds a cell's children literally, the
- * day-month, the "-T" and the week are three text children that React keeps
- * apart, and a template literal in their place would print the same text and
- * change the bytes of every cell that holds one date.
+ * The JSX is the cell's old JSX untouched, and that is load-bearing: the
+ * day-month, the "-T" and the week are three text children, which the
+ * prerendered page keeps apart with comment markers, and a template literal in
+ * their place prints the same words and changes the bytes of every cell that
+ * holds one date (measured in slice 025). Whether this is called as a function
+ * or rendered as a component is not load-bearing: both build the same page byte
+ * for byte, on a schedule with one date to a cell and on one with several. It is
+ * called, because that needs no second function.
  */
 function dateElement(one: ScheduleGroupClass) {
   return (

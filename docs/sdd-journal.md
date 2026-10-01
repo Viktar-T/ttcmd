@@ -987,3 +987,88 @@ in the reflection sections.
 - **The owner's data moved under the run again.** `content/schedule.json` was
   edited during the session (two group dates added). It is the content lane, it
   was not touched, and it is in none of this slice's commits.
+
+---
+
+## Slice 025 — several dates per session
+
+**Agent notes** *(factual, appended by agents)*
+
+- **No mode was declared, so the run first stopped.** The opening prompt named
+  none, so the first run took the default (supervised): it wrote `spec.md` and
+  stopped. Viktar then said "run it autonomously" and the run carried on from
+  that spec. The status line was rewritten from "supervised" to "autonomous"
+  before the spec was committed, and says how it got there.
+- **The commit timing changed mid-run.** While the plan was being written Viktar
+  said all changes could be committed at the end. After the spec commit
+  (`7db9833`) nothing was committed until the work was done: each task was
+  verified on the working tree, its files were snapshotted, and the commits were
+  then made in order, one per task, so the history keeps the sequence AGENTS.md
+  asks for. The per-task evidence is true of the tree *as it stood at that task*.
+- **The fresh-context plan found ten gaps in the spec; two were real defects.**
+  §5 forbade *comparing* dates while §2 and §3 sort and compare them; and
+  criterion 2 said every page links one stylesheet when each links two, only one
+  of which a style rule renames. The spec was also silent on an entry of the
+  wrong kind, on a list of one date, and on an existing message that becomes
+  false; its note on temporary schedules pointed at a record outside the three
+  inputs; "before" was not defined; criterion 9 asked for a judgement. The spec
+  was amended before any code, as 022's and 024's were, and the amendment is
+  recorded at the foot of its criteria. `plan.md` is left as written, from the
+  first version of the spec, so its §6 and its account of criterion 2 describe
+  the spec before the amendment (AGENTS.md §8).
+- **The plan read the repository after it had a design, and said so.** It fixed
+  the design from the three documents, then read the code and listed six ways the
+  reading changed it — among them that the build's Check B scans comments as well
+  as rules, that two typefaces are fetched from Google at build time, and that
+  the one-date cell must stay the same JSX and not only the same HTML. It took
+  32 minutes and 111 tool calls.
+- **Verification ran in a scratch copy of the tree, never in the owner's file.**
+  The plan rejected the spec's own suggestion (save the bytes, restore by hash)
+  for a copy built from `git archive` of the base commit plus a copy of
+  `node_modules` (581 MB) in the session scratchpad: 28 scratch builds, 14 that
+  build, 13 refusals that are meant to fail, and one that failed for a reason
+  that was not the slice's. `content/schedule.json` was hashed at every task and
+  never moved. Four main-tree builds ran beside the two dev servers, which kept
+  answering — Next 16 writes dev and build output to different directories — and
+  a fifth ran after port 3000's server had stopped (below).
+- **A second session was building slice 026 in the same tree** and committing as
+  it went; 026/T00 to T05 landed during this run. One scratch capture overlaid
+  whole directories from the working tree, picked up 026's then-uncommitted
+  `app/rankingi-ai/`, and failed on a data file the scratch content lacks. The
+  capture script now overlays only this slice's four files. The commits are made
+  by path, so nothing of 026's is in them.
+- **The "before" had to be an archive, not a build of the tree.**
+  `content/moduly/02-warsztat/budujemy-z-agentem.mdx` is stored with LF and sits
+  on disk with CRLF (`core.autocrlf=true`), so a main-tree build differs from an
+  archive build on that one page. The review found it independently. It is
+  unrelated to the slice and is noted for whoever next compares two builds.
+- **The instruments failed four times before they measured the slice, and the
+  review found the worst.** The test for "each group's code beside its first
+  date" compared the label's *element box*, which stretches to the whole cell and
+  overlaps every date in it, so it could not fail. The same instrument measured
+  boxes where the text was the point and flagged a 1.72 px gap that was the
+  difference between an inline box and a flex item, and the corrected script's
+  first run counted a `Range`'s rectangles as lines when there is one per text
+  node. All are in `verification.md`. The lesson is the first: a check was
+  written, ran green, and was never shown capable of going red.
+- **A comment carried over from slice 022 claimed more than was true here.** "Called
+  as a function, not rendered as a component … load-bearing" was true of 022's
+  `false` child, not of a function boundary. Built both ways the page is
+  byte-identical; the half about a template literal is true (it changes the
+  page's bytes) and was measured too. The review doubted the claim before the
+  run did.
+- **Observed and left:** below 320 px, which no criterion names, nine-character
+  dates wrap at 300 px (single dates too) and the page overflows by 4 px at
+  280 px. The slice did not touch either. The reviewer did not trace the cause.
+- **Environment, for the next session on this machine:** `python3` resolves to
+  the Windows Store stub and waits on stdin, which hung one command until its PID
+  was killed — use `node`. Port 3000's dev server stopped partway through the
+  run, after the review had reported; only the scratch server's PIDs (each
+  checked against its command line) were ever stopped by this session. In this
+  desktop-app session the Browser pane opened `localhost` pages the shell had
+  started and ran script in them; the skill's limit on `localhost` is for cloud
+  sessions.
+- **Left for a human eye, by the spec:** criterion 12. The perceptual remainder of
+  criterion 9 is named beside it in `verification.md`.
+- **The data move Viktar asked for** — session 5's three dates onto session 4 —
+  is a content-lane commit made after this slice closed, not a task in it.

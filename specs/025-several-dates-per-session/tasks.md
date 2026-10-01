@@ -48,7 +48,7 @@ unchanged code as the baseline for criterion 1, and build the scratch tree.
   refusals; 7, a single date refused with today's message at both revisions; and
   8, 9 and 10(c) on a production server.
 
-- [ ] **T04 — Close the slice.**
+- [x] **T04 — Close the slice.**
   `verification.md`, the journal entry, then the diff reviewed against `spec.md`
   in a fresh subagent context.
   **Check:** `verification.md` has an entry for each criterion, with its command

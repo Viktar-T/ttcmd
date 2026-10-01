@@ -31,9 +31,9 @@ export type Group = (typeof GROUPS)[number];
 /**
  * What a group's entry may hold: one date, a list of dates — one for each class
  * the group spent on the session — or nothing at all (016 §5, widened by slice
- * 025). A list is accepted here whatever it holds, an empty one included: that a
- * list must hold a date is refused one layer up, where the session is known and
- * the message can name it.
+ * 025). A list of strings is accepted here whatever its length, an empty one
+ * included: that a list must hold a date is refused one layer up, where the
+ * session is known and the message can name it.
  */
 export type GroupDates = Partial<Record<Group, string | string[]>>;
 
