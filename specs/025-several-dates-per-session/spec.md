@@ -43,7 +43,8 @@ session 5.
 ### 1. A group may have several dates for one session
 
 A group's entry for a session may hold one date, as now, or several — one for
-each class that group spent on that session. There is no upper limit.
+each class that group spent on that session. There is no upper limit. A list
+that holds a single date is the same as writing that date.
 
 Every entry already in the schedule keeps its meaning and needs no edit.
 
@@ -66,13 +67,15 @@ Every date in an entry must be a real calendar day and must fall in a week the
 calendar lists. A date that fails stops the build with the message a single date
 gets today, so the message names the session, the group and the date.
 
-Two refusals are new:
+Three refusals are new:
 
 - **An entry with no date in it.** A group that has not got there yet is left
   out of the row, which is how that is said today; a second way of saying it
   would hide a half-finished edit.
 - **The same date twice in one entry.** It is a typo, and two identical lines in
   a cell would read as a bug.
+- **An entry that is neither a date nor a list of dates** — a number, say, or a
+  list with a number in it. The message says what an entry may be.
 
 ### 4. The phone
 
@@ -87,10 +90,14 @@ The calendar, the topics, the session titles, the grouping of a session's rows,
 the stacked layout and its labels, the other groups' cells, and every other page
 render as before.
 
-**No date is compared with any other date** — not within the entry, not with
-another group's, not with the next session's. A group running behind, or a
-session running over, is what the page exists to show, not an error (016,
-decision 9).
+**No date is refused for coming before or after another** — not within the
+entry, not against another group's, not against the next session's. An entry is
+shown in date order and is refused only for a date written twice (§3). A group
+running behind, or a session running over, is what the page exists to show, not
+an error (016, decision 9).
+
+The one message that tells the author what a group's entry may hold is reworded,
+because as it stands it says an entry holds one date.
 
 ## Out of scope
 
@@ -111,12 +118,15 @@ decision 9).
 1. `npm run build` succeeds, lists `/postep` as a **static** route, and
    `npm run lint` is clean.
 2. **A schedule in which every group holds one date, or none, renders `/postep`
-   byte-identically to before this slice** — the schedule as it stands today is
-   one — once the per-build id and the name of the shared stylesheet are
-   normalised, and the stylesheet itself differs from before only by the rules
-   this slice adds. The normalisation is written in from the start: slice 022's
-   plan found that every page links one stylesheet named by a hash of its
-   contents, so any added rule renames it.
+   byte-identically to what the code before this slice renders from the same
+   schedule** — the one in the working tree when the slice began is such a
+   schedule — once the per-build id and the name of the stylesheet that carries
+   the page's rules are normalised. That stylesheet itself differs from before
+   only by the rules this slice adds, and the page's other stylesheet is
+   identical in name and bytes. The normalisation is written in from the start:
+   slice 022's plan found that the stylesheet carrying a page's rules is named
+   by a hash of its contents and linked by most pages, so any added rule renames
+   it.
 3. **A group entry with two dates renders both**, in one cell, one per line,
    each as `dd.mm-Tn` where `n` is the week **that date** falls in, and each in
    an element carrying its own full ISO date. A third date renders a third line.
@@ -126,30 +136,46 @@ decision 9).
    01.10 for 4Tc-1, and session 5 holds no group date at all: session 4's cells
    read `22.09-T4` over `29.09-T5`, `24.09-T4` over `01.10-T5`, `24.09-T4` over
    `01.10-T5`, and an empty 4Tc-2; session 5's four cells are empty and carry no
-   placeholder. Checked on a temporary copy of the schedule, restored
-   byte-for-byte afterwards.
+   placeholder. Checked on a temporary copy of the schedule, which leaves the
+   real one byte-for-byte as it was found.
 6. **The build refuses each of these**, one at a time, reverting between: an
    impossible date inside an entry that holds several; a date in no week the
    calendar lists; an entry with no date in it; the same date twice in one
-   entry. Each message names the session and the group and, where there is one,
-   the date; the last two say what to write instead. The evidence is the four
-   messages.
+   entry; an entry that is neither a date nor a list of dates. Each message names
+   the session and the group and, where there is one, the date; the last three
+   say what to write instead. The evidence is the five messages.
 7. **A single date that is impossible, or falls in no week, is still refused
    with the message it gets today.**
 8. **No document scrolls sideways** at 320, 375, 768, 1024, 1280 and 1585 px on
    `/postep`, with the schedule of criterion 5 in place.
-9. **At 375 px** each session reads as one block, every group's code is beside
-   its own dates, and every date is visible. Which dates belong to which group
-   is unambiguous.
+9. **At 375 px**, measured from the laid-out page and not from the markup: a
+   session's four cells and its topics stay in one block; each filled cell shows
+   its group's code beside its first date; every date of every cell is visible,
+   inside its own cell and the document, none clipped or hidden; and no date lies
+   inside another group's cell.
 10. **No page other than `/postep` changes**, normalised as in criterion 2. No
     dependency, token, colour or client-side behaviour is added, and with
     scripting disabled the page still renders in full.
 11. The schedule's data is not modified by this slice's own commits.
 12. **Human eye, and therefore left unchecked by the run that builds it:**
     whether two stacked dates read, on a projector, as *this took two classes*
-    rather than as two sessions or as a mistake.
+    rather than as two sessions or as a mistake — and whether, on a phone, a cell
+    with two dates reads as one group's and not as two.
 13. The fresh-context review reports no gap against these criteria and nothing
     outside this slice's scope touched.
+
+*Amended 2026-10-01, after the plan and before any code.* The plan was written
+from the first version of this spec by a session that had not seen it drafted,
+and found what a reader who had would not. §5 forbade *comparing* dates while §2
+and §3 sort and compare them, so it now forbids *refusing* a date for coming
+early or late. Criterion 2 said every page links one stylesheet, when each links
+two and only one of them is renamed by a style rule, so it now names that one,
+holds the other to identity, and says what "before" means. The spec was silent
+on an entry of the wrong kind and on a list of one date, so §1, §3, criterion 6
+and decision 10 now say. Criterion 9 asked for a judgement and now asks for a
+measurement, with the judgement moved to criterion 12. The note on temporary
+schedules pointed at a record outside the spec, so it now says what to do
+itself.
 
 ## Decisions taken
 
@@ -183,15 +209,21 @@ Per AGENTS.md §4. One line each, naming what was rejected.
 6. **One date to a line.** Rejected: two dates side by side or separated by a
    comma, which doubles what a cell asks of a narrow column and of the 375 px
    layout's half-width cell.
-7. **No date is compared with any other.** Rejected: refusing a date that falls
-   after the same group's first date on the next session, which would turn the
-   page's subject into an error (016, decision 9).
+7. **No date is refused for coming before or after another.** Rejected: refusing
+   a date that falls after the same group's first date on the next session,
+   which would turn the page's subject into an error (016, decision 9).
 8. **Viktar's example is data, and is committed after the slice, in the content
    lane.** Rejected: moving it inside the slice's commits — the data lane has no
    slice (Article IX), and criterion 2 needs the data unchanged while the code
    changes.
 9. **No ADR.** Rejected: amending ADR-0014 or Article VI — their wording, "which
    group has reached which session, and when", already holds several whens.
+10. **A list of one date is accepted, and an entry of the wrong kind is refused
+    with a sentence of its own.** *Added after the plan.* Rejected: refusing a
+    one-item list, a refusal nobody asked for that would stop the build on a
+    half-finished edit that is valid; and letting a wrongly typed entry fall
+    through to the validator's generic text, which says nothing about what an
+    entry may be.
 
 ## Notes for the reviewer
 
@@ -200,8 +232,8 @@ Per AGENTS.md §4. One line each, naming what was rejected.
   that arrives as two things rather than one is the way this table breaks.
 - **Criterion 2 is what keeps the slice additive.** A schedule that does not use
   the feature must not be able to tell the feature exists.
-- **Criteria 5 and 6 write to the schedule temporarily.** At the time of writing
-  the file carries an uncommitted edit of Viktar's — session 5's 4Ta-2 and
-  4Tc-1 dates. Any run that writes a temporary schedule saves its bytes and hash
-  first and restores by hash, as slice 022's journal entry records, and ends
-  with `git status` showing only his edit.
+- **Criteria 5 and 6 need temporary schedules.** At the time of writing the real
+  one carries an uncommitted edit of Viktar's — session 5's 4Ta-2 and 4Tc-1
+  dates. A run must leave that file byte-identical to how it found it: by
+  building in a copy of the tree and never writing the file at all, or by
+  saving its bytes and hash first and restoring by hash.
